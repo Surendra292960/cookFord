@@ -7,6 +7,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.cook_ford.data.local.SessionConstant.AUTH_ID
+import com.example.cook_ford.data.local.SessionConstant.AUTH_TOKEN
+import com.example.cook_ford.data.local.UserSession
 import com.example.cook_ford.data.remote.NetworkResult
 import com.example.cook_ford.data.remote.request.SignUpRequest
 import com.example.cook_ford.data.remote.response.SignUpResponse
@@ -32,7 +35,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class SignUpViewModel @Inject constructor(private val signUpUseCase: SignUpUseCase) :ViewModel() {
+class SignUpViewModel @Inject constructor(private val signUpUseCase: SignUpUseCase, private val userSession: UserSession) :ViewModel() {
     var signUpState = mutableStateOf(SignUpState())
         private set
 
@@ -42,6 +45,8 @@ class SignUpViewModel @Inject constructor(private val signUpUseCase: SignUpUseCa
     private val _response: MutableLiveData<NetworkResult<SignUpResponse>> = MutableLiveData()
     val response: LiveData<NetworkResult<SignUpResponse>> = _response
 
+    private val _responseError: MutableLiveData<String> = MutableLiveData()
+    val responseError: LiveData<String> = _responseError
 
     /**
      * Function called on any login event [SignUpUiEvent]
@@ -265,13 +270,23 @@ class SignUpViewModel @Inject constructor(private val signUpUseCase: SignUpUseCa
 
     private fun makeSigUpRequest(signUpRequest: SignUpRequest) = viewModelScope.launch(Dispatchers.IO) {
         Log.d("TAG", "makeSignUpRequest SignUpRequest: ${Gson().toJson(signUpRequest)}")
-        signUpUseCase.invoke(signUpRequest).collect { values ->
-            if (values.status==true){
-                Log.d("TAG", "makeSignUpRequest SignUpResponse: ${Gson().toJson(values)}")
-                //values.data?._id?.let { dataStore.saveAuthId(it) }
-                dialogState.value = dialogState.value.copy(showDialogState = values.status, message = values.data!!.message)
-                signUpState.value = signUpState.value.copy(isSignUpSuccessful = true)
-                _response.postValue(values)
+        signUpUseCase.invoke(signUpRequest).collect { result ->
+            when(result){
+                is NetworkResult.Success->{
+                    if (result.status==true){
+                        Log.d("TAG", "makeSignUpRequest SignUpResponse: ${Gson().toJson(result)}")
+                        dialogState.value = dialogState.value.copy(showDialogState = result.status, message = result.data!!.message)
+                        signUpState.value = signUpState.value.copy(isSignUpSuccessful = true)
+                        userSession.put(AUTH_ID, result.data._id)
+                        _response.postValue(result)
+                    }
+                }
+                is NetworkResult.Error->{
+                    _responseError.postValue(result.message!!)
+                }
+                is NetworkResult.Loading->{
+                    Log.d("TAG", "makeSigUpRequest: Loading")
+                }
             }
         }
     }

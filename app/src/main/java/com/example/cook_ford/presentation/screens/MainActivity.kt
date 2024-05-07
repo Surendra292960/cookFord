@@ -1,5 +1,6 @@
 package com.example.cook_ford.presentation.screens
 import android.os.Bundle
+import android.util.Log
 import android.view.animation.OvershootInterpolator
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -19,22 +20,31 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import com.example.cook_ford.R
+import com.example.cook_ford.data.local.SessionConstant.ACCESS_TOKEN
+import com.example.cook_ford.data.local.SessionConstant.AUTH_ID
+import com.example.cook_ford.data.local.UserSession
 import com.example.cook_ford.presentation.route.NavigationRoutes
 import com.example.cook_ford.presentation.route.authenticatedGraph
 import com.example.cook_ford.presentation.route.unauthenticatedGraph
+import com.example.cook_ford.presentation.screens.sign_in.SignInViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
+import javax.inject.Inject
+import kotlin.math.log
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -46,6 +56,9 @@ class MainActivity : ComponentActivity() {
 }
 @Composable
 fun SplashScreen(navController: NavController) {
+    val context = LocalContext.current as MainActivity
+    val userSession = remember { UserSession(context) }
+
     val scale = remember {
         Animatable(0f)
     }
@@ -61,8 +74,14 @@ fun SplashScreen(navController: NavController) {
                     OvershootInterpolator(4f).getInterpolation(it)
                 }))
         // Customize the delay time
-        delay(3000L)
-        navController.navigate(route = NavigationRoutes.Unauthenticated.SignIn.route)
+        delay(2000L)
+        if (userSession.check(ACCESS_TOKEN)){
+            Log.d("TAG", "SplashScreen if: ${userSession.check(ACCESS_TOKEN)}")
+            navController.navigate(route = NavigationRoutes.Authenticated.Dashboard.route)
+        }else{
+            Log.d("TAG", "SplashScreen else: ${userSession.check(ACCESS_TOKEN)}")
+            navController.navigate(route = NavigationRoutes.Unauthenticated.SignIn.route)
+        }
     }
 
     // Image

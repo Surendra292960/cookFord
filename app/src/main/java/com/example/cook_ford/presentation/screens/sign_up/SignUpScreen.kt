@@ -44,10 +44,10 @@ fun SignUpScreen(
     onNavigateBack: () -> Unit,
     onNavigateToAuthenticatedRoute: () -> Unit) {
 
-    val registrationState by remember { signUpViewModel.signUpState }
+    val signUpState by remember { signUpViewModel.signUpState }
     val dialogState by remember { mutableStateOf(signUpViewModel.dialogState) }
 
-    if (registrationState.isSignUpSuccessful) {
+    if (signUpState.isSignUpSuccessful) {
         DisplayDialog(dialogState)
         LaunchedEffect(key1 = true) {
             delay(2000)
@@ -97,7 +97,7 @@ fun SignUpScreen(
                     )
 
 
-                    SignUpForm(registrationState = registrationState, onNameChange = { inputString ->
+                    SignUpForm(signUpState = signUpState, onNameChange = { inputString ->
                             signUpViewModel.onUiEvent(
                                 signUpUiEvent = SignUpUiEvent.NameChanged(
                                     inputValue = inputString

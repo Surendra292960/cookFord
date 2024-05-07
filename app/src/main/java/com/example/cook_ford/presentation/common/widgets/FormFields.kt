@@ -32,6 +32,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -90,8 +91,8 @@ fun InputPasswordTextField(
 
 
 data class KeyboardOption(
-    val imeAction: String,
-    val keyboardType: String,
+    val imeAction: ImeAction,
+    val keyboardType: KeyboardType,
     val label: String,
     val placeholder: String
 )
@@ -114,6 +115,7 @@ fun InputTextField(
     /*submit: () -> Unit*/) {
 
     var isPasswordVisible by remember { mutableStateOf(false) }
+    val keyboardController = LocalSoftwareKeyboardController.current
 
     val focusManager = LocalFocusManager.current
 
@@ -143,10 +145,10 @@ fun InputTextField(
         modifier = modifier,
         leadingIcon = leadingIcon,
         trailingIcon = trailingIcon,
-        keyboardOptions = KeyboardOptions(imeAction = getImeAction(imeAction = keyboardOptions.imeAction), keyboardType = getKeyboardType(keyboardOptions.keyboardType)),
+        keyboardOptions = KeyboardOptions(imeAction = keyboardOptions.imeAction, keyboardType = keyboardOptions.keyboardType),
         keyboardActions = KeyboardActions {
-            if (getImeAction(keyboardOptions.imeAction) == ImeAction.Done) {
-                //submit()
+            if (keyboardOptions.imeAction == ImeAction.Done) {
+                keyboardController?.hide()
             }else{
                 focusManager.moveFocus(FocusDirection.Down)
             }
@@ -155,7 +157,7 @@ fun InputTextField(
         label = { Text(keyboardOptions.label) },
         singleLine = true,
         maxLines = 1,
-        visualTransformation = if (getKeyboardType(keyboardOptions.keyboardType) ==KeyboardType.Password){
+        visualTransformation = if (keyboardOptions.keyboardType ==KeyboardType.Password){
             if (isPasswordVisible) {
                 VisualTransformation.None
             } else {
@@ -293,6 +295,7 @@ fun SubmitButton(
         Text(text = text, style = MaterialTheme.typography.titleMedium)
     }
 }
+
 
 @Composable
 fun LabeledCheckbox(

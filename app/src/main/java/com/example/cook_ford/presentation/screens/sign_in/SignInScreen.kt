@@ -1,5 +1,4 @@
 package com.example.cook_ford.presentation.screens.sign_in
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -16,6 +15,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -28,19 +28,22 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.cook_ford.R
-import com.example.cook_ford.presentation.theme.AppTheme
-import com.example.cook_ford.presentation.theme.Cook_fordTheme
-import com.example.cook_ford.presentation.common.customeComposableViews.TitleText
-import com.example.cook_ford.presentation.screens.sign_in.state.SignInUiEvent
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.cook_ford.R
+import com.example.cook_ford.presentation.common.customeComposableViews.TitleText
 import com.example.cook_ford.presentation.common.widgets.CustomDialog
 import com.example.cook_ford.presentation.common.widgets.DialogState
-import kotlinx.coroutines.delay
+import com.example.cook_ford.presentation.common.widgets.ResetWarning
+import com.example.cook_ford.presentation.screens.sign_in.state.DialogEvent
+import com.example.cook_ford.presentation.screens.sign_in.state.SignInUiEvent
+import com.example.cook_ford.presentation.theme.AppTheme
+import com.example.cook_ford.presentation.theme.Cook_fordTheme
+import kotlinx.coroutines.time.delay
 
 @Composable
 fun SignInScreen(
@@ -52,24 +55,21 @@ fun SignInScreen(
     val _signInState by remember { signInViewModel.signInState }
     val dialogState by remember { mutableStateOf(signInViewModel.dialogState) }
 
-   /* if (loginState.isLoading) {
-        CircularProgressIndicator(modifier = Modifier.align(Alignment.CenterHorizontally))
-    }*/
 
     if (_signInState.isSignInSuccessful) {
+        ShowCustomDialog(dialogState, signInViewModel)
         /**
          * Navigate to Authenticated navigation route
-         * once login is successful
+         * once signIn is successful
          */
-        DisplayDialog(dialogState)
-        LaunchedEffect(key1 = true) {
-            delay(2000)
-            onNavigateToAuthenticatedRoute.invoke()
+        if (dialogState.value.dismissDialogState){
+            LaunchedEffect(key1 = true) {
+                onNavigateToAuthenticatedRoute.invoke()
+            }
         }
     } else {
 
         Surface {
-
             // Full Screen Content
             Column(
                 modifier = Modifier
@@ -117,7 +117,7 @@ fun SignInScreen(
 
                         // Login Inputs Composable
                         SignInForm(
-                            loginState = _signInState,
+                            signInState = _signInState,
                             onUserNameChange = { inputString ->
                                 signInViewModel.onUiEvent(
                                     signInUiEvent = SignInUiEvent.UserNameChanged(
@@ -164,12 +164,21 @@ fun SignInScreen(
 }
 
 @Composable
-fun DisplayDialog(showDialog: MutableState<DialogState>){
-    if(showDialog.value.showDialogState) {
-        CustomDialog(
-            value = showDialog.value.message, setShowDialog = { showDialog.value.showDialogState = it }) {
-            Log.d("HomePage", "HomePage : ${showDialog.value.message}")
-        }
+fun ShowCustomDialog(dialogState: MutableState<DialogState>, signInViewModel: SignInViewModel) {
+    val isDismiss = remember { mutableStateOf(true) }
+
+    CustomDialog(
+        showDialog = isDismiss.value,
+        isAnimate = isDismiss.value,
+        onDismissRequest = { isDismiss.value = false}) {
+        ResetWarning(color= Color.Green, dialogState = dialogState.value,  onDismissRequest = { isDismiss.value = false},
+            onDismissResponse = { dismiss->
+                signInViewModel.onDialogEvent(
+                    dialogEvent = DialogEvent.DismissDialog(
+                        dismiss
+                    )
+                )
+            })
     }
 }
 

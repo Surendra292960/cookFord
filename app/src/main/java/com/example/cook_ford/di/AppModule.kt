@@ -1,16 +1,11 @@
 package com.example.cook_ford.di
-import AuthPreferences
 import android.content.Context
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.PreferenceDataStoreFactory
-import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.createDataStore
 import com.example.cook_ford.data.ApiConstants.BASE_URL
 import com.example.cook_ford.data.ApiService
+import com.example.cook_ford.data.local.UserSession
 import com.example.cook_ford.data.repository.AuthRepository
 import com.example.cook_ford.domain.use_cases.SignInUseCase
 import com.example.cook_ford.domain.use_cases.SignUpUseCase
-import com.example.cook_ford.utils.AppConstants.AUTH_PREFERENCES
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -81,6 +76,11 @@ object AppModule {
         )
     }
 
+    @Provides
+    @Singleton
+    fun provideSharedPreference(@ApplicationContext context: Context): UserSession {
+        return UserSession(context)
+    }
     @Provides
     @Singleton
     fun providesLoginUseCase(repository: AuthRepository): SignInUseCase {

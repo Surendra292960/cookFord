@@ -14,5 +14,6 @@ sealed class NavigationRoutes {
     sealed class Authenticated(val route: String) : NavigationRoutes() {
         data object NavigationRoute : Authenticated(route = "authenticated")
         data object Dashboard : Authenticated(route = "Dashboard")
+        data object NoInternet : Authenticated(route = "NoInternet")
     }
 }

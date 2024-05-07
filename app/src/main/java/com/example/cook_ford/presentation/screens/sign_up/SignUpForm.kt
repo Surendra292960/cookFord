@@ -15,6 +15,8 @@ import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.example.cook_ford.R
 import com.example.cook_ford.presentation.theme.AppTheme
@@ -27,7 +29,7 @@ import com.example.cook_ford.presentation.common.widgets.TrailingIcon
 
 @Composable
 fun SignUpForm(
-    registrationState: SignUpState,
+    signUpState: SignUpState,
     onNameChange: (String) -> Unit,
     onUserNameChange: (String) -> Unit,
     onPhoneChange: (String) -> Unit,
@@ -40,52 +42,52 @@ fun SignUpForm(
         Spacer(modifier = Modifier.height(10.dp))
 
         InputTextField(
-            value = registrationState.name,
+            value = signUpState.name,
             onChange = onNameChange,
             modifier = Modifier.fillMaxWidth(),
-            keyboardOptions = KeyboardOption(imeAction = "Next", keyboardType = "Text",label = "Name", placeholder = "Enter Full Name"),
+            keyboardOptions = KeyboardOption(imeAction = ImeAction.Next, keyboardType = KeyboardType.Text,label = "Name", placeholder = "Enter Full Name"),
             DefaultIcons(leadingIcon = Icons.Default.Person),
-            isError = registrationState.errorState.nameErrorState.hasError,
-            errorText = stringResource(id = registrationState.errorState.nameErrorState.errorMessageStringResource),
+            isError = signUpState.errorState.nameErrorState.hasError,
+            errorText = stringResource(id = signUpState.errorState.nameErrorState.errorMessageStringResource),
             maxChar = 30
             /*submit = { TODO() }*/)
 
         Spacer(modifier = Modifier.height(10.dp))
 
         InputTextField(
-            value = registrationState.username,
+            value = signUpState.username,
             onChange = onUserNameChange,
             modifier = Modifier.fillMaxWidth(),
-            keyboardOptions = KeyboardOption(imeAction = "Next", keyboardType = "Email",label = "Email", placeholder = "Enter Email"),
+            keyboardOptions = KeyboardOption(imeAction = ImeAction.Next, keyboardType = KeyboardType.Email,label = "Email", placeholder = "Enter Email"),
             DefaultIcons(leadingIcon = Icons.Default.Email),
-            isError = registrationState.errorState.userNameErrorState.hasError,
-            errorText = stringResource(id = registrationState.errorState.userNameErrorState.errorMessageStringResource),
+            isError = signUpState.errorState.userNameErrorState.hasError,
+            errorText = stringResource(id = signUpState.errorState.userNameErrorState.errorMessageStringResource),
             maxChar = 30
             /*submit = { TODO() }*/)
 
         Spacer(modifier = Modifier.height(10.dp))
 
         InputTextField(
-            value = registrationState.phone,
+            value = signUpState.phone,
             onChange = onPhoneChange,
             modifier = Modifier.fillMaxWidth(),
-            keyboardOptions = KeyboardOption(imeAction = "Next", keyboardType = "Phone",label = "Phone Number", placeholder = "Enter Phone Number"),
+            keyboardOptions = KeyboardOption(imeAction = ImeAction.Next, keyboardType = KeyboardType.Phone,label = "Phone Number", placeholder = "Enter Phone Number"),
             DefaultIcons(leadingIcon = Icons.Default.Phone),
-            isError = registrationState.errorState.phoneErrorState.hasError,
-            errorText = stringResource(id = registrationState.errorState.phoneErrorState.errorMessageStringResource),
+            isError = signUpState.errorState.phoneErrorState.hasError,
+            errorText = stringResource(id = signUpState.errorState.phoneErrorState.errorMessageStringResource),
             maxChar = 12
             /*submit = { TODO() }*/)
 
         Spacer(modifier = Modifier.height(10.dp))
 
         InputTextField(
-            value = registrationState.password,
+            value = signUpState.password,
             onChange = onPasswordChange,
             modifier = Modifier.fillMaxWidth(),
-            keyboardOptions = KeyboardOption(imeAction = "Next", keyboardType = "Password",label = "Password", placeholder = "Enter Password"),
+            keyboardOptions = KeyboardOption(imeAction = ImeAction.Next, keyboardType = KeyboardType.Password,label = "Password", placeholder = "Enter Password"),
             DefaultIcons(leadingIcon = Icons.Default.Lock, trailingIcon = TrailingIcon(Icons.Default.VisibilityOff, Icons.Default.Visibility)),
-            isError = registrationState.errorState.passwordErrorState.hasError,
-            errorText = stringResource(id = registrationState.errorState.passwordErrorState.errorMessageStringResource),
+            isError = signUpState.errorState.passwordErrorState.hasError,
+            errorText = stringResource(id = signUpState.errorState.passwordErrorState.errorMessageStringResource),
             maxChar = 25
             /*submit = { TODO() },*/
         )
@@ -93,13 +95,13 @@ fun SignUpForm(
         Spacer(modifier = Modifier.height(10.dp))
 
         InputTextField(
-            value = registrationState.confirmPassword,
+            value = signUpState.confirmPassword,
             onChange = onConfirmPasswordChange,
             modifier = Modifier.fillMaxWidth(),
-            keyboardOptions = KeyboardOption(imeAction = "Done", keyboardType = "Password",label = "Confirm Password", placeholder = "Enter Confirm Password"),
+            keyboardOptions = KeyboardOption(imeAction = ImeAction.Done, keyboardType = KeyboardType.Password,label = "Confirm Password", placeholder = "Enter Confirm Password"),
             DefaultIcons(leadingIcon = Icons.Default.Lock, trailingIcon = TrailingIcon(Icons.Default.VisibilityOff, Icons.Default.Visibility)),
-            isError = registrationState.errorState.confirmPasswordErrorState.hasError,
-            errorText = stringResource(id = registrationState.errorState.confirmPasswordErrorState.errorMessageStringResource),
+            isError = signUpState.errorState.confirmPasswordErrorState.hasError,
+            errorText = stringResource(id = signUpState.errorState.confirmPasswordErrorState.errorMessageStringResource),
             maxChar = 25
             /*submit = { TODO() },*/
         )

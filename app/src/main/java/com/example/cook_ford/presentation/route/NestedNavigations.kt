@@ -12,6 +12,7 @@ import com.example.cook_ford.presentation.screens.dashboard.DashboardScreen
 import com.example.cook_ford.presentation.screens.no_internet.NoInternetScreen
 import com.example.cook_ford.presentation.screens.sign_in.SignInScreen
 import com.example.cook_ford.presentation.screens.sign_up.SignUpScreen
+import javax.inject.Inject
 
 /**
  * Login, registration, forgot password screens nav graph builder

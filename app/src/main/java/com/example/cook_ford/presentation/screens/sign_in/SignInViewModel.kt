@@ -6,11 +6,14 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.cook_ford.data.local.SessionConstant.ACCESS_TOKEN
+import com.example.cook_ford.data.local.UserSession
 import com.example.cook_ford.data.remote.NetworkResult
 import com.example.cook_ford.data.remote.request.SignInRequest
 import com.example.cook_ford.data.remote.response.SignInResponse
 import com.example.cook_ford.domain.use_cases.SignInUseCase
 import com.example.cook_ford.presentation.common.widgets.DialogState
+import com.example.cook_ford.presentation.screens.sign_in.state.DialogEvent
 import com.example.cook_ford.presentation.screens.sign_in.state.ErrorState
 import com.example.cook_ford.presentation.screens.sign_in.state.SignInErrorState
 import com.example.cook_ford.presentation.screens.sign_in.state.SignInState
@@ -27,7 +30,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class SignInViewModel @Inject constructor(private val signInUseCase: SignInUseCase) : ViewModel() {
+class SignInViewModel @Inject constructor(private val signInUseCase: SignInUseCase, private val userSession: UserSession) : ViewModel() {
 
     var signInState = mutableStateOf(SignInState())
         private set
@@ -38,6 +41,19 @@ class SignInViewModel @Inject constructor(private val signInUseCase: SignInUseCa
     private val _response: MutableLiveData<NetworkResult<SignInResponse>> = MutableLiveData()
     val response: LiveData<NetworkResult<SignInResponse>> = _response
 
+    private val _responseError: MutableLiveData<String> = MutableLiveData()
+    val responseError: LiveData<String> = _responseError
+
+    fun onDialogEvent(dialogEvent: DialogEvent){
+        when(dialogEvent){
+            is DialogEvent.DismissDialog->{
+                dialogState.value = dialogState.value.copy(
+                    dismissDialogState = dialogEvent.inputValue
+                )
+                Log.d("TAG", "onDialogEvent: ${dialogState.value.dismissDialogState}")
+            }
+        }
+    }
     /**
      * Function called on any login event [SignInUiEvent]
      */
@@ -88,7 +104,6 @@ class SignInViewModel @Inject constructor(private val signInUseCase: SignInUseCa
                 Log.d("TAG", "onUiEvent: $inputsValidated")
                 if (inputsValidated) {
                     // TODO Trigger login in authentication flow
-                    //signInState.value = signInState.value.copy(isSignInSuccessful = true)
                     makeSigInRequest(
                         SignInRequest(
                             username = signInState.value.username,
@@ -166,10 +181,22 @@ class SignInViewModel @Inject constructor(private val signInUseCase: SignInUseCa
 
     private fun makeSigInRequest(signInRequest: SignInRequest) = viewModelScope.launch(IO) {
         signInUseCase.invoke(signInRequest).collect { values ->
-            if (values.status == true){
-                dialogState.value = dialogState.value.copy(showDialogState = values.status, message = values.data!!.message)
-                signInState.value = signInState.value.copy(isSignInSuccessful = values.status)
-                _response.postValue(values)
+            when(values){
+                is NetworkResult.Success->{
+                    if (values.status == true){
+                        dialogState.value = dialogState.value.copy(showDialogState = values.status, message = values.data!!.message)
+                        signInState.value = signInState.value.copy(isSignInSuccessful = values.status)
+                        userSession.put(ACCESS_TOKEN, values.data.accessToken)
+                        _response.postValue(values)
+                        Log.d("TAG", "makeSigInRequest: ${userSession.getString(ACCESS_TOKEN)}")
+                    }
+                }
+                is NetworkResult.Error->{
+                    _responseError.postValue(values.message!!)
+                }
+                is NetworkResult.Loading->{
+                    Log.d("TAG", "makeSigInRequest: Loading")
+                }
             }
         }
     }

@@ -77,6 +77,7 @@ dependencies {
     implementation(libs.androidx.lifecycle.livedata.ktx)
     implementation(libs.androidx.hilt.android)
     implementation(libs.androidx.hilt.navigation.compose)
+    implementation(libs.androidx.databinding.runtime)
     ksp(libs.androidx.hilt.compiler)
 
     testImplementation(libs.junit)

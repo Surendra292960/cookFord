@@ -44,5 +44,6 @@
     <!--Dashboard-->
     <string name="dashboard_title_welcome_user">Welcome User</string>
     <string name="try_again_button_text">Try again</string>
+    <string name="dismiss_button_text">Dismiss</string>
 
 </resources>

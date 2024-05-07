@@ -17,6 +17,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.cook_ford.R
@@ -30,7 +32,7 @@ import com.example.cook_ford.presentation.common.widgets.TrailingIcon
 
 @Composable
 fun SignInForm(
-    loginState: SignInState,
+    signInState: SignInState,
     onUserNameChange: (String) -> Unit,
     onPasswordChange: (String) -> Unit,
     onSubmit: () -> Unit,
@@ -41,24 +43,24 @@ fun SignInForm(
         Spacer(modifier = Modifier.height(10.dp))
 
         InputTextField(
-            value = loginState.username,
+            value = signInState.username,
             onChange = onUserNameChange,
             modifier = Modifier.fillMaxWidth(),
-            keyboardOptions = KeyboardOption(imeAction = "Next", keyboardType = "Email",label = "Email", placeholder = "Enter Email"),
+            keyboardOptions = KeyboardOption(imeAction = ImeAction.Next, keyboardType = KeyboardType.Email,label = "Email", placeholder = "Enter Email"),
             DefaultIcons(leadingIcon = Icons.Default.Email),
-            isError = loginState.errorState.userNameErrorState.hasError,
-            errorText = stringResource(id = loginState.errorState.userNameErrorState.errorMessageStringResource),
+            isError = signInState.errorState.userNameErrorState.hasError,
+            errorText = stringResource(id = signInState.errorState.userNameErrorState.errorMessageStringResource),
             maxChar = 30
             /*submit = { TODO() }*/)
         Spacer(modifier = Modifier.height(10.dp))
         InputTextField(
-            value = loginState.password,
+            value = signInState.password,
             onChange = onPasswordChange,
             modifier = Modifier.fillMaxWidth(),
-            keyboardOptions = KeyboardOption(imeAction = "Done", keyboardType = "Password",label = "Password", placeholder = "Enter Password"),
+            keyboardOptions = KeyboardOption(imeAction = ImeAction.Done, keyboardType = KeyboardType.Password,label = "Password", placeholder = "Enter Password"),
             DefaultIcons(leadingIcon = Icons.Default.Lock, trailingIcon = TrailingIcon(Icons.Default.VisibilityOff, Icons.Default.Visibility)),
-            isError = loginState.errorState.passwordErrorState.hasError,
-            errorText = stringResource(id = loginState.errorState.passwordErrorState.errorMessageStringResource),
+            isError = signInState.errorState.passwordErrorState.hasError,
+            errorText = stringResource(id = signInState.errorState.passwordErrorState.errorMessageStringResource),
             maxChar = 25
             /*submit = { TODO() },*/
         )
