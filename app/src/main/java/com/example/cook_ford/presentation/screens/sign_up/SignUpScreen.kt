@@ -18,24 +18,26 @@ import androidx.compose.material3.ElevatedCard
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.cook_ford.R
-import com.example.cook_ford.presentation.theme.AppTheme
-import com.example.cook_ford.presentation.theme.Cook_fordTheme
 import com.example.cook_ford.presentation.common.customeComposableViews.TitleText
 import com.example.cook_ford.presentation.common.widgets.CustomDialog
 import com.example.cook_ford.presentation.common.widgets.DialogState
+import com.example.cook_ford.presentation.common.widgets.ResetWarning
 import com.example.cook_ford.presentation.screens.sign_up.state.SignUpUiEvent
-import kotlinx.coroutines.delay
+import com.example.cook_ford.presentation.theme.AppTheme
+import com.example.cook_ford.presentation.theme.Cook_fordTheme
 
 
 @Composable
@@ -45,13 +47,22 @@ fun SignUpScreen(
     onNavigateToAuthenticatedRoute: () -> Unit) {
 
     val signUpState by remember { signUpViewModel.signUpState }
-    val dialogState by remember { mutableStateOf(signUpViewModel.dialogState) }
+    val showDialogState: Boolean by signUpViewModel.showDialog.collectAsState()
+    val signUpResponse by signUpViewModel.signUpResponse.collectAsState()
 
     if (signUpState.isSignUpSuccessful) {
-        DisplayDialog(dialogState)
-        LaunchedEffect(key1 = true) {
-            delay(2000)
-            onNavigateToAuthenticatedRoute.invoke()
+
+        ShowCustomDialog(signUpResponse.message, signUpViewModel, showDialogState)
+
+        Log.d("TAG", "SignInScreen: $showDialogState")
+        /**
+         * Navigate to Authenticated navigation route
+         * once signIn is successful
+         */
+        if (!showDialogState){
+            LaunchedEffect(key1 = true) {
+                onNavigateToAuthenticatedRoute.invoke()
+            }
         }
     } else {
         // Full Screen Content
@@ -97,13 +108,14 @@ fun SignUpScreen(
                     )
 
 
-                    SignUpForm(signUpState = signUpState, onNameChange = { inputString ->
+                    SignUpForm(signUpState = signUpState,
+                      /*  onNameChange = { inputString ->
                             signUpViewModel.onUiEvent(
                                 signUpUiEvent = SignUpUiEvent.NameChanged(
                                     inputValue = inputString
                                 )
                             )
-                        },
+                        },*/
                         onUserNameChange = { inputString ->
                             signUpViewModel.onUiEvent(
                                 signUpUiEvent = SignUpUiEvent.UserNameChanged(
@@ -142,6 +154,22 @@ fun SignUpScreen(
     }
 }
 
+
+@Composable
+fun ShowCustomDialog(
+    title: String,
+    signUpViewModel: SignUpViewModel,
+    showDialogState: Boolean) {
+
+    val isDismiss = remember { mutableStateOf(true) }
+
+    CustomDialog(
+        showDialog = showDialogState,
+        isAnimate = isDismiss.value,
+        onDismissRequest = signUpViewModel::onDialogDismiss) {
+        ResetWarning(color= Color.Green, title = title,  onDismissRequest = { })
+    }
+}
 
 @Composable
 fun DisplayDialog(showDialog: MutableState<DialogState>){

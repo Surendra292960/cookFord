@@ -1,4 +1,5 @@
 package com.example.cook_ford.presentation.screens.sign_in
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -15,14 +16,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -37,13 +37,10 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.cook_ford.R
 import com.example.cook_ford.presentation.common.customeComposableViews.TitleText
 import com.example.cook_ford.presentation.common.widgets.CustomDialog
-import com.example.cook_ford.presentation.common.widgets.DialogState
 import com.example.cook_ford.presentation.common.widgets.ResetWarning
-import com.example.cook_ford.presentation.screens.sign_in.state.DialogEvent
 import com.example.cook_ford.presentation.screens.sign_in.state.SignInUiEvent
 import com.example.cook_ford.presentation.theme.AppTheme
 import com.example.cook_ford.presentation.theme.Cook_fordTheme
-import kotlinx.coroutines.time.delay
 
 @Composable
 fun SignInScreen(
@@ -52,23 +49,30 @@ fun SignInScreen(
     onNavigateToForgotPassword: () -> Unit,
     onNavigateToAuthenticatedRoute: () -> Unit) {
 
-    val _signInState by remember { signInViewModel.signInState }
-    val dialogState by remember { mutableStateOf(signInViewModel.dialogState) }
+    val signInState by remember { signInViewModel.signInState }
 
+    val showDialogState: Boolean by signInViewModel.showDialog.collectAsState()
+    val signInResponse by signInViewModel.signInResponse.collectAsState()
 
-    if (_signInState.isSignInSuccessful) {
-        ShowCustomDialog(dialogState, signInViewModel)
+    Log.d("TAG", "SignInScreen: ${signInResponse.message}")
+
+    if (signInState.isSignInSuccessful) {
+
+        ShowCustomDialog(signInResponse.message, signInViewModel, showDialogState)
+
+        Log.d("TAG", "SignInScreen: $showDialogState")
         /**
          * Navigate to Authenticated navigation route
          * once signIn is successful
          */
-        if (dialogState.value.dismissDialogState){
+        if (!showDialogState){
             LaunchedEffect(key1 = true) {
                 onNavigateToAuthenticatedRoute.invoke()
             }
         }
     } else {
 
+        Log.d("TAG", "SignInScreen: $showDialogState")
         Surface {
             // Full Screen Content
             Column(
@@ -117,7 +121,7 @@ fun SignInScreen(
 
                         // Login Inputs Composable
                         SignInForm(
-                            signInState = _signInState,
+                            signInState = signInState,
                             onUserNameChange = { inputString ->
                                 signInViewModel.onUiEvent(
                                     signInUiEvent = SignInUiEvent.UserNameChanged(
@@ -164,21 +168,18 @@ fun SignInScreen(
 }
 
 @Composable
-fun ShowCustomDialog(dialogState: MutableState<DialogState>, signInViewModel: SignInViewModel) {
+fun ShowCustomDialog(
+    title: String,
+    signInViewModel: SignInViewModel,
+    showDialogState: Boolean) {
+
     val isDismiss = remember { mutableStateOf(true) }
 
     CustomDialog(
-        showDialog = isDismiss.value,
+        showDialog = showDialogState,
         isAnimate = isDismiss.value,
-        onDismissRequest = { isDismiss.value = false}) {
-        ResetWarning(color= Color.Green, dialogState = dialogState.value,  onDismissRequest = { isDismiss.value = false},
-            onDismissResponse = { dismiss->
-                signInViewModel.onDialogEvent(
-                    dialogEvent = DialogEvent.DismissDialog(
-                        dismiss
-                    )
-                )
-            })
+        onDismissRequest =  signInViewModel::onDialogDismiss) {
+        ResetWarning(color= Color.Green, title = title,  onDismissRequest = { })
     }
 }
 

@@ -76,6 +76,8 @@ fun SplashScreen(navController: NavController) {
         // Customize the delay time
         delay(2000L)
         if (userSession.check(ACCESS_TOKEN)){
+            navController.navigate(route = NavigationRoutes.Unauthenticated.OnBoard.route)
+        }else if (userSession.check(ACCESS_TOKEN)){
             Log.d("TAG", "SplashScreen if: ${userSession.check(ACCESS_TOKEN)}")
             navController.navigate(route = NavigationRoutes.Authenticated.Dashboard.route)
         }else{
@@ -103,7 +105,6 @@ fun MainApp() {
     Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
         MainAppNavHost()
     }
-
 }
 
 @Composable

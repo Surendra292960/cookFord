@@ -12,8 +12,6 @@ import com.example.cook_ford.data.remote.NetworkResult
 import com.example.cook_ford.data.remote.request.SignInRequest
 import com.example.cook_ford.data.remote.response.SignInResponse
 import com.example.cook_ford.domain.use_cases.SignInUseCase
-import com.example.cook_ford.presentation.common.widgets.DialogState
-import com.example.cook_ford.presentation.screens.sign_in.state.DialogEvent
 import com.example.cook_ford.presentation.screens.sign_in.state.ErrorState
 import com.example.cook_ford.presentation.screens.sign_in.state.SignInErrorState
 import com.example.cook_ford.presentation.screens.sign_in.state.SignInState
@@ -24,8 +22,12 @@ import com.example.cook_ford.presentation.screens.sign_up.state.invalidPasswordE
 import com.example.cook_ford.presentation.screens.sign_up.state.invalidUserNameErrorState
 import com.example.cook_ford.presentation.screens.sign_up.state.userNameEmptyErrorState
 import com.example.cook_ford.utils.AppConstants.PASSWORD_PATTERN
+import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -35,16 +37,29 @@ class SignInViewModel @Inject constructor(private val signInUseCase: SignInUseCa
     var signInState = mutableStateOf(SignInState())
         private set
 
-    var dialogState = mutableStateOf(DialogState())
-        private set
-
-    private val _response: MutableLiveData<NetworkResult<SignInResponse>> = MutableLiveData()
-    val response: LiveData<NetworkResult<SignInResponse>> = _response
+    private val _signInResponse: MutableStateFlow<SignInResponse> = MutableStateFlow(SignInResponse())
+    val signInResponse: StateFlow<SignInResponse> = _signInResponse.asStateFlow()
 
     private val _responseError: MutableLiveData<String> = MutableLiveData()
     val responseError: LiveData<String> = _responseError
 
-    fun onDialogEvent(dialogEvent: DialogEvent){
+    private val _showDialog = MutableStateFlow(true)
+    val showDialog: StateFlow<Boolean> = _showDialog.asStateFlow()
+
+    fun onOpenDialogClicked() {
+        _showDialog.value = true
+    }
+
+    fun onDialogConfirm() {
+        _showDialog.value = false
+    }
+
+    fun onDialogDismiss() {
+        Log.d("TAG", "onDialogDismiss: ")
+        _showDialog.value = false
+    }
+
+   /* fun onDialogEvent(dialogEvent: DialogEvent){
         when(dialogEvent){
             is DialogEvent.DismissDialog->{
                 dialogState.value = dialogState.value.copy(
@@ -53,7 +68,7 @@ class SignInViewModel @Inject constructor(private val signInUseCase: SignInUseCa
                 Log.d("TAG", "onDialogEvent: ${dialogState.value.dismissDialogState}")
             }
         }
-    }
+    }*/
     /**
      * Function called on any login event [SignInUiEvent]
      */
@@ -104,12 +119,7 @@ class SignInViewModel @Inject constructor(private val signInUseCase: SignInUseCa
                 Log.d("TAG", "onUiEvent: $inputsValidated")
                 if (inputsValidated) {
                     // TODO Trigger login in authentication flow
-                    makeSigInRequest(
-                        SignInRequest(
-                            username = signInState.value.username,
-                            password = signInState.value.password
-                        )
-                    )
+                    makeSigInRequest(SignInRequest(username = signInState.value.username, password = signInState.value.password))
                 }
             }
         }
@@ -123,11 +133,11 @@ class SignInViewModel @Inject constructor(private val signInUseCase: SignInUseCa
      */
     private fun validateInputs(): Boolean {
 
-        val emailString = signInState.value.username.trim()
-        val passwordString = signInState.value.password
+        val username = signInState.value.username.trim()
+        val password = signInState.value.password
 
         // Email empty
-        if (emailString.isEmpty()) {
+        if (username.isEmpty()) {
             signInState.value = signInState.value.copy(
                 errorState = SignInErrorState(
                     userNameErrorState = userNameEmptyErrorState
@@ -136,8 +146,8 @@ class SignInViewModel @Inject constructor(private val signInUseCase: SignInUseCa
             return false
         }
         // Email Matcher
-        if (emailString.isNotEmpty()) {
-           if (!Patterns.EMAIL_ADDRESS.matcher(emailString).matches()){
+        if (username.isNotEmpty()) {
+           if (!Patterns.EMAIL_ADDRESS.matcher(username).matches()){
                signInState.value = signInState.value.copy(
                    errorState = SignInErrorState(
                        userNameErrorState = invalidUserNameErrorState
@@ -148,7 +158,7 @@ class SignInViewModel @Inject constructor(private val signInUseCase: SignInUseCa
         }
 
         //Password Empty
-         if (passwordString.isEmpty()) {
+         if (password.isEmpty()) {
             signInState.value = signInState.value.copy(
                 errorState = SignInErrorState(
                     passwordErrorState = passwordEmptyErrorState
@@ -158,8 +168,8 @@ class SignInViewModel @Inject constructor(private val signInUseCase: SignInUseCa
         }
 
         //Password Matcher
-        if (passwordString.isNotEmpty()) {
-            if (!PASSWORD_PATTERN?.matcher(passwordString)!!.matches()){
+        if (password.isNotEmpty()) {
+            if (!PASSWORD_PATTERN?.matcher(password)!!.matches()){
                 signInState.value = signInState.value.copy(
                     errorState = SignInErrorState(
                         passwordErrorState = invalidPasswordErrorState
@@ -180,19 +190,24 @@ class SignInViewModel @Inject constructor(private val signInUseCase: SignInUseCa
     }
 
     private fun makeSigInRequest(signInRequest: SignInRequest) = viewModelScope.launch(IO) {
-        signInUseCase.invoke(signInRequest).collect { values ->
-            when(values){
+        Log.d("TAG", "signInRequest SignInResponse: ${Gson().toJson(signInRequest)}")
+        signInUseCase.invoke(signInRequest).collect { result ->
+            when(result){
                 is NetworkResult.Success->{
-                    if (values.status == true){
-                        dialogState.value = dialogState.value.copy(showDialogState = values.status, message = values.data!!.message)
-                        signInState.value = signInState.value.copy(isSignInSuccessful = values.status)
-                        userSession.put(ACCESS_TOKEN, values.data.accessToken)
-                        _response.postValue(values)
+                    if (result.status == true){
+                        Log.d("TAG", "signInRequest SignInResponse: ${Gson().toJson(result)}")
+                        result.data?.let { response->
+                            _signInResponse.emit(response)
+                            signInState.value = signInState.value.copy(isSignInSuccessful = result.status)
+                            //TODO save token after dialog dismiss
+                            userSession.put(ACCESS_TOKEN, response.accessToken)
+                        }
                         Log.d("TAG", "makeSigInRequest: ${userSession.getString(ACCESS_TOKEN)}")
                     }
                 }
                 is NetworkResult.Error->{
-                    _responseError.postValue(values.message!!)
+                    Log.d("TAG", "makeSigInRequest: ${result.message}")
+                    _responseError.postValue(result.message!!)
                 }
                 is NetworkResult.Loading->{
                     Log.d("TAG", "makeSigInRequest: Loading")

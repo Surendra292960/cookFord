@@ -10,7 +10,7 @@ data class SignInState(
     val username: String = EMPTY_STRING,
     val password: String = EMPTY_STRING,
     val errorState: SignInErrorState = SignInErrorState(),
-    val isSignInSuccessful: Boolean = false
+    var isSignInSuccessful: Boolean = false
 )
 
 /**

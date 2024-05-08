@@ -8,7 +8,6 @@ import com.example.cook_ford.utils.AppConstants.EMPTY_STRING
  * SignUp State holding ui input values
  */
 data class SignUpState(
-    val name: String = EMPTY_STRING,
     val username: String = EMPTY_STRING,
     val phone: String = EMPTY_STRING,
     val password: String = EMPTY_STRING,
@@ -22,7 +21,6 @@ data class SignUpState(
  * text field validation errors
  */
 data class RegistrationErrorState(
-    val nameErrorState: ErrorState = ErrorState(),
     val userNameErrorState: ErrorState = ErrorState(),
     val phoneErrorState: ErrorState = ErrorState(),
     val passwordErrorState: ErrorState = ErrorState(),

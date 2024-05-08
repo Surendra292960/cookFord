@@ -8,7 +8,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.cook_ford.data.local.SessionConstant.AUTH_ID
-import com.example.cook_ford.data.local.SessionConstant.AUTH_TOKEN
 import com.example.cook_ford.data.local.UserSession
 import com.example.cook_ford.data.remote.NetworkResult
 import com.example.cook_ford.data.remote.request.SignUpRequest
@@ -24,13 +23,15 @@ import com.example.cook_ford.presentation.screens.sign_up.state.SignUpUiEvent
 import com.example.cook_ford.presentation.screens.sign_up.state.confirmPasswordEmptyErrorState
 import com.example.cook_ford.presentation.screens.sign_up.state.invalidPasswordErrorState
 import com.example.cook_ford.presentation.screens.sign_up.state.invalidUserNameErrorState
-import com.example.cook_ford.presentation.screens.sign_up.state.nameEmptyErrorState
 import com.example.cook_ford.presentation.screens.sign_up.state.passwordMismatchErrorState
 import com.example.cook_ford.presentation.screens.sign_up.state.userNameEmptyErrorState
 import com.example.cook_ford.utils.AppConstants
 import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -42,19 +43,35 @@ class SignUpViewModel @Inject constructor(private val signUpUseCase: SignUpUseCa
     var dialogState = mutableStateOf(DialogState())
         private set
 
-    private val _response: MutableLiveData<NetworkResult<SignUpResponse>> = MutableLiveData()
-    val response: LiveData<NetworkResult<SignUpResponse>> = _response
+    private val _signUpResponse: MutableStateFlow<SignUpResponse> = MutableStateFlow(SignUpResponse())
+    val signUpResponse: StateFlow<SignUpResponse> = _signUpResponse.asStateFlow()
 
     private val _responseError: MutableLiveData<String> = MutableLiveData()
     val responseError: LiveData<String> = _responseError
 
+    private val _showDialog = MutableStateFlow(true)
+    val showDialog: StateFlow<Boolean> = _showDialog.asStateFlow()
+
+    fun onOpenDialogClicked() {
+        _showDialog.value = true
+    }
+
+    fun onDialogConfirm() {
+        _showDialog.value = false
+    }
+
+    fun onDialogDismiss() {
+        Log.d("TAG", "onDialogDismiss: ")
+        _showDialog.value = false
+    }
+
     /**
-     * Function called on any login event [SignUpUiEvent]
+     * Function called on any signUp event [SignUpUiEvent]
      */
     fun onUiEvent(signUpUiEvent: SignUpUiEvent) {
         when (signUpUiEvent) {
             // Name id changed event
-            is SignUpUiEvent.NameChanged -> {
+            /*is SignUpUiEvent.NameChanged -> {
                 signUpState.value = signUpState.value.copy(
                     name = signUpUiEvent.inputValue,
                     errorState = signUpState.value.errorState.copy(
@@ -67,7 +84,7 @@ class SignUpViewModel @Inject constructor(private val signUpUseCase: SignUpUseCa
                         }
                     )
                 )
-            }
+            }*/
             // Email id changed event
             is SignUpUiEvent.UserNameChanged -> {
                 signUpState.value = signUpState.value.copy(
@@ -149,7 +166,6 @@ class SignUpViewModel @Inject constructor(private val signUpUseCase: SignUpUseCa
                    // signUpState.value = signUpState.value.copy(isSignUpSuccessful = true)
                     makeSigUpRequest(
                         SignUpRequest(
-                            name = signUpState.value.name,
                             username = signUpState.value.username,
                             password = signUpState.value.password,
                             phone = signUpState.value.phone,
@@ -168,24 +184,24 @@ class SignUpViewModel @Inject constructor(private val signUpUseCase: SignUpUseCa
      * @return false -> inputs are invalid
      */
     private fun validateInputs(): Boolean {
-        val nameString = signUpState.value.name.trim()
-        val emailString = signUpState.value.username.trim()
-        val mobileNumberString = signUpState.value.phone.trim()
+        //val nameString = signUpState.value.name.trim()
+        val username = signUpState.value.username.trim()
+        val mobileNumber = signUpState.value.phone.trim()
         val passwordString = signUpState.value.password.trim()
         val confirmPasswordString = signUpState.value.confirmPassword.trim()
 
-        if (// Name empty
-            nameString.isEmpty()) {
+        // Name empty
+       /* if (nameString.isEmpty()) {
             signUpState.value = signUpState.value.copy(
                 errorState = RegistrationErrorState(
                     nameErrorState = nameEmptyErrorState
                 )
             )
             return false
-        }
+        }*/
 
         // Email empty
-        if (emailString.isEmpty()) {
+        if (username.isEmpty()) {
             signUpState.value = signUpState.value.copy(
                 errorState = RegistrationErrorState(
                     userNameErrorState = userNameEmptyErrorState
@@ -195,8 +211,8 @@ class SignUpViewModel @Inject constructor(private val signUpUseCase: SignUpUseCa
         }
 
         // Email Matcher
-        if (emailString.isNotEmpty()) {
-            if (!Patterns.EMAIL_ADDRESS.matcher(emailString).matches()){
+        if (username.isNotEmpty()) {
+            if (!Patterns.EMAIL_ADDRESS.matcher(username).matches()){
                 signUpState.value = signUpState.value.copy(
                     errorState = RegistrationErrorState(
                         userNameErrorState = invalidUserNameErrorState
@@ -207,7 +223,7 @@ class SignUpViewModel @Inject constructor(private val signUpUseCase: SignUpUseCa
         }
 
         //Mobile Number Empty
-        if (mobileNumberString.isEmpty()) {
+        if (mobileNumber.isEmpty()) {
             signUpState.value = signUpState.value.copy(
                 errorState = RegistrationErrorState(
                     phoneErrorState = phoneEmptyErrorState
@@ -275,13 +291,17 @@ class SignUpViewModel @Inject constructor(private val signUpUseCase: SignUpUseCa
                 is NetworkResult.Success->{
                     if (result.status==true){
                         Log.d("TAG", "makeSignUpRequest SignUpResponse: ${Gson().toJson(result)}")
-                        dialogState.value = dialogState.value.copy(showDialogState = result.status, message = result.data!!.message)
-                        signUpState.value = signUpState.value.copy(isSignUpSuccessful = true)
-                        userSession.put(AUTH_ID, result.data._id)
-                        _response.postValue(result)
+                        result.data?.let { response->
+                            _signUpResponse.emit(result.data)
+                            signUpState.value = signUpState.value.copy(isSignUpSuccessful = true)
+                            //TODO save token after dialog dismiss
+                            userSession.put(AUTH_ID, response._id)
+                        }
+                        Log.d("TAG", "makeSigInRequest: ${userSession.getString(AUTH_ID)}")
                     }
                 }
                 is NetworkResult.Error->{
+                    Log.d("TAG", "makeSigUpRequest: ${result.message}")
                     _responseError.postValue(result.message!!)
                 }
                 is NetworkResult.Loading->{

@@ -78,6 +78,7 @@ dependencies {
     implementation(libs.androidx.hilt.android)
     implementation(libs.androidx.hilt.navigation.compose)
     implementation(libs.androidx.databinding.runtime)
+    implementation(libs.androidx.accompanist.pager)
     ksp(libs.androidx.hilt.compiler)
 
     testImplementation(libs.junit)

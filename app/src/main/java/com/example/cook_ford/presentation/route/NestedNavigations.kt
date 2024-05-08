@@ -8,11 +8,10 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.example.cook_ford.presentation.screens.SplashScreen
-import com.example.cook_ford.presentation.screens.dashboard.DashboardScreen
 import com.example.cook_ford.presentation.screens.no_internet.NoInternetScreen
+import com.example.cook_ford.presentation.screens.onboard.OnBoardingScreen
 import com.example.cook_ford.presentation.screens.sign_in.SignInScreen
 import com.example.cook_ford.presentation.screens.sign_up.SignUpScreen
-import javax.inject.Inject
 
 /**
  * Login, registration, forgot password screens nav graph builder
@@ -28,6 +27,13 @@ fun NavGraphBuilder.unauthenticatedGraph(navController: NavController) {
         composable(route = NavigationRoutes.Unauthenticated.Splash.route) {
             SplashScreen(
                 navController
+            )
+        }
+
+        //OnBoard
+        composable(route = NavigationRoutes.Unauthenticated.OnBoard.route) {
+            OnBoardingScreen(
+                //navController
             )
         }
 

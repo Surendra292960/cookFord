@@ -17,6 +17,7 @@ import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -48,13 +49,29 @@ import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.compose.ui.window.DialogWindowProvider
 import com.example.cook_ford.R
+import com.example.cook_ford.presentation.screens.sign_in.SignInScreen
 import com.example.cook_ford.presentation.theme.AppTheme
+import com.example.cook_ford.presentation.theme.Cook_fordTheme
+import kotlinx.coroutines.delay
 
+@Preview
+@Composable
+fun PreviewScreen() {
+    Cook_fordTheme {
+        CustomDialog(
+            showDialog = true,
+            isAnimate = true,
+            onDismissRequest = { }) {
+            ResetWarning(color= Color.Green, title = "",  onDismissRequest = { })
+        }
+    }
+}
 
 @Composable
 fun CustomDialog(
@@ -67,13 +84,19 @@ fun CustomDialog(
     LaunchedEffect(showDialog) {
         if (showDialog) showAnimatedDialog = true
     }
+    
+    LaunchedEffect(Unit) {
+        delay(5000)
+        if (showDialog) {
+            showAnimatedDialog = false
+            onDismissRequest.invoke()
+        }
+    }
 
     if (showAnimatedDialog) {
         Dialog(
             onDismissRequest = onDismissRequest,
-            properties = DialogProperties(
-                usePlatformDefaultWidth = false
-            )) {
+            properties = DialogProperties(usePlatformDefaultWidth = false)) {
             val dialogWindow = getDialogWindow()
 
             SideEffect {
@@ -85,17 +108,14 @@ fun CustomDialog(
 
             Box(
                 modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center
-            ) {
+                contentAlignment = Alignment.Center) {
                 var animateIn by remember { mutableStateOf(false) }
                 LaunchedEffect(Unit) { animateIn = true }
                 AnimatedVisibility(
                     visible = animateIn && showDialog,
                     enter = fadeIn(),
-                    exit = fadeOut(),
-                ) {
-                    Box(
-                        modifier = Modifier
+                    exit = fadeOut()) {
+                    Box(modifier = Modifier
                             .pointerInput(Unit) { detectTapGestures { onDismissRequest() } }
                             .background(Color.Black.copy(alpha = .56f))
                             .fillMaxSize()
@@ -109,11 +129,8 @@ fun CustomDialog(
                             dampingRatio = Spring.DampingRatioMediumBouncy,
                             stiffness = Spring.StiffnessMediumLow
                         )
-                    ),
-                    exit = slideOutVertically { it / 8 } + fadeOut() + scaleOut(targetScale = .95f)
-                ) {
-                    Box(
-                        Modifier
+                    ), exit = slideOutVertically { it / 8 } + fadeOut() + scaleOut(targetScale = .95f)) {
+                    Box(Modifier
                             .pointerInput(Unit) { detectTapGestures { } }
                             .shadow(8.dp, shape = RoundedCornerShape(16.dp))
                             .width(300.dp)
@@ -121,8 +138,7 @@ fun CustomDialog(
                             .background(
                                 MaterialTheme.colorScheme.surface,
                             ),
-                        contentAlignment = Alignment.Center
-                    ) {
+                        contentAlignment = Alignment.Center) {
                         content()
                     }
 
@@ -140,12 +156,10 @@ fun CustomDialog(
 @Composable
 fun ResetWarning(
     color: Color,
-    dialogState: DialogState,
-    onDismissRequest: () -> Unit,
-    onDismissResponse: (Boolean) -> Unit
-){
+    title:String,
+    onDismissRequest: () -> Unit){
 
-    Column(Modifier.background(MaterialTheme.colorScheme.surface)) {
+    Column(modifier = Modifier.background(Color.White).padding(top = 10.dp, bottom = 10.dp)) {
 
         var graphicVisible by remember { mutableStateOf(false) }
 
@@ -171,42 +185,29 @@ fun ResetWarning(
             }
         }
 
-        Column(
-            modifier = Modifier
+        Column(modifier = Modifier
                 .fillMaxWidth()
                 .navigationBarsPadding()
                 .imePadding(),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center) {
-            Box(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(16.dp))
             Text(modifier = Modifier.padding(AppTheme.dimens.paddingSmall),
-                text = dialogState.message,
+                text = title,
                 style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.Bold,
                 color = color
             )
-            Box(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(16.dp))
             Button(
-                modifier = Modifier
-                    .padding(AppTheme.dimens.paddingSmall)
-                    .clickable { },
-                onClick = { dismissDialog(onDismissRequest, onDismissResponse)}) {
-                Text(
-                    text = stringResource(R.string.dismiss_button_text),
-                    style = MaterialTheme.typography.titleMedium
-                )
+                modifier = Modifier.padding(AppTheme.dimens.paddingSmall),
+                onClick = onDismissRequest) {
+                Text(text = stringResource(R.string.dismiss_button_text), style = MaterialTheme.typography.titleMedium)
             }
         }
     }
 }
 
-
-fun dismissDialog(onDismissRequest: () -> Unit, onDismissResponse: (Boolean) -> Unit) {
-    onDismissRequest.invoke()
-    onDismissResponse.invoke(true)
-}
-
-// Thanks @Sal7one for this improvement :+1
 @ReadOnlyComposable
 @Composable
 fun getDialogWindow(): Window? = (LocalView.current.parent as? DialogWindowProvider)?.window
