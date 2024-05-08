@@ -162,6 +162,7 @@ fun Indicator(isSelected: Boolean) {
 @Composable
 fun OnBoardingItem(items: OnBoardingItems) {
     Column(
+
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
         modifier = Modifier.fillMaxSize()) {
