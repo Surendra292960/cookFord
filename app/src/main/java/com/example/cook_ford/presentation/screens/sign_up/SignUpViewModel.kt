@@ -308,7 +308,6 @@ class SignUpViewModel @Inject constructor(private val signUpUseCase: SignUpUseCa
                 }
                 is NetworkResult.Error->{
                     Log.d("TAG", "makeSignUpRequest SignUpResponse: ${result.message}")
-
                    // Toast.makeText(AuthApp().instance, result.message, Toast.LENGTH_SHORT).show()
                     _responseError.postValue(result.message!!)
                 }
