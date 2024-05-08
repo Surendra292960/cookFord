@@ -109,13 +109,13 @@ fun SignUpScreen(
 
 
                     SignUpForm(signUpState = signUpState,
-                      /*  onNameChange = { inputString ->
+                        onNameChange = { inputString ->
                             signUpViewModel.onUiEvent(
                                 signUpUiEvent = SignUpUiEvent.NameChanged(
                                     inputValue = inputString
                                 )
                             )
-                        },*/
+                        },
                         onUserNameChange = { inputString ->
                             signUpViewModel.onUiEvent(
                                 signUpUiEvent = SignUpUiEvent.UserNameChanged(

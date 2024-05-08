@@ -4,6 +4,8 @@ import com.google.gson.annotations.SerializedName
 
 data class SignUpRequest(
     @SerializedName("username")
+    var name: String = "",
+    @SerializedName("email")
     var username: String = "",
     @SerializedName("password")
     var password: String = "",

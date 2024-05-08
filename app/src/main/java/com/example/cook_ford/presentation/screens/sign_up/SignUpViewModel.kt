@@ -2,11 +2,14 @@ package com.example.cook_ford.presentation.screens.sign_up
 
 import android.util.Log
 import android.util.Patterns
+import android.widget.Toast
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.cook_ford.application.AuthApp
 import com.example.cook_ford.data.local.SessionConstant.AUTH_ID
 import com.example.cook_ford.data.local.UserSession
 import com.example.cook_ford.data.remote.NetworkResult
@@ -14,6 +17,7 @@ import com.example.cook_ford.data.remote.request.SignUpRequest
 import com.example.cook_ford.data.remote.response.SignUpResponse
 import com.example.cook_ford.domain.use_cases.SignUpUseCase
 import com.example.cook_ford.presentation.common.widgets.DialogState
+import com.example.cook_ford.presentation.screens.MainActivity
 import com.example.cook_ford.presentation.screens.sign_in.state.ErrorState
 import com.example.cook_ford.presentation.screens.sign_in.state.passwordEmptyErrorState
 import com.example.cook_ford.presentation.screens.sign_in.state.phoneEmptyErrorState
@@ -23,6 +27,7 @@ import com.example.cook_ford.presentation.screens.sign_up.state.SignUpUiEvent
 import com.example.cook_ford.presentation.screens.sign_up.state.confirmPasswordEmptyErrorState
 import com.example.cook_ford.presentation.screens.sign_up.state.invalidPasswordErrorState
 import com.example.cook_ford.presentation.screens.sign_up.state.invalidUserNameErrorState
+import com.example.cook_ford.presentation.screens.sign_up.state.nameEmptyErrorState
 import com.example.cook_ford.presentation.screens.sign_up.state.passwordMismatchErrorState
 import com.example.cook_ford.presentation.screens.sign_up.state.userNameEmptyErrorState
 import com.example.cook_ford.utils.AppConstants
@@ -71,7 +76,7 @@ class SignUpViewModel @Inject constructor(private val signUpUseCase: SignUpUseCa
     fun onUiEvent(signUpUiEvent: SignUpUiEvent) {
         when (signUpUiEvent) {
             // Name id changed event
-            /*is SignUpUiEvent.NameChanged -> {
+            is SignUpUiEvent.NameChanged -> {
                 signUpState.value = signUpState.value.copy(
                     name = signUpUiEvent.inputValue,
                     errorState = signUpState.value.errorState.copy(
@@ -84,7 +89,7 @@ class SignUpViewModel @Inject constructor(private val signUpUseCase: SignUpUseCa
                         }
                     )
                 )
-            }*/
+            }
             // Email id changed event
             is SignUpUiEvent.UserNameChanged -> {
                 signUpState.value = signUpState.value.copy(
@@ -166,6 +171,7 @@ class SignUpViewModel @Inject constructor(private val signUpUseCase: SignUpUseCa
                    // signUpState.value = signUpState.value.copy(isSignUpSuccessful = true)
                     makeSigUpRequest(
                         SignUpRequest(
+                            name = signUpState.value.name,
                             username = signUpState.value.username,
                             password = signUpState.value.password,
                             phone = signUpState.value.phone,
@@ -184,21 +190,21 @@ class SignUpViewModel @Inject constructor(private val signUpUseCase: SignUpUseCa
      * @return false -> inputs are invalid
      */
     private fun validateInputs(): Boolean {
-        //val nameString = signUpState.value.name.trim()
+        val nameString = signUpState.value.name.trim()
         val username = signUpState.value.username.trim()
         val mobileNumber = signUpState.value.phone.trim()
         val passwordString = signUpState.value.password.trim()
         val confirmPasswordString = signUpState.value.confirmPassword.trim()
 
         // Name empty
-       /* if (nameString.isEmpty()) {
+        if (nameString.isEmpty()) {
             signUpState.value = signUpState.value.copy(
                 errorState = RegistrationErrorState(
                     nameErrorState = nameEmptyErrorState
                 )
             )
             return false
-        }*/
+        }
 
         // Email empty
         if (username.isEmpty()) {
@@ -297,15 +303,16 @@ class SignUpViewModel @Inject constructor(private val signUpUseCase: SignUpUseCa
                             //TODO save token after dialog dismiss
                             userSession.put(AUTH_ID, response._id)
                         }
-                        Log.d("TAG", "makeSigInRequest: ${userSession.getString(AUTH_ID)}")
+                        Log.d("TAG", "makeSignUpRequest SignUpResponse: ${userSession.getString(AUTH_ID)}")
                     }
                 }
                 is NetworkResult.Error->{
-                    Log.d("TAG", "makeSigUpRequest: ${result.message}")
+                    Log.d("TAG", "makeSignUpRequest SignUpResponse: ${result.message}")
+                   // Toast.makeText(AuthApp().instance, result.message, Toast.LENGTH_SHORT).show()
                     _responseError.postValue(result.message!!)
                 }
                 is NetworkResult.Loading->{
-                    Log.d("TAG", "makeSigUpRequest: Loading")
+                    Log.d("TAG", "makeSignUpRequest SignUpResponse : Loading")
                 }
             }
         }

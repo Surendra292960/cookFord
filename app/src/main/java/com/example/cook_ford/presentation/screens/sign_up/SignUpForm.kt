@@ -30,6 +30,7 @@ import com.example.cook_ford.presentation.common.widgets.TrailingIcon
 @Composable
 fun SignUpForm(
     signUpState: SignUpState,
+    onNameChange: (String) -> Unit,
     onUserNameChange: (String) -> Unit,
     onPhoneChange: (String) -> Unit,
     onPasswordChange: (String) -> Unit,
@@ -40,7 +41,7 @@ fun SignUpForm(
 
         Spacer(modifier = Modifier.height(10.dp))
 
-     /*   InputTextField(
+        InputTextField(
             value = signUpState.name,
             onChange = onNameChange,
             modifier = Modifier.fillMaxWidth(),
@@ -49,9 +50,9 @@ fun SignUpForm(
             isError = signUpState.errorState.nameErrorState.hasError,
             errorText = stringResource(id = signUpState.errorState.nameErrorState.errorMessageStringResource),
             maxChar = 30
-            *//*submit = { TODO() }*//*)
+            /*submit = { TODO() }*/)
 
-        Spacer(modifier = Modifier.height(10.dp))*/
+        Spacer(modifier = Modifier.height(10.dp))
 
         InputTextField(
             value = signUpState.username,
