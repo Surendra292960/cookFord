@@ -13,14 +13,14 @@ class ValidateEmail {
         return if(email.isBlank()) {
              loginState.value = loginState.value.copy(
                 errorState = SignInErrorState(
-                    userNameErrorState = emailEmptyErrorState
+                    emailErrorState = emailEmptyErrorState
                 )
             )
             false
         } else if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             loginState.value = loginState.value.copy(
                 errorState = SignInErrorState(
-                    userNameErrorState = invalidUserNameErrorState
+                    emailErrorState = invalidUserNameErrorState
                 )
             )
             false

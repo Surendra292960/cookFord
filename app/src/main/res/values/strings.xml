@@ -28,7 +28,7 @@
     <string name="sign_up_mobile_label">Mobile Number</string>
     <string name="sign_up_password_label">Password</string>
     <string name="sign_up_confirm_password_label">Confirm Password</string>
-    <string name="sign_up_button_text">Register</string>
+    <string name="sign_up_button_text">SignUp</string>
     <string name="back_to_sign_in">Back to Login</string>
 
     <!--SignUp Error Messages-->

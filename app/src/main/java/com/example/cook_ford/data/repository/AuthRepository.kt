@@ -28,6 +28,7 @@ class AuthRepository(
         return flow {
             emit(safeApiCall { apiService.makeSignUpRequest(signUpRequest) })
         }.flowOn(Dispatchers.IO)
+
     }
 
 }

@@ -2,8 +2,6 @@ package com.example.cook_ford.presentation.screens.sign_in
 import android.util.Log
 import android.util.Patterns
 import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.cook_ford.data.local.SessionConstant.ACCESS_TOKEN
@@ -12,6 +10,7 @@ import com.example.cook_ford.data.remote.NetworkResult
 import com.example.cook_ford.data.remote.request.SignInRequest
 import com.example.cook_ford.data.remote.response.SignInResponse
 import com.example.cook_ford.domain.use_cases.SignInUseCase
+import com.example.cook_ford.presentation.common.widgets.snack_bar.MainViewState
 import com.example.cook_ford.presentation.screens.sign_in.state.ErrorState
 import com.example.cook_ford.presentation.screens.sign_in.state.SignInErrorState
 import com.example.cook_ford.presentation.screens.sign_in.state.SignInState
@@ -20,14 +19,17 @@ import com.example.cook_ford.presentation.screens.sign_in.state.passwordEmptyErr
 import com.example.cook_ford.presentation.screens.sign_in.state.phoneEmptyErrorState
 import com.example.cook_ford.presentation.screens.sign_up.state.invalidPasswordErrorState
 import com.example.cook_ford.presentation.screens.sign_up.state.invalidUserNameErrorState
-import com.example.cook_ford.presentation.screens.sign_up.state.userNameEmptyErrorState
+import com.example.cook_ford.presentation.screens.sign_up.state.emailEmptyErrorState
 import com.example.cook_ford.utils.AppConstants.PASSWORD_PATTERN
 import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -40,11 +42,14 @@ class SignInViewModel @Inject constructor(private val signInUseCase: SignInUseCa
     private val _signInResponse: MutableStateFlow<SignInResponse> = MutableStateFlow(SignInResponse())
     val signInResponse: StateFlow<SignInResponse> = _signInResponse.asStateFlow()
 
-    private val _responseError: MutableLiveData<String> = MutableLiveData()
-    val responseError: LiveData<String> = _responseError
-
     private val _showDialog = MutableStateFlow(true)
     val showDialog: StateFlow<Boolean> = _showDialog.asStateFlow()
+
+    private val _viewState = MutableStateFlow(MainViewState())
+    val viewState = _viewState.asStateFlow()
+
+    private val _onProcessSuccess = MutableSharedFlow<String>()
+    val onProcessSuccess = _onProcessSuccess.asSharedFlow()
 
     fun onOpenDialogClicked() {
         _showDialog.value = true
@@ -59,16 +64,6 @@ class SignInViewModel @Inject constructor(private val signInUseCase: SignInUseCa
         _showDialog.value = false
     }
 
-   /* fun onDialogEvent(dialogEvent: DialogEvent){
-        when(dialogEvent){
-            is DialogEvent.DismissDialog->{
-                dialogState.value = dialogState.value.copy(
-                    dismissDialogState = dialogEvent.inputValue
-                )
-                Log.d("TAG", "onDialogEvent: ${dialogState.value.dismissDialogState}")
-            }
-        }
-    }*/
     /**
      * Function called on any login event [SignInUiEvent]
      */
@@ -78,7 +73,7 @@ class SignInViewModel @Inject constructor(private val signInUseCase: SignInUseCa
             //Mobile changed
             is SignInUiEvent.PhoneChanged -> {
                 signInState.value = signInState.value.copy(
-                    username = signInUiEvent.inputValue,
+                    email = signInUiEvent.inputValue,
                     errorState = signInState.value.errorState.copy(
                         phoneErrorState = if (signInUiEvent.inputValue.trim().isNotEmpty())
                             ErrorState()
@@ -88,14 +83,14 @@ class SignInViewModel @Inject constructor(private val signInUseCase: SignInUseCa
                 )
             }
             // Email changed
-            is SignInUiEvent.UserNameChanged -> {
+            is SignInUiEvent.EmailChanged -> {
                 signInState.value = signInState.value.copy(
-                    username = signInUiEvent.inputValue,
+                    email = signInUiEvent.inputValue,
                     errorState = signInState.value.errorState.copy(
-                        userNameErrorState = if (signInUiEvent.inputValue.trim().isNotEmpty())
+                        emailErrorState = if (signInUiEvent.inputValue.trim().isNotEmpty())
                             ErrorState()
                         else
-                            userNameEmptyErrorState
+                            emailEmptyErrorState
                     )
                 )
             }
@@ -119,7 +114,7 @@ class SignInViewModel @Inject constructor(private val signInUseCase: SignInUseCa
                 Log.d("TAG", "onUiEvent: $inputsValidated")
                 if (inputsValidated) {
                     // TODO Trigger login in authentication flow
-                    makeSigInRequest(SignInRequest(username = signInState.value.username, password = signInState.value.password))
+                    makeSigInRequest(SignInRequest(email = signInState.value.email, password = signInState.value.password))
                 }
             }
         }
@@ -133,24 +128,24 @@ class SignInViewModel @Inject constructor(private val signInUseCase: SignInUseCa
      */
     private fun validateInputs(): Boolean {
 
-        val username = signInState.value.username.trim()
+        val email = signInState.value.email.trim()
         val password = signInState.value.password
 
         // Email empty
-        if (username.isEmpty()) {
+        if (email.isEmpty()) {
             signInState.value = signInState.value.copy(
                 errorState = SignInErrorState(
-                    userNameErrorState = userNameEmptyErrorState
+                    emailErrorState = emailEmptyErrorState
                 )
             )
             return false
         }
         // Email Matcher
-        if (username.isNotEmpty()) {
-           if (!Patterns.EMAIL_ADDRESS.matcher(username).matches()){
+        if (email.isNotEmpty()) {
+           if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
                signInState.value = signInState.value.copy(
                    errorState = SignInErrorState(
-                       userNameErrorState = invalidUserNameErrorState
+                       emailErrorState = invalidUserNameErrorState
                    )
                )
                return false
@@ -190,6 +185,7 @@ class SignInViewModel @Inject constructor(private val signInUseCase: SignInUseCa
     }
 
     private fun makeSigInRequest(signInRequest: SignInRequest) = viewModelScope.launch(IO) {
+        _viewState.update { currentState -> currentState.copy(isLoading = true) }
         Log.d("TAG", "signInRequest SignInResponse: ${Gson().toJson(signInRequest)}")
         signInUseCase.invoke(signInRequest).collect { result ->
             when(result){
@@ -201,13 +197,15 @@ class SignInViewModel @Inject constructor(private val signInUseCase: SignInUseCa
                             signInState.value = signInState.value.copy(isSignInSuccessful = result.status)
                             //TODO save token after dialog dismiss
                             userSession.put(ACCESS_TOKEN, response.accessToken)
+                            _viewState.update { currentState -> currentState.copy(isLoading = false) }
                         }
                         Log.d("TAG", "makeSigInRequest: ${userSession.getString(ACCESS_TOKEN)}")
                     }
                 }
                 is NetworkResult.Error->{
                     Log.d("TAG", "makeSigInRequest: ${result.message}")
-                    _responseError.postValue(result.message!!)
+                    _viewState.update { currentState -> currentState.copy(isLoading = false) }
+                    _onProcessSuccess.emit(result.message!!)
                 }
                 is NetworkResult.Loading->{
                     Log.d("TAG", "makeSigInRequest: Loading")

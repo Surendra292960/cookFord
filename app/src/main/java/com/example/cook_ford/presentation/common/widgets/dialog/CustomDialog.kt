@@ -1,4 +1,4 @@
-package com.example.cook_ford.presentation.common.widgets
+package com.example.cook_ford.presentation.common.widgets.dialog
 
 import android.view.Window
 import androidx.compose.animation.AnimatedVisibility
@@ -12,7 +12,6 @@ import androidx.compose.animation.scaleOut
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -55,7 +54,6 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.compose.ui.window.DialogWindowProvider
 import com.example.cook_ford.R
-import com.example.cook_ford.presentation.screens.sign_in.SignInScreen
 import com.example.cook_ford.presentation.theme.AppTheme
 import com.example.cook_ford.presentation.theme.Cook_fordTheme
 import kotlinx.coroutines.delay

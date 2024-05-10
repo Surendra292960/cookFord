@@ -18,7 +18,9 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -29,18 +31,26 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.repeatOnLifecycle
 import com.example.cook_ford.R
 import com.example.cook_ford.presentation.common.customeComposableViews.TitleText
-import com.example.cook_ford.presentation.common.widgets.CustomDialog
-import com.example.cook_ford.presentation.common.widgets.ResetWarning
+import com.example.cook_ford.presentation.common.widgets.dialog.CustomDialog
+import com.example.cook_ford.presentation.common.widgets.dialog.ResetWarning
+import com.example.cook_ford.presentation.common.widgets.snack_bar.MainViewState
 import com.example.cook_ford.presentation.screens.sign_in.state.SignInUiEvent
 import com.example.cook_ford.presentation.theme.AppTheme
 import com.example.cook_ford.presentation.theme.Cook_fordTheme
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
+
 
 @Composable
 fun SignInScreen(
@@ -48,13 +58,12 @@ fun SignInScreen(
     onNavigateToRegistration: () -> Unit,
     onNavigateToForgotPassword: () -> Unit,
     onNavigateToAuthenticatedRoute: () -> Unit) {
-
     val signInState by remember { signInViewModel.signInState }
-
     val showDialogState: Boolean by signInViewModel.showDialog.collectAsState()
     val signInResponse by signInViewModel.signInResponse.collectAsState()
-
-    Log.d("TAG", "SignInScreen: ${signInResponse.message}")
+    val snackBarHostState = remember { SnackbarHostState() }
+    val viewState: MainViewState by signInViewModel.viewState.collectAsStateWithLifecycle()
+    val lifecycle = LocalLifecycleOwner.current.lifecycle
 
     if (signInState.isSignInSuccessful) {
 
@@ -65,30 +74,19 @@ fun SignInScreen(
          * Navigate to Authenticated navigation route
          * once signIn is successful
          */
-        if (!showDialogState){
+        if (!showDialogState) {
             LaunchedEffect(key1 = true) {
                 onNavigateToAuthenticatedRoute.invoke()
             }
         }
     } else {
 
-        Log.d("TAG", "SignInScreen: $showDialogState")
-        Surface {
+        Scaffold(snackbarHost = { SnackbarHost(hostState = snackBarHostState) }, content = { pading ->
             // Full Screen Content
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .navigationBarsPadding()
-                    .imePadding()
-                    .verticalScroll(rememberScrollState()),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center) {
+            Column(modifier = Modifier.fillMaxSize().navigationBarsPadding().imePadding().padding(pading).verticalScroll(rememberScrollState()), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
 
                 // Main card Content for Login
-                ElevatedCard(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(AppTheme.dimens.paddingLarge)) {
+                ElevatedCard(modifier = Modifier.fillMaxWidth().padding(AppTheme.dimens.paddingLarge)) {
 
                     Spacer(modifier = Modifier.height(10.dp))
 
@@ -108,10 +106,7 @@ fun SignInScreen(
                         )
                     }
 
-                    Column(
-                        modifier = Modifier
-                            .padding(horizontal = AppTheme.dimens.paddingLarge)
-                            .padding(bottom = AppTheme.dimens.paddingExtraLarge)) {
+                    Column(modifier = Modifier.padding(horizontal = AppTheme.dimens.paddingLarge).padding(bottom = AppTheme.dimens.paddingExtraLarge)) {
 
                         // Heading Login
                         TitleText(
@@ -122,9 +117,10 @@ fun SignInScreen(
                         // Login Inputs Composable
                         SignInForm(
                             signInState = signInState,
-                            onUserNameChange = { inputString ->
+                            viewState = viewState,
+                            onEmailChange = { inputString ->
                                 signInViewModel.onUiEvent(
-                                    signInUiEvent = SignInUiEvent.UserNameChanged(
+                                    signInUiEvent = SignInUiEvent.EmailChanged(
                                         inputString
                                     )
                                 )
@@ -144,7 +140,8 @@ fun SignInScreen(
                     }
 
                     // Register Section
-                    Row(modifier = Modifier.padding(AppTheme.dimens.paddingNormal),
+                    Row(
+                        modifier = Modifier.padding(AppTheme.dimens.paddingNormal),
                         horizontalArrangement = Arrangement.Center,
                         verticalAlignment = Alignment.CenterVertically) {
                         // Don't have an account?
@@ -161,6 +158,22 @@ fun SignInScreen(
                             color = MaterialTheme.colorScheme.primary
                         )
                     }
+                }
+
+                ShowSnackbar(signInViewModel, lifecycle, snackBarHostState)
+            }
+        })
+    }
+}
+
+@Composable
+fun ShowSnackbar(signInViewModel: SignInViewModel, lifecycle: Lifecycle, snackBarHostState: SnackbarHostState) {
+    LaunchedEffect(key1 = Unit) {
+        lifecycle.repeatOnLifecycle(state = Lifecycle.State.STARTED) {
+            launch {
+                signInViewModel.onProcessSuccess.collectLatest { message: String ->
+                    Log.d("TAG", "SignInForm: Event success")
+                    snackBarHostState.showSnackbar(message)
                 }
             }
         }

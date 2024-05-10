@@ -1,4 +1,4 @@
-package com.example.cook_ford.presentation.common.widgets
+package com.example.cook_ford.presentation.common.widgets.dialog
 
 data class DialogState(
     var showDialogState: Boolean = false,

@@ -1,100 +1,88 @@
 package com.example.cook_ford.presentation.screens.dashboard.users
-import androidx.compose.foundation.background
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBackIosNew
-import androidx.compose.material.icons.filled.FavoriteBorder
-import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material.icons.filled.ShoppingCart
-import androidx.compose.material3.Divider
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SegmentedButtonDefaults.Icon
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Card
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.cook_ford.R
+import com.example.cook_ford.presentation.common.widgets.CardScreen
 import com.example.cook_ford.presentation.theme.Cook_fordTheme
 
 @Composable
 fun UserDashBoard(){
 
-    Surface(modifier = Modifier.fillMaxSize()){
-        ToolbarWidget()
+    Surface{
+
+        Column(modifier = Modifier.fillMaxSize()) {
+            Row (modifier = Modifier
+                .fillMaxWidth()
+                .width(150.dp)
+                .padding(15.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically){
+                Text(
+                    text = "Cook Ford",
+                    fontSize = 20.sp,
+                    color = Color.Black,
+                    fontWeight = FontWeight.Normal,
+                    textAlign = TextAlign.Start,
+                )
+
+                Image(painter = painterResource(id = R.drawable.slide_1),
+                    contentDescription = "Logo",
+                    modifier = Modifier
+                        .width(80.dp)
+                        .height(80.dp))
+            }
+
+            Column(modifier = Modifier
+                .fillMaxSize()
+                .verticalScroll(rememberScrollState()),
+                verticalArrangement = Arrangement.Top, horizontalAlignment = Alignment.CenterHorizontally) {
+
+                Card(shape = RoundedCornerShape(topStart = 40.dp, topEnd = 40.dp),
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(top = 50.dp)) {
+                    Column(modifier = Modifier
+                        .fillMaxSize()
+                        .padding(start = 10.dp, end = 10.dp, top = 30.dp)) {
+
+                        LazyRow(
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            items(FlowersData.list.size) {
+                                CardScreen(FlowersData.list[it])
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun ToolbarWidget() {
-    // theme for our app.
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = {
-                    Text(text = "Top Bar", color = Color.Black)
-                },
-                navigationIcon = {
-                    IconButton(onClick = { /*TODO*/ }) {
-                        Icon(imageVector = Icons.Default.ArrowBackIosNew,
-                            contentDescription = "Icon")
-                    }
-                },
-                modifier= Modifier.padding(horizontal = 16.dp, vertical = 10.dp),
-                actions = {
-                     IconButton(onClick = { /*TODO*/ }) {
-                        Icon(imageVector = Icons.Default.FavoriteBorder,
-                            contentDescription = null
-                        )
-                    }
-                     IconButton(onClick = { /*TODO*/ }) {
-                        Icon(imageVector = Icons.Default.ShoppingCart,
-                            contentDescription = null
-                        )
-                    }
-                },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = Color.LightGray,
-                ),
-            )
-        }, content = { it.calculateTopPadding()
-            Column(
-                modifier = Modifier
-                    .fillMaxSize().padding(top=70.dp),
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Text(
-                    text = "Content of the page",
-                    fontSize = 30.sp,
-                    color = Color.Black
-                )
-            }
-        })
-}
 
 @Preview(showBackground = true)
 @Composable

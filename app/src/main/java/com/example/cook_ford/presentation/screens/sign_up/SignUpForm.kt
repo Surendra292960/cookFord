@@ -26,12 +26,14 @@ import com.example.cook_ford.presentation.common.widgets.InputTextField
 import com.example.cook_ford.presentation.common.widgets.KeyboardOption
 import com.example.cook_ford.presentation.common.widgets.SubmitButton
 import com.example.cook_ford.presentation.common.widgets.TrailingIcon
+import com.example.cook_ford.presentation.common.widgets.snack_bar.MainViewState
 
 @Composable
 fun SignUpForm(
     signUpState: SignUpState,
-    onNameChange: (String) -> Unit,
+    viewState: MainViewState,
     onUserNameChange: (String) -> Unit,
+    onEmailChange: (String) -> Unit,
     onPhoneChange: (String) -> Unit,
     onPasswordChange: (String) -> Unit,
     onConfirmPasswordChange: (String) -> Unit,
@@ -42,26 +44,26 @@ fun SignUpForm(
         Spacer(modifier = Modifier.height(10.dp))
 
         InputTextField(
-            value = signUpState.name,
-            onChange = onNameChange,
+            value = signUpState.username,
+            onChange = onUserNameChange,
             modifier = Modifier.fillMaxWidth(),
             keyboardOptions = KeyboardOption(imeAction = ImeAction.Next, keyboardType = KeyboardType.Text,label = "Name", placeholder = "Enter Full Name"),
             DefaultIcons(leadingIcon = Icons.Default.Person),
-            isError = signUpState.errorState.nameErrorState.hasError,
-            errorText = stringResource(id = signUpState.errorState.nameErrorState.errorMessageStringResource),
+            isError = signUpState.errorState.usernameErrorState.hasError,
+            errorText = stringResource(id = signUpState.errorState.usernameErrorState.errorMessageStringResource),
             maxChar = 30
             /*submit = { TODO() }*/)
 
         Spacer(modifier = Modifier.height(10.dp))
 
         InputTextField(
-            value = signUpState.username,
-            onChange = onUserNameChange,
+            value = signUpState.email,
+            onChange = onEmailChange,
             modifier = Modifier.fillMaxWidth(),
             keyboardOptions = KeyboardOption(imeAction = ImeAction.Next, keyboardType = KeyboardType.Email,label = "Email", placeholder = "Enter Email"),
             DefaultIcons(leadingIcon = Icons.Default.Email),
-            isError = signUpState.errorState.userNameErrorState.hasError,
-            errorText = stringResource(id = signUpState.errorState.userNameErrorState.errorMessageStringResource),
+            isError = signUpState.errorState.emailErrorState.hasError,
+            errorText = stringResource(id = signUpState.errorState.emailErrorState.errorMessageStringResource),
             maxChar = 30
             /*submit = { TODO() }*/)
 
@@ -112,18 +114,8 @@ fun SignUpForm(
         SubmitButton(
             modifier = Modifier.padding(top = AppTheme.dimens.paddingExtraLarge),
             text = stringResource(id = R.string.sign_up_button_text),
+            isLoading = viewState.isLoading,
             onClick = onSubmit
         )
-
-        /*    Button(onClick = {
-
-                loginViewModel.onUiEvent(loginUiEvent = LoginUiEvent.Submit)
-                *//*if (!viewModel.checkSignInCredentials(user, context)) user = User()
-                    Log.d("TAG", "SignInForm: ${user.gender}")*//*},
-                    enabled = user.isNotEmpty(),
-                    shape = RoundedCornerShape(5.dp),
-                    modifier = Modifier.fillMaxWidth()) {
-                    Text("SignIn")
-                }*/
     }
 }

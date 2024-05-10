@@ -3,7 +3,7 @@ package com.example.cook_ford.presentation.screens.sign_up.state
 import com.example.cook_ford.R
 import com.example.cook_ford.presentation.screens.sign_in.state.ErrorState
 
-val nameEmptyErrorState = ErrorState(
+val usernameEmptyErrorState = ErrorState(
     hasError = true,
     errorMessageStringResource = R.string.sign_up_error_msg_empty_name
 )
@@ -12,7 +12,7 @@ val invalidUserNameErrorState = ErrorState(
     errorMessageStringResource = R.string.sign_up_error_msg_valid_email
 )
 
-val userNameEmptyErrorState = ErrorState(
+val emailEmptyErrorState = ErrorState(
     hasError = true,
     errorMessageStringResource = R.string.sign_up_error_msg_empty_email
 )

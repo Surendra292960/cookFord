@@ -22,72 +22,75 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.cook_ford.R
-import com.example.cook_ford.presentation.theme.AppTheme
-import com.example.cook_ford.presentation.screens.sign_in.state.SignInState
 import com.example.cook_ford.presentation.common.widgets.DefaultIcons
 import com.example.cook_ford.presentation.common.widgets.InputTextField
 import com.example.cook_ford.presentation.common.widgets.KeyboardOption
 import com.example.cook_ford.presentation.common.widgets.SubmitButton
 import com.example.cook_ford.presentation.common.widgets.TrailingIcon
+import com.example.cook_ford.presentation.common.widgets.snack_bar.MainViewState
+import com.example.cook_ford.presentation.screens.sign_in.state.SignInState
+import com.example.cook_ford.presentation.theme.AppTheme
 
 @Composable
 fun SignInForm(
     signInState: SignInState,
-    onUserNameChange: (String) -> Unit,
+    viewState: MainViewState,
+    onEmailChange: (String) -> Unit,
     onPasswordChange: (String) -> Unit,
     onSubmit: () -> Unit,
     onForgotPasswordClick: () -> Unit){
 
-    Column(modifier = Modifier.fillMaxSize()) {
+        Column(modifier = Modifier.fillMaxSize()) {
 
-        Spacer(modifier = Modifier.height(10.dp))
+            Spacer(modifier = Modifier.height(10.dp))
 
-        InputTextField(
-            value = signInState.username,
-            onChange = onUserNameChange,
-            modifier = Modifier.fillMaxWidth(),
-            keyboardOptions = KeyboardOption(imeAction = ImeAction.Next, keyboardType = KeyboardType.Email,label = "Email", placeholder = "Enter Email"),
-            DefaultIcons(leadingIcon = Icons.Default.Email),
-            isError = signInState.errorState.userNameErrorState.hasError,
-            errorText = stringResource(id = signInState.errorState.userNameErrorState.errorMessageStringResource),
-            maxChar = 30
-            /*submit = { TODO() }*/)
-        Spacer(modifier = Modifier.height(10.dp))
-        InputTextField(
-            value = signInState.password,
-            onChange = onPasswordChange,
-            modifier = Modifier.fillMaxWidth(),
-            keyboardOptions = KeyboardOption(imeAction = ImeAction.Done, keyboardType = KeyboardType.Password,label = "Password", placeholder = "Enter Password"),
-            DefaultIcons(leadingIcon = Icons.Default.Lock, trailingIcon = TrailingIcon(Icons.Default.VisibilityOff, Icons.Default.Visibility)),
-            isError = signInState.errorState.passwordErrorState.hasError,
-            errorText = stringResource(id = signInState.errorState.passwordErrorState.errorMessageStringResource),
-            maxChar = 25
-            /*submit = { TODO() },*/
-        )
+            InputTextField(
+                value = signInState.email,
+                onChange = onEmailChange,
+                modifier = Modifier.fillMaxWidth(),
+                keyboardOptions = KeyboardOption(imeAction = ImeAction.Next, keyboardType = KeyboardType.Email,label = "Email", placeholder = "Enter Email"),
+                DefaultIcons(leadingIcon = Icons.Default.Email),
+                isError = signInState.errorState.emailErrorState.hasError,
+                errorText = stringResource(id = signInState.errorState.emailErrorState.errorMessageStringResource),
+                maxChar = 30
+                /*submit = { TODO() }*/)
+            Spacer(modifier = Modifier.height(10.dp))
+            InputTextField(
+                value = signInState.password,
+                onChange = onPasswordChange,
+                modifier = Modifier.fillMaxWidth(),
+                keyboardOptions = KeyboardOption(imeAction = ImeAction.Done, keyboardType = KeyboardType.Password,label = "Password", placeholder = "Enter Password"),
+                DefaultIcons(leadingIcon = Icons.Default.Lock, trailingIcon = TrailingIcon(Icons.Default.VisibilityOff, Icons.Default.Visibility)),
+                isError = signInState.errorState.passwordErrorState.hasError,
+                errorText = stringResource(id = signInState.errorState.passwordErrorState.errorMessageStringResource),
+                maxChar = 25
+                /*submit = { TODO() },*/
+            )
 
-        Spacer(modifier = Modifier.height(10.dp))
+            Spacer(modifier = Modifier.height(10.dp))
 
-        // Forgot Password
-        Text(
-            modifier = Modifier
-                .padding(top = AppTheme.dimens.paddingSmall)
-                .align(alignment = Alignment.End)
-                .clickable {
-                    onForgotPasswordClick.invoke()
-                },
-            text = stringResource(id = R.string.forgot_password),
-            color = MaterialTheme.colorScheme.secondary,
-            textAlign = TextAlign.End,
-            style = MaterialTheme.typography.bodyMedium
-        )
+            // Forgot Password
+            Text(
+                modifier = Modifier
+                    .padding(top = AppTheme.dimens.paddingSmall)
+                    .align(alignment = Alignment.End)
+                    .clickable {
+                        onForgotPasswordClick.invoke()
+                    },
+                text = stringResource(id = R.string.forgot_password),
+                color = MaterialTheme.colorScheme.secondary,
+                textAlign = TextAlign.End,
+                style = MaterialTheme.typography.bodyMedium
+            )
 
-        Spacer(modifier = Modifier.height(10.dp))
+            Spacer(modifier = Modifier.height(10.dp))
 
-        // SignIn Submit Button
-        SubmitButton(
-            modifier = Modifier.padding(top = AppTheme.dimens.paddingLarge),
-            text = stringResource(id = R.string.sign_in_button_text),
-            onClick = onSubmit
-        )
-    }
+            // SignIn Submit Button
+            SubmitButton(
+                modifier = Modifier.padding(top = AppTheme.dimens.paddingLarge),
+                text = stringResource(id = R.string.sign_in_button_text),
+                isLoading = viewState.isLoading,
+                onClick = onSubmit
+            )
+        }
 }

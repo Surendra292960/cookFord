@@ -4,9 +4,9 @@ import com.google.gson.annotations.SerializedName
 
 data class SignUpRequest(
     @SerializedName("username")
-    var name: String = "",
-    @SerializedName("email")
     var username: String = "",
+    @SerializedName("email")
+    var email: String = "",
     @SerializedName("password")
     var password: String = "",
     @SerializedName("role")
@@ -16,6 +16,6 @@ data class SignUpRequest(
     @SerializedName("phone")
     var phone: String = "") {
     fun isNotEmpty(): Boolean {
-        return username.isNotEmpty() && password.isNotEmpty()
+        return email.isNotEmpty() && password.isNotEmpty()
     }
 }

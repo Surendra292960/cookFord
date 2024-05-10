@@ -24,23 +24,18 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import com.example.cook_ford.R
 import com.example.cook_ford.data.local.SessionConstant.ACCESS_TOKEN
-import com.example.cook_ford.data.local.SessionConstant.AUTH_ID
 import com.example.cook_ford.data.local.UserSession
 import com.example.cook_ford.presentation.route.NavigationRoutes
 import com.example.cook_ford.presentation.route.authenticatedGraph
 import com.example.cook_ford.presentation.route.unauthenticatedGraph
-import com.example.cook_ford.presentation.screens.sign_in.SignInViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
-import javax.inject.Inject
-import kotlin.math.log
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {

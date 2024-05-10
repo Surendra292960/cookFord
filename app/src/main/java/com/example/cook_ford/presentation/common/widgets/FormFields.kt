@@ -1,14 +1,15 @@
 package com.example.cook_ford.presentation.common.widgets
-import android.util.Log
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.requiredWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.selection.selectable
@@ -16,9 +17,11 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Text
@@ -30,7 +33,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.semantics.Role
@@ -38,7 +45,9 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.toSize
 import com.example.cook_ford.presentation.theme.AppTheme
 import com.example.cook_ford.presentation.common.customeComposableViews.ErrorTextInputField
 
@@ -175,59 +184,6 @@ fun InputTextField(
     )
 }
 
-
-fun getImeAction(imeAction: String): ImeAction {
-    return when (imeAction) {
-        "Next" -> {
-            ImeAction.Next
-        }
-        "Done" -> {
-            ImeAction.Done
-        }
-        "None" -> {
-            ImeAction.None
-        }
-        "Default" -> {
-            ImeAction.Default
-        }
-        "Go" -> {
-            ImeAction.Go
-        }
-        "Previous" -> {
-            ImeAction.Previous
-        }
-        "Send" -> {
-            ImeAction.Send
-        }
-        else -> {
-            ImeAction.Search
-        }
-    }
-}
-
-fun getKeyboardType(keyboardType: String): KeyboardType {
-    return when (keyboardType) {
-        "Text" -> {
-            return KeyboardType.Text
-        }
-        "Email" -> {
-            KeyboardType.Email
-        }
-        "Phone" -> {
-            KeyboardType.Phone
-        }
-        "Number" -> {
-            KeyboardType.Number
-        }
-        "NumberPassword" -> {
-            KeyboardType.NumberPassword
-        }
-        else -> {
-            KeyboardType.Password
-        }
-    }
-}
-
 @Composable
 fun RadioButton() {
     val selectedValue = remember { mutableStateOf("") }
@@ -287,12 +243,17 @@ fun MultipleRadioButtons(onChange: (String) -> Unit) {
 fun SubmitButton(
     modifier: Modifier = Modifier,
     text: String,
+    isLoading: Boolean,
     onClick: () -> Unit) {
-    Button(modifier = modifier
-        .height(AppTheme.dimens.normalButtonHeight)
+    Button(modifier = modifier.height(AppTheme.dimens.normalButtonHeight)
         .fillMaxWidth(),
+        enabled = !isLoading,
         onClick = onClick) {
-        Text(text = text, style = MaterialTheme.typography.titleMedium)
+        if (isLoading) {
+            Progressbar(isLoading)
+        } else {
+            Text(text = text, style = MaterialTheme.typography.titleMedium)
+        }
     }
 }
 

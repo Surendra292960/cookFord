@@ -14,6 +14,7 @@ interface Dimensions {
     val smallButtonHeight: Dp
     val minButtonWidth: Dp
     val maxButtonWidth: Dp
+
 }
 
 val normalDimensions: Dimensions = object : Dimensions {
