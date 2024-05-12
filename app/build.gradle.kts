@@ -82,6 +82,7 @@ dependencies {
     implementation(libs.androidx.databinding.runtime)
     implementation(libs.androidx.accompanist.pager)
     implementation(libs.androidx.lifecycle.runtime.compose)
+    implementation(libs.androidx.compose.material)
     ksp(libs.androidx.hilt.compiler)
 
     testImplementation(libs.junit)

@@ -38,7 +38,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.repeatOnLifecycle
 import com.example.cook_ford.R
 import com.example.cook_ford.presentation.common.customeComposableViews.TitleText
@@ -62,7 +61,7 @@ fun SignInScreen(
     val showDialogState: Boolean by signInViewModel.showDialog.collectAsState()
     val signInResponse by signInViewModel.signInResponse.collectAsState()
     val snackBarHostState = remember { SnackbarHostState() }
-    val viewState: MainViewState by signInViewModel.viewState.collectAsStateWithLifecycle()
+    val viewState: MainViewState by signInViewModel.viewState.collectAsState()
     val lifecycle = LocalLifecycleOwner.current.lifecycle
 
     if (signInState.isSignInSuccessful) {
@@ -81,9 +80,9 @@ fun SignInScreen(
         }
     } else {
 
-        Scaffold(snackbarHost = { SnackbarHost(hostState = snackBarHostState) }, content = { pading ->
+        Scaffold(snackbarHost = { SnackbarHost(hostState = snackBarHostState) }, content = { padding ->
             // Full Screen Content
-            Column(modifier = Modifier.fillMaxSize().navigationBarsPadding().imePadding().padding(pading).verticalScroll(rememberScrollState()), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
+            Column(modifier = Modifier.fillMaxSize().navigationBarsPadding().imePadding().padding(padding).verticalScroll(rememberScrollState()), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
 
                 // Main card Content for Login
                 ElevatedCard(modifier = Modifier.fillMaxWidth().padding(AppTheme.dimens.paddingLarge)) {

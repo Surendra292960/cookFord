@@ -34,7 +34,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.repeatOnLifecycle
 import com.example.cook_ford.R
 import com.example.cook_ford.presentation.common.customeComposableViews.TitleText
@@ -57,7 +56,7 @@ fun SignUpScreen(
     val showDialogState: Boolean by signUpViewModel.showDialog.collectAsState()
     val signUpResponse by signUpViewModel.signUpResponse.collectAsState()
     val snackBarHostState = remember { SnackbarHostState() }
-    val viewState: MainViewState by signUpViewModel.viewState.collectAsStateWithLifecycle()
+    val viewState: MainViewState by signUpViewModel.viewState.collectAsState()
     val lifecycle = LocalLifecycleOwner.current.lifecycle
 
 
@@ -77,8 +76,8 @@ fun SignUpScreen(
         }
     } else {
         // Full Screen Content
-        Scaffold(snackbarHost = { SnackbarHost(hostState = snackBarHostState) }, content = { pading ->
-            Column(modifier = Modifier.fillMaxSize().navigationBarsPadding().imePadding().padding(pading).verticalScroll(rememberScrollState()), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
+        Scaffold(snackbarHost = { SnackbarHost(hostState = snackBarHostState) }, content = { padding ->
+            Column(modifier = Modifier.fillMaxSize().navigationBarsPadding().imePadding().padding(padding).verticalScroll(rememberScrollState()), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
 
                 // Main card Content for Login
                 ElevatedCard(modifier = Modifier.fillMaxWidth().padding(AppTheme.dimens.paddingLarge)) {
@@ -158,17 +157,15 @@ fun SignUpScreen(
                 ShowSnackbar(
                     signUpViewModel,
                     lifecycle,
-                    snackBarHostState,
-                    viewState
+                    snackBarHostState
                 )
             }
         })
     }
 }
 
-
 @Composable
-fun ShowSnackbar(signUpViewModel: SignUpViewModel, lifecycle: Lifecycle, snackBarHostState: SnackbarHostState, viewState: MainViewState) {
+fun ShowSnackbar(signUpViewModel: SignUpViewModel, lifecycle: Lifecycle, snackBarHostState: SnackbarHostState) {
     LaunchedEffect(key1 = Unit) {
         lifecycle.repeatOnLifecycle(state = Lifecycle.State.STARTED) {
             launch {

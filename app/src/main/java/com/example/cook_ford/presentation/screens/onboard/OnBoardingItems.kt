@@ -1,11 +1,7 @@
 package com.example.cook_ford.presentation.screens.onboard
-
 import com.example.cook_ford.R
 
-class OnBoardingItems(
-    val image: Int,
-    val title: Int,
-    val desc: Int) {
+class OnBoardingItems(val image: Int, val title: Int, val desc: Int) {
     companion object{
         fun getData(): List<OnBoardingItems>{
             return listOf(

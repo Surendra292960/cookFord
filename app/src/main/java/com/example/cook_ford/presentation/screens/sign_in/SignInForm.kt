@@ -30,6 +30,7 @@ import com.example.cook_ford.presentation.common.widgets.TrailingIcon
 import com.example.cook_ford.presentation.common.widgets.snack_bar.MainViewState
 import com.example.cook_ford.presentation.screens.sign_in.state.SignInState
 import com.example.cook_ford.presentation.theme.AppTheme
+import com.example.cook_ford.utils.AppConstants
 
 @Composable
 fun SignInForm(
@@ -48,7 +49,7 @@ fun SignInForm(
                 value = signInState.email,
                 onChange = onEmailChange,
                 modifier = Modifier.fillMaxWidth(),
-                keyboardOptions = KeyboardOption(imeAction = ImeAction.Next, keyboardType = KeyboardType.Email,label = "Email", placeholder = "Enter Email"),
+                keyboardOptions = KeyboardOption(imeAction = ImeAction.Next, keyboardType = KeyboardType.Email,label = AppConstants.EMAIL, placeholder = AppConstants.EMAIL_PLACEHOLDER),
                 DefaultIcons(leadingIcon = Icons.Default.Email),
                 isError = signInState.errorState.emailErrorState.hasError,
                 errorText = stringResource(id = signInState.errorState.emailErrorState.errorMessageStringResource),
@@ -59,7 +60,7 @@ fun SignInForm(
                 value = signInState.password,
                 onChange = onPasswordChange,
                 modifier = Modifier.fillMaxWidth(),
-                keyboardOptions = KeyboardOption(imeAction = ImeAction.Done, keyboardType = KeyboardType.Password,label = "Password", placeholder = "Enter Password"),
+                keyboardOptions = KeyboardOption(imeAction = ImeAction.Done, keyboardType = KeyboardType.Password,label = AppConstants.PASSWORD, placeholder = AppConstants.PASSWORD_PLACEHOLDER),
                 DefaultIcons(leadingIcon = Icons.Default.Lock, trailingIcon = TrailingIcon(Icons.Default.VisibilityOff, Icons.Default.Visibility)),
                 isError = signInState.errorState.passwordErrorState.hasError,
                 errorText = stringResource(id = signInState.errorState.passwordErrorState.errorMessageStringResource),

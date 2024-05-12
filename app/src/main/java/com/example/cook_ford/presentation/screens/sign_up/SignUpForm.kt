@@ -27,6 +27,7 @@ import com.example.cook_ford.presentation.common.widgets.KeyboardOption
 import com.example.cook_ford.presentation.common.widgets.SubmitButton
 import com.example.cook_ford.presentation.common.widgets.TrailingIcon
 import com.example.cook_ford.presentation.common.widgets.snack_bar.MainViewState
+import com.example.cook_ford.utils.AppConstants
 
 @Composable
 fun SignUpForm(
@@ -47,7 +48,7 @@ fun SignUpForm(
             value = signUpState.username,
             onChange = onUserNameChange,
             modifier = Modifier.fillMaxWidth(),
-            keyboardOptions = KeyboardOption(imeAction = ImeAction.Next, keyboardType = KeyboardType.Text,label = "Name", placeholder = "Enter Full Name"),
+            keyboardOptions = KeyboardOption(imeAction = ImeAction.Next, keyboardType = KeyboardType.Text,label = AppConstants.NAME, placeholder = AppConstants.NAME_PLACEHOLDER),
             DefaultIcons(leadingIcon = Icons.Default.Person),
             isError = signUpState.errorState.usernameErrorState.hasError,
             errorText = stringResource(id = signUpState.errorState.usernameErrorState.errorMessageStringResource),
@@ -60,7 +61,7 @@ fun SignUpForm(
             value = signUpState.email,
             onChange = onEmailChange,
             modifier = Modifier.fillMaxWidth(),
-            keyboardOptions = KeyboardOption(imeAction = ImeAction.Next, keyboardType = KeyboardType.Email,label = "Email", placeholder = "Enter Email"),
+            keyboardOptions = KeyboardOption(imeAction = ImeAction.Next, keyboardType = KeyboardType.Email,label = AppConstants.EMAIL, placeholder = AppConstants.EMAIL_PLACEHOLDER),
             DefaultIcons(leadingIcon = Icons.Default.Email),
             isError = signUpState.errorState.emailErrorState.hasError,
             errorText = stringResource(id = signUpState.errorState.emailErrorState.errorMessageStringResource),
@@ -73,7 +74,7 @@ fun SignUpForm(
             value = signUpState.phone,
             onChange = onPhoneChange,
             modifier = Modifier.fillMaxWidth(),
-            keyboardOptions = KeyboardOption(imeAction = ImeAction.Next, keyboardType = KeyboardType.Phone,label = "Phone Number", placeholder = "Enter Phone Number"),
+            keyboardOptions = KeyboardOption(imeAction = ImeAction.Next, keyboardType = KeyboardType.Phone,label = AppConstants.PHONE, placeholder = AppConstants.PHONE_PLACEHOLDER),
             DefaultIcons(leadingIcon = Icons.Default.Phone),
             isError = signUpState.errorState.phoneErrorState.hasError,
             errorText = stringResource(id = signUpState.errorState.phoneErrorState.errorMessageStringResource),
@@ -86,7 +87,7 @@ fun SignUpForm(
             value = signUpState.password,
             onChange = onPasswordChange,
             modifier = Modifier.fillMaxWidth(),
-            keyboardOptions = KeyboardOption(imeAction = ImeAction.Next, keyboardType = KeyboardType.Password,label = "Password", placeholder = "Enter Password"),
+            keyboardOptions = KeyboardOption(imeAction = ImeAction.Next, keyboardType = KeyboardType.Password,label = AppConstants.PASSWORD, placeholder = AppConstants.PASSWORD_PLACEHOLDER),
             DefaultIcons(leadingIcon = Icons.Default.Lock, trailingIcon = TrailingIcon(Icons.Default.VisibilityOff, Icons.Default.Visibility)),
             isError = signUpState.errorState.passwordErrorState.hasError,
             errorText = stringResource(id = signUpState.errorState.passwordErrorState.errorMessageStringResource),
@@ -100,7 +101,7 @@ fun SignUpForm(
             value = signUpState.confirmPassword,
             onChange = onConfirmPasswordChange,
             modifier = Modifier.fillMaxWidth(),
-            keyboardOptions = KeyboardOption(imeAction = ImeAction.Done, keyboardType = KeyboardType.Password,label = "Confirm Password", placeholder = "Enter Confirm Password"),
+            keyboardOptions = KeyboardOption(imeAction = ImeAction.Done, keyboardType = KeyboardType.Password,label = AppConstants.CONFIRM_PASSWORD, placeholder = AppConstants.CONFIRM_PASSWORD_PLACEHOLDER),
             DefaultIcons(leadingIcon = Icons.Default.Lock, trailingIcon = TrailingIcon(Icons.Default.VisibilityOff, Icons.Default.Visibility)),
             isError = signUpState.errorState.confirmPasswordErrorState.hasError,
             errorText = stringResource(id = signUpState.errorState.confirmPasswordErrorState.errorMessageStringResource),

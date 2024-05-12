@@ -1,8 +1,6 @@
 package com.example.cook_ford.presentation.screens.sign_up.state
-
 import com.example.cook_ford.presentation.screens.sign_in.state.ErrorState
 import com.example.cook_ford.utils.AppConstants.EMPTY_STRING
-
 
 /**
  * SignUp State holding ui input values

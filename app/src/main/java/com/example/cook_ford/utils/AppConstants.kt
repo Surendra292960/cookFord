@@ -1,11 +1,9 @@
 package com.example.cook_ford.utils
 
-import androidx.datastore.preferences.core.preferencesKey
 import androidx.datastore.preferences.core.preferencesSetKey
 import java.util.regex.Pattern
 
 object AppConstants {
-
 
     //const val PASSWORD_PATTERN = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{4,}$"
     val PASSWORD_PATTERN: Pattern? = Pattern.compile(
@@ -16,7 +14,22 @@ object AppConstants {
                 "$"
     )
     const val EMPTY_STRING = ""
-
-    const val AUTH_PREFERENCES = "AUTH_PREF"
+    const val PLEASE_CHECK_INTERNET = "Please check your network connection"
+   // const val AUTH_PREFERENCES = "AUTH_PREF"
+    const val ERROR = "error"
     val AUTH_KEY = preferencesSetKey<String>("auth_key")
+
+    //SignIn Const
+    const val EMAIL = "Email"
+    const val EMAIL_PLACEHOLDER = "Enter Email"
+    const val PASSWORD = "Password"
+    const val PASSWORD_PLACEHOLDER = "Enter Email"
+
+    //SignUp Const
+    const val PHONE = "Phone Number"
+    const val PHONE_PLACEHOLDER = "Enter Phone Number"
+    const val NAME = "Name"
+    const val NAME_PLACEHOLDER = "Enter Full Name"
+    const val CONFIRM_PASSWORD = "Confirm Password"
+    const val CONFIRM_PASSWORD_PLACEHOLDER = "Confirm Password"
 }

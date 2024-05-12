@@ -12,7 +12,7 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Card
+import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -41,13 +41,12 @@ fun UserDashBoard(){
                 .padding(15.dp),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically){
-                Text(
-                    text = "Cook Ford",
+
+                Text(text = "Cook Ford",
                     fontSize = 20.sp,
                     color = Color.Black,
                     fontWeight = FontWeight.Normal,
-                    textAlign = TextAlign.Start,
-                )
+                    textAlign = TextAlign.Start,)
 
                 Image(painter = painterResource(id = R.drawable.slide_1),
                     contentDescription = "Logo",
@@ -59,9 +58,10 @@ fun UserDashBoard(){
             Column(modifier = Modifier
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState()),
-                verticalArrangement = Arrangement.Top, horizontalAlignment = Alignment.CenterHorizontally) {
+                verticalArrangement = Arrangement.Top,
+                horizontalAlignment = Alignment.CenterHorizontally) {
 
-                Card(shape = RoundedCornerShape(topStart = 40.dp, topEnd = 40.dp),
+                ElevatedCard(shape = RoundedCornerShape(topStart = 40.dp, topEnd = 40.dp),
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(top = 50.dp)) {
@@ -69,9 +69,22 @@ fun UserDashBoard(){
                         .fillMaxSize()
                         .padding(start = 10.dp, end = 10.dp, top = 30.dp)) {
 
-                        LazyRow(
-                            modifier = Modifier.fillMaxWidth()
-                        ) {
+                        LazyRow(modifier = Modifier.fillMaxWidth()) {
+                            items(FlowersData.list.size) {
+                                CardScreen(FlowersData.list[it])
+                            }
+                        }
+                        LazyRow(modifier = Modifier.fillMaxWidth()) {
+                            items(FlowersData.list.size) {
+                                CardScreen(FlowersData.list[it])
+                            }
+                        }
+                        LazyRow(modifier = Modifier.fillMaxWidth()) {
+                            items(FlowersData.list.size) {
+                                CardScreen(FlowersData.list[it])
+                            }
+                        }
+                        LazyRow(modifier = Modifier.fillMaxWidth()) {
                             items(FlowersData.list.size) {
                                 CardScreen(FlowersData.list[it])
                             }
@@ -84,7 +97,7 @@ fun UserDashBoard(){
 }
 
 
-@Preview(showBackground = true)
+@Preview(showSystemUi = true, showBackground = true)
 @Composable
 fun Preview(){
     Cook_fordTheme {

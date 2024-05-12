@@ -1,5 +1,6 @@
 package com.example.cook_ford.data.remote
 
+import com.example.cook_ford.utils.AppConstants
 import org.json.JSONObject
 import retrofit2.Response
 import java.io.IOException
@@ -19,7 +20,7 @@ abstract class BaseRepo {
 			val errorResponse = convertErrorBody( response)
 			return error(errorResponse, response.isSuccessful)
 		} catch (e: IOException) {
-			return error(errorMessage = e.message ?: "Please check your network connection", status = false)
+			return error(errorMessage = e.message ?: AppConstants.PLEASE_CHECK_INTERNET, status = false)
 		}
 		catch (e: Exception) {
 			return error(errorMessage = e.message ?: e.toString(), status = false)
@@ -28,15 +29,18 @@ abstract class BaseRepo {
 	private fun <T> error(errorMessage: String, status:Boolean): NetworkResult<T> = NetworkResult.Error(errorMessage, status = status)
 
 	private fun<T> convertErrorBody(response: Response<T>):String{
-		var message=""
+		var message=AppConstants.EMPTY_STRING
 		try {
 			val errorObj = JSONObject(response.errorBody()!!.string())
-			message = errorObj.getString("error")
+			message = errorObj.getString(AppConstants.ERROR)
 		}catch (e:Exception){
 			e.printStackTrace()
 		}
 		return message
 	}
 }
+
+//TODO Please handle 404 error
+//TODO server not start error
 
 
