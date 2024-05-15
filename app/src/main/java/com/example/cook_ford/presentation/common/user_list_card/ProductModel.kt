@@ -14,13 +14,21 @@ data class ProductModel(
 
 fun getData(): List<ProductModel> {
     return listOf(
-        ProductModel("Beats Solo 1","$223.00", R.drawable.slide_1, Color(0xFFFF1A9B)),
-        ProductModel("Beats Solo 2","$223.00", R.drawable.slide_2, Color(0xFF5C00FF)),
-        ProductModel("Beats Solo 3","$223.00", R.drawable.ic_bubble, Color(0xFFFF0000)),
-        ProductModel("Beats Solo 4","$223.00", R.drawable.fstep_one, Color(0xFF447ACE)),
-        ProductModel("Beats Solo 5","$223.00", R.drawable.fstep_two, Color(0xFFFF1A9B)),
-        ProductModel("Beats Solo 6","$223.00", R.drawable.fstep_three, Color(0xFF5C00FF)),
-        ProductModel("Beats Solo 7","$223.00", R.drawable.ic_headphone, Color(0xFFFF0000)),
-        ProductModel("Beats Solo 8","$223.00", R.drawable.ic_videocam, Color(0xFF447ACE)),
+        ProductModel("Sonu 1","$223.00", R.drawable.slide_1, Color(0xFFFF1A9B)),
+        ProductModel("Vikas","$223.00", R.drawable.slide_2, Color(0xFF5C00FF)),
+        ProductModel("Vijay","$223.00", R.drawable.ic_bubble, Color(0xFFFF0000)),
+        ProductModel("Sethy","$223.00", R.drawable.fstep_one, Color(0xFF447ACE)),
+        ProductModel("Gagan","$223.00", R.drawable.fstep_two, Color(0xFFFF1A9B)),
+        ProductModel("Logan","$223.00", R.drawable.fstep_three, Color(0xFF5C00FF)),
+        ProductModel("Kumar","$223.00", R.drawable.ic_headphone, Color(0xFFFF0000)),
+        ProductModel("Chintu","$223.00", R.drawable.ic_videocam, Color(0xFF447ACE)),
+        ProductModel("Sonu 1","$223.00", R.drawable.slide_1, Color(0xFFFF1A9B)),
+        ProductModel("Vikas","$223.00", R.drawable.slide_2, Color(0xFF5C00FF)),
+        ProductModel("Vijay","$223.00", R.drawable.ic_bubble, Color(0xFFFF0000)),
+        ProductModel("Sethy","$223.00", R.drawable.fstep_one, Color(0xFF447ACE)),
+        ProductModel("Gagan","$223.00", R.drawable.fstep_two, Color(0xFFFF1A9B)),
+        ProductModel("Logan","$223.00", R.drawable.fstep_three, Color(0xFF5C00FF)),
+        ProductModel("Kumar","$223.00", R.drawable.ic_headphone, Color(0xFFFF0000)),
+        ProductModel("Chintu","$223.00", R.drawable.ic_videocam, Color(0xFF447ACE)),
     )
 }

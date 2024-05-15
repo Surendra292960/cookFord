@@ -1,4 +1,4 @@
-package com.example.cook_ford.presentation.screens.dashboard
+package com.example.cook_ford.presentation.screens.dashboard.dashboard_demo
 
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Path

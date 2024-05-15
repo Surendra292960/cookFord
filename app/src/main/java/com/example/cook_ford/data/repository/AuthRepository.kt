@@ -8,6 +8,7 @@ import com.example.cook_ford.data.remote.response.SignInResponse
 import com.example.cook_ford.data.remote.response.SignUpResponse
 import com.example.cook_ford.domain.repository.AuthRepositoryImpl
 import com.example.cook_ford.data.remote.NetworkResult
+import com.example.cook_ford.data.remote.response.ProfileResponse
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -27,6 +28,13 @@ class AuthRepository(
     override suspend fun signUp(signUpRequest: SignUpRequest): Flow<NetworkResult<SignUpResponse>> {
         return flow {
             emit(safeApiCall { apiService.makeSignUpRequest(signUpRequest) })
+        }.flowOn(Dispatchers.IO)
+
+    }
+
+    override suspend fun getProfile(): Flow<NetworkResult<List<ProfileResponse>>> {
+        return flow {
+            emit(safeApiCall { apiService.getProfileRequest() })
         }.flowOn(Dispatchers.IO)
 
     }

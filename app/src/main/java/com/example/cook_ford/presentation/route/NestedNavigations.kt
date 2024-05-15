@@ -4,8 +4,8 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
-import com.example.cook_ford.presentation.common.user_list_card.MainScreen
 import com.example.cook_ford.presentation.screens.SplashScreen
+import com.example.cook_ford.presentation.screens.dashboard.users.UserDashBoard
 import com.example.cook_ford.presentation.screens.onboard.OnBoardingScreen
 import com.example.cook_ford.presentation.screens.sign_in.SignInScreen
 import com.example.cook_ford.presentation.screens.sign_up.SignUpScreen
@@ -76,8 +76,8 @@ fun NavGraphBuilder.authenticatedGraph(navController: NavController) {
         composable(route = NavigationRoutes.Authenticated.Dashboard.route) {
            /* val openFullDialogCustom = remember { mutableStateOf(true) }
             NoInternetScreen(openFullDialogCustom = openFullDialogCustom)*/
-            //UserDashBoard()
-            MainScreen()
+            UserDashBoard()
+            //MainScreen()
         }
     }
 }

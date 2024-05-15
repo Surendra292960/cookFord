@@ -4,6 +4,7 @@ import com.example.cook_ford.data.ApiConstants.BASE_URL
 import com.example.cook_ford.data.ApiService
 import com.example.cook_ford.data.local.UserSession
 import com.example.cook_ford.data.repository.AuthRepository
+import com.example.cook_ford.domain.use_cases.ProfileUseCase
 import com.example.cook_ford.domain.use_cases.SignInUseCase
 import com.example.cook_ford.domain.use_cases.SignUpUseCase
 import dagger.Module
@@ -87,6 +88,12 @@ object AppModule {
     @Singleton
     fun providesLoginUseCase(repository: AuthRepository): SignInUseCase {
         return SignInUseCase(repository)
+    }
+
+    @Provides
+    @Singleton
+    fun providesProfileUseCase(repository: AuthRepository): ProfileUseCase {
+        return ProfileUseCase(repository)
     }
 
 

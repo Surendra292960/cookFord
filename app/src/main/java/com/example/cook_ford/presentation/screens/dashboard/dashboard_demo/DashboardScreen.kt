@@ -1,4 +1,4 @@
-package com.example.cook_ford.presentation.screens.dashboard
+package com.example.cook_ford.presentation.screens.dashboard.dashboard_demo
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
@@ -141,14 +141,7 @@ fun DashboardScreen() {
 }
 
 @Composable
-fun BottomMenu(
-    items: List<BottomMenuContent>,
-    modifier: Modifier = Modifier,
-    activeHighlightColor: Color = ButtonGreen,
-    activeTextColor: Color = Color.White,
-    inactiveTextColor: Color = AquaBlue,
-    initialSelectedItemIndex: Int = 0
-) {
+fun BottomMenu(items: List<BottomMenuContent>, modifier: Modifier = Modifier, activeHighlightColor: Color = ButtonGreen, activeTextColor: Color = Color.White, inactiveTextColor: Color = AquaBlue, initialSelectedItemIndex: Int = 0) {
     var selectedItemIndex by remember {
         mutableStateOf(initialSelectedItemIndex)
     }
@@ -175,14 +168,7 @@ fun BottomMenu(
 }
 
 @Composable
-fun BottomMenuItem(
-    item: BottomMenuContent,
-    isSelected: Boolean = false,
-    activeHighlightColor: Color = ButtonGreen,
-    activeTextColor: Color = Color.White,
-    inactiveTextColor: Color = AquaBlue,
-    onItemClick: () -> Unit
-) {
+fun BottomMenuItem(item: BottomMenuContent, isSelected: Boolean = false, activeHighlightColor: Color = ButtonGreen, activeTextColor: Color = Color.White, inactiveTextColor: Color = AquaBlue, onItemClick: () -> Unit) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
@@ -212,9 +198,7 @@ fun BottomMenuItem(
 }
 
 @Composable
-fun GreetingSection(
-    name: String = "Geeks"
-) {
+fun GreetingSection(name: String = "Geeks") {
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
@@ -244,9 +228,7 @@ fun GreetingSection(
 }
 
 @Composable
-fun ChipSection(
-    chips: List<String>
-) {
+fun ChipSection(chips: List<String>) {
     var selectedChipIndex by remember {
         mutableStateOf(0)
     }
@@ -273,9 +255,7 @@ fun ChipSection(
 }
 
 @Composable
-fun suggestionSection(
-    color: Color = LightRed
-) {
+fun suggestionSection(color: Color = LightRed) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -337,9 +317,7 @@ fun CourseSection(courses: List<Course>) {
 }
 
 @Composable
-fun CourseItem(
-    course: Course
-) {
+fun CourseItem(course: Course) {
     BoxWithConstraints(
         modifier = Modifier
             .padding(7.5.dp)

@@ -11,15 +11,13 @@ android {
 
     defaultConfig {
         applicationId = "com.example.cook_ford"
-        minSdk = 24
+        minSdk = 25
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        vectorDrawables {
-            useSupportLibrary = true
-        }
+        vectorDrawables { useSupportLibrary = true }
     }
 
     buildTypes {
@@ -83,6 +81,8 @@ dependencies {
     implementation(libs.androidx.accompanist.pager)
     implementation(libs.androidx.lifecycle.runtime.compose)
     implementation(libs.androidx.compose.material)
+    implementation(libs.androidx.camera.core)
+
     ksp(libs.androidx.hilt.compiler)
 
     testImplementation(libs.junit)

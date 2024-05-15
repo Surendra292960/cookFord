@@ -44,12 +44,12 @@ import com.example.cook_ford.presentation.common.customeComposableViews.TitleTex
 import com.example.cook_ford.presentation.common.widgets.dialog.CustomDialog
 import com.example.cook_ford.presentation.common.widgets.dialog.ResetWarning
 import com.example.cook_ford.presentation.common.widgets.snack_bar.MainViewState
+import com.example.cook_ford.presentation.screens.sign_in.state.SignInState
 import com.example.cook_ford.presentation.screens.sign_in.state.SignInUiEvent
 import com.example.cook_ford.presentation.theme.AppTheme
 import com.example.cook_ford.presentation.theme.Cook_fordTheme
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-
 
 @Composable
 fun SignInScreen(

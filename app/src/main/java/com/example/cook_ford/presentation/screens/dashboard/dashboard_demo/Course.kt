@@ -1,4 +1,4 @@
-package com.example.cook_ford.presentation.screens.dashboard
+package com.example.cook_ford.presentation.screens.dashboard.dashboard_demo
 
 import androidx.annotation.DrawableRes
 import androidx.compose.ui.graphics.Color

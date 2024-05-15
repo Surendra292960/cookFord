@@ -105,7 +105,7 @@ fun MainApp() {
 @Composable
 fun MainAppNavHost(
     modifier: Modifier = Modifier,
-    navController: NavHostController = rememberNavController(), ) {
+    navController: NavHostController = rememberNavController()) {
     NavHost(
         modifier = modifier,
         navController = navController,
@@ -115,6 +115,7 @@ fun MainAppNavHost(
 
         // Authenticated user flow screens
         authenticatedGraph(navController = navController)
+
     }
 
 }

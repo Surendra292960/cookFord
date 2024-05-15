@@ -1,4 +1,4 @@
-package com.example.cook_ford.presentation.common.user_list_card
+package com.example.cook_ford.presentation.screens.profile
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column

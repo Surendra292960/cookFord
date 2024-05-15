@@ -13,6 +13,7 @@ object AppConstants {
                 ".{4,}" +  // at least 4 characters
                 "$"
     )
+    const val ZERO = 0
     const val EMPTY_STRING = ""
     const val PLEASE_CHECK_INTERNET = "Please check your network connection"
    // const val AUTH_PREFERENCES = "AUTH_PREF"
