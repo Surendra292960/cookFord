@@ -1,4 +1,4 @@
-package com.example.cook_ford.presentation.screens.profile
+package com.example.cook_ford.presentation.screens.profile.profile_list.state
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column

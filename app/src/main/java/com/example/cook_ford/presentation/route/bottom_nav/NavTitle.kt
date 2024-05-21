@@ -13,8 +13,13 @@ object NavTitle {
     const val USERS = "Users"
     const val NO_INTERNET = "NoInternet"
     //Bottom Nav
+    const val BOTTOM_NAVIGATION = "bottom_navigation"
     const val HOME = "Home"
     const val SEARCH = "Search"
     const val LIST = "List"
     const val PROFILE = "Profile"
+    //Details
+    const val DETAILS_NAV = "Details"
+    const val DETAILS = "ProfileDetail"
 }
+

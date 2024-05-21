@@ -117,7 +117,6 @@ fun MainAppNavHost(
         authenticatedGraph(navController = navController)
 
     }
-
 }
 @Preview(showSystemUi = true, showBackground = true)
 @Composable

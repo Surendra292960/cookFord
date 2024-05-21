@@ -15,6 +15,7 @@ object AppConstants {
     )
     const val ZERO = 0
     const val EMPTY_STRING = ""
+    const val PROFILE = "profileId"
     const val PLEASE_CHECK_INTERNET = "Please check your network connection"
    // const val AUTH_PREFERENCES = "AUTH_PREF"
     const val ERROR = "error"

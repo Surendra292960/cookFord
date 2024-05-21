@@ -82,6 +82,7 @@ dependencies {
     implementation(libs.androidx.lifecycle.runtime.compose)
     implementation(libs.androidx.compose.material)
     implementation(libs.androidx.camera.core)
+    implementation(libs.androidx.constraintlayout.compose)
 
     ksp(libs.androidx.hilt.compiler)
 

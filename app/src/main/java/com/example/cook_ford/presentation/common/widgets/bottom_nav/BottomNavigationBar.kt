@@ -6,7 +6,7 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.navigation.NavHostController
@@ -20,12 +20,12 @@ import com.example.cook_ford.presentation.route.NavigationRoutes
 @Composable
 fun BottomNavigationBar(navController: NavHostController) {
     val navItems = listOf(
-        NavigationRoutes.NavItem.Home,
-        NavigationRoutes.NavItem.Search,
-        NavigationRoutes.NavItem.List,
-        NavigationRoutes.NavItem.Profile
+        NavigationRoutes.BottomNavigation.Home,
+        NavigationRoutes.BottomNavigation.Search,
+       // NavigationRoutes.BottomNavigation.List,
+        NavigationRoutes.BottomNavigation.Profile
     )
-    var selectedItem by rememberSaveable { mutableStateOf(0) }
+    var selectedItem by rememberSaveable { mutableIntStateOf(0) }
 
     NavigationBar {
         navItems.forEachIndexed { index, item ->

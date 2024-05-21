@@ -8,8 +8,8 @@ import androidx.lifecycle.viewModelScope
 import com.example.cook_ford.data.local.SessionConstant.AUTH_ID
 import com.example.cook_ford.data.local.UserSession
 import com.example.cook_ford.data.remote.NetworkResult
-import com.example.cook_ford.data.remote.request.SignUpRequest
-import com.example.cook_ford.data.remote.response.SignUpResponse
+import com.example.cook_ford.data.remote.auth_request.SignUpRequest
+import com.example.cook_ford.data.remote.auth_response.SignUpResponse
 import com.example.cook_ford.domain.use_cases.SignUpUseCase
 import com.example.cook_ford.presentation.common.widgets.dialog.DialogState
 import com.example.cook_ford.presentation.common.widgets.snack_bar.MainViewState

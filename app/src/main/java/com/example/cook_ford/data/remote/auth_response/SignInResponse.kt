@@ -1,4 +1,4 @@
-package com.example.cook_ford.data.remote.response
+package com.example.cook_ford.data.remote.auth_response
 
 import com.google.gson.annotations.SerializedName
 

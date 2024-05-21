@@ -7,8 +7,8 @@ import androidx.lifecycle.viewModelScope
 import com.example.cook_ford.data.local.SessionConstant.ACCESS_TOKEN
 import com.example.cook_ford.data.local.UserSession
 import com.example.cook_ford.data.remote.NetworkResult
-import com.example.cook_ford.data.remote.request.SignInRequest
-import com.example.cook_ford.data.remote.response.SignInResponse
+import com.example.cook_ford.data.remote.auth_request.SignInRequest
+import com.example.cook_ford.data.remote.auth_response.SignInResponse
 import com.example.cook_ford.domain.use_cases.SignInUseCase
 import com.example.cook_ford.presentation.common.widgets.snack_bar.MainViewState
 import com.example.cook_ford.presentation.screens.sign_in.state.ErrorState
