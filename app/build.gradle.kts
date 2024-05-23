@@ -81,8 +81,11 @@ dependencies {
     implementation(libs.androidx.accompanist.pager)
     implementation(libs.androidx.lifecycle.runtime.compose)
     implementation(libs.androidx.compose.material)
+    implementation(libs.androidx.material.android)
     implementation(libs.androidx.camera.core)
     implementation(libs.androidx.constraintlayout.compose)
+    implementation(libs.androidx.constraintlayout.compose)
+    implementation(libs.androidx.coil.compose)
 
     ksp(libs.androidx.hilt.compiler)
 

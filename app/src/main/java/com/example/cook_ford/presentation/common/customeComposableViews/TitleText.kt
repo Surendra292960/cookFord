@@ -11,6 +11,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
@@ -85,14 +86,19 @@ fun Child(modifier: Modifier, title: String, text: String) {
             .fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.SpaceBetween) {
-            SubTitleText(
+            Text(
                 modifier = Modifier.padding(top = AppTheme.dimens.paddingSmall),
                 text = title,
+                style = androidx.compose.material.MaterialTheme.typography.subtitle2,
+                color = Color.Black,
                 textAlign = TextAlign.Center
             )
-            SubTitleText(
+
+            Text(
                 modifier = Modifier.padding(top = AppTheme.dimens.paddingSmall),
                 text = text,
+                style = androidx.compose.material.MaterialTheme.typography.subtitle2,
+                color = Color.Gray,
                 textAlign = TextAlign.Center
             )
         }

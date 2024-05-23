@@ -15,7 +15,7 @@ object AppConstants {
     )
     const val ZERO = 0
     const val EMPTY_STRING = ""
-    const val PROFILE = "profileId"
+    const val PROFILE_ID = "profileId"
     const val PLEASE_CHECK_INTERNET = "Please check your network connection"
    // const val AUTH_PREFERENCES = "AUTH_PREF"
     const val ERROR = "error"
@@ -34,4 +34,10 @@ object AppConstants {
     const val NAME_PLACEHOLDER = "Enter Full Name"
     const val CONFIRM_PASSWORD = "Confirm Password"
     const val CONFIRM_PASSWORD_PLACEHOLDER = "Confirm Password"
+
+
+    //HomeScreen
+    const val HOME = "HOME"
+    const val SEARCH = "SEARCH"
+    const val PROFILE = "PROFILE"
 }

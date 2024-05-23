@@ -7,7 +7,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.cook_ford.data.local.UserSession
 import com.example.cook_ford.data.remote.NetworkResult
-import com.example.cook_ford.data.remote.profile_request.ProfileRequest
 import com.example.cook_ford.domain.use_cases.ProfileUseCase
 import com.example.cook_ford.presentation.screens.profile.profile_details.state.ProfileDetailState
 import com.example.cook_ford.utils.AppConstants
@@ -28,7 +27,7 @@ class ProfileDetailsViewModel @Inject constructor(
     val profileState: State<ProfileDetailState> = _profileState
 
     init {
-        val profileId = stateHandle.get<String>(AppConstants.PROFILE)
+        val profileId = stateHandle.get<String>(AppConstants.PROFILE_ID)
         Log.d("TAG", " stateHandle  : $profileId: ")
         if (!profileId.isNullOrEmpty()){
             makeProfileRequest(profileId = profileId)

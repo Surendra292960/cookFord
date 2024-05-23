@@ -1,3 +1,5 @@
+package com.example.cook_ford.presentation.common.widgets
+
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
@@ -6,6 +8,7 @@ import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.icons.filled.StarOutline
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -15,7 +18,10 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun RatingBar(maxStars: Int = 5, rating: Float, onRatingChanged: (Float) -> Unit) {
+fun StarRatingBar(
+    maxStars: Int = 5,
+    rating: Float,
+    onRatingChanged: (Float) -> Unit) {
     val density = LocalDensity.current.density
     val starSize = (12f * density).dp
     val starSpacing = (0.5f * density).dp
@@ -26,7 +32,7 @@ fun RatingBar(maxStars: Int = 5, rating: Float, onRatingChanged: (Float) -> Unit
     ) {
         for (i in 1..maxStars) {
             val isSelected = i <= rating
-            val icon = if (isSelected) Icons.Filled.Star else Icons.Default.Star
+            val icon = if (isSelected) Icons.Filled.Star else Icons.Default.StarOutline
             val iconTintColor = if (isSelected) Color(0xFFFFC700) else Color(0x20FFFFFF)
             Icon(
                 imageVector = icon,

@@ -1,5 +1,6 @@
 package com.example.cook_ford.presentation.route
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
@@ -91,36 +92,35 @@ fun NavGraphBuilder.authenticatedGraph(navController: NavController) {
  * (Unauthenticated user)
  */
 @Composable
-fun BottomNavigation(navController: NavHostController) {
-    NavHost(navController,
-        route = NavigationRoutes.BottomNavigation.NavigationRoute.route,
-        startDestination = NavigationRoutes.BottomNavigation.Home.route) {
-        composable(NavigationRoutes.BottomNavigation.Home.route) {
+fun HomeNavGraph(navController: NavHostController) {
+    NavHost(navController, route = NavigationRoutes.HomeNavigation.NavigationRoute.route,
+        startDestination = NavigationRoutes.HomeNavigation.Home.route) {
+        composable(NavigationRoutes.HomeNavigation.Home.route) {
             ProfileListScreen(
                 onNavigateToProfileDetails = { profileId ->
-                    navController.navigate(route = NavigationRoutes.Details.ProfileDetail.route + "/${profileId}") {
-                        popUpTo(route = NavigationRoutes.BottomNavigation.NavigationRoute.route) {
+                    navController.navigate(route = NavigationRoutes.DetailsNavigation.ProfileDetail.route + "/${profileId}") {
+                        popUpTo(route = NavigationRoutes.HomeNavigation.NavigationRoute.route) {
                             inclusive = true
                         }
                     }
                 }
             )
         }
-        composable(NavigationRoutes.BottomNavigation.Search.route) {  }
+        composable(NavigationRoutes.HomeNavigation.Search.route) {  }
         //composable(NavigationRoutes.BottomNavigation.List.route) {  }
-        composable(NavigationRoutes.BottomNavigation.Profile.route) { }
+        composable(NavigationRoutes.HomeNavigation.Profile.route) { }
         detailNavGraph(navController = navController)
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 fun NavGraphBuilder.detailNavGraph(navController: NavHostController) {
-    navigation(route = NavigationRoutes.Details.NavigationRoute.route,
-        startDestination =  NavigationRoutes.Details.ProfileDetail.route + "/{${AppConstants.PROFILE}}") {
-        composable(NavigationRoutes.Details.ProfileDetail.route + "/{profileId}") { backStackEntry ->
+    navigation(route = NavigationRoutes.DetailsNavigation.NavigationRoute.route,
+        startDestination =  NavigationRoutes.DetailsNavigation.ProfileDetail.route + "/{${AppConstants.PROFILE_ID}}") {
+        composable(NavigationRoutes.DetailsNavigation.ProfileDetail.route + "/{profileId}") {
             ProfileDetailScreen (
-                onGoBack = {
-                navController.popBackStack()
-            })
+                onNavigateToHomeScreen = { navController.navigate(route = NavigationRoutes.HomeNavigation.Home.route) }
+            )
         }
     }
 }
