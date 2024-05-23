@@ -119,7 +119,13 @@ fun NavGraphBuilder.detailNavGraph(navController: NavHostController) {
         startDestination =  NavigationRoutes.DetailsNavigation.ProfileDetail.route + "/{${AppConstants.PROFILE_ID}}") {
         composable(NavigationRoutes.DetailsNavigation.ProfileDetail.route + "/{profileId}") {
             ProfileDetailScreen (
-                onNavigateToHomeScreen = { navController.navigate(route = NavigationRoutes.HomeNavigation.Home.route) }
+                onNavigateToAuthenticatedHomeRoute = {
+                    navController.navigate(route = NavigationRoutes.DetailsNavigation.ProfileDetail.route){
+                       popUpTo(route = NavigationRoutes.HomeNavigation.NavigationRoute.route) {
+                            inclusive = true
+                        }
+                    }
+                }
             )
         }
     }

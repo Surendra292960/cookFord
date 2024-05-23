@@ -34,9 +34,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -100,7 +98,10 @@ fun ProfileListScreen(profileViewModel: ProfileViewModel = hiltViewModel(),
 @Composable
 fun UsersProfileList(index: Int, onItemClick: (String) -> Unit, profileState: ProfileState) {
 
-    Box(modifier = Modifier.fillMaxWidth().wrapContentHeight().padding(top = AppTheme.dimens.paddingSmall), contentAlignment = Alignment.BottomCenter) {
+    Box(modifier = Modifier
+        .fillMaxWidth()
+        .wrapContentHeight()
+        .padding(top = AppTheme.dimens.paddingSmall), contentAlignment = Alignment.BottomCenter) {
 
         ElevatedCard(modifier = Modifier
             .fillMaxWidth()
@@ -157,7 +158,7 @@ fun UsersProfileList(index: Int, onItemClick: (String) -> Unit, profileState: Pr
                                     .padding(top = AppTheme.dimens.paddingExtraLarge)) {
                                     MediumTitleText(
                                         modifier = Modifier.padding(top = AppTheme.dimens.paddingSmall),
-                                        text = profileState.profile?.get(index)?.cook?.username.toString()
+                                        text = profileState.profile?.get(index)?.user?.username.toString()
                                     )
                                     Icon(
                                         Icons.Default.Verified, "", modifier = Modifier

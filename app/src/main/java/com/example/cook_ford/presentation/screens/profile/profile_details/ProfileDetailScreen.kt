@@ -18,11 +18,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Divider
 import androidx.compose.material.MaterialTheme
@@ -60,19 +59,18 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
 import com.example.cook_ford.R
+import com.example.cook_ford.data.remote.profile_response.ProfileResponse
 import com.example.cook_ford.presentation.common.customeComposableViews.Child
+import com.example.cook_ford.presentation.common.widgets.Progressbar
 import com.example.cook_ford.presentation.theme.AppTheme
 import com.example.cook_ford.presentation.theme.Cook_fordTheme
 import com.example.cook_ford.presentation.theme.OrangeYellow1
 
 
-
-@ExperimentalFoundationApi
-@Composable
-fun ProfileDetailScreen(navController: NavController? = null, onNavigateToHomeScreen: () -> Unit) {
 val time_slots = listOf(
 	TimeSlots("8am-9am"),
 	TimeSlots("8am-9am"),
@@ -85,67 +83,83 @@ val time_slots = listOf(
 	TimeSlots("8am-9am")
 )
 
-	val posts_list = listOf(
+val posts_list = listOf(
 
-		Posts(
-			"https://bit.ly/3oAIk0M",
-			"domain expansion"
-		),
-		Posts(
-			"https://bit.ly/3AcqrYy",
-			"gojo googles"
-		),
-		Posts(
-			"https://bit.ly/3BgosU6",
-			"gojo"
-		),
-		Posts(
-			"https://bit.ly/3BdkZ97",
-			"hanging around with friend"
-		),
-		Posts(
-			"https://bit.ly/3Acr702",
-			"careless"
-		),
-		Posts(
-			"https://bit.ly/3mtCMT8",
-			"young gojo"
-		),
-		Posts(
-			"https://bit.ly/3oAIk0M",
-			"domain expansion"
-		)
+	Posts(
+		"https://bit.ly/3oAIk0M",
+		"domain expansion"
+	),
+	Posts(
+		"https://bit.ly/3AcqrYy",
+		"gojo googles"
+	),
+	Posts(
+		"https://bit.ly/3BgosU6",
+		"gojo"
+	),
+	Posts(
+		"https://bit.ly/3BdkZ97",
+		"hanging around with friend"
+	),
+	Posts(
+		"https://bit.ly/3Acr702",
+		"careless"
+	),
+	Posts(
+		"https://bit.ly/3mtCMT8",
+		"young gojo"
+	),
+	Posts(
+		"https://bit.ly/3oAIk0M",
+		"domain expansion"
 	)
+)
 
-	Column(
-		modifier = Modifier
-			.fillMaxSize()
-			.background(Color.White)
-			.verticalScroll(rememberScrollState())) {
-		TopBar()
-		Spacer(modifier = Modifier.height(10.dp))
-		Stats("Vinay Kumar", "10.1M", "100")
-		Spacer(modifier = Modifier.height(10.dp))
-		SocialMediaIcons()
-		/*
-		*  SocialMediaIcons(
-                onClickIcon1 = onClickIcon1,
-                onClickIcon2 = onClickIcon2,
-                onClickIcon3 = onClickIcon3,
-                onClickIcon4 = onClickIcon4,
-                icon1Painter = icon1Painter,
-                icon2Painter = icon2Painter,
-                icon3Painter = icon3Painter,
-                icon4Painter = icon4Painter,
-                iconBackgroundColor = iconBackgroundColor,
-                iconTintColor = iconTintColor,
-                contentPadding = contentPadding
-            )*/
-		HorizontalDivider(modifier = Modifier.background(Color.LightGray))
-		Spacer(modifier = Modifier.height(10.dp))
-		ExperienceCard(time_slots = time_slots)
-		PostsComponent(posts_list = posts_list)
-		Spacer(modifier = Modifier.height(16.dp))
+@ExperimentalFoundationApi
+@Composable
+fun ProfileDetailScreen(
+	navController: NavController? = null,
+	onNavigateToAuthenticatedHomeRoute: () -> Unit,
+	profileDetailsViewModel: ProfileDetailsViewModel = hiltViewModel()) {
+	val profileState by remember { profileDetailsViewModel.profileState }
+
+	Progressbar(profileState.isLoading)
+	Log.d("TAG", "ProfileDetailScreen isLoading: ${profileState.isSuccessful}")
+	/*LaunchedEffect(key1 = true) {
+		onNavigateToAuthenticatedHomeRoute.invoke()
+	}*/
+
+	if (profileState.isSuccessful) {
+
+		LazyColumn {
+			profileState.profile?.size?.let { profile->
+				items(profile){  index->
+					TopBar()
+					Spacer(modifier = Modifier.height(10.dp))
+					Stats(profileState.profile!![index], "10.1M", "100")
+					Spacer(modifier = Modifier.height(10.dp))
+					SocialMediaIcons()
+					/*  SocialMediaIcons(
+                        onClickIcon1 = onClickIcon1,
+                        onClickIcon2 = onClickIcon2,
+                        onClickIcon3 = onClickIcon3,
+                        onClickIcon4 = onClickIcon4,
+                        icon1Painter = icon1Painter,
+                        icon2Painter = icon2Painter,
+                        icon3Painter = icon3Painter,
+                        icon4Painter = icon4Painter,
+                        iconBackgroundColor = iconBackgroundColor,
+                        iconTintColor = iconTintColor,
+                        contentPadding = contentPadding
+                    )*/
+					HorizontalDivider(modifier = Modifier.background(Color.LightGray))
+					Spacer(modifier = Modifier.height(10.dp))
+					ExperienceCard(profileState.profile!![index], time_slots = time_slots)
+					PostsComponent(posts_list = posts_list)
+					Spacer(modifier = Modifier.height(16.dp))
+				}
+			}
+		}
 	}
 }
 
@@ -212,8 +226,7 @@ fun ProfileImage(contentDescription: String?, modifier: Modifier = Modifier, ele
 					OrangeYellow1,
 					OrangeYellow1
 				)
-			)
-		)) {
+			))) {
 		Image(
 			painter = rememberAsyncImagePainter("https://bit.ly/3BgosU6"),
 			contentDescription = contentDescription,
@@ -227,7 +240,7 @@ fun ProfileImage(contentDescription: String?, modifier: Modifier = Modifier, ele
 }
 
 @Composable
-fun Stats(username: String, followers: String, following: String) {
+fun Stats(profile: ProfileResponse, followers: String, following: String) {
 	val name_list = listOf(
 		"6",
 		"days ago."
@@ -236,11 +249,11 @@ fun Stats(username: String, followers: String, following: String) {
 	val otherCount = 3
 	Column(modifier = Modifier.fillMaxWidth()) {
 		Text(
-			text = username,
+			text = profile.user.username,
 			style = MaterialTheme.typography.h5,
 			color = Color.DarkGray,
-			modifier = Modifier.align(Alignment.CenterHorizontally)
-		)
+			modifier = Modifier.align(Alignment.CenterHorizontally))
+
 		Spacer(Modifier.height(4.dp))
 		Text(
 			text = buildAnnotatedString {
@@ -286,7 +299,7 @@ fun Stats(username: String, followers: String, following: String) {
 							.padding(horizontal = 3.dp),
 					)
 					Text(
-						text = "5.0",
+						text = profile.rating.toString(),
 						style = MaterialTheme.typography.subtitle2,
 						color = Color.DarkGray
 					)
@@ -383,37 +396,32 @@ fun Stats(username: String, followers: String, following: String) {
 }
 
 @Composable
-fun ExperienceCard(time_slots: List<TimeSlots>) {
-	Column(
-		modifier = Modifier
-			.fillMaxWidth()
-			.padding(10.dp),
+fun ExperienceCard(profile: ProfileResponse, time_slots: List<TimeSlots>) {
+	Column(modifier = Modifier
+		.fillMaxWidth()
+		.padding(10.dp),
 		verticalArrangement = Arrangement.SpaceEvenly) {
 
 		Card(shape = RoundedCornerShape(5.dp)) {
-			Row(
-				modifier = Modifier
-					.fillMaxWidth()
-					.wrapContentHeight()
-					.background(Color.LightGray)
-					.padding(5.dp),
-				horizontalArrangement = Arrangement.Center,
-			) {
+			Row(modifier = Modifier
+				.fillMaxWidth()
+				.wrapContentHeight()
+				.background(Color.LightGray)
+				.padding(5.dp),
+				horizontalArrangement = Arrangement.Center,) {
 				// Experience
 				Child(
 					modifier = Modifier.weight(1f),
 					title = "Experience",
-					text = "10 yrs"
+					text = profile.experience.toString().plus(" Yrs")
 				)
 				// Language
-				Child(
-					modifier = Modifier.weight(1f),
+				Child(modifier = Modifier.weight(1f),
 					title = "Cook Type",
 					text = "Veg/Non Veg"
 				)
 				// From
-				Child(
-					modifier = Modifier.weight(1f),
+				Child(modifier = Modifier.weight(1f),
 					title = "From",
 					text = "Delhi"
 				)
@@ -422,30 +430,28 @@ fun ExperienceCard(time_slots: List<TimeSlots>) {
 				.height(3.dp)
 				.padding(start = 10.dp, end = 10.dp)
 				.background(Color.White))
-			Row(
-				modifier = Modifier
-					.fillMaxWidth()
-					.wrapContentHeight()
-					.background(Color.LightGray)
-					.padding(5.dp),
-				horizontalArrangement = Arrangement.Center,
-			) {
+			Row(modifier = Modifier
+				.fillMaxWidth()
+				.wrapContentHeight()
+				.background(Color.LightGray)
+				.padding(5.dp),
+				horizontalArrangement = Arrangement.Center) {
 				// Experience
 				Child(
 					modifier = Modifier.weight(1f),
 					title = "Gender",
-					text = "Male"
+					text = profile.user.gender
 				)
 				// Language
 				Child(
 					modifier = Modifier.weight(1f),
 					title = "Age",
-					text = "45"
+					text = profile.age.toString()
 				)
 				// From
 				Child(
 					modifier = Modifier.weight(1f),
-					title = "Relegion",
+					title = "Religion",
 					text = "Hindu"
 				)
 			}
@@ -463,7 +469,7 @@ fun ExperienceCard(time_slots: List<TimeSlots>) {
 				top = AppTheme.dimens.paddingSmall,
 				bottom = AppTheme.dimens.paddingSmall
 			),
-			text = "North Indian food",
+			text = profile.cuisine,
 			style = MaterialTheme.typography.subtitle2,
 			color = Color.Gray
 		)
@@ -480,7 +486,7 @@ fun ExperienceCard(time_slots: List<TimeSlots>) {
 				top = AppTheme.dimens.paddingSmall,
 				bottom = AppTheme.dimens.paddingSmall
 			),
-			text = "Experience",
+			text = profile.language,
 			style = MaterialTheme.typography.subtitle2,
 			color = Color.Gray
 		)
@@ -701,7 +707,7 @@ fun SocialMediaIcons(
 @Composable
 fun ProfilePreview() {
 	Cook_fordTheme {
-		ProfileDetailScreen(onNavigateToHomeScreen = {})
+		ProfileDetailScreen(onNavigateToAuthenticatedHomeRoute = {})
 	}
 }
 

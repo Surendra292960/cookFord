@@ -35,19 +35,20 @@ class ProfileDetailsViewModel @Inject constructor(
     }
 
     private fun makeProfileRequest(profileId: String) = viewModelScope.launch(Dispatchers.IO) {
+        Log.d("TAG", "makeProfileRequest profileId: $profileId")
       //  _profileState.value = _profileState.value.copy(isLoading = true)
         profileUseCase.invoke(profileId).collect { result ->
             when(result){
                 is NetworkResult.Success->{
                     if (result.status == true){
                         result.data?.let { response->
-                            _profileState.value = _profileState.value.copy(isLoading = false, profile = listOf(result.data), isSuccessful = true)
+                            _profileState.value = _profileState.value.copy(isLoading = false, profile = listOf(response), isSuccessful = true)
                         }
                         Log.d("TAG", "getProfileById getProfileResponse: ${Gson().toJson(_profileState.value)}")
                     }
                 }
                 is NetworkResult.Error->{
-                    Log.d("TAG", "getProfileById Error: ${result.message}")
+                    Log.d("TAG", "getProfileById Error: ${Gson().toJson(_profileState.value)}")
                     _profileState.value = _profileState.value.copy(errorMessage = result.message!!)
                 }
                 is NetworkResult.Loading->{

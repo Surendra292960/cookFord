@@ -1,4 +1,4 @@
-package com.example.cook_ford.di
+package com.example.cook_ford.domain.di
 import android.content.Context
 import com.example.cook_ford.data.ApiConstants.BASE_URL
 import com.example.cook_ford.data.ApiService
