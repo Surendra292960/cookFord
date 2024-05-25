@@ -81,7 +81,15 @@ fun NavGraphBuilder.authenticatedGraph(navController: NavController) {
         startDestination = NavigationRoutes.Authenticated.Dashboard.route) {
         // Dashboard
         composable(route = NavigationRoutes.Authenticated.Dashboard.route) {
-            UserDashBoard()
+            UserDashBoard(
+                onNavigateToAuthenticatedRoute = {
+                    /*navController.navigate(route = NavigationRoutes.Authenticated.Dashboard.route) {
+                        popUpTo(route = NavigationRoutes.Unauthenticated.NavigationRoute.route) {
+                            inclusive = true
+                        }
+                    }*/
+                }
+            )
         }
     }
 }
@@ -95,11 +103,12 @@ fun NavGraphBuilder.authenticatedGraph(navController: NavController) {
 fun HomeNavGraph(navController: NavHostController) {
     NavHost(navController, route = NavigationRoutes.HomeNavigation.NavigationRoute.route,
         startDestination = NavigationRoutes.HomeNavigation.Home.route) {
+
         composable(NavigationRoutes.HomeNavigation.Home.route) {
             ProfileListScreen(
                 onNavigateToProfileDetails = { profileId ->
                     navController.navigate(route = NavigationRoutes.DetailsNavigation.ProfileDetail.route + "/${profileId}") {
-                        popUpTo(route = NavigationRoutes.HomeNavigation.NavigationRoute.route) {
+                        popUpTo(route = NavigationRoutes.Authenticated.NavigationRoute.route) {
                             inclusive = true
                         }
                     }
@@ -119,6 +128,7 @@ fun NavGraphBuilder.detailNavGraph(navController: NavHostController) {
         startDestination =  NavigationRoutes.DetailsNavigation.ProfileDetail.route + "/{${AppConstants.PROFILE_ID}}") {
         composable(NavigationRoutes.DetailsNavigation.ProfileDetail.route + "/{profileId}") {
             ProfileDetailScreen (
+                onNavigateBack = { navController.navigateUp() },
                 onNavigateToAuthenticatedHomeRoute = {
                     navController.navigate(route = NavigationRoutes.DetailsNavigation.ProfileDetail.route){
                        popUpTo(route = NavigationRoutes.HomeNavigation.NavigationRoute.route) {

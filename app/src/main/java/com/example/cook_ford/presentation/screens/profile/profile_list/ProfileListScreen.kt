@@ -107,8 +107,7 @@ fun UsersProfileList(index: Int, onItemClick: (String) -> Unit, profileState: Pr
             .fillMaxWidth()
             .wrapContentHeight()
             .clickable {
-                onItemClick(profileState.profile!![index]._id!!)
-                Log.d("TAG", "UsersProfileList: ${profileState.profile.get(index)._id!!}")
+                profileState.profile?.get(index)?._id?.let { onItemClick(it) }
             },
             colors = CardDefaults.cardColors(Color.White),
             elevation = CardDefaults.elevatedCardElevation(AppTheme.dimens.paddingSmall),
@@ -158,7 +157,7 @@ fun UsersProfileList(index: Int, onItemClick: (String) -> Unit, profileState: Pr
                                     .padding(top = AppTheme.dimens.paddingExtraLarge)) {
                                     MediumTitleText(
                                         modifier = Modifier.padding(top = AppTheme.dimens.paddingSmall),
-                                        text = profileState.profile?.get(index)?.user?.username.toString()
+                                        text = profileState.profile?.get(index)?.name.toString()
                                     )
                                     Icon(
                                         Icons.Default.Verified, "", modifier = Modifier
@@ -173,7 +172,7 @@ fun UsersProfileList(index: Int, onItemClick: (String) -> Unit, profileState: Pr
                                             .padding(end = AppTheme.dimens.paddingSmall))
                                     SubTitleText(
                                         modifier = Modifier.padding(top = AppTheme.dimens.paddingSmall),
-                                        text = profileState.profile?.get(index)?.rating.toString()
+                                        text = profileState.profile?.get(index)?.profile?.total_rating.toString()
                                     )
                                 }
                                 //Cook Type
@@ -191,7 +190,7 @@ fun UsersProfileList(index: Int, onItemClick: (String) -> Unit, profileState: Pr
                                 //Cook Cousin
                                 SubTitleText(
                                     modifier = Modifier.padding(top = AppTheme.dimens.paddingSmall, bottom = AppTheme.dimens.paddingSmall),
-                                    text = profileState.profile?.get(index)?.cuisine.toString()
+                                    text = profileState.profile?.get(index)?.profile?.cuisine.toString()
                                 )
                             }
                         }
@@ -209,13 +208,13 @@ fun UsersProfileList(index: Int, onItemClick: (String) -> Unit, profileState: Pr
                 Child(
                     modifier = Modifier.weight(1f),
                     title = "Experience",
-                    text = profileState.profile?.get(index)?.experience.toString()
+                    text = profileState.profile?.get(index)?.profile?.experience.toString()
                 )
                 // Language
                 Child(
                     modifier = Modifier.weight(1f),
                     title = "Language",
-                    text = profileState.profile?.get(index)?.language.toString()
+                    text = profileState.profile?.get(index)?.profile?.language.toString()
                 )
                 // From
                 Child(

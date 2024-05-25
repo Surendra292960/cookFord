@@ -36,7 +36,7 @@ class ProfileDetailsViewModel @Inject constructor(
 
     private fun makeProfileRequest(profileId: String) = viewModelScope.launch(Dispatchers.IO) {
         Log.d("TAG", "makeProfileRequest profileId: $profileId")
-      //  _profileState.value = _profileState.value.copy(isLoading = true)
+        //_profileState.value = _profileState.value.copy(isLoading = true)
         profileUseCase.invoke(profileId).collect { result ->
             when(result){
                 is NetworkResult.Success->{

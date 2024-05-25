@@ -15,11 +15,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
@@ -27,25 +25,27 @@ import androidx.navigation.compose.rememberNavController
 import com.example.cook_ford.presentation.common.widgets.bottom_nav.BottomNavigationBar
 import com.example.cook_ford.presentation.common.widgets.topbar_nav.AppTopBar
 import com.example.cook_ford.presentation.route.HomeNavGraph
+import com.example.cook_ford.presentation.route.NavigationRoutes
 import com.example.cook_ford.presentation.route.bottom_nav.NavTitle
-import com.example.cook_ford.presentation.screens.MainActivity
 import com.example.cook_ford.presentation.theme.Cook_fordTheme
 import com.example.cook_ford.utils.AppConstants
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun UserDashBoard(
-    navController: NavHostController = rememberNavController()
-) {
+    navController: NavHostController = rememberNavController(),
+    onNavigateToAuthenticatedRoute: () -> Unit) {
     val scroll = rememberScrollState(0)
     val isCollapsed = remember { false }
     //val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
-    //topBar visibility state
     val topBarVisibilityState = remember { mutableStateOf(true) }
-    var appBarTitle = remember { mutableStateOf(AppConstants.EMPTY_STRING) }
+    val appBarTitle = remember { mutableStateOf(AppConstants.EMPTY_STRING) }
 
 
+    LaunchedEffect(key1 = Unit) {
+        onNavigateToAuthenticatedRoute.invoke()
+    }
     LaunchedEffect(navController) {
         navController.currentBackStackEntryFlow.collect { backStackEntry ->
             // You can map the title based on the route using:
@@ -100,6 +100,8 @@ fun getTitleByRoute(route:String): String {
 @Composable
 fun Preview() {
     Cook_fordTheme {
-        UserDashBoard()
+        UserDashBoard(
+            onNavigateToAuthenticatedRoute = {}
+        )
     }
 }

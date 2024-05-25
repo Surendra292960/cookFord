@@ -9,6 +9,8 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -29,6 +31,7 @@ import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.TextButton
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBackIosNew
 import androidx.compose.material.icons.filled.Done
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Card
@@ -38,6 +41,7 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -69,18 +73,19 @@ import com.example.cook_ford.presentation.common.widgets.Progressbar
 import com.example.cook_ford.presentation.theme.AppTheme
 import com.example.cook_ford.presentation.theme.Cook_fordTheme
 import com.example.cook_ford.presentation.theme.OrangeYellow1
+import com.example.cook_ford.utils.AppConstants
 
 
 val time_slots = listOf(
 	TimeSlots("8am-9am"),
-	TimeSlots("8am-9am"),
-	TimeSlots("8am-9am"),
-	TimeSlots("8am-9am"),
-	TimeSlots("8am-9am"),
-	TimeSlots("8am-9am"),
-	TimeSlots("8am-9am"),
-	TimeSlots("8am-9am"),
-	TimeSlots("8am-9am")
+	TimeSlots("9am-10am"),
+	TimeSlots("10am-12am"),
+	TimeSlots("1pam-2pm"),
+	TimeSlots("3pm-4pm"),
+	TimeSlots("5pm-6pm"),
+	TimeSlots("7pm-8pm"),
+	TimeSlots("9pm-10pm"),
+	TimeSlots("11pm-12pm")
 )
 
 val posts_list = listOf(
@@ -115,10 +120,14 @@ val posts_list = listOf(
 	)
 )
 
+fun chipChangeListener(item: TimeSlots, checked: Boolean) =
+	time_slots.find { it.slots == item.slots }?.let { task -> task.selected = checked }
+
 @ExperimentalFoundationApi
 @Composable
 fun ProfileDetailScreen(
 	navController: NavController? = null,
+	onNavigateBack:()->Unit,
 	onNavigateToAuthenticatedHomeRoute: () -> Unit,
 	profileDetailsViewModel: ProfileDetailsViewModel = hiltViewModel()) {
 	val profileState by remember { profileDetailsViewModel.profileState }
@@ -134,7 +143,7 @@ fun ProfileDetailScreen(
 		LazyColumn {
 			profileState.profile?.size?.let { profile->
 				items(profile){  index->
-					TopBar()
+					TopBar(onNavigateBack = { onNavigateBack.invoke() })
 					Spacer(modifier = Modifier.height(10.dp))
 					Stats(profileState.profile!![index], "10.1M", "100")
 					Spacer(modifier = Modifier.height(10.dp))
@@ -164,29 +173,23 @@ fun ProfileDetailScreen(
 }
 
 @Composable
-fun TopBar() {
+fun TopBar(onNavigateBack:()->Unit) {
 	Column(
 		modifier = Modifier
 			.clickable(onClick = { })
 			.fillMaxWidth()) {
-		Box(
-			modifier = Modifier
-				.height(200.dp)
-				.fillMaxWidth()
-		) {
-			Box(
-				modifier = Modifier
-					.height(140.dp)
-					.fillMaxWidth()
-			) {
+		Box(modifier = Modifier
+				.height(230.dp)
+				.fillMaxWidth()) {
+			Box(modifier = Modifier
+					.height(180.dp)
+					.fillMaxWidth()) {
 				Image(
 					painter = rememberAsyncImagePainter("https://bit.ly/3oAIk0M"),
 					contentDescription = "",
 					modifier = Modifier.fillMaxSize(),
-					contentScale = ContentScale.Crop,
-				)
-				Box(
-					modifier = Modifier
+					contentScale = ContentScale.Crop,)
+				Box(modifier = Modifier
 						.height(90.dp)
 						.fillMaxWidth()
 						.background(
@@ -196,16 +199,61 @@ fun TopBar() {
 									Color.Black
 								)
 							)
-						)
-						.align(Alignment.BottomStart)
+						).align(Alignment.BottomStart)
 				)
 			}
 
+			TopBarNavigation(onNavigateBack = {onNavigateBack.invoke()})
 			ProfileImage(
 				contentDescription = null,
 				modifier = Modifier
 					.size(120.dp)
 					.align(Alignment.BottomCenter)
+			)
+		}
+	}
+}
+
+@Composable
+fun TopBarNavigation(onNavigateBack:()->Unit) {
+	Row(
+		modifier = Modifier
+			.fillMaxWidth()
+			.padding(start = 15.dp, end = 15.dp, top = 15.dp),
+		horizontalArrangement = Arrangement.SpaceBetween,
+		verticalAlignment = Alignment.CenterVertically
+	) {
+		IconButton(
+			onClick = {
+				onNavigateBack.invoke()
+			},
+			modifier = Modifier
+				.background(color = Color.White, shape = CircleShape)
+				.clip(CircleShape)
+
+		) {
+			Icon(Icons.Filled.ArrowBackIosNew, contentDescription = "")
+		}
+		Row(
+			modifier = Modifier
+				.width(70.dp)
+				.background(color = Color.White, shape = RoundedCornerShape(8.dp))
+				.padding(3.dp)
+				.clip(RoundedCornerShape(8.dp)),
+			horizontalArrangement = Arrangement.spacedBy(
+				4.dp,
+				Alignment.CenterHorizontally
+			),
+			verticalAlignment = Alignment.CenterVertically
+		) {
+			Text(
+				text = "4.8",
+				fontWeight = FontWeight.Bold,
+				color = Color.Black
+			)
+			Image(
+				painter = painterResource(id = R.drawable.star_full),
+				contentDescription = null
 			)
 		}
 	}
@@ -248,11 +296,13 @@ fun Stats(profile: ProfileResponse, followers: String, following: String) {
 
 	val otherCount = 3
 	Column(modifier = Modifier.fillMaxWidth()) {
-		Text(
-			text = profile.user.username,
-			style = MaterialTheme.typography.h5,
-			color = Color.DarkGray,
-			modifier = Modifier.align(Alignment.CenterHorizontally))
+		profile?.username?.let {
+			Text(
+				text = it,
+				style = MaterialTheme.typography.h5,
+				color = Color.DarkGray,
+				modifier = Modifier.align(Alignment.CenterHorizontally))
+		}
 
 		Spacer(Modifier.height(4.dp))
 		Text(
@@ -270,11 +320,11 @@ fun Stats(profile: ProfileResponse, followers: String, following: String) {
 						append(", ")
 					}
 				}
-			/*	if (otherCount > 2) {
-					append(" and ")
-					pushStyle(boldStyle)
-					append("$otherCount others")
-				}*/
+				/*	if (otherCount > 2) {
+                        append(" and ")
+                        pushStyle(boldStyle)
+                        append("$otherCount others")
+                    }*/
 			},
 			letterSpacing = 0.5.sp,
 			lineHeight = 20.sp,
@@ -298,11 +348,11 @@ fun Stats(profile: ProfileResponse, followers: String, following: String) {
 							.align(Alignment.CenterVertically)
 							.padding(horizontal = 3.dp),
 					)
-					Text(
-						text = profile.rating.toString(),
+				/*	Text(
+						text = if (profile.profile.total_rating.toString().isNullOrEmpty()) AppConstants.ZERO else profile.profile.total_rating.toString(),
 						style = MaterialTheme.typography.subtitle2,
 						color = Color.DarkGray
-					)
+					)*/
 				}
 				Text(
 					text = "Rating",
@@ -413,7 +463,7 @@ fun ExperienceCard(profile: ProfileResponse, time_slots: List<TimeSlots>) {
 				Child(
 					modifier = Modifier.weight(1f),
 					title = "Experience",
-					text = profile.experience.toString().plus(" Yrs")
+					text = profile?.profile?.experience.toString().plus(" Yrs")
 				)
 				// Language
 				Child(modifier = Modifier.weight(1f),
@@ -437,16 +487,18 @@ fun ExperienceCard(profile: ProfileResponse, time_slots: List<TimeSlots>) {
 				.padding(5.dp),
 				horizontalArrangement = Arrangement.Center) {
 				// Experience
-				Child(
-					modifier = Modifier.weight(1f),
-					title = "Gender",
-					text = profile.user.gender
-				)
+				profile?.gender?.let {
+					Child(
+						modifier = Modifier.weight(1f),
+						title = "Gender",
+						text = it
+					)
+				}
 				// Language
 				Child(
 					modifier = Modifier.weight(1f),
 					title = "Age",
-					text = profile.age.toString()
+					text = profile?.profile?.age.toString()
 				)
 				// From
 				Child(
@@ -464,15 +516,17 @@ fun ExperienceCard(profile: ProfileResponse, time_slots: List<TimeSlots>) {
 			style = MaterialTheme.typography.subtitle2,
 			color = Color.Black
 		)
-		Text(
-			modifier = Modifier.padding(
-				top = AppTheme.dimens.paddingSmall,
-				bottom = AppTheme.dimens.paddingSmall
-			),
-			text = profile.cuisine,
-			style = MaterialTheme.typography.subtitle2,
-			color = Color.Gray
-		)
+		profile?.profile?.cuisine?.let {
+			Text(
+				modifier = Modifier.padding(
+					top = AppTheme.dimens.paddingSmall,
+					bottom = AppTheme.dimens.paddingSmall
+				),
+				text = it,
+				style = MaterialTheme.typography.subtitle2,
+				color = Color.Gray
+			)
+		}
 
 		//Languages
 		Text(
@@ -481,15 +535,17 @@ fun ExperienceCard(profile: ProfileResponse, time_slots: List<TimeSlots>) {
 			style = MaterialTheme.typography.subtitle2,
 			color = Color.Black
 		)
-		Text(
-			modifier = Modifier.padding(
-				top = AppTheme.dimens.paddingSmall,
-				bottom = AppTheme.dimens.paddingSmall
-			),
-			text = profile.language,
-			style = MaterialTheme.typography.subtitle2,
-			color = Color.Gray
-		)
+		profile?.profile?.language?.let {
+			Text(
+				modifier = Modifier.padding(
+					top = AppTheme.dimens.paddingSmall,
+					bottom = AppTheme.dimens.paddingSmall
+				),
+				text = it,
+				style = MaterialTheme.typography.subtitle2,
+				color = Color.Gray
+			)
+		}
 
 		//Daily Visit
 		Text(
@@ -515,7 +571,15 @@ fun ExperienceCard(profile: ProfileResponse, time_slots: List<TimeSlots>) {
 			style = MaterialTheme.typography.subtitle2,
 			color = Color.Black
 		)
-		TimeSlotsComponent(timeSlots = time_slots)
+		TimeSlotsComponent(timeSlots = time_slots, onSelectedChanged = { slots, selected->
+			chipChangeListener(slots, selected).let {
+				time_slots.toSet().forEach {
+					if (it.selected){
+						Log.d("TAG", "ExperienceCard: ${it.slots}")
+					}
+				}
+			}
+		})
 		//Expectation
 		Text(
 			modifier = Modifier.padding(top = AppTheme.dimens.paddingSmall),
@@ -569,33 +633,44 @@ fun ExperienceCard(profile: ProfileResponse, time_slots: List<TimeSlots>) {
 	}
 }
 
+
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun TimeSlotsComponent(
 	timeSlots: List<TimeSlots>,
 	modifier: Modifier = Modifier,
 	selectedCar: TimeSlots? = null,
-	onSelectedChanged: (String) -> Unit = {}) {
-	var selected by remember { mutableStateOf(false) }
-	Row(modifier = Modifier.fillMaxSize()) {
-
-		LazyRow (modifier=Modifier.fillMaxSize()){
-			items(timeSlots.size){ index->
-				FilterChipExample(timeSlots[index].slots)
-			}
+	onSelectedChanged: (TimeSlots, Boolean) -> Unit) {
+	FlowRow {
+		timeSlots.forEach { timeSlots ->
+			FilterChipExample(
+				timeSlots = timeSlots,
+				onChipClick = {
+					onSelectedChanged(it, !it.selected)
+					Log.d("TAG", "TimeSlotsComponent: ")
+				}
+			)
 		}
 	}
 }
 
 @Composable
-fun FilterChipExample(slots: String) {
-	var selected by remember { mutableStateOf(false) }
-
+fun FilterChipExample(timeSlots: TimeSlots, selected: Boolean? = null, onChipClick: (TimeSlots) -> Unit) {
+	LaunchedEffect(key1 = true) {
+		time_slots.forEach { slots->
+			if (slots.selected) {
+				Log.d("TAG", "TimeSlotsComponent: ${slots.slots}")
+			}
+		}
+	}
 	FilterChip(
-		modifier = Modifier.padding(horizontal = 5.dp),
-		onClick = { selected = !selected },
-		label = { Text(text =slots) },
-		selected = selected,
-		leadingIcon = if (selected) {
+		modifier = Modifier.padding(horizontal = 2.dp),
+		onClick = { onChipClick(timeSlots) },
+		label = {
+			Text(timeSlots.slots)
+		},
+		selected = selected ?: timeSlots.selected,
+		leadingIcon = if (selected ?: timeSlots.selected) {
 			{
 				Icon(
 					imageVector = Icons.Filled.Done,
@@ -707,9 +782,11 @@ fun SocialMediaIcons(
 @Composable
 fun ProfilePreview() {
 	Cook_fordTheme {
-		ProfileDetailScreen(onNavigateToAuthenticatedHomeRoute = {})
+		ProfileDetailScreen(onNavigateBack = {}, onNavigateToAuthenticatedHomeRoute = {})
 	}
 }
 
 data class Posts(val url: String, val name: String)
-data class TimeSlots(val slots: String)
+data class TimeSlots(val slots: String, val initialSelection: Boolean = false){
+	var selected by mutableStateOf(initialSelection)
+}
