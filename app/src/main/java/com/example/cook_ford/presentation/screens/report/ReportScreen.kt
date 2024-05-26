@@ -1,4 +1,4 @@
-package com.example.cook_ford.presentation.screens.profile.profile_review
+package com.example.cook_ford.presentation.screens.report
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -19,9 +19,6 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableFloatStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -34,73 +31,50 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.cook_ford.R
 import com.example.cook_ford.data.remote.profile_response.ProfileResponse
-import com.example.cook_ford.presentation.component.widgets.StarRatingBar
 import com.example.cook_ford.presentation.component.widgets.snack_bar.MainViewState
 import com.example.cook_ford.presentation.component.widgets.topbar_nav.TopBarNavigation
-import com.example.cook_ford.presentation.screens.profile.profile_review.state.ReviewUiEvent
+import com.example.cook_ford.presentation.screens.report.state.ReportUiEvent
 
 @Preview(showSystemUi = true, showBackground = true)
 @Composable
 fun Preview() {
-    ReviewScreen(
+    ReportScreen(
         onNavigateBack = {},
         onNavigateToAuthenticatedHomeRoute = {}
     )
 }
 
 @Composable
-fun ReviewScreen(
+fun ReportScreen(
     navController: NavController? = null,
     onNavigateBack:()->Unit,
     onNavigateToAuthenticatedHomeRoute: () -> Unit) {
-    val reViewViewModel:ReViewViewModel = hiltViewModel()
-    val reviewState by reViewViewModel.reviewState.collectAsState()
-    val viewState:MainViewState by reViewViewModel.viewState.collectAsState()
-    var rating1 by remember { mutableFloatStateOf(0.0f) }
-    var rating2 by remember { mutableFloatStateOf(0.0f) }
+    val reportViewModel:ReportViewModel = hiltViewModel()
+    val reportState by reportViewModel.reportState.collectAsState()
+    val viewState:MainViewState by reportViewModel.viewState.collectAsState()
 
     Column(modifier = Modifier
         .fillMaxSize()
         .verticalScroll(rememberScrollState())) {
 
         TopBarNavigation(onNavigateBack={onNavigateBack.invoke()})
-        reviewState?.profile?.let { ImageWithUserName(it) }
+        reportState?.profile?.let { ImageWithUserName(it) }
 
-
-        /*   RatingStar(rating, maxRating = 5, {
-               rating = it.toFloat()
-           }, false)*/
-        repeat(4){
-            Row(modifier = Modifier
-                .padding(start = 20.dp, end = 20.dp)
-                .fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween) {
-                Text(text = "Review")
-                StarRatingBar(
-                    maxStars = 5,
-                    rating = rating1,
-                    onRatingChanged = {
-                        rating1 = it
-                    }
-                )
-            }
-        }
-        ReviewForm(
-            reviewState = reviewState,
+        ReportForm(
+            reportState = reportState,
             viewState = viewState,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(start = 10.dp, end = 10.dp),
-            onReviewChange = { inputString ->
-                reViewViewModel.onUiEvent(
-                    reviewUiEvent = ReviewUiEvent.ReviewChanged(
+            onReportChange = { inputString ->
+                reportViewModel.onUiEvent(
+                    reportUiEvent = ReportUiEvent.ReportChanged(
                         inputString
                     )
                 )
             },
             onSubmit = {
-                reViewViewModel.onUiEvent(reviewUiEvent = ReviewUiEvent.Submit)
+                reportViewModel.onUiEvent(reportUiEvent = ReportUiEvent.Submit)
             })
     }
 }

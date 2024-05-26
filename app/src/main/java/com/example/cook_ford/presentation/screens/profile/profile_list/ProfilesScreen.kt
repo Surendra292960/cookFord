@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -45,9 +46,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.cook_ford.R
-import com.example.cook_ford.data.remote.profile_response.Profile
-import com.example.cook_ford.presentation.common.customeComposableViews.Child
-import com.example.cook_ford.presentation.common.widgets.Progressbar
+import com.example.cook_ford.data.remote.profile_response.ProfileResponse
+import com.example.cook_ford.presentation.component.customeComposableViews.Child
+import com.example.cook_ford.presentation.component.widgets.Progressbar
 import com.example.cook_ford.presentation.screens.profile.profile_list.state.ProfileState
 import com.example.cook_ford.presentation.theme.AppTheme
 import com.example.cook_ford.presentation.theme.OrangeYellow1
@@ -62,23 +63,24 @@ fun Preview() {
 
 @Composable
 fun ProfilesScreen(
-    profileViewModel: ProfileViewModel = hiltViewModel(),
     profileLazyListState: LazyListState = rememberLazyListState(),
-    onNavigateToProfileDetails: (String) -> Unit
-) {
+    onNavigateToProfileDetails: (String) -> Unit) {
+    val profileViewModel: ProfileViewModel = hiltViewModel()
     val profileState by remember { profileViewModel.profileState }
 
     Progressbar(profileState.isLoading)
-    Log.d("TAG", "ProfileListScreen isLoading: ${profileState.isLoading}")
+    //Log.d("TAG", "ProfileListScreen isLoading: ${profileState.isLoading}")
+    Log.d("TAG", "ProfileListScreen isLoading: ${profileViewModel.getResponseFromPref()}")
     LaunchedEffect(Unit) {
         profileViewModel.getProfileRequest()
     }
 
-    if (profileState.isSuccessful) {
+    if (profileState.isSuccessful && profileViewModel.getResponseFromPref()=="provider") {
         LazyColumn(
+            modifier = Modifier.fillMaxSize(),
             state = profileLazyListState,
-            verticalArrangement = Arrangement.SpaceBetween,
-            contentPadding = PaddingValues(AppTheme.dimens.paddingSmall),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            contentPadding = PaddingValues(AppTheme.dimens.paddingSmall,),
             content = {
                 Log.d("TAG", "ProfileListScreens : ${profileState.profile?.size}")
                 items(profileState.profile!!.size) { index ->
@@ -102,10 +104,9 @@ fun UsersProfileList(index: Int, onItemClick: (String) -> Unit, profileState: Pr
 
         ElevatedCard(modifier = Modifier
             .clickable { profileState.profile?.get(index)?._id?.let { onItemClick(it) } }
-            .padding(bottom = 10.dp)
-            .wrapContentHeight(),
+            .padding(bottom = 10.dp),
             colors = CardDefaults.cardColors(Color.White),
-           // elevation = CardDefaults.elevatedCardElevation(AppTheme.dimens.paddingTooSmall),
+            elevation = CardDefaults.elevatedCardElevation(AppTheme.dimens.paddingTooSmall),
             shape = RoundedCornerShape(topStart = 16.dp, bottomEnd = 16.dp)) {
             Column(modifier = Modifier
                 .fillMaxWidth()
@@ -128,7 +129,7 @@ fun UsersProfileList(index: Int, onItemClick: (String) -> Unit, profileState: Pr
                             .clip(CircleShape)
                             .background(Color.White)) {
                             Image(painter = painterResource(id = R.drawable.profile_circle),
-                                contentDescription = null,
+                                contentDescription = "",
                                 contentScale = ContentScale.Crop,
                                 modifier = Modifier.size(80.dp)
                             )
@@ -198,45 +199,50 @@ fun UsersProfileList(index: Int, onItemClick: (String) -> Unit, profileState: Pr
                     }
                 }
             }
-                profileState?.profile?.get(index)?.let { BottomMenuText(it.profile) }
+                profileState?.profile?.get(index)?.let { BottomMenuText(it) }
         }
     }
 }
 
 
 @Composable
-fun BottomMenuText(profile: Profile?) {
-    profile?.let {
-        HorizontalDivider(color = Color.LightGray, thickness = 1.dp)
+fun BottomMenuText(profileRes: ProfileResponse) {
+    Log.d("TAG", "BottomMenuText: ${profileRes.profile}")
+    profileRes?.profile?.let {
+        //if (profileRes.usertype == "provider"){
+            HorizontalDivider(color = Color.LightGray, thickness = 1.dp)
 
-        Row(modifier = Modifier
+            Row(modifier = Modifier
                 .fillMaxWidth()
                 .padding(AppTheme.dimens.paddingTooSmall)) {
 
-            // Experience
-            profile?.experience?.let {
-                Child(
-                    modifier = Modifier.weight(1f),
-                    title = "Experience",
-                    text = it.toString()
-                )
-            }
+                // Experience
+                profileRes?.profile?.experience?.let {
+                    Child(
+                        modifier = Modifier.weight(1f),
+                        title = "Experience",
+                        text = it.toString()
+                    )
+                }
 
-            // Language
-            profile?.language?.let {
-                Child(
-                    modifier = Modifier.weight(1f),
-                    title = "Language",
-                    text = it
-                )
-            }
+                // Language
+                profileRes?.profile?.language?.let {
+                    Child(
+                        modifier = Modifier.weight(1f),
+                        title = "Language",
+                        text = it
+                    )
+                }
 
-            // From
-            Child(
-                modifier = Modifier.weight(1f),
-                title = "From",
-                text = "it"
-            )
+                // From
+               profileRes?.location?.type?.let {
+                   Child(
+                       modifier = Modifier.weight(1f),
+                       title = "From",
+                       text = it.toString()
+                   )
+               }
+           // }
         }
     }
 }

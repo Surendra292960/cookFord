@@ -11,8 +11,8 @@ import com.example.cook_ford.data.remote.NetworkResult
 import com.example.cook_ford.data.remote.auth_request.SignUpRequest
 import com.example.cook_ford.data.remote.auth_response.SignUpResponse
 import com.example.cook_ford.domain.use_cases.SignUpUseCase
-import com.example.cook_ford.presentation.common.widgets.dialog.DialogState
-import com.example.cook_ford.presentation.common.widgets.snack_bar.MainViewState
+import com.example.cook_ford.presentation.component.widgets.dialog.DialogState
+import com.example.cook_ford.presentation.component.widgets.snack_bar.MainViewState
 import com.example.cook_ford.presentation.screens.sign_in.state.ErrorState
 import com.example.cook_ford.presentation.screens.sign_in.state.passwordEmptyErrorState
 import com.example.cook_ford.presentation.screens.sign_in.state.phoneEmptyErrorState

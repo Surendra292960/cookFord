@@ -1,14 +1,9 @@
 package com.example.cook_ford.presentation.screens.profile.profile_list.state
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Clear
-import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Star
-import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -23,7 +18,7 @@ import androidx.constraintlayout.compose.ConstraintSet
 import androidx.constraintlayout.compose.Dimension
 import androidx.wear.compose.material.Icon
 import com.example.cook_ford.R
-import com.example.cook_ford.presentation.common.customeComposableViews.SubTitleText
+import com.example.cook_ford.presentation.component.customeComposableViews.SubTitleText
 
 @Preview(showSystemUi = true, showBackground = true)
 @Composable

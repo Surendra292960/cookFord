@@ -8,5 +8,7 @@ data class SignInResponse(
     @SerializedName("_id")
     val _id : String = "",
     @SerializedName("message")
-    val message : String = ""
+    val message : String = "",
+    @SerializedName("userType")
+    val userType : String = ""
 )

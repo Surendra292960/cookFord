@@ -43,4 +43,8 @@ object AppConstants {
     //ReviewScreen
     const val REVIEW = "Write Your Review"
     const val REVIEW_PLACEHOLDER = "Review"
+
+    //ReportScreen
+    const val REPORT = "Add more details"
+    const val REPORT_PLACEHOLDER = "Add more details"
 }

@@ -21,12 +21,12 @@ import androidx.compose.ui.unit.dp
 import com.example.cook_ford.R
 import com.example.cook_ford.presentation.theme.AppTheme
 import com.example.cook_ford.presentation.screens.sign_up.state.SignUpState
-import com.example.cook_ford.presentation.common.widgets.DefaultIcons
-import com.example.cook_ford.presentation.common.widgets.InputTextField
-import com.example.cook_ford.presentation.common.widgets.KeyboardOption
-import com.example.cook_ford.presentation.common.widgets.SubmitButton
-import com.example.cook_ford.presentation.common.widgets.TrailingIcon
-import com.example.cook_ford.presentation.common.widgets.snack_bar.MainViewState
+import com.example.cook_ford.presentation.component.widgets.DefaultIcons
+import com.example.cook_ford.presentation.component.widgets.InputTextField
+import com.example.cook_ford.presentation.component.widgets.KeyboardOption
+import com.example.cook_ford.presentation.component.widgets.SubmitButton
+import com.example.cook_ford.presentation.component.widgets.TrailingIcon
+import com.example.cook_ford.presentation.component.widgets.snack_bar.MainViewState
 import com.example.cook_ford.utils.AppConstants
 
 @Composable

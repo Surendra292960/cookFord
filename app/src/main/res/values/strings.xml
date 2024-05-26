@@ -47,9 +47,10 @@
     <string name="dismiss_button_text">Dismiss</string>
 
 
-    <!--ReView Text-->
+    <!--Review/Report Text-->
     <string name="submit_button_text">Submit</string>
     <string name="review_error_msg_empty">Please enter your review</string>
+    <string name="report_error_msg_empty">Add more details</string>
 
 
 

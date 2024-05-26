@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.cook_ford.data.local.SessionConstant
 import com.example.cook_ford.data.local.UserSession
 import com.example.cook_ford.data.remote.NetworkResult
 import com.example.cook_ford.domain.use_cases.ProfileUseCase
@@ -48,5 +49,9 @@ class ProfileViewModel @Inject constructor(
                 }
             }
         }
+    }
+
+    fun getResponseFromPref():String?{
+        return userSession.getString(SessionConstant.USER_TYPE)
     }
 }

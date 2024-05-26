@@ -1,4 +1,6 @@
 package com.example.cook_ford.presentation.screens.profile.profile_details
+import android.content.Context
+import android.content.Intent
 import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -30,9 +32,10 @@ import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.TextButton
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBackIosNew
 import androidx.compose.material.icons.filled.Done
+import androidx.compose.material.icons.filled.Share
 import androidx.compose.material.icons.filled.Star
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.FilterChipDefaults
@@ -42,7 +45,9 @@ import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -51,6 +56,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -60,13 +66,17 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
 import com.example.cook_ford.R
 import com.example.cook_ford.data.remote.profile_response.ProfileResponse
-import com.example.cook_ford.presentation.common.customeComposableViews.Child
-import com.example.cook_ford.presentation.common.widgets.Progressbar
+import com.example.cook_ford.presentation.component.customeComposableViews.Child
+import com.example.cook_ford.presentation.component.widgets.Progressbar
+import com.example.cook_ford.presentation.component.widgets.StarRatingBar
+import com.example.cook_ford.presentation.component.widgets.topbar_nav.TopBarNavigation
+import com.example.cook_ford.presentation.screens.MainActivity
 import com.example.cook_ford.presentation.screens.profile.profile_details.model.Posts
 import com.example.cook_ford.presentation.screens.profile.profile_details.model.TimeSlots
 import com.example.cook_ford.presentation.theme.AppTheme
@@ -117,11 +127,14 @@ fun chipChangeListener(item: TimeSlots, checked: Boolean) =
 @Composable
 fun ProfileDetailScreen(
 	navController: NavController? = null,
-	onNavigateBack:()->Unit,
-	onNavigateToReViewScreen: () -> Unit,
+	onNavigateBack: () -> Unit,
+	onNavigateToReViewScreen: (String) -> Unit,
+	onNavigateToReportScreen: (String) -> Unit,
 	onNavigateToAuthenticatedHomeRoute: () -> Unit,
-	profileDetailsViewModel: ProfileDetailsViewModel = hiltViewModel()) {
+) {
+	val profileDetailsViewModel: ProfileDetailsViewModel = hiltViewModel()
 	val profileState by remember { profileDetailsViewModel.profileState }
+	val context = LocalContext.current as MainActivity
 
 	Progressbar(profileState.isLoading)
 	Log.d("TAG", "ProfileDetailScreen isLoading: ${profileState.isSuccessful}")
@@ -130,8 +143,9 @@ fun ProfileDetailScreen(
 	}*/
 
 	if (profileState.isSuccessful) {
-
-		LazyColumn {
+		LazyColumn(modifier = Modifier
+			.fillMaxSize(),
+			horizontalAlignment = Alignment.CenterHorizontally) {
 			profileState.profile?.size?.let { profile->
 				items(profile){  index->
 					TopBar(onNavigateBack = { onNavigateBack.invoke() })
@@ -141,9 +155,18 @@ fun ProfileDetailScreen(
 					SocialMediaIcons(
 						onClickIcon2 = {
 							Log.d("TAG", "ProfileDetailScreen: onClickIcon2")
-							onNavigateToReViewScreen.invoke()
+							onNavigateToReViewScreen.invoke(profileDetailsViewModel.getProfileId().toString())
+						} ,
+						onClickIcon3 = {
+							Log.d("TAG", "ProfileDetailScreen: onClickIcon3")
+						} ,
+						onClickIcon5 = {
+							Log.d("TAG", "ProfileDetailScreen: onClickIcon5")
+							onNavigateToReportScreen.invoke(profileDetailsViewModel.getProfileId().toString())
 						}
+						
 					)
+					Share(text = "https://medium.com/@jpmtech", context = context)
 					/*  SocialMediaIcons(
                         onClickIcon1 = onClickIcon1,
                         onClickIcon2 = onClickIcon2,
@@ -160,13 +183,19 @@ fun ProfileDetailScreen(
 					HorizontalDivider(modifier = Modifier.background(Color.LightGray))
 					Spacer(modifier = Modifier.height(10.dp))
 					ExperienceCard(profileState.profile!![index], time_slots = time_slots)
-					PostsComponent(posts_list = posts_list)
-					Spacer(modifier = Modifier.height(16.dp))
+					CuisineImages(posts_list = posts_list, modifier = Modifier.padding(top = 10.dp))
+					Spacer(modifier = Modifier.height(10.dp))
+					Ratings(modifier = Modifier
+						.fillMaxWidth()
+						.padding(start = 10.dp, end = 10.dp))
+					Spacer(modifier = Modifier.height(10.dp))
+					StatusCard()
 				}
 			}
 		}
 	}
 }
+
 
 @Composable
 fun TopBar(onNavigateBack:()->Unit) {
@@ -199,52 +228,6 @@ fun TopBar(onNavigateBack:()->Unit) {
 				modifier = Modifier
 					.size(120.dp)
 					.align(Alignment.BottomCenter)
-			)
-		}
-	}
-}
-
-@Composable
-fun TopBarNavigation(onNavigateBack:()->Unit) {
-	Row(
-		modifier = Modifier
-			.fillMaxWidth()
-			.padding(start = 15.dp, end = 15.dp, top = 15.dp),
-		horizontalArrangement = Arrangement.SpaceBetween,
-		verticalAlignment = Alignment.CenterVertically
-	) {
-		IconButton(
-			onClick = {
-				onNavigateBack.invoke()
-			},
-			modifier = Modifier
-				.background(color = Color.White, shape = CircleShape)
-				.clip(CircleShape)
-				.size(40.dp)
-
-		) {
-			Icon(Icons.Filled.ArrowBackIosNew, contentDescription = "")
-		}
-		Row(
-			modifier = Modifier
-				.width(70.dp)
-				.background(color = Color.White, shape = RoundedCornerShape(8.dp))
-				.padding(3.dp)
-				.clip(RoundedCornerShape(8.dp)),
-			horizontalArrangement = Arrangement.spacedBy(
-				4.dp,
-				Alignment.CenterHorizontally
-			),
-			verticalAlignment = Alignment.CenterVertically
-		) {
-			Text(
-				text = "4.8",
-				fontWeight = FontWeight.Bold,
-				color = Color.Black
-			)
-			Image(
-				painter = painterResource(id = R.drawable.star_full),
-				contentDescription = null,
 			)
 		}
 	}
@@ -299,7 +282,7 @@ fun Stats(profile: ProfileResponse, followers: String, following: String) {
 		Text(
 			text = buildAnnotatedString {
 				val boldStyle = SpanStyle(
-					color = Color.Black,
+					color = Color.DarkGray,
 					fontWeight = FontWeight.Bold
 				)
 				append(" Last updated profile ")
@@ -503,7 +486,7 @@ fun ExperienceCard(profile: ProfileResponse, time_slots: List<TimeSlots>) {
 			modifier = Modifier.padding(top = AppTheme.dimens.paddingSmall),
 			text = "Cuisines",
 			style = MaterialTheme.typography.subtitle2,
-			color = Color.Black
+			color = Color.DarkGray
 		)
 		profile?.profile?.cuisine?.let {
 			Text(
@@ -522,7 +505,7 @@ fun ExperienceCard(profile: ProfileResponse, time_slots: List<TimeSlots>) {
 			modifier = Modifier.padding(top = AppTheme.dimens.paddingSmall),
 			text = "Languages",
 			style = MaterialTheme.typography.subtitle2,
-			color = Color.Black
+			color = Color.DarkGray
 		)
 		profile?.profile?.language?.let {
 			Text(
@@ -541,7 +524,7 @@ fun ExperienceCard(profile: ProfileResponse, time_slots: List<TimeSlots>) {
 			modifier = Modifier.padding(top = AppTheme.dimens.paddingSmall),
 			text = "Visit",
 			style = MaterialTheme.typography.subtitle2,
-			color = Color.Black
+			color = Color.DarkGray
 		)
 		Text(
 			modifier = Modifier.padding(
@@ -558,7 +541,7 @@ fun ExperienceCard(profile: ProfileResponse, time_slots: List<TimeSlots>) {
 			modifier = Modifier.padding(top = AppTheme.dimens.paddingSmall),
 			text = "Available Part-Time Time Slots",
 			style = MaterialTheme.typography.subtitle2,
-			color = Color.Black
+			color = Color.DarkGray
 		)
 		TimeSlotsComponent(timeSlots = time_slots, onSelectedChanged = { slots, selected->
 			chipChangeListener(slots, selected).let {
@@ -574,7 +557,7 @@ fun ExperienceCard(profile: ProfileResponse, time_slots: List<TimeSlots>) {
 			modifier = Modifier.padding(top = AppTheme.dimens.paddingSmall),
 			text = "Expectation",
 			style = MaterialTheme.typography.subtitle2,
-			color = Color.Black
+			color = Color.DarkGray
 		)
 		Card(modifier = Modifier
 			.fillMaxWidth()
@@ -592,7 +575,7 @@ fun ExperienceCard(profile: ProfileResponse, time_slots: List<TimeSlots>) {
 						modifier = Modifier.padding(top = AppTheme.dimens.paddingSmall),
 						text = "Charges can go up or down based on the requirements.",
 						style = MaterialTheme.typography.subtitle2,
-						color = Color.Black,
+						color = Color.DarkGray,
 						textAlign = TextAlign.Center
 					)
 				}
@@ -605,7 +588,7 @@ fun ExperienceCard(profile: ProfileResponse, time_slots: List<TimeSlots>) {
 				modifier = Modifier
 					.weight(0.6f)
 					.padding(top = AppTheme.dimens.paddingSmall),
-				text = "Part time (Daily meals for two in two visit) ",
+				text = "Part time (Daily meals for two visit) ",
 				style = MaterialTheme.typography.subtitle2,
 				color = Color.Gray
 			)
@@ -616,7 +599,7 @@ fun ExperienceCard(profile: ProfileResponse, time_slots: List<TimeSlots>) {
 					.padding(top = AppTheme.dimens.paddingSmall),
 				text = "Rs. 10000/month",
 				style = MaterialTheme.typography.subtitle2,
-				color = Color.Black
+				color = Color.DarkGray
 			)
 		}
 	}
@@ -675,40 +658,53 @@ fun FilterChipExample(timeSlots: TimeSlots, selected: Boolean? = null, onChipCli
 
 @ExperimentalFoundationApi
 @Composable
-fun PostsComponent(posts_list: List<Posts>, modifier: Modifier = Modifier) {
-	LazyRow(modifier = Modifier.scale(1.01f)) {
-		items(posts_list.size) {
-			Log.d("TAG", "PostsComponent: ${posts_list[it].url}")
-			Card(modifier = Modifier
-				.width(300.dp)
-				.height(150.dp)
-				.padding(horizontal = 5.dp)) {
-				Image(
-					painter = rememberAsyncImagePainter(posts_list[it].url),
-					contentDescription = posts_list[it].name,
-					contentScale = ContentScale.Crop,
-					modifier = Modifier.fillMaxSize()
-				)
+fun CuisineImages(posts_list: List<Posts>, modifier: Modifier = Modifier) {
+	Column(modifier = modifier
+		.fillMaxWidth()
+		.padding(start = 10.dp, end = 10.dp),
+		verticalArrangement = Arrangement.SpaceBetween) {
+		Text(
+			textAlign = TextAlign.Start,
+			text = "Best Dishes",
+			style = MaterialTheme.typography.subtitle2,
+			color = Color.DarkGray
+		)
+
+		LazyRow(modifier = modifier.scale(1.01f)) {
+			items(posts_list.size) {
+				Log.d("TAG", "CuisineImages: ${posts_list[it].url}")
+				Card(modifier = Modifier
+					.width(300.dp)
+					.height(150.dp)
+					.padding(horizontal = 5.dp)) {
+					Image(
+						painter = rememberAsyncImagePainter(posts_list[it].url),
+						contentDescription = posts_list[it].name,
+						contentScale = ContentScale.Crop,
+					)
+				}
 			}
 		}
 	}
 }
 
 
-
 @Composable
 fun SocialMediaIcons(
 	onClickIcon1: () -> Unit = {},
-	onClickIcon2: () -> Unit,
+	onClickIcon2: () -> Unit = {},
 	onClickIcon3: () -> Unit = {},
 	onClickIcon4: () -> Unit = {},
+	onClickIcon5: () -> Unit = {},
 	icon1Painter: Painter = painterResource(id = R.drawable.ic_call),
 	icon2Painter: Painter = painterResource(id = R.drawable.ic_review),
 	icon3Painter: Painter = painterResource(id = R.drawable.ic_share),
-	icon4Painter: Painter = painterResource(id = R.drawable.ic_report),
+	icon4Painter: Painter = painterResource(id = R.drawable.ic_note),
+	icon5Painter: Painter = painterResource(id = R.drawable.ic_report),
 	iconBackgroundColor: Color = Color.DarkGray,
 	iconTintColor: Color = Color.White,
 	contentPadding: Dp = 16.dp) {
+
 	Row(modifier = Modifier
 		.fillMaxWidth()
 		.wrapContentHeight()
@@ -755,16 +751,82 @@ fun SocialMediaIcons(
 			onClick = { onClickIcon4() },
 			modifier = Modifier
 				.clip(CircleShape)
-				.background(iconBackgroundColor)
-		) {
+				.background(iconBackgroundColor)) {
 			Icon(
 				painter = icon4Painter,
 				contentDescription = null,
 				tint = iconTintColor
 			)
 		}
+		IconButton(
+			onClick = { onClickIcon5() },
+			modifier = Modifier
+				.clip(CircleShape)
+				.background(iconBackgroundColor)) {
+			Icon(
+				painter = icon5Painter,
+				contentDescription = null,
+				tint = iconTintColor
+			)
+		}
 	}
 }
+
+
+@Composable
+fun Ratings(modifier: Modifier) {
+	var rating1 by remember { mutableFloatStateOf(0.0f) }
+	repeat(4){
+		Row(modifier = modifier,
+			verticalAlignment = Alignment.CenterVertically,
+			horizontalArrangement = Arrangement.SpaceBetween) {
+			Text(text = "Review", color = Color.DarkGray)
+			StarRatingBar(
+				maxStars = 5,
+				rating = rating1,
+				onRatingChanged = {
+					rating1 = it
+				}
+			)
+		}
+	}
+}
+
+@Composable
+fun StatusCard() {
+	Row(modifier = Modifier.background(Color.LightGray).padding(bottom = 20.dp)) {
+		Text(
+			modifier = Modifier.padding(8.dp),
+			text = "All the cooks on Cook Ford are independent and manage their own profile." +
+					"We are helping them to find work without commission to the Agencies/Broker." +
+					"\n" +
+					"\n" +
+					"Please report any inaccuracy in the profile to Cook Ford or if you know the " +
+					"cook, help them to update or create their profile.",
+			style = MaterialTheme.typography.subtitle2,
+			color = Color.DarkGray
+		)
+	}
+}
+
+// Our custom sharing component
+@Composable
+fun Share(text: String, context: Context) {
+	val sendIntent = Intent(Intent.ACTION_SEND).apply {
+		putExtra(Intent.EXTRA_TEXT, text)
+		type = "text/plain"
+	}
+	val shareIntent = Intent.createChooser(sendIntent, null)
+
+
+	Button(onClick = {
+		ContextCompat.startActivity(context, shareIntent, null)
+	}) {
+		Icon(imageVector = Icons.Default.Share, contentDescription = null)
+		androidx.compose.material3.Text("Share", modifier = Modifier.padding(start = 8.dp))
+	}
+}
+
 
 @ExperimentalFoundationApi
 @Preview
@@ -774,6 +836,7 @@ fun ProfilePreview() {
 		ProfileDetailScreen(
 			onNavigateBack = {},
 			onNavigateToReViewScreen = {},
+			onNavigateToReportScreen = {},
 			onNavigateToAuthenticatedHomeRoute = {})
 	}
 }

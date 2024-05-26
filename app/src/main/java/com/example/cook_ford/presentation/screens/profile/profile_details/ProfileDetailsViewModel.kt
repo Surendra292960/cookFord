@@ -17,26 +17,27 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class ProfileDetailsViewModel @Inject constructor(
+open class ProfileDetailsViewModel @Inject constructor(
     private val profileUseCase: ProfileUseCase,
     private val userSession: UserSession,
-    stateHandle: SavedStateHandle
+    private val stateHandle: SavedStateHandle
 ) : ViewModel() {
 
     private val _profileState = mutableStateOf(ProfileDetailState())
     val profileState: State<ProfileDetailState> = _profileState
 
     init {
-        val profileId = stateHandle.get<String>(AppConstants.PROFILE_ID)
-        Log.d("TAG", " stateHandle  : $profileId: ")
-        if (!profileId.isNullOrEmpty()){
-            makeProfileRequest(profileId = profileId)
+        getProfileId()?.let {
+            Log.d("TAG", " stateHandle  : $it")
+            getProfileId()?.let { makeProfileRequest(profileId = it) }
         }
     }
 
+    fun getProfileId() = stateHandle.get<String>(AppConstants.PROFILE_ID)
+
     private fun makeProfileRequest(profileId: String) = viewModelScope.launch(Dispatchers.IO) {
         Log.d("TAG", "makeProfileRequest profileId: $profileId")
-        //_profileState.value = _profileState.value.copy(isLoading = true)
+        // _profileState.value = _profileState.value.copy(isLoading = true)
         profileUseCase.invoke(profileId).collect { result ->
             when(result){
                 is NetworkResult.Success->{
@@ -44,18 +45,19 @@ class ProfileDetailsViewModel @Inject constructor(
                         result.data?.let { response->
                             _profileState.value = _profileState.value.copy(isLoading = false, profile = listOf(response), isSuccessful = true)
                         }
-                        Log.d("TAG", "getProfileById getProfileResponse: ${Gson().toJson(_profileState.value)}")
+                        Log.d("TAG", "makeProfileRequest-> getProfileResponse: ${Gson().toJson(_profileState.value)}")
                     }
                 }
                 is NetworkResult.Error->{
-                    Log.d("TAG", "getProfileById Error: ${Gson().toJson(_profileState.value)}")
+                    Log.d("TAG", "makeProfileRequest-> Error: ${Gson().toJson(_profileState.value)}")
                     _profileState.value = _profileState.value.copy(errorMessage = result.message!!)
                 }
                 is NetworkResult.Loading->{
-                    Log.d("TAG", "getProfileById: Loading")
+                    Log.d("TAG", "makeProfileRequest->: Loading")
                     _profileState.value = _profileState.value.copy(isLoading = true)
                 }
             }
         }
     }
 }
+

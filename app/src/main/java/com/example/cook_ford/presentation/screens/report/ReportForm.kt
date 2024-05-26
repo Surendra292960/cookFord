@@ -1,4 +1,4 @@
-package com.example.cook_ford.presentation.screens.profile.profile_review
+package com.example.cook_ford.presentation.screens.report
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -16,16 +16,16 @@ import com.example.cook_ford.presentation.component.widgets.KeyboardOption
 import com.example.cook_ford.presentation.component.widgets.SubmitButton
 import com.example.cook_ford.presentation.component.widgets.Textarea
 import com.example.cook_ford.presentation.component.widgets.snack_bar.MainViewState
-import com.example.cook_ford.presentation.screens.profile.profile_review.state.ReviewState
+import com.example.cook_ford.presentation.screens.report.state.ReportState
 import com.example.cook_ford.presentation.theme.AppTheme
 import com.example.cook_ford.utils.AppConstants
 
 @Composable
-fun ReviewForm(
-    reviewState: ReviewState,
+fun ReportForm(
+    reportState: ReportState,
     viewState: MainViewState,
     modifier: Modifier,
-    onReviewChange: (String) -> Unit,
+    onReportChange: (String) -> Unit,
     onSubmit: () -> Unit){
 
         Column(modifier = modifier) {
@@ -33,12 +33,12 @@ fun ReviewForm(
             Spacer(modifier = Modifier.height(10.dp))
 
             Textarea(
-                value = reviewState.review,
-                onChange = onReviewChange,
+                value = reportState.report,
+                onChange = onReportChange,
                 modifier = Modifier.fillMaxWidth().height(320.dp),
-                keyboardOptions = KeyboardOption(imeAction = ImeAction.Done, keyboardType = KeyboardType.Text,label = AppConstants.REVIEW, placeholder = AppConstants.REVIEW_PLACEHOLDER),
-                isError = reviewState.errorState.reviewErrorState.hasError,
-                errorText = stringResource(id = reviewState.errorState.reviewErrorState.errorMessageStringResource),
+                keyboardOptions = KeyboardOption(imeAction = ImeAction.Done, keyboardType = KeyboardType.Text,label = AppConstants.REPORT, placeholder = AppConstants.REPORT_PLACEHOLDER),
+                isError = reportState.errorState.reportErrorState.hasError,
+                errorText = stringResource(id = reportState.errorState.reportErrorState.errorMessageStringResource),
                 maxChar = 800
                 /*submit = { TODO() }*/)
 

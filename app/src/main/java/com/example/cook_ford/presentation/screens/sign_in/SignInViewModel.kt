@@ -5,12 +5,13 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.cook_ford.data.local.SessionConstant.ACCESS_TOKEN
+import com.example.cook_ford.data.local.SessionConstant.USER_TYPE
 import com.example.cook_ford.data.local.UserSession
 import com.example.cook_ford.data.remote.NetworkResult
 import com.example.cook_ford.data.remote.auth_request.SignInRequest
 import com.example.cook_ford.data.remote.auth_response.SignInResponse
 import com.example.cook_ford.domain.use_cases.SignInUseCase
-import com.example.cook_ford.presentation.common.widgets.snack_bar.MainViewState
+import com.example.cook_ford.presentation.component.widgets.snack_bar.MainViewState
 import com.example.cook_ford.presentation.screens.sign_in.state.ErrorState
 import com.example.cook_ford.presentation.screens.sign_in.state.SignInErrorState
 import com.example.cook_ford.presentation.screens.sign_in.state.SignInState
@@ -197,9 +198,9 @@ class SignInViewModel @Inject constructor(private val signInUseCase: SignInUseCa
                             signInState.value = signInState.value.copy(isSignInSuccessful = result.status)
                             //TODO save token after dialog dismiss
                             userSession.put(ACCESS_TOKEN, response.accessToken)
+                            userSession.put(USER_TYPE, response.userType)
                             _viewState.update { currentState -> currentState.copy(isLoading = false) }
                         }
-                        Log.d("TAG", "makeSigInRequest: ${userSession.getString(ACCESS_TOKEN)}")
                     }
                 }
                 is NetworkResult.Error->{

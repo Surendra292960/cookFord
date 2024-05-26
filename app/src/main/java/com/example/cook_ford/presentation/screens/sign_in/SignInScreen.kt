@@ -40,11 +40,10 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.repeatOnLifecycle
 import com.example.cook_ford.R
-import com.example.cook_ford.presentation.common.customeComposableViews.TitleText
-import com.example.cook_ford.presentation.common.widgets.dialog.CustomDialog
-import com.example.cook_ford.presentation.common.widgets.dialog.ResetWarning
-import com.example.cook_ford.presentation.common.widgets.snack_bar.MainViewState
-import com.example.cook_ford.presentation.screens.sign_in.state.SignInState
+import com.example.cook_ford.presentation.component.customeComposableViews.TitleText
+import com.example.cook_ford.presentation.component.widgets.dialog.CustomDialog
+import com.example.cook_ford.presentation.component.widgets.dialog.ResetWarning
+import com.example.cook_ford.presentation.component.widgets.snack_bar.MainViewState
 import com.example.cook_ford.presentation.screens.sign_in.state.SignInUiEvent
 import com.example.cook_ford.presentation.theme.AppTheme
 import com.example.cook_ford.presentation.theme.Cook_fordTheme

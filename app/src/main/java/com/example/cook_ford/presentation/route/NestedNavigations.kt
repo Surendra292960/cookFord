@@ -1,5 +1,6 @@
 package com.example.cook_ford.presentation.route
 
+import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavController
@@ -9,7 +10,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.example.cook_ford.presentation.screens.SplashScreen
-import com.example.cook_ford.presentation.screens.dashboard.users.UserDashBoard
+import com.example.cook_ford.presentation.screens.report.ReportScreen
+import com.example.cook_ford.presentation.screens.dashboard.home.UserDashBoard
 import com.example.cook_ford.presentation.screens.onboard.OnBoardingScreen
 import com.example.cook_ford.presentation.screens.profile.profile_details.ProfileDetailScreen
 import com.example.cook_ford.presentation.screens.profile.profile_list.ProfilesScreen
@@ -130,7 +132,13 @@ fun NavGraphBuilder.detailNavGraph(navController: NavHostController) {
         composable(NavigationRoutes.DetailsNavigation.ProfileDetail.route + "/{profileId}") {
             ProfileDetailScreen (
                 onNavigateBack = { navController.navigateUp() },
-                onNavigateToReViewScreen = {navController.navigate(route = NavigationRoutes.DetailsNavigation.ProfileReview.route)},
+                onNavigateToReViewScreen = { profileId->
+                    navController.navigate(route = NavigationRoutes.DetailsNavigation.ProfileReview.route + "/${profileId}")
+                },
+                onNavigateToReportScreen = { profileId->
+                    Log.d("TAG", "detailNavGraph: onNavigateToReportScreen")
+                    navController.navigate(route = NavigationRoutes.DetailsNavigation.ProfileReport.route + "/${profileId}")
+                },
                 onNavigateToAuthenticatedHomeRoute = {
                     navController.navigate(route = NavigationRoutes.DetailsNavigation.ProfileDetail.route){
                    /*    popUpTo(route = NavigationRoutes.HomeNavigation.NavigationRoute.route) {
@@ -141,11 +149,26 @@ fun NavGraphBuilder.detailNavGraph(navController: NavHostController) {
             )
         }
 
-        composable(route = NavigationRoutes.DetailsNavigation.ProfileReview.route){
+        composable(route = NavigationRoutes.DetailsNavigation.ProfileReview.route+ "/{profileId}"){
+            Log.d("TAG", "detailNavGraph: ProfileReviewScreen")
             ReviewScreen (
                 onNavigateBack = { navController.navigateUp() },
                 onNavigateToAuthenticatedHomeRoute = {
                     navController.navigate(route = NavigationRoutes.DetailsNavigation.ProfileReview.route){
+                        /*    popUpTo(route = NavigationRoutes.HomeNavigation.NavigationRoute.route) {
+                                inclusive = true
+                            }*/
+                    }
+                }
+            )
+        }
+
+        composable(route = NavigationRoutes.DetailsNavigation.ProfileReport.route+ "/{profileId}"){
+            Log.d("TAG", "detailNavGraph: ProfileReportScreen")
+            ReportScreen (
+                onNavigateBack = { navController.navigateUp() },
+                onNavigateToAuthenticatedHomeRoute = {
+                    navController.navigate(route = NavigationRoutes.DetailsNavigation.ProfileReport.route){
                         /*    popUpTo(route = NavigationRoutes.HomeNavigation.NavigationRoute.route) {
                                 inclusive = true
                             }*/

@@ -1,11 +1,12 @@
-package com.example.cook_ford.presentation.screens.profile.profile_review.state
+package com.example.cook_ford.presentation.screens.report.state
 import com.example.cook_ford.data.remote.profile_response.ProfileResponse
 import com.example.cook_ford.presentation.screens.sign_in.state.ErrorState
 import com.example.cook_ford.utils.AppConstants.EMPTY_STRING
 
-data class ReviewState(
-    val review: String = EMPTY_STRING,
-    val errorState: ReviewErrorState = ReviewErrorState(),
+
+data class ReportState(
+    val report: String = EMPTY_STRING,
+    val errorState: ReportErrorState = ReportErrorState(),
     val isLoading: Boolean = false,
     val profile: ProfileResponse? = null,
     val errorMessage: String = "",
@@ -13,9 +14,9 @@ data class ReviewState(
 )
 
 /**
- * Error state in review holding respective
+ * Error state in report holding respective
  * text field validation errors
  */
-data class ReviewErrorState(
-    val reviewErrorState: ErrorState = ErrorState(),
+data class ReportErrorState(
+    val reportErrorState: ErrorState = ErrorState(),
 )
