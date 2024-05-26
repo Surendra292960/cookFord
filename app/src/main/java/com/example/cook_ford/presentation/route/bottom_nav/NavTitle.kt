@@ -1,6 +1,7 @@
 package com.example.cook_ford.presentation.route.bottom_nav
 
 object NavTitle {
+
     //UnAuthenticated
     const val UNAUTHENTICATED = "unauthenticated"
     const val SPLASH = "splash"
@@ -21,5 +22,6 @@ object NavTitle {
     //Details
     const val DETAILS_NAV = "Details"
     const val DETAILS = "ProfileDetail"
+    const val REVIEW = "Review"
 }
 

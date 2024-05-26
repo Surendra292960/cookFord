@@ -105,10 +105,11 @@ fun BottomNavigationBar(
             bottomNavVisibility = false
             isVisible.invoke(false)
         }
-     /*   DetailScreen.CartScreen.route -> {
+        NavigationRoutes.DetailsNavigation.ProfileReview.route -> {
             bottomNavVisibility = false
             isVisible(false)
         }
+        /*
         DetailScreen.NotificationScreen.route -> {
             bottomNavVisibility = false
             isVisible(false)

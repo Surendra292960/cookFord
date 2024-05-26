@@ -39,5 +39,6 @@ sealed class NavigationRoutes {
     sealed class DetailsNavigation(val route: String) : NavigationRoutes() {
         data object NavigationRoute : DetailsNavigation(route = NavTitle.DETAILS_NAV)
         data object ProfileDetail : DetailsNavigation(route = NavTitle.DETAILS)
+        data object ProfileReview : DetailsNavigation(route = NavTitle.REVIEW)
     }
 }

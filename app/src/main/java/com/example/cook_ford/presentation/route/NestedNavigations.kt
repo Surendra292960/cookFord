@@ -12,7 +12,8 @@ import com.example.cook_ford.presentation.screens.SplashScreen
 import com.example.cook_ford.presentation.screens.dashboard.users.UserDashBoard
 import com.example.cook_ford.presentation.screens.onboard.OnBoardingScreen
 import com.example.cook_ford.presentation.screens.profile.profile_details.ProfileDetailScreen
-import com.example.cook_ford.presentation.screens.profile.profile_list.ProfileListScreen
+import com.example.cook_ford.presentation.screens.profile.profile_list.ProfilesScreen
+import com.example.cook_ford.presentation.screens.profile.profile_review.ReviewScreen
 import com.example.cook_ford.presentation.screens.sign_in.SignInScreen
 import com.example.cook_ford.presentation.screens.sign_up.SignUpScreen
 import com.example.cook_ford.utils.AppConstants
@@ -105,7 +106,7 @@ fun HomeNavGraph(navController: NavHostController) {
         startDestination = NavigationRoutes.HomeNavigation.Home.route) {
 
         composable(NavigationRoutes.HomeNavigation.Home.route) {
-            ProfileListScreen(
+            ProfilesScreen(
                 onNavigateToProfileDetails = { profileId ->
                     navController.navigate(route = NavigationRoutes.DetailsNavigation.ProfileDetail.route + "/${profileId}") {
                         popUpTo(route = NavigationRoutes.Authenticated.NavigationRoute.route) {
@@ -129,11 +130,25 @@ fun NavGraphBuilder.detailNavGraph(navController: NavHostController) {
         composable(NavigationRoutes.DetailsNavigation.ProfileDetail.route + "/{profileId}") {
             ProfileDetailScreen (
                 onNavigateBack = { navController.navigateUp() },
+                onNavigateToReViewScreen = {navController.navigate(route = NavigationRoutes.DetailsNavigation.ProfileReview.route)},
                 onNavigateToAuthenticatedHomeRoute = {
                     navController.navigate(route = NavigationRoutes.DetailsNavigation.ProfileDetail.route){
-                       popUpTo(route = NavigationRoutes.HomeNavigation.NavigationRoute.route) {
+                   /*    popUpTo(route = NavigationRoutes.HomeNavigation.NavigationRoute.route) {
                             inclusive = true
-                        }
+                        }*/
+                    }
+                }
+            )
+        }
+
+        composable(route = NavigationRoutes.DetailsNavigation.ProfileReview.route){
+            ReviewScreen (
+                onNavigateBack = { navController.navigateUp() },
+                onNavigateToAuthenticatedHomeRoute = {
+                    navController.navigate(route = NavigationRoutes.DetailsNavigation.ProfileReview.route){
+                        /*    popUpTo(route = NavigationRoutes.HomeNavigation.NavigationRoute.route) {
+                                inclusive = true
+                            }*/
                     }
                 }
             )

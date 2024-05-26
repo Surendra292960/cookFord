@@ -1,5 +1,4 @@
 package com.example.cook_ford.presentation.screens.profile.profile_details
-
 import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -43,9 +42,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -70,10 +67,11 @@ import com.example.cook_ford.R
 import com.example.cook_ford.data.remote.profile_response.ProfileResponse
 import com.example.cook_ford.presentation.common.customeComposableViews.Child
 import com.example.cook_ford.presentation.common.widgets.Progressbar
+import com.example.cook_ford.presentation.screens.profile.profile_details.model.Posts
+import com.example.cook_ford.presentation.screens.profile.profile_details.model.TimeSlots
 import com.example.cook_ford.presentation.theme.AppTheme
 import com.example.cook_ford.presentation.theme.Cook_fordTheme
 import com.example.cook_ford.presentation.theme.OrangeYellow1
-import com.example.cook_ford.utils.AppConstants
 
 
 val time_slots = listOf(
@@ -103,14 +101,6 @@ val posts_list = listOf(
 		"gojo"
 	),
 	Posts(
-		"https://bit.ly/3BdkZ97",
-		"hanging around with friend"
-	),
-	Posts(
-		"https://bit.ly/3Acr702",
-		"careless"
-	),
-	Posts(
 		"https://bit.ly/3mtCMT8",
 		"young gojo"
 	),
@@ -128,6 +118,7 @@ fun chipChangeListener(item: TimeSlots, checked: Boolean) =
 fun ProfileDetailScreen(
 	navController: NavController? = null,
 	onNavigateBack:()->Unit,
+	onNavigateToReViewScreen: () -> Unit,
 	onNavigateToAuthenticatedHomeRoute: () -> Unit,
 	profileDetailsViewModel: ProfileDetailsViewModel = hiltViewModel()) {
 	val profileState by remember { profileDetailsViewModel.profileState }
@@ -147,7 +138,12 @@ fun ProfileDetailScreen(
 					Spacer(modifier = Modifier.height(10.dp))
 					Stats(profileState.profile!![index], "10.1M", "100")
 					Spacer(modifier = Modifier.height(10.dp))
-					SocialMediaIcons()
+					SocialMediaIcons(
+						onClickIcon2 = {
+							Log.d("TAG", "ProfileDetailScreen: onClickIcon2")
+							onNavigateToReViewScreen.invoke()
+						}
+					)
 					/*  SocialMediaIcons(
                         onClickIcon1 = onClickIcon1,
                         onClickIcon2 = onClickIcon2,
@@ -179,27 +175,21 @@ fun TopBar(onNavigateBack:()->Unit) {
 			.clickable(onClick = { })
 			.fillMaxWidth()) {
 		Box(modifier = Modifier
-				.height(230.dp)
-				.fillMaxWidth()) {
+			.height(230.dp)
+			.fillMaxWidth()) {
 			Box(modifier = Modifier
-					.height(180.dp)
-					.fillMaxWidth()) {
+				.height(180.dp)
+				.fillMaxWidth()) {
 				Image(
 					painter = rememberAsyncImagePainter("https://bit.ly/3oAIk0M"),
 					contentDescription = "",
 					modifier = Modifier.fillMaxSize(),
 					contentScale = ContentScale.Crop,)
 				Box(modifier = Modifier
-						.height(90.dp)
-						.fillMaxWidth()
-						.background(
-							Brush.verticalGradient(
-								listOf(
-									Color.Transparent,
-									Color.Black
-								)
-							)
-						).align(Alignment.BottomStart)
+					.height(90.dp)
+					.fillMaxWidth()
+					.background(Brush.verticalGradient(listOf(Color.Transparent, Color.Black)))
+					.align(Alignment.BottomStart)
 				)
 			}
 
@@ -230,6 +220,7 @@ fun TopBarNavigation(onNavigateBack:()->Unit) {
 			modifier = Modifier
 				.background(color = Color.White, shape = CircleShape)
 				.clip(CircleShape)
+				.size(40.dp)
 
 		) {
 			Icon(Icons.Filled.ArrowBackIosNew, contentDescription = "")
@@ -253,7 +244,7 @@ fun TopBarNavigation(onNavigateBack:()->Unit) {
 			)
 			Image(
 				painter = painterResource(id = R.drawable.star_full),
-				contentDescription = null
+				contentDescription = null,
 			)
 		}
 	}
@@ -342,7 +333,7 @@ fun Stats(profile: ProfileResponse, followers: String, following: String) {
 					Icon(
 						Icons.Filled.Star,
 						"",
-						tint = Color.Red,
+						tint = OrangeYellow1,
 						modifier = Modifier
 							.size(20.dp)
 							.align(Alignment.CenterVertically)
@@ -488,15 +479,13 @@ fun ExperienceCard(profile: ProfileResponse, time_slots: List<TimeSlots>) {
 				horizontalArrangement = Arrangement.Center) {
 				// Experience
 				profile?.gender?.let {
-					Child(
-						modifier = Modifier.weight(1f),
+					Child(modifier = Modifier.weight(1f),
 						title = "Gender",
 						text = it
 					)
 				}
 				// Language
-				Child(
-					modifier = Modifier.weight(1f),
+				Child(modifier = Modifier.weight(1f),
 					title = "Age",
 					text = profile?.profile?.age.toString()
 				)
@@ -710,7 +699,7 @@ fun PostsComponent(posts_list: List<Posts>, modifier: Modifier = Modifier) {
 @Composable
 fun SocialMediaIcons(
 	onClickIcon1: () -> Unit = {},
-	onClickIcon2: () -> Unit = {},
+	onClickIcon2: () -> Unit,
 	onClickIcon3: () -> Unit = {},
 	onClickIcon4: () -> Unit = {},
 	icon1Painter: Painter = painterResource(id = R.drawable.ic_call),
@@ -782,11 +771,10 @@ fun SocialMediaIcons(
 @Composable
 fun ProfilePreview() {
 	Cook_fordTheme {
-		ProfileDetailScreen(onNavigateBack = {}, onNavigateToAuthenticatedHomeRoute = {})
+		ProfileDetailScreen(
+			onNavigateBack = {},
+			onNavigateToReViewScreen = {},
+			onNavigateToAuthenticatedHomeRoute = {})
 	}
 }
 
-data class Posts(val url: String, val name: String)
-data class TimeSlots(val slots: String, val initialSelection: Boolean = false){
-	var selected by mutableStateOf(initialSelection)
-}

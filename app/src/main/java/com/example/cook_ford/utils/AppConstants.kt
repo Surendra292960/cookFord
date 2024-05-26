@@ -35,9 +35,12 @@ object AppConstants {
     const val CONFIRM_PASSWORD = "Confirm Password"
     const val CONFIRM_PASSWORD_PLACEHOLDER = "Confirm Password"
 
-
     //HomeScreen
     const val HOME = "HOME"
     const val SEARCH = "SEARCH"
     const val PROFILE = "PROFILE"
+
+    //ReviewScreen
+    const val REVIEW = "Write Your Review"
+    const val REVIEW_PLACEHOLDER = "Review"
 }
