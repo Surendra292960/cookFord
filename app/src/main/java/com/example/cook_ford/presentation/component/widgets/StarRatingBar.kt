@@ -3,6 +3,7 @@ package com.example.cook_ford.presentation.component.widgets
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.selection.selectableGroup
@@ -36,7 +37,7 @@ fun StarRatingBar(
             val isSelected = i <= rating
             val icon = if (isSelected) Icons.Filled.Star else Icons.Default.Star
             val iconTintColor = if (isSelected) OrangeYellow1 else Color.LightGray
-            androidx.compose.material.Icon(
+            Icon(
                 imageVector = icon,
                 contentDescription = null,
                 tint = iconTintColor,

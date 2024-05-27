@@ -1,5 +1,7 @@
 package com.example.cook_ford.utils
 
+import android.content.Context
+import android.content.Intent
 import android.util.Log
 import java.text.ParseException
 import java.text.SimpleDateFormat
@@ -38,5 +40,25 @@ object Utility {
             e.printStackTrace()
         }
         return days
+    }
+
+
+    fun shareProfile(context: Context) {
+        // Get the file to share
+        /*val file = File(context.cacheDir, "profile.txt")
+        file.writeText("This is my profile information.")
+
+        // Create a content URI for the file
+        val uri = FileProvider.getUriForFile(context, "com.example.my.app.fileprovider", file)
+    */
+        // Create the share intent
+        val intent = Intent(Intent.ACTION_SEND).apply {
+            type = "text/plain"
+            putExtra(Intent.EXTRA_STREAM, "uri")
+            addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+        }
+
+        // Start the share activity
+        context.startActivity(Intent.createChooser(intent, "Share Profile"))
     }
 }

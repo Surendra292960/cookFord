@@ -41,10 +41,14 @@ object AppConstants {
     const val PROFILE = "PROFILE"
 
     //ReviewScreen
-    const val REVIEW = "Write Your Review"
-    const val REVIEW_PLACEHOLDER = "Review"
+    const val REVIEW = "Review"
+    const val REVIEW_PLACEHOLDER = "Write Your Review"
 
     //ReportScreen
-    const val REPORT = "Add more details"
+    const val REPORT = "Add Report"
     const val REPORT_PLACEHOLDER = "Add more details"
+
+    //NoteScreen
+    const val NOTE = "Add Note"
+    const val NOTE_PLACEHOLDER = "Any important details you want to remember about the cook (Only visible to you)"
 }

@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBackIosNew
@@ -21,18 +22,26 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.cook_ford.R
 
+
+@Preview
 @Composable
-fun TopBarNavigation(onNavigateBack:()->Unit) {
+fun PreviewScreen(){
+	TopBarNavigation(onNavigateBack = {}, title = "Home")
+}
+@Composable
+fun TopBarNavigation(onNavigateBack: () -> Unit, title: String) {
 	Row(
 		modifier = Modifier
 			.fillMaxWidth()
-			.padding(start = 15.dp, end = 15.dp, top = 15.dp),
+			.padding(15.dp),
 		horizontalArrangement = Arrangement.SpaceBetween,
-		verticalAlignment = Alignment.CenterVertically
-	) {
+		verticalAlignment = Alignment.CenterVertically) {
 		IconButton(
 			onClick = {
 				onNavigateBack.invoke()
@@ -45,6 +54,14 @@ fun TopBarNavigation(onNavigateBack:()->Unit) {
 		) {
 			Icon(Icons.Filled.ArrowBackIosNew, contentDescription = "")
 		}
+
+		Text(
+			text = title,
+			color = Color.DarkGray,
+			style = MaterialTheme.typography.subtitle2,
+			fontSize = 18.sp,
+			textDecoration = TextDecoration.None,
+		)
 		Row(
 			modifier = Modifier
 				.width(70.dp)
