@@ -23,7 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.cook_ford.presentation.component.widgets.bottom_nav.BottomNavigationBar
-import com.example.cook_ford.presentation.component.widgets.topbar_nav.AppTopBar
+import com.example.cook_ford.presentation.component.widgets.topbar_nav.NavTopBar
 import com.example.cook_ford.presentation.route.HomeNavGraph
 import com.example.cook_ford.presentation.route.bottom_nav.NavTitle
 import com.example.cook_ford.presentation.theme.Cook_fordTheme
@@ -56,11 +56,11 @@ fun UserDashBoard(
     Scaffold(modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
             Surface(shadowElevation = 3.dp) {
-                AppTopBar(
-                    title = appBarTitle,
-                    navController = navController,
+                NavTopBar(
+                    modifier = Modifier,
+                    onNavigateBack = {navController.navigateUp()},
+                    title = appBarTitle.value,
                     isVisible = topBarVisibilityState.value,
-                    scrollBehavior = scrollBehavior
                 )
             }
         },

@@ -20,6 +20,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.cook_ford.presentation.route.NavigationRoutes
@@ -34,8 +35,7 @@ import com.example.cook_ford.utils.AppConstants
 fun BottomNavigationBar(
     navController: NavHostController,
     /*title: (String) -> Unit,*/
-    isVisible: (Boolean) -> Unit,
-) {
+    isVisible: (Boolean) -> Unit, ) {
     val navItems = listOf(
         NavigationRoutes.HomeNavigation.Home,
         NavigationRoutes.HomeNavigation.Search,
@@ -57,30 +57,34 @@ fun BottomNavigationBar(
                     elevation = 12.dp,
                 )
                 .clip(RoundedCornerShape(topEnd = 10.dp, topStart = 10.dp))) {
-            navItems.forEachIndexed { index, item ->
+            navItems.forEach { screen ->
                 NavigationBarItem(
                     alwaysShowLabel = true,
                     icon = {
                         Icon(
-                            item.icon,
-                            contentDescription = item.title,
-                            tint = if (navBackStackEntry?.destination?.route == item.route) MaterialTheme.colors.primary else LocalContentColor.current,
+                            screen.icon,
+                            contentDescription = screen.title,
+                            tint = if (navBackStackEntry?.destination?.route == screen.route) MaterialTheme.colors.primary else LocalContentColor.current,
                         )
                     },
-                    label = { Text(item.title) },
+                    label = { Text(screen.title) },
                     //selected = selectedItem == index,
-                    selected = navBackStackEntry?.destination?.route == item.route,
+                    selected = navBackStackEntry?.destination?.route == screen.route,
                     onClick = {
-                     //  title.invoke(item.title)
-                        selectedItem = index
-                        navController.navigate(item.route)
-                        /*{
-                            navController.graph.startDestinationRoute?.let { route ->
-                                popUpTo(route) { saveState = true }
+
+                        navController.navigate(screen.route) {
+                            // Pop up to the start destination of the graph to
+                            // avoid building up a large stack of destinations
+                            // on the back stack as users select items
+                            popUpTo(navController.graph.findStartDestination().id) {
+                                saveState = true
                             }
+                            // Avoid multiple copies of the same destination when
+                            // reselecting the same item
                             launchSingleTop = true
+                            // Restore state when reselecting a previously selected item
                             restoreState = true
-                        }*/
+                        }
                     }
                 )
             }

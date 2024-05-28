@@ -35,6 +35,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -116,11 +117,45 @@ fun CollapsingTopBar(scrollBehavior: TopAppBarScrollBehavior, isCollapsed: Boole
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AppTopBar(
-  scrollBehavior: TopAppBarScrollBehavior,
-  navController: NavHostController,
+fun NavTopBar(
+  modifier: Modifier = Modifier,
+  title: String,
   isVisible: Boolean,
-  title: MutableState<String>) {
+  onNavigateBack: () -> Unit = {},
+  actions: @Composable () -> Unit = {}) {
+  if (isVisible) {
+    TopAppBar(
+      title = {
+        Text(text = title)
+      },
+      actions = { actions() },
+      navigationIcon = {
+        IconButton(onClick = { onNavigateBack.invoke() }) {
+          Icon(
+            imageVector = Icons.Filled.ArrowBackIosNew, tint = Color.DarkGray,
+            contentDescription = stringResource(R.string.back)
+          )
+        }
+      },
+      modifier = modifier
+    )
+  } /*else {
+    TopAppBar(
+      title = {
+        Text(text = title)
+      },
+      actions = { actions() },
+      modifier = modifier
+    )
+  }*/
+}
+
+
+/*
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun AppTopBar(navigationBack: () -> Unit, scrollBehavior: TopAppBarScrollBehavior, navController: NavHostController, isVisible: Boolean, title: MutableState<String>) {
   val navBackStackEntry by navController.currentBackStackEntryAsState()
   if (isVisible){
     TopAppBar(
@@ -139,7 +174,7 @@ fun AppTopBar(
       navigationIcon = {
         // navigation icon is use
         // for drawer icon.
-        IconButton(onClick = {}) {
+        IconButton(onClick = {navigationBack.invoke()}) {
           // below line is use to
           // specify navigation icon.
           Icon(Icons.Filled.ArrowBackIosNew, contentDescription = "")
@@ -154,3 +189,4 @@ fun AppTopBar(
     )
   }
 }
+*/

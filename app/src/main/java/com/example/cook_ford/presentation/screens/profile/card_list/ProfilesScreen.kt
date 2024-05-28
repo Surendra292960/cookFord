@@ -73,6 +73,7 @@ fun ProfilesScreen(
     Log.d("TAG", "ProfileListScreen isLoading: ${profileViewModel.getResponseFromPref()}")
     LaunchedEffect(Unit) {
         profileViewModel.getProfileRequest()
+
     }
 
     if (profileState.isSuccessful && profileViewModel.getResponseFromPref()=="provider") {
@@ -124,14 +125,14 @@ fun UsersProfileList(index: Int, onItemClick: (String) -> Unit, profileState: Pr
 
                         // ProfilePicture
                         Box(modifier = Modifier
-                            .size(100.dp)
+                            .size(80.dp)
                             .wrapContentHeight()
                             .clip(CircleShape)
                             .background(Color.White)) {
                             Image(painter = painterResource(id = R.drawable.ic_chef_round),
                                 contentDescription = "",
                                 contentScale = ContentScale.Crop,
-                                modifier = Modifier.size(100.dp)
+                                modifier = Modifier.size(80.dp)
                             )
                         }
 

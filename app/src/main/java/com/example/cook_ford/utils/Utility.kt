@@ -3,6 +3,7 @@ package com.example.cook_ford.utils
 import android.content.Context
 import android.content.Intent
 import android.util.Log
+import com.example.cook_ford.presentation.route.bottom_nav.NavTitle
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -61,4 +62,16 @@ object Utility {
         // Start the share activity
         context.startActivity(Intent.createChooser(intent, "Share Profile"))
     }
+
+    fun getTitleByRoute(route:String): String {
+        return when (route) {
+            AppConstants.HOME -> NavTitle.HOME
+            AppConstants.SEARCH -> NavTitle.SEARCH
+            AppConstants.PROFILE -> NavTitle.PROFILE
+            AppConstants.REVIEW -> NavTitle.REVIEW
+            // other cases
+            else -> NavTitle.HOME
+        }
+    }
 }
+

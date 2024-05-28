@@ -111,14 +111,14 @@ fun ImageWithUserName(profileRes: ProfileResponse) {
 
                 // ProfilePicture
                 Box(modifier = Modifier
-                    .size(100.dp)
+                    .size(80.dp)
                     .wrapContentHeight()
                     .clip(CircleShape)
                     .background(Color.White)) {
                     Image(painter = painterResource(id = R.drawable.ic_chef_round),
                         contentDescription = null,
                         contentScale = ContentScale.Crop,
-                        modifier = Modifier.size(100.dp)
+                        modifier = Modifier.size(80.dp)
                     )
                 }
             }

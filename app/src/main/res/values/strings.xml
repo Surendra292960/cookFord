@@ -91,5 +91,6 @@ affordable price</string>
     <string name="dark_mode">DarkMode</string>
     <string name="videos">Videos</string>
     <string name="profile">Profile</string>
+    <string name="back">Back</string>
 
 </resources>

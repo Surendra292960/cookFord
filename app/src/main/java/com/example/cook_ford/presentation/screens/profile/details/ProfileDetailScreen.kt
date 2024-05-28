@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -22,12 +23,8 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Divider
 import androidx.compose.material.MaterialTheme
@@ -40,8 +37,6 @@ import androidx.compose.material.icons.filled.Call
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Done
 import androidx.compose.material.icons.filled.ExposureZero
-import androidx.compose.material.icons.filled.Fastfood
-import androidx.compose.material.icons.filled.FoodBank
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.BottomSheetDefaults
 import androidx.compose.material3.Card
@@ -71,10 +66,8 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
-import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -87,27 +80,20 @@ import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
 import com.example.cook_ford.R
 import com.example.cook_ford.data.remote.profile_response.ProfileResponse
+import com.example.cook_ford.data.remote.profile_response.TimeSlots
 import com.example.cook_ford.presentation.component.widgets.Child
 import com.example.cook_ford.presentation.component.widgets.Progressbar
 import com.example.cook_ford.presentation.component.widgets.StarRatingBar
-import com.example.cook_ford.presentation.component.widgets.SubmitButton
-import com.example.cook_ford.presentation.component.widgets.topbar_nav.TopBarNavigation
 import com.example.cook_ford.presentation.screens.MainActivity
-import com.example.cook_ford.presentation.screens.profile.details.model.Posts
 import com.example.cook_ford.presentation.screens.profile.details.model.ProfileCardView
-import com.example.cook_ford.presentation.screens.profile.details.model.TimeSlots
 import com.example.cook_ford.presentation.screens.profile.details.state.note_satate.NoteUiEvent
-import com.example.cook_ford.presentation.screens.profile.reviews.ReviewForm
-import com.example.cook_ford.presentation.screens.profile.reviews.state.ReviewUiEvent
 import com.example.cook_ford.presentation.theme.AppTheme
-import com.example.cook_ford.presentation.theme.Beige1
 import com.example.cook_ford.presentation.theme.Cook_fordTheme
 import com.example.cook_ford.presentation.theme.OrangeYellow1
-import com.example.cook_ford.presentation.theme.OrangeYellow3
 import com.example.cook_ford.utils.Utility.shareProfile
 
 
-val time_slots = listOf(
+/*val time_slots = listOf(
 	TimeSlots("8am-9am"),
 	TimeSlots("9am-10am"),
 	TimeSlots("10am-12am"),
@@ -117,8 +103,10 @@ val time_slots = listOf(
 	TimeSlots("7pm-8pm"),
 	TimeSlots("9pm-10pm"),
 	TimeSlots("11pm-12pm")
-)
+)*/
 
+val time_slots = mutableListOf(TimeSlots())
+/*
 val posts_list = listOf(
 
 	Posts(
@@ -141,7 +129,7 @@ val posts_list = listOf(
 		"https://bit.ly/3oAIk0M",
 		"domain expansion"
 	)
-)
+)*/
 
 fun chipChangeListener(item: TimeSlots, checked: Boolean) =
 	time_slots.find { it.slots == item.slots }?.let { task -> task.selected = checked }
@@ -159,13 +147,10 @@ fun ProfileDetailScreen(
 	val profileState by remember { profileDetailsViewModel.profileState }
 	var showCallBottomSheet by remember { mutableStateOf(false) }
 	var showNoteBottomSheet by remember { mutableStateOf(false) }
+	time_slots.clear()
 
 	Progressbar(profileState.isLoading)
 	Log.d("TAG", "ProfileDetailScreen isLoading: ${profileState.isSuccessful}")
-	/*LaunchedEffect(key1 = true) {
-		onNavigateToAuthenticatedHomeRoute.invoke()
-	}*/
-
 
 	if (profileState.isSuccessful) {
 		LazyColumn(modifier = Modifier
@@ -173,6 +158,11 @@ fun ProfileDetailScreen(
 			horizontalAlignment = Alignment.CenterHorizontally) {
 			profileState.profile?.size?.let { profile->
 				items(profile){  index->
+					profileState?.profile?.get(index)?.profile?.timeSlots?.let{
+						it.forEach { slots->
+							time_slots.add(TimeSlots(slots.startTime.trim().plus(" - "+slots.endTime.trim())))
+						}
+					}
 					TopBar(onNavigateBack = { onNavigateBack.invoke() })
 					Spacer(modifier = Modifier.height(10.dp))
 					Stats(profileState.profile!![index], "10.1M", "100")
@@ -207,25 +197,12 @@ fun ProfileDetailScreen(
 							Log.d("TAG", "ProfileDetailScreen: onClickIcon5")
 							onNavigateToReportScreen.invoke(profileDetailsViewModel.getProfileId().toString())
 						}
-						
 					)
-					/*  SocialMediaIcons(
-                        onClickIcon1 = onClickIcon1,
-                        onClickIcon2 = onClickIcon2,
-                        onClickIcon3 = onClickIcon3,
-                        onClickIcon4 = onClickIcon4,
-                        icon1Painter = icon1Painter,
-                        icon2Painter = icon2Painter,
-                        icon3Painter = icon3Painter,
-                        icon4Painter = icon4Painter,
-                        iconBackgroundColor = iconBackgroundColor,
-                        iconTintColor = iconTintColor,
-                        contentPadding = contentPadding
-                    )*/
+
 					HorizontalDivider(modifier = Modifier.background(Color.LightGray))
 					Spacer(modifier = Modifier.height(10.dp))
-					ExperienceCard(profileState.profile!![index], time_slots = time_slots)
-					CuisineImages(posts_list = posts_list, modifier = Modifier.padding(top = 10.dp))
+					ExperienceCard(profileState?.profile!![index], time_slots = time_slots)
+					profileState.profile!![index].profile?.topCuisineUrls?.let { CuisineImages(topCuisineUrls = it, modifier = Modifier.padding(top = 10.dp)) }
 					Spacer(modifier = Modifier.height(10.dp))
 					Ratings(modifier = Modifier
 						.fillMaxWidth()
@@ -264,7 +241,7 @@ fun TopBar(onNavigateBack:()->Unit) {
 				)
 			}
 
-			TopBarNavigation(onNavigateBack = {onNavigateBack.invoke()}, title = "")
+			//TopBarNavigation(onNavigateBack = {onNavigateBack.invoke()}, title = "")
 			ProfileImage(
 				contentDescription = null,
 				modifier = Modifier
@@ -484,13 +461,15 @@ fun ExperienceCard(profile: ProfileResponse, time_slots: List<TimeSlots>) {
 				// Language
 				Child(modifier = Modifier.weight(1f),
 					title = "Cook Type",
-					text = "Veg/Non Veg"
+					text = profile?.profile?.food_Type.toString()
 				)
 				// From
-				Child(modifier = Modifier.weight(1f),
-					title = "From",
-					text = "Delhi"
-				)
+				profile?.location?.type?.let {
+					Child(modifier = Modifier.weight(1f),
+						title = "From",
+						text = it
+					)
+				}
 			}
 			HorizontalDivider(modifier = Modifier
 				.height(3.dp)
@@ -573,7 +552,7 @@ fun ExperienceCard(profile: ProfileResponse, time_slots: List<TimeSlots>) {
 				top = AppTheme.dimens.paddingSmall,
 				bottom = AppTheme.dimens.paddingSmall
 			),
-			text = "Available for one or two visit daily.",
+			text = "Available for ".plus(profile?.profile?.no_of_visit).plus(" visit daily."),
 			style = MaterialTheme.typography.subtitle2,
 			color = Color.Gray
 		)
@@ -585,6 +564,7 @@ fun ExperienceCard(profile: ProfileResponse, time_slots: List<TimeSlots>) {
 			style = MaterialTheme.typography.subtitle2,
 			color = Color.DarkGray
 		)
+
 		TimeSlotsComponent(timeSlots = time_slots, onSelectedChanged = { slots, selected->
 			chipChangeListener(slots, selected).let {
 				time_slots.toSet().forEach {
@@ -594,6 +574,7 @@ fun ExperienceCard(profile: ProfileResponse, time_slots: List<TimeSlots>) {
 				}
 			}
 		})
+
 		//Expectation
 		Text(
 			modifier = Modifier.padding(top = AppTheme.dimens.paddingSmall),
@@ -655,25 +636,30 @@ fun TimeSlotsComponent(
 	modifier: Modifier = Modifier,
 	selectedCar: TimeSlots? = null,
 	onSelectedChanged: (TimeSlots, Boolean) -> Unit) {
+
 	FlowRow {
 		timeSlots.forEach { timeSlots ->
-			FilterChipExample(
-				timeSlots = timeSlots,
-				onChipClick = {
-					onSelectedChanged(it, !it.selected)
-					Log.d("TAG", "TimeSlotsComponent: ")
-				}
-			)
+			timeSlots?.slots?.let {
+				FilterChipExample(
+					timeSlots = timeSlots,
+					onChipClick = {
+						onSelectedChanged(it, !it.selected)
+						Log.d("TAG", "TimeSlotsComponent: $it")
+					}
+				)
+			}
 		}
 	}
 }
 
 @Composable
 fun FilterChipExample(timeSlots: TimeSlots, selected: Boolean? = null, onChipClick: (TimeSlots) -> Unit) {
+	Log.d("TAG", "TimeSlotsComponent timeSlots : ${timeSlots.slots}")
 	LaunchedEffect(key1 = true) {
-		time_slots.forEach { slots->
+		time_slots?.forEach { slots->
+			Log.d("TAG", "TimeSlotsComponent : ${slots?.slots}")
 			if (slots.selected) {
-				Log.d("TAG", "TimeSlotsComponent: ${slots.slots}")
+				Log.d("TAG", "TimeSlotsComponent selected : ${slots.slots}")
 			}
 		}
 	}
@@ -681,7 +667,7 @@ fun FilterChipExample(timeSlots: TimeSlots, selected: Boolean? = null, onChipCli
 		modifier = Modifier.padding(horizontal = 2.dp),
 		onClick = { onChipClick(timeSlots) },
 		label = {
-			Text(timeSlots.slots)
+			timeSlots.slots?.let { Text(it) }
 		},
 		selected = selected ?: timeSlots.selected,
 		leadingIcon = if (selected ?: timeSlots.selected) {
@@ -700,7 +686,7 @@ fun FilterChipExample(timeSlots: TimeSlots, selected: Boolean? = null, onChipCli
 
 @ExperimentalFoundationApi
 @Composable
-fun CuisineImages(posts_list: List<Posts>, modifier: Modifier = Modifier) {
+fun CuisineImages(topCuisineUrls: List<String>, modifier: Modifier = Modifier) {
 	Column(modifier = modifier
 		.fillMaxWidth()
 		.padding(start = 10.dp, end = 10.dp),
@@ -713,15 +699,15 @@ fun CuisineImages(posts_list: List<Posts>, modifier: Modifier = Modifier) {
 		)
 
 		LazyRow(modifier = modifier.scale(1.01f)) {
-			items(posts_list.size) {
-				Log.d("TAG", "CuisineImages: ${posts_list[it].url}")
+			items(topCuisineUrls.size) {
+				Log.d("TAG", "CuisineImages: $it")
 				Card(modifier = Modifier
 					.width(300.dp)
 					.height(150.dp)
 					.padding(horizontal = 5.dp)) {
 					Image(
-						painter = rememberAsyncImagePainter(posts_list[it].url),
-						contentDescription = posts_list[it].name,
+						painter = rememberAsyncImagePainter(it),
+						contentDescription = "",
 						contentScale = ContentScale.Crop,
 					)
 				}
@@ -877,27 +863,28 @@ fun StatusCard() {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BottomSheet(sheetType:String, onDismiss: () -> Unit) {
-	val modalBottomSheetState = rememberModalBottomSheetState()
+	val modalBottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
 
 	ModalBottomSheet(
 		onDismissRequest = { onDismiss() },
 		sheetState = modalBottomSheetState,
-		dragHandle = { BottomSheetDefaults.DragHandle() },) {
+		dragHandle = { BottomSheetDefaults.DragHandle() }) {
 		if (sheetType == "Call"){
 			ByCallCreditSheet()
+
 		}else{
 			AddNote()
 		}
 	}
 }
 
-
 @Composable
 fun ByCallCreditSheet(){
 	Column(modifier = Modifier
 		.fillMaxWidth()
-		.padding(10.dp)
-		.verticalScroll(rememberScrollState()),
+		.padding(20.dp)
+		.navigationBarsPadding(),
+
 		verticalArrangement = Arrangement.spacedBy(10.dp, Alignment.CenterVertically)) {
 
 		Row(horizontalArrangement = Arrangement.spacedBy(10.dp,
@@ -963,12 +950,12 @@ fun ByCallCreditSheet(){
 			}
 		}
 
-		Spacer(modifier = Modifier.height(80.dp))
+		Spacer(modifier = Modifier.height(100.dp))
 
-		Row(
-			modifier = Modifier.fillMaxWidth(),
-			horizontalArrangement = Arrangement.SpaceBetween
-		) {
+		Row(modifier = Modifier.fillMaxWidth(),
+			horizontalArrangement = Arrangement.spacedBy(10.dp, Alignment.Start),
+			verticalAlignment = Alignment.CenterVertically) {
+
 			TextButton(
 				colors = ButtonDefaults
 					.textButtonColors(
@@ -976,25 +963,19 @@ fun ByCallCreditSheet(){
 						contentColor = Color.White
 					),
 				onClick = {},
-				modifier = Modifier.weight(1f)
-			) {
-				Row(horizontalArrangement = Arrangement.Start,
-					verticalAlignment = Alignment.CenterVertically) {
-					Icon(
-						Icons.Filled.ExposureZero,
-						contentDescription = null,
-						tint = Color.DarkGray,
-						modifier = Modifier.size(40.dp)
-					)
-					Text(
-						text = "Call credit available",
-						fontSize = 12.sp,
-						style = MaterialTheme.typography.subtitle2,
-						color = Color.DarkGray
-					)
-				}
+				modifier = Modifier.weight(0.4f)) {
+				Icon(
+					Icons.Filled.ExposureZero,
+					contentDescription = null,
+					tint = Color.DarkGray,
+					modifier = Modifier.size(30.dp)
+				)
+				Text(
+					modifier = Modifier,
+					text = "Call credit available"
+				)
 			}
-			Spacer(modifier = Modifier.width(20.dp))
+
 			TextButton(
 				colors = ButtonDefaults
 					.textButtonColors(
@@ -1002,24 +983,16 @@ fun ByCallCreditSheet(){
 						contentColor = Color.White
 					),
 				onClick = {},
-				modifier = Modifier.weight(1f)
-			) {
-				Row(modifier = Modifier.fillMaxWidth(),
-					horizontalArrangement = Arrangement.Start,
-					verticalAlignment = Alignment.CenterVertically){
-					Icon(
-						Icons.Filled.ExposureZero,
-						contentDescription = null,
-						tint = Color.White,
-						modifier = Modifier.size(40.dp)
-					)
-					Text(
-						text = "Call credit available",
-						fontSize = 12.sp,
-						style = MaterialTheme.typography.subtitle2,
-						color = Color.White
-					)
-				}
+				modifier = Modifier.weight(0.4f)) {
+				Icon(
+					Icons.Filled.ExposureZero,
+					contentDescription = null,
+					tint = Color.White,
+					modifier = Modifier.size(30.dp)
+				)
+				Text(
+					text = "Call credit available",
+				)
 			}
 		}
 	}
