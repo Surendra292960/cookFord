@@ -38,6 +38,7 @@ import com.example.cook_ford.data.remote.profile_response.ProfileResponse
 import com.example.cook_ford.presentation.component.widgets.StarRatingBar
 import com.example.cook_ford.presentation.component.widgets.snack_bar.MainViewState
 import com.example.cook_ford.presentation.component.widgets.topbar_nav.TopBarNavigation
+import com.example.cook_ford.presentation.screens.profile.details.Ratings
 import com.example.cook_ford.presentation.screens.profile.reviews.state.ReviewUiEvent
 
 @Preview(showSystemUi = true, showBackground = true)
@@ -59,34 +60,90 @@ fun ReviewScreen(
     val viewState:MainViewState by reViewViewModel.viewState.collectAsState()
     var rating1 by remember { mutableFloatStateOf(0.0f) }
     var rating2 by remember { mutableFloatStateOf(0.0f) }
+    var rating3 by remember { mutableFloatStateOf(0.0f) }
+    var rating4 by remember { mutableFloatStateOf(0.0f) }
+    var rating5 by remember { mutableFloatStateOf(0.0f) }
 
     Column(modifier = Modifier
-        .fillMaxSize()
+        .fillMaxSize().padding(top = 20.dp)
         .verticalScroll(rememberScrollState())) {
 
         //TopBarNavigation(onNavigateBack={onNavigateBack.invoke()}, title = "Cook Review")
         reviewState?.profile?.let { ImageWithUserName(it) }
 
-
-        /*   RatingStar(rating, maxRating = 5, {
-               rating = it.toFloat()
-           }, false)*/
-        repeat(4){
-            Row(modifier = Modifier
-                .padding(start = 20.dp, end = 20.dp)
-                .fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween) {
-                Text(text = "Review")
-                StarRatingBar(
-                    maxStars = 5,
-                    rating = rating1,
-                    onRatingChanged = {
-                        rating1 = it
-                    }
-                )
-            }
+        Row(modifier = Modifier
+            .padding(top = 20.dp, start = 20.dp, end = 20.dp)
+            .fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween) {
+            Text(text = "FoodQuality")
+            StarRatingBar(
+                maxStars = 5,
+                rating = rating1,
+                onRatingChanged = {
+                    rating1 = it
+                }
+            )
         }
+
+        Row(modifier = Modifier
+            .padding(start = 20.dp, end = 20.dp)
+            .fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween) {
+            Text(text = "Hygiene")
+            StarRatingBar(
+                maxStars = 5,
+                rating = rating2,
+                onRatingChanged = {
+                    rating2 = it
+                }
+            )
+        }
+
+        Row(modifier = Modifier
+            .padding(start = 20.dp, end = 20.dp)
+            .fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween) {
+            Text(text = "Service")
+            StarRatingBar(
+                maxStars = 5,
+                rating = rating3,
+                onRatingChanged = {
+                    rating3 = it
+                }
+            )
+        }
+        Row(modifier = Modifier
+            .padding(start = 20.dp, end = 20.dp)
+            .fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween) {
+            Text(text = "Cleanliness")
+            StarRatingBar(
+                maxStars = 5,
+                rating = rating4,
+                onRatingChanged = {
+                    rating4 = it
+                }
+            )
+        }
+        Row(modifier = Modifier
+            .padding(start = 20.dp, end = 20.dp)
+            .fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween) {
+            Text(text = "Punctuality")
+            StarRatingBar(
+                maxStars = 5,
+                rating = rating5,
+                onRatingChanged = {
+                    rating5 = it
+                }
+            )
+        }
+
         ReviewForm(
             reviewState = reviewState,
             viewState = viewState,

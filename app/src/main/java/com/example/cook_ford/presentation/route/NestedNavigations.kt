@@ -14,7 +14,7 @@ import com.example.cook_ford.presentation.screens.profile.report.ReportScreen
 import com.example.cook_ford.presentation.screens.dashboard.home.UserDashBoard
 import com.example.cook_ford.presentation.screens.onboard.OnBoardingScreen
 import com.example.cook_ford.presentation.screens.profile.details.ProfileDetailScreen
-import com.example.cook_ford.presentation.screens.profile.card_list.ProfilesScreen
+import com.example.cook_ford.presentation.screens.profile.list.ProfilesScreen
 import com.example.cook_ford.presentation.screens.profile.reviews.ReviewScreen
 import com.example.cook_ford.presentation.screens.sign_in.SignInScreen
 import com.example.cook_ford.presentation.screens.sign_up.SignUpScreen

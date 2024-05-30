@@ -1,4 +1,4 @@
-package com.example.cook_ford.presentation.screens.profile.card_list
+package com.example.cook_ford.presentation.screens.profile.list
 
 import android.util.Log
 import androidx.compose.foundation.Image
@@ -49,7 +49,7 @@ import com.example.cook_ford.R
 import com.example.cook_ford.data.remote.profile_response.ProfileResponse
 import com.example.cook_ford.presentation.component.widgets.Child
 import com.example.cook_ford.presentation.component.widgets.Progressbar
-import com.example.cook_ford.presentation.screens.profile.card_list.state.ProfileState
+import com.example.cook_ford.presentation.screens.profile.list.state.ProfileState
 import com.example.cook_ford.presentation.theme.AppTheme
 import com.example.cook_ford.presentation.theme.OrangeYellow1
 
@@ -76,7 +76,8 @@ fun ProfilesScreen(
 
     }
 
-    if (profileState.isSuccessful && profileViewModel.getResponseFromPref()=="provider") {
+    if (profileState.isSuccessful) {
+        Log.d("TAG", "ProfileListScreen getResponseFromPref: ${profileViewModel.getResponseFromPref()}")
         LazyColumn(
             modifier = Modifier.fillMaxSize(),
             state = profileLazyListState,
@@ -85,7 +86,6 @@ fun ProfilesScreen(
             content = {
                 Log.d("TAG", "ProfileListScreens : ${profileState.profile?.size}")
                 items(profileState.profile!!.size) { index ->
-
                     UsersProfileList(
                         profileState = profileState,
                         index = index,

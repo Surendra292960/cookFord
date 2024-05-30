@@ -1,11 +1,15 @@
 package com.example.cook_ford.presentation.screens.profile.report
 
 import android.util.Log
+import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.cook_ford.data.local.UserSession
 import com.example.cook_ford.data.remote.NetworkResult
+import com.example.cook_ford.data.remote.profile_response.TimeSlots
 import com.example.cook_ford.domain.use_cases.ProfileUseCase
 import com.example.cook_ford.presentation.component.widgets.snack_bar.MainViewState
 import com.example.cook_ford.presentation.screens.profile.report.state.ReportErrorState
@@ -30,6 +34,9 @@ class ReportViewModel  @Inject constructor(
     private val stateHandle: SavedStateHandle
 ) : ViewModel() {
 
+    private val _timeSlots = mutableStateOf(TimeSlots())
+    val timeSlots: State<TimeSlots> = _timeSlots
+
     private val _reportState = MutableStateFlow(ReportState())
     val reportState = _reportState.asStateFlow()
 
@@ -44,6 +51,43 @@ class ReportViewModel  @Inject constructor(
     }
 
     fun getProfileId() = stateHandle.get<String>(AppConstants.PROFILE_ID)
+
+    fun getTimeSlots():List<TimeSlots>{
+        val timeSlotsList:MutableList<TimeSlots> = mutableListOf()
+        Log.d("TAG", "getTimeSlots : ${reportState.value.isSuccessful}")
+        if (reportState.value.isSuccessful){
+            reportState.value?.profile?.profile?.timeSlots?.let{
+                it?.forEach { slots->
+
+                    timeSlotsList.add(TimeSlots(slots.startTime?.trim().plus(" - "+slots.endTime?.trim())))
+                    //Log.d("TAG", "ProfileDetailScreen TimeSlots List : ${Gson().toJson(timeSlots)}")
+                }
+            }
+        }
+        return timeSlotsList
+    }
+
+    val myItems = mutableStateListOf<TimeSlots>()
+        .apply {
+            getTimeSlots().forEach {
+                add(TimeSlots(it.slots))
+            }
+        }
+
+
+    fun getSelectedItems() = myItems.filter { it.selected }
+
+    fun toggleSelection(index: Int) {
+
+        val item = myItems[index]
+        val isSelected = item.selected
+
+        if (isSelected) {
+            myItems[index] = item.copy(initialSelection = false)
+        } else {
+            myItems[index] = item.copy(initialSelection = true)
+        }
+    }
 
     fun onUiEvent(reportUiEvent: ReportUiEvent) {
         when (reportUiEvent) {
@@ -99,6 +143,7 @@ class ReportViewModel  @Inject constructor(
                     if (result.status == true){
                         result.data?.let { response->
                             _reportState.value = _reportState.value.copy(isLoading = false, profile = response, isSuccessful = true)
+                            getTimeSlots()
                         }
                         Log.d("TAG", "makeProfileRequestForReview->: ${Gson().toJson(_reportState.value)}")
                     }

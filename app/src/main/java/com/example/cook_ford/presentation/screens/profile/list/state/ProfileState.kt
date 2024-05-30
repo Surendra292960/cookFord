@@ -1,4 +1,4 @@
-package com.example.cook_ford.presentation.screens.profile.card_list.state
+package com.example.cook_ford.presentation.screens.profile.list.state
 
 import com.example.cook_ford.data.remote.profile_response.ProfileResponse
 import com.example.cook_ford.utils.AppConstants

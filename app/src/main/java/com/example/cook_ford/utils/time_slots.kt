@@ -1,4 +1,5 @@
-package com.example.cook_ford.presentation.screens.profile.details
+/*
+package com.example.cook_ford.utils
 import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -23,7 +24,6 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ButtonDefaults
@@ -36,18 +36,21 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AddAlert
 import androidx.compose.material.icons.filled.Call
 import androidx.compose.material.icons.filled.CheckCircle
+import androidx.compose.material.icons.filled.Done
 import androidx.compose.material.icons.filled.ExposureZero
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.BottomSheetDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilterChip
+import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
@@ -91,6 +94,51 @@ import com.example.cook_ford.presentation.theme.OrangeYellow1
 import com.example.cook_ford.utils.Utility.shareProfile
 
 
+*/
+/*val time_slots = listOf(
+	TimeSlots("8am-9am"),
+	TimeSlots("9am-10am"),
+	TimeSlots("10am-12am"),
+	TimeSlots("1pam-2pm"),
+	TimeSlots("3pm-4pm"),
+	TimeSlots("5pm-6pm"),
+	TimeSlots("7pm-8pm"),
+	TimeSlots("9pm-10pm"),
+	TimeSlots("11pm-12pm")
+)*//*
+
+
+val time_slots = mutableListOf(TimeSlots())
+*/
+/*
+val posts_list = listOf(
+
+	Posts(
+		"https://bit.ly/3oAIk0M",
+		"domain expansion"
+	),
+	Posts(
+		"https://bit.ly/3AcqrYy",
+		"gojo googles"
+	),
+	Posts(
+		"https://bit.ly/3BgosU6",
+		"gojo"
+	),
+	Posts(
+		"https://bit.ly/3mtCMT8",
+		"young gojo"
+	),
+	Posts(
+		"https://bit.ly/3oAIk0M",
+		"domain expansion"
+	)
+)*//*
+
+
+fun chipChangeListener(item: TimeSlots, checked: Boolean) =
+	time_slots.find { it.slots == item.slots }?.let { task -> task.selected = checked }
+
 @ExperimentalFoundationApi
 @Composable
 fun ProfileDetailScreen(
@@ -102,7 +150,9 @@ fun ProfileDetailScreen(
 ) {
 	val profileDetailsViewModel: ProfileDetailsViewModel = hiltViewModel()
 	val profileState by remember { profileDetailsViewModel.profileState }
-
+	var showCallBottomSheet by remember { mutableStateOf(false) }
+	var showNoteBottomSheet by remember { mutableStateOf(false) }
+	time_slots.clear()
 
 	Progressbar(profileState.isLoading)
 	Log.d("TAG", "ProfileDetailScreen isLoading: ${profileState.isSuccessful}")
@@ -111,34 +161,59 @@ fun ProfileDetailScreen(
 		LazyColumn(modifier = Modifier
 			.fillMaxSize(),
 			horizontalAlignment = Alignment.CenterHorizontally) {
-			profileState.profile?.size?.let { size->
-				items(size){  index->
+			profileState.profile?.size?.let { profile->
+				items(profile){  index->
+					profileState?.profile?.get(index)?.profile?.timeSlots?.let{
+						it.forEach { slots->
+							time_slots.add(TimeSlots(slots.startTime.trim().plus(" - "+slots.endTime.trim())))
+						}
+					}
 					TopBar(onNavigateBack = { onNavigateBack.invoke() })
 					Spacer(modifier = Modifier.height(10.dp))
-
-					if (profileState?.profile!![index].userType=="provider") {
-						Stats(profileState.profile!![index], "10.1M", "100")
-						Spacer(modifier = Modifier.height(10.dp))
-						ProviderSocialMediaIconsCard(profileDetailsViewModel, onNavigateToReViewScreen ={onNavigateToReViewScreen.invoke(profileDetailsViewModel.getProfileId().toString())}, onNavigateToReportScreen = {onNavigateToReportScreen.invoke(profileDetailsViewModel.getProfileId().toString())})
-						HorizontalDivider(modifier = Modifier.background(Color.LightGray))
-						Spacer(modifier = Modifier.height(10.dp))
-						ExperienceCard(profileState?.profile!![index], timeSlots = profileDetailsViewModel.getTimeSlots())
-						profileState.profile!![index].profile?.topCuisineUrls?.let {
-							CuisineImages(topCuisineUrls = it, modifier = Modifier.padding(top = 10.dp))
+					Stats(profileState.profile!![index], "10.1M", "100")
+					Spacer(modifier = Modifier.height(10.dp))
+					if (showCallBottomSheet) {
+						BottomSheet("Call") {
+							showCallBottomSheet = false
 						}
-						Spacer(modifier = Modifier.height(10.dp))
-
-						profileState?.profile!![index]?.profile?.feedback_rating?.forEach { rating->
-							Ratings(text = "FoodQuality", feedbackRating = rating?.food_quality?.toFloat())
-							Ratings(text = "Hygiene", feedbackRating = rating?.hygiene?.toFloat())
-							Ratings(text = "Service", feedbackRating = rating?.service?.toFloat())
-							Ratings(text = "Cleanliness", feedbackRating = rating?.cleanliness?.toFloat())
-							Ratings(text = "Punctuality", feedbackRating = rating?.punctuality?.toFloat())
-						}
-
-						Spacer(modifier = Modifier.height(10.dp))
-						StatusCard()
 					}
+					if (showNoteBottomSheet) {
+						BottomSheet("Note") {
+							showNoteBottomSheet = false
+						}
+					}
+					SocialMediaIcons(
+						onClickIcon1 = {
+							Log.d("TAG", "ProfileDetailScreen: onClickIcon1")
+							showCallBottomSheet = true
+						} ,
+						onClickIcon2 = {
+							Log.d("TAG", "ProfileDetailScreen: onClickIcon2")
+							onNavigateToReViewScreen.invoke(profileDetailsViewModel.getProfileId().toString())
+						} ,
+						onClickIcon3 = {
+							Log.d("TAG", "ProfileDetailScreen: onClickIcon3")
+						} ,
+						onClickIcon4 = {
+							Log.d("TAG", "ProfileDetailScreen: onClickIcon4")
+							showNoteBottomSheet = true
+						} ,
+						onClickIcon5 = {
+							Log.d("TAG", "ProfileDetailScreen: onClickIcon5")
+							onNavigateToReportScreen.invoke(profileDetailsViewModel.getProfileId().toString())
+						}
+					)
+
+					HorizontalDivider(modifier = Modifier.background(Color.LightGray))
+					Spacer(modifier = Modifier.height(10.dp))
+					ExperienceCard(profileState?.profile!![index], time_slots = time_slots)
+					profileState.profile!![index].profile?.topCuisineUrls?.let { CuisineImages(topCuisineUrls = it, modifier = Modifier.padding(top = 10.dp)) }
+					Spacer(modifier = Modifier.height(10.dp))
+					Ratings(modifier = Modifier
+						.fillMaxWidth()
+						.padding(start = 10.dp, end = 10.dp))
+					Spacer(modifier = Modifier.height(10.dp))
+					StatusCard()
 				}
 			}
 		}
@@ -243,11 +318,13 @@ fun Stats(profile: ProfileResponse, followers: String, following: String) {
 						append(", ")
 					}
 				}
-				/*	if (otherCount > 2) {
+				*/
+/*	if (otherCount > 2) {
                         append(" and ")
                         pushStyle(boldStyle)
                         append("$otherCount others")
-                    }*/
+                    }*//*
+
 			},
 			letterSpacing = 0.5.sp,
 			lineHeight = 20.sp,
@@ -271,13 +348,13 @@ fun Stats(profile: ProfileResponse, followers: String, following: String) {
 							.align(Alignment.CenterVertically)
 							.padding(horizontal = 3.dp),
 					)
-					profile?.profile?.total_rating?.toString()?.let {
-						Text(
-							text = it,
-							style = MaterialTheme.typography.subtitle2,
-							color = Color.DarkGray
-						)
-					}
+				*/
+/*	Text(
+						text = if (profile.profile.total_rating.toString().isNullOrEmpty()) AppConstants.ZERO else profile.profile.total_rating.toString(),
+						style = MaterialTheme.typography.subtitle2,
+						color = Color.DarkGray
+					)*//*
+
 				}
 				Text(
 					text = "Rating",
@@ -371,141 +448,11 @@ fun Stats(profile: ProfileResponse, followers: String, following: String) {
 }
 
 @Composable
-fun ProviderSocialMediaIconsCard(
-	profileDetailsViewModel: ProfileDetailsViewModel,
-	onNavigateToReViewScreen: () -> Unit,
-	onNavigateToReportScreen: () -> Unit
-) {
-	var showCallBottomSheet by remember { mutableStateOf(false) }
-	var showNoteBottomSheet by remember { mutableStateOf(false) }
-	if (showCallBottomSheet) {
-		BottomSheet("Call") {
-			showCallBottomSheet = false
-		}
-	}
-	if (showNoteBottomSheet) {
-		BottomSheet("Note") {
-			showNoteBottomSheet = false
-		}
-	}
-	SocialMediaIcons(
-		onClickIcon1 = {
-			Log.d("TAG", "ProfileDetailScreen: onClickIcon1")
-			showCallBottomSheet = true
-		} ,
-		onClickIcon2 = {
-			Log.d("TAG", "ProfileDetailScreen: onClickIcon2")
-			onNavigateToReViewScreen.invoke()
-		} ,
-		onClickIcon3 = {
-			Log.d("TAG", "ProfileDetailScreen: onClickIcon3")
-		} ,
-		onClickIcon4 = {
-			Log.d("TAG", "ProfileDetailScreen: onClickIcon4")
-			showNoteBottomSheet = true
-		} ,
-		onClickIcon5 = {
-			Log.d("TAG", "ProfileDetailScreen: onClickIcon5")
-			onNavigateToReportScreen.invoke()
-		}
-	)
-}
-
-@Composable
-fun SocialMediaIcons(
-	onClickIcon1: () -> Unit,
-	onClickIcon2: () -> Unit = {},
-	onClickIcon3: () -> Unit = {},
-	onClickIcon4: () -> Unit = {},
-	onClickIcon5: () -> Unit = {},
-	icon1Painter: Painter = painterResource(id = R.drawable.ic_call),
-	icon2Painter: Painter = painterResource(id = R.drawable.ic_review),
-	icon3Painter: Painter = painterResource(id = R.drawable.ic_share),
-	icon4Painter: Painter = painterResource(id = R.drawable.ic_note),
-	icon5Painter: Painter = painterResource(id = R.drawable.ic_report),
-	iconBackgroundColor: Color = Color.DarkGray,
-	iconTintColor: Color = Color.White,
-	contentPadding: Dp = 16.dp
-) {
-	var jetCaptureView: MutableState<ProfileCardView>? = null
-	val context = LocalContext.current as MainActivity
-
-	Row(modifier = Modifier
-		.fillMaxWidth()
-		.wrapContentHeight()
-		.padding(contentPadding),
-		horizontalArrangement = Arrangement.SpaceEvenly
-	) {
-		IconButton(
-			onClick = { onClickIcon1() },
-			modifier = Modifier
-				.clip(CircleShape)
-				.background(iconBackgroundColor),
-		) {
-			Icon(
-				painter = icon1Painter,
-				contentDescription = null,
-				tint = iconTintColor,
-			)
-		}
-		IconButton(
-			onClick = { onClickIcon2() },
-			modifier = Modifier
-				.clip(CircleShape)
-				.background(iconBackgroundColor)
-		) {
-			Icon(
-				painter = icon2Painter,
-				contentDescription = null,
-				tint = iconTintColor
-			)
-		}
-		IconButton(
-			onClick = {  shareProfile(context)
-				//jetCaptureView?.value?.capture(jetCaptureView?.value as ProfileCardView, jetCaptureView)
-			},
-			modifier = Modifier
-				.clip(CircleShape)
-				.background(iconBackgroundColor)
-		) {
-			Icon(
-				painter = icon3Painter,
-				contentDescription = null,
-				tint = iconTintColor
-			)
-		}
-		IconButton(
-			onClick = { onClickIcon4() },
-			modifier = Modifier
-				.clip(CircleShape)
-				.background(iconBackgroundColor)) {
-			Icon(
-				painter = icon4Painter,
-				contentDescription = null,
-				tint = iconTintColor
-			)
-		}
-		IconButton(
-			onClick = { onClickIcon5() },
-			modifier = Modifier
-				.clip(CircleShape)
-				.background(iconBackgroundColor)) {
-			Icon(
-				painter = icon5Painter,
-				contentDescription = null,
-				tint = iconTintColor
-			)
-
-			//ProfileUI(jetCaptureView)
-		}
-	}
-}
-
-@Composable
-fun ExperienceCard(profile: ProfileResponse, timeSlots: List<TimeSlots>) {
+fun ExperienceCard(profile: ProfileResponse, time_slots: List<TimeSlots>) {
 	Column(modifier = Modifier
 		.fillMaxWidth()
-		.padding(10.dp), verticalArrangement = Arrangement.SpaceEvenly) {
+		.padding(10.dp),
+		verticalArrangement = Arrangement.SpaceEvenly) {
 
 		Card(shape = RoundedCornerShape(5.dp)) {
 			Row(modifier = Modifier
@@ -565,13 +512,13 @@ fun ExperienceCard(profile: ProfileResponse, timeSlots: List<TimeSlots>) {
 		}
 
 		//Cuisines
+		Text(
+			modifier = Modifier.padding(top = AppTheme.dimens.paddingSmall),
+			text = "Cuisines",
+			style = MaterialTheme.typography.subtitle2,
+			color = Color.DarkGray
+		)
 		profile?.profile?.cuisine?.let {
-			Text(
-				modifier = Modifier.padding(top = AppTheme.dimens.paddingSmall),
-				text = "Cuisines",
-				style = MaterialTheme.typography.subtitle2,
-				color = Color.DarkGray
-			)
 			Text(
 				modifier = Modifier.padding(
 					top = AppTheme.dimens.paddingSmall,
@@ -584,14 +531,13 @@ fun ExperienceCard(profile: ProfileResponse, timeSlots: List<TimeSlots>) {
 		}
 
 		//Languages
+		Text(
+			modifier = Modifier.padding(top = AppTheme.dimens.paddingSmall),
+			text = "Languages",
+			style = MaterialTheme.typography.subtitle2,
+			color = Color.DarkGray
+		)
 		profile?.profile?.language?.let {
-			Text(
-				modifier = Modifier.padding(top = AppTheme.dimens.paddingSmall),
-				text = "Languages",
-				style = MaterialTheme.typography.subtitle2,
-				color = Color.DarkGray
-			)
-
 			Text(
 				modifier = Modifier.padding(
 					top = AppTheme.dimens.paddingSmall,
@@ -604,23 +550,21 @@ fun ExperienceCard(profile: ProfileResponse, timeSlots: List<TimeSlots>) {
 		}
 
 		//Daily Visit
-		profile?.profile?.no_of_visit?.let {
-			Text(
-				modifier = Modifier.padding(top = AppTheme.dimens.paddingSmall),
-				text = "Visit",
-				style = MaterialTheme.typography.subtitle2,
-				color = Color.DarkGray
-			)
-			Text(
-				modifier = Modifier.padding(
-					top = AppTheme.dimens.paddingSmall,
-					bottom = AppTheme.dimens.paddingSmall
-				),
-				text = "Available for ".plus(it).plus(" visit daily."),
-				style = MaterialTheme.typography.subtitle2,
-				color = Color.Gray
-			)
-		}
+		Text(
+			modifier = Modifier.padding(top = AppTheme.dimens.paddingSmall),
+			text = "Visit",
+			style = MaterialTheme.typography.subtitle2,
+			color = Color.DarkGray
+		)
+		Text(
+			modifier = Modifier.padding(
+				top = AppTheme.dimens.paddingSmall,
+				bottom = AppTheme.dimens.paddingSmall
+			),
+			text = "Available for ".plus(profile?.profile?.no_of_visit).plus(" visit daily."),
+			style = MaterialTheme.typography.subtitle2,
+			color = Color.Gray
+		)
 
 		//Available Time Slots
 		Text(
@@ -630,7 +574,15 @@ fun ExperienceCard(profile: ProfileResponse, timeSlots: List<TimeSlots>) {
 			color = Color.DarkGray
 		)
 
-		TimeSlotsComponent(timeSlots = timeSlots)
+		TimeSlotsComponent(timeSlots = time_slots, onSelectedChanged = { slots, selected->
+			chipChangeListener(slots, selected).let {
+				time_slots.toSet().forEach {
+					if (it.selected){
+						Log.d("TAG", "ExperienceCard: ${it.slots}")
+					}
+				}
+			}
+		})
 
 		//Expectation
 		Text(
@@ -664,57 +616,86 @@ fun ExperienceCard(profile: ProfileResponse, timeSlots: List<TimeSlots>) {
 		Spacer(modifier = Modifier.height(16.dp))
 
 		Row (modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceEvenly){
-			profile?.profile?.no_of_visit?.let {
-				Text(
-					modifier = Modifier
-						.weight(0.6f)
-						.padding(top = AppTheme.dimens.paddingSmall),
-					text = ("Part time (Daily meals for ").plus(it).plus(" visit)"),
-					style = MaterialTheme.typography.subtitle2,
-					color = Color.Gray
-				)
-			}
+			Text(
+				modifier = Modifier
+					.weight(0.6f)
+					.padding(top = AppTheme.dimens.paddingSmall),
+				text = "Part time (Daily meals for two visit) ",
+				style = MaterialTheme.typography.subtitle2,
+				color = Color.Gray
+			)
 
-			profile?.profile?.parttimeprice?.let {
-				Text(
-					modifier = Modifier
-						.weight(0.3f)
-						.padding(top = AppTheme.dimens.paddingSmall),
-					text = ("Rs. ").plus(it).plus("/month"),
-					style = MaterialTheme.typography.subtitle2,
-					color = Color.DarkGray
-				)
-			}
+			Text(
+				modifier = Modifier
+					.weight(0.3f)
+					.padding(top = AppTheme.dimens.paddingSmall),
+				text = "Rs. 10000/month",
+				style = MaterialTheme.typography.subtitle2,
+				color = Color.DarkGray
+			)
 		}
 	}
 }
+
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-fun TimeSlotsComponent(timeSlots: List<TimeSlots>) {
+fun TimeSlotsComponent(
+	timeSlots: List<TimeSlots>,
+	modifier: Modifier = Modifier,
+	selectedCar: TimeSlots? = null,
+	onSelectedChanged: (TimeSlots, Boolean) -> Unit) {
+
 	FlowRow {
 		timeSlots.forEach { timeSlots ->
-			timeSlots.slots?.let {
-				Log.d("TAG", "TimeSlotsComponent data: $it")
-				FilterChip(
-					modifier = Modifier.padding(horizontal = 2.dp),
-					onClick = { },
-					label = {
-						timeSlots.slots?.let { Text(it) }
-					},
-					selected = true,
+			timeSlots?.slots?.let {
+				FilterChipExample(
+					timeSlots = timeSlots,
+					onChipClick = {
+						onSelectedChanged(it, !it.selected)
+						Log.d("TAG", "TimeSlotsComponent: $it")
+					}
 				)
 			}
 		}
 	}
 }
 
+@Composable
+fun FilterChipExample(timeSlots: TimeSlots, selected: Boolean? = null, onChipClick: (TimeSlots) -> Unit) {
+	Log.d("TAG", "TimeSlotsComponent timeSlots : ${timeSlots.slots}")
+	LaunchedEffect(key1 = true) {
+		time_slots?.forEach { slots->
+			Log.d("TAG", "TimeSlotsComponent : ${slots?.slots}")
+			if (slots.selected) {
+				Log.d("TAG", "TimeSlotsComponent selected : ${slots.slots}")
+			}
+		}
+	}
+	FilterChip(
+		modifier = Modifier.padding(horizontal = 2.dp),
+		onClick = { onChipClick(timeSlots) },
+		label = {
+			timeSlots.slots?.let { Text(it) }
+		},
+		selected = selected ?: timeSlots.selected,
+		leadingIcon = if (selected ?: timeSlots.selected) {
+			{
+				Icon(
+					imageVector = Icons.Filled.Done,
+					contentDescription = "Done icon",
+					modifier = Modifier.size(FilterChipDefaults.IconSize)
+				)
+			}
+		} else {
+			null
+		},
+	)
+}
 
 @ExperimentalFoundationApi
 @Composable
-fun CuisineImages(topCuisineUrls: Array<out String>, modifier: Modifier = Modifier) {
-	//Log.d("TAG", "CuisineImages topCuisineUrls : $topCuisineUrls")
-	val listState = rememberLazyListState()
+fun CuisineImages(topCuisineUrls: List<String>, modifier: Modifier = Modifier) {
 	Column(modifier = modifier
 		.fillMaxWidth()
 		.padding(start = 10.dp, end = 10.dp),
@@ -726,22 +707,110 @@ fun CuisineImages(topCuisineUrls: Array<out String>, modifier: Modifier = Modifi
 			color = Color.DarkGray
 		)
 
-
-		LazyRow(state = listState, modifier = modifier.scale(1.01f)) {
-			items(topCuisineUrls.size) { index->
-				Log.d("TAG", "CuisineImages: ${topCuisineUrls[index]}")
+		LazyRow(modifier = modifier.scale(1.01f)) {
+			items(topCuisineUrls.size) {
+				Log.d("TAG", "CuisineImages: $it")
 				Card(modifier = Modifier
 					.width(300.dp)
 					.height(150.dp)
 					.padding(horizontal = 5.dp)) {
 					Image(
-						painter = rememberAsyncImagePainter(topCuisineUrls[index]),
+						painter = rememberAsyncImagePainter(it),
 						contentDescription = "",
-						modifier = Modifier.fillMaxSize(),
 						contentScale = ContentScale.Crop,
 					)
 				}
 			}
+		}
+	}
+}
+
+
+@Composable
+fun SocialMediaIcons(
+	onClickIcon1: () -> Unit,
+	onClickIcon2: () -> Unit = {},
+	onClickIcon3: () -> Unit = {},
+	onClickIcon4: () -> Unit = {},
+	onClickIcon5: () -> Unit = {},
+	icon1Painter: Painter = painterResource(id = R.drawable.ic_call),
+	icon2Painter: Painter = painterResource(id = R.drawable.ic_review),
+	icon3Painter: Painter = painterResource(id = R.drawable.ic_share),
+	icon4Painter: Painter = painterResource(id = R.drawable.ic_note),
+	icon5Painter: Painter = painterResource(id = R.drawable.ic_report),
+	iconBackgroundColor: Color = Color.DarkGray,
+	iconTintColor: Color = Color.White,
+	contentPadding: Dp = 16.dp) {
+	var jetCaptureView: MutableState<ProfileCardView>? = null
+	val context = LocalContext.current as MainActivity
+
+	Row(modifier = Modifier
+		.fillMaxWidth()
+		.wrapContentHeight()
+		.padding(contentPadding),
+		horizontalArrangement = Arrangement.SpaceEvenly
+	) {
+		IconButton(
+			onClick = { onClickIcon1() },
+			modifier = Modifier
+				.clip(CircleShape)
+				.background(iconBackgroundColor),
+		) {
+			Icon(
+				painter = icon1Painter,
+				contentDescription = null,
+				tint = iconTintColor,
+			)
+		}
+		IconButton(
+			onClick = { onClickIcon2() },
+			modifier = Modifier
+				.clip(CircleShape)
+				.background(iconBackgroundColor)
+		) {
+			Icon(
+				painter = icon2Painter,
+				contentDescription = null,
+				tint = iconTintColor
+			)
+		}
+		IconButton(
+			onClick = {  shareProfile(context)
+				//jetCaptureView?.value?.capture(jetCaptureView?.value as ProfileCardView, jetCaptureView)
+				},
+			modifier = Modifier
+				.clip(CircleShape)
+				.background(iconBackgroundColor)
+		) {
+			Icon(
+				painter = icon3Painter,
+				contentDescription = null,
+				tint = iconTintColor
+			)
+		}
+		IconButton(
+			onClick = { onClickIcon4() },
+			modifier = Modifier
+				.clip(CircleShape)
+				.background(iconBackgroundColor)) {
+			Icon(
+				painter = icon4Painter,
+				contentDescription = null,
+				tint = iconTintColor
+			)
+		}
+		IconButton(
+			onClick = { onClickIcon5() },
+			modifier = Modifier
+				.clip(CircleShape)
+				.background(iconBackgroundColor)) {
+			Icon(
+				painter = icon5Painter,
+				contentDescription = null,
+				tint = iconTintColor
+			)
+
+			//ProfileUI(jetCaptureView)
 		}
 	}
 }
@@ -762,18 +831,18 @@ private fun ProfileUI(jetCaptureView: MutableState<ProfileCardView>?) {
 }
 
 @Composable
-fun Ratings(text: String, feedbackRating: Float?) {
-	var rating by remember { mutableFloatStateOf(0.0f) }
-	Row(modifier = Modifier.fillMaxWidth().padding(start = 10.dp, end = 10.dp),
-		verticalAlignment = Alignment.CenterVertically,
-		horizontalArrangement = Arrangement.SpaceBetween) {
-		Text(text = text, color = Color.DarkGray)
-		if (feedbackRating != null) {
+fun Ratings(modifier: Modifier) {
+	var rating1 by remember { mutableFloatStateOf(0.0f) }
+	repeat(4){
+		Row(modifier = modifier,
+			verticalAlignment = Alignment.CenterVertically,
+			horizontalArrangement = Arrangement.SpaceBetween) {
+			Text(text = "Review", color = Color.DarkGray)
 			StarRatingBar(
 				maxStars = 5,
-				rating = feedbackRating,
+				rating = rating1,
 				onRatingChanged = {
-					rating = it
+					rating1 = it
 				}
 			)
 		}
@@ -983,3 +1052,4 @@ fun ProfilePreview() {
 	}
 }
 
+*/

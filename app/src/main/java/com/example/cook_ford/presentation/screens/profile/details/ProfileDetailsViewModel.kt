@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.cook_ford.data.local.UserSession
 import com.example.cook_ford.data.remote.NetworkResult
+import com.example.cook_ford.data.remote.profile_response.TimeSlots
 import com.example.cook_ford.domain.use_cases.ProfileUseCase
 import com.example.cook_ford.presentation.component.widgets.snack_bar.MainViewState
 import com.example.cook_ford.presentation.screens.profile.details.state.ProfileDetailState
@@ -31,6 +32,9 @@ open class ProfileDetailsViewModel @Inject constructor(
     private val userSession: UserSession,
     private val stateHandle: SavedStateHandle
 ) : ViewModel() {
+
+    private val _timeSlots = mutableStateOf(TimeSlots())
+    val timeSlots: State<TimeSlots> = _timeSlots
 
     private val _noteState = mutableStateOf(NoteState())
     val noteState: State<NoteState> = _noteState
@@ -93,6 +97,20 @@ open class ProfileDetailsViewModel @Inject constructor(
             _noteState.value = _noteState.value.copy(errorState = NoteErrorState())
             return true
         }
+    }
+
+
+    fun getTimeSlots():List<TimeSlots>{
+        val timeSlotsList:MutableList<TimeSlots> = mutableListOf()
+        if (profileState.value.isSuccessful){
+            profileState.value?.profile?.get(0)?.profile?.timeSlots?.let{
+                it?.forEach { slots->
+                    timeSlotsList.add(TimeSlots(slots.startTime?.trim().plus(" - "+slots.endTime?.trim())))
+                    Log.d("TAG", "ProfileDetailScreen TimeSlots List : ${Gson().toJson(timeSlots)}")
+                }
+            }
+        }
+        return timeSlotsList
     }
 
     private fun makeProfileRequest(profileId: String) = viewModelScope.launch(Dispatchers.IO) {

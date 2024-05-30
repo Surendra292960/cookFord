@@ -14,12 +14,18 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
+import androidx.compose.material3.SuggestionChip
+import androidx.compose.material3.SuggestionChipDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -33,12 +39,13 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.cook_ford.R
 import com.example.cook_ford.data.remote.profile_response.ProfileResponse
+import com.example.cook_ford.data.remote.profile_response.TimeSlots
 import com.example.cook_ford.presentation.component.widgets.snack_bar.MainViewState
 import com.example.cook_ford.presentation.component.widgets.topbar_nav.TopBarNavigation
-import com.example.cook_ford.presentation.screens.profile.details.TimeSlotsComponent
-import com.example.cook_ford.presentation.screens.profile.details.chipChangeListener
-import com.example.cook_ford.presentation.screens.profile.details.time_slots
 import com.example.cook_ford.presentation.screens.profile.report.state.ReportUiEvent
+import com.example.cook_ford.presentation.theme.Purple80
+import com.example.cook_ford.presentation.theme.PurpleGrey40
+
 
 @Preview(showSystemUi = true, showBackground = true)
 @Composable
@@ -58,39 +65,51 @@ fun ReportScreen(
     val reportState by reportViewModel.reportState.collectAsState()
     val viewState:MainViewState by reportViewModel.viewState.collectAsState()
 
-    Column(modifier = Modifier
-        .fillMaxSize()
-        .verticalScroll(rememberScrollState())) {
+    val timeSlots:List<TimeSlots> = emptyList()
 
-        TopBarNavigation(title = "Cook Report", onNavigateBack={onNavigateBack.invoke()})
-        reportState?.profile?.let { ImageWithUserName(it) }
+    LaunchedEffect (key1 = true){
+        reportViewModel.getTimeSlots()
+    }
 
-        TimeSlotsComponent(timeSlots = time_slots, onSelectedChanged = { slots, selected->
-            chipChangeListener(slots, selected).let {
-                time_slots.toSet().forEach {
-                    if (it.selected){
-                        Log.d("TAG", "ExperienceCard: ${it.slots}")
-                    }
-                }
-            }
-        })
+    fun chipChangeListener(item: TimeSlots, checked: Boolean) =
+        timeSlots.find { it.slots == item.slots }?.let { task -> task.selected = checked }
+    if (reportState.isSuccessful){
+        Log.d("TAG", "Data isSuccessful : ${reportState.isSuccessful}")
+        Column(modifier = Modifier
+            .fillMaxSize()
+            .verticalScroll(rememberScrollState())) {
 
-        ReportForm(
-            reportState = reportState,
-            viewState = viewState,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(start = 10.dp, end = 10.dp),
-            onReportChange = { inputString ->
-                reportViewModel.onUiEvent(
-                    reportUiEvent = ReportUiEvent.ReportChanged(
-                        inputString
+            TopBarNavigation(title = "Cook Report", onNavigateBack={onNavigateBack.invoke()})
+            reportState?.profile?.let { ImageWithUserName(it) }
+
+            /* TimeSlotsComponent(timeSlots = reportViewModel.getTimeSlots(), onSelectedChanged = { slots, selected->
+                 chipChangeListener(slots, selected).let {
+                     reportViewModel.getTimeSlots().toSet().forEach {
+                         if (it.selected){
+                             //Log.d("TAG", "ExperienceCard: ${it.slots}")
+                         }
+                     }
+                 }
+             })*/
+            SuggestionChipLayout()
+
+            ReportForm(
+                reportState = reportState,
+                viewState = viewState,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 10.dp, end = 10.dp),
+                onReportChange = { inputString ->
+                    reportViewModel.onUiEvent(
+                        reportUiEvent = ReportUiEvent.ReportChanged(
+                            inputString
+                        )
                     )
-                )
-            },
-            onSubmit = {
-                reportViewModel.onUiEvent(reportUiEvent = ReportUiEvent.Submit)
-            })
+                },
+                onSubmit = {
+                    reportViewModel.onUiEvent(reportUiEvent = ReportUiEvent.Submit)
+                })
+        }
     }
 }
 
@@ -144,4 +163,97 @@ fun ImageWithUserName(profileRes: ProfileResponse) {
     }
 }
 
+/*
+@OptIn(ExperimentalLayoutApi::class)
+@Composable
+fun TimeSlotsComponent(
+    timeSlots: List<TimeSlots>,
+    modifier: Modifier = Modifier,
+    selectedCar: TimeSlots? = null,
+    onSelectedChanged: (TimeSlots, Boolean) -> Unit) {
+    FlowRow {
+        timeSlots.forEach {
+            SuggestionChipEachRow(label = it.slots.toString()*//*, selected = it.slots == chipState*//*) { chip ->
+                onSelectedChanged(it, !it.selected)
+            }
+        }
+    }
+}
 
+
+@Composable
+fun SuggestionChipEachRow(
+    label: String,
+    selected: Boolean=false,
+    onChipChange: (String) -> Unit
+) {
+
+    SuggestionChip(onClick = {
+        if (!selected)
+            onChipChange(label)
+        else
+            onChipChange("")
+    }, label = {
+        Text(text = label)
+    }, modifier = Modifier.padding(horizontal = 4.dp),
+        shape = RoundedCornerShape(8.dp),
+        colors = SuggestionChipDefaults.suggestionChipColors(
+            containerColor = if (selected) Purple80 else Color.Transparent
+        ),
+        border = SuggestionChipDefaults.suggestionChipBorder(
+            enabled = true,
+            borderWidth = 1.dp,
+            borderColor = if (selected) Color.Transparent else PurpleGrey40
+        )
+    )
+}*/
+
+
+
+@Composable
+fun SuggestionChipLayout() {
+    val reportViewModel: ReportViewModel = hiltViewModel()
+
+    val chipState by remember { mutableStateOf(TimeSlots()) }
+
+    val selectedItems = reportViewModel.getSelectedItems().map { it.slots }
+    Log.d("TAG", "SuggestionChipLayout: $selectedItems")
+
+    reportViewModel.myItems.forEachIndexed { index , item ->
+        SuggestionChipEachRow(index = index, label = item.slots.toString(), selected = item == chipState, reportViewModel, onChipChange={
+            Log.d("TAG", "SuggestionChipLayout: $it")
+        })
+    }
+}
+
+
+@Composable
+fun SuggestionChipEachRow(
+    index :Int,
+    label: String,
+    selected: Boolean,
+    reportViewModel: ReportViewModel,
+    onChipChange: (String) -> Unit
+) {
+    Log.d("TAG", "SuggestionChipEachRow: $label $selected")
+    SuggestionChip(onClick = {
+        reportViewModel.toggleSelection(index)
+        if (!selected)
+            onChipChange(label)
+        else
+            onChipChange("")
+    }, label = {
+        Text(text = label)
+    },// modifier = Modifier.padding(horizontal = 5.dp),
+        shape = RoundedCornerShape(8.dp),
+        colors = SuggestionChipDefaults.suggestionChipColors(
+            containerColor = if (selected) Purple80 else Color.Transparent
+        ),
+        border = SuggestionChipDefaults.suggestionChipBorder(
+            enabled = selected,
+            borderWidth = 1.dp,
+            borderColor = if (selected) Color.Transparent else PurpleGrey40
+        )
+    )
+
+}

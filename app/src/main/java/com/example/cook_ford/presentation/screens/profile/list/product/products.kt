@@ -1,4 +1,4 @@
-package com.example.cook_ford.presentation.screens.profile.card_list.product
+package com.example.cook_ford.presentation.screens.profile.list.product
 
 import com.example.cook_ford.R
 import com.example.cook_ford.presentation.theme.OrangeYellow1

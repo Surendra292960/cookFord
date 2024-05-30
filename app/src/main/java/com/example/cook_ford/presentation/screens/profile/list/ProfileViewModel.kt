@@ -1,5 +1,5 @@
-package com.example.cook_ford.presentation.screens.profile.card_list
-import com.example.cook_ford.presentation.screens.profile.card_list.state.ProfileState
+package com.example.cook_ford.presentation.screens.profile.list
+import com.example.cook_ford.presentation.screens.profile.list.state.ProfileState
 import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf

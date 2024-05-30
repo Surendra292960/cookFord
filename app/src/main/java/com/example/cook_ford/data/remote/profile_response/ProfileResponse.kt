@@ -21,30 +21,30 @@ data class ProfileResponse(
 )
 
 data class Profile(
-    val __v: Int,
-    val _id: String,
-    val about: String,
-    val age: Int,
-    val bio: String,
-    val coverPhotoUrls: List<String>,
-    val createdAt: String,
-    val cuisine: String,
-    val experience: Int,
+    val __v: Int?=AppConstants.ZERO,
+    val _id: String=AppConstants.EMPTY_STRING,
+    val about: String=AppConstants.EMPTY_STRING,
+    val age: Int=AppConstants.ZERO,
+    val bio: String=AppConstants.EMPTY_STRING,
+    val coverPhotoUrls: List<String>?= emptyList(),
+    val createdAt: String=AppConstants.EMPTY_STRING,
+    val cuisine: String=AppConstants.EMPTY_STRING,
+    val experience: Int?=AppConstants.ZERO,
     val feedback_rating: List<FeedbackRating>,
-    val food_Type: String,
-    val from: String,
-    val fulltimeprice: Int,
-    val headline: String,
-    val language: String,
-    val no_of_visit: String,
-    val parttimeprice: Int,
-    val profilePhotoUrls: List<String>,
-    val specialities: List<String>,
-    val timeSlots: List<TimeSlot>,
-    val topCuisineUrls: List<String>,
-    val total_rating: Int,
-    val updatedAt: String,
-    val user: String
+    val food_Type: String=AppConstants.EMPTY_STRING,
+    val from: String?=AppConstants.EMPTY_STRING,
+    val fulltimeprice: Int=AppConstants.ZERO,
+    val headline: String=AppConstants.EMPTY_STRING,
+    val language: String=AppConstants.EMPTY_STRING,
+    val no_of_visit: String?=AppConstants.EMPTY_STRING,
+    val parttimeprice: Int?=AppConstants.ZERO,
+    val profilePhotoUrls: List<String>?= emptyList(),
+    val specialities: List<String>?= emptyList(),
+    val timeSlots: List<TimeSlot>?= emptyList(),
+    val topCuisineUrls: Array<String>?= emptyArray<String>(),
+    val total_rating: Int?=AppConstants.ZERO,
+    val updatedAt: String?=AppConstants.EMPTY_STRING,
+    val user: String?=AppConstants.EMPTY_STRING
 )
 
 data class Location(
@@ -53,31 +53,32 @@ data class Location(
 )
 
 data class FeedbackRating(
-    val _id: String,
-    val cleanliness: Int,
-    val date: String,
+    val _id: String?=AppConstants.EMPTY_STRING,
+    val cleanliness: Int?=AppConstants.ZERO,
+    val date: String?=AppConstants.EMPTY_STRING,
     val feedback_reviews: List<FeedbackReview>,
-    val food_quality: Int,
-    val hygiene: Int,
-    val punctuality: Int,
-    val service: Int
+    val food_quality: Int?=AppConstants.ZERO,
+    val hygiene: Int?=AppConstants.ZERO,
+    val punctuality: Int?=AppConstants.ZERO,
+    val service: Int?=AppConstants.ZERO
 )
 
 data class FeedbackReview(
-    val _id: String,
-    val body: String,
-    val date: String
+    val _id: String?=AppConstants.EMPTY_STRING,
+    val body: String?=AppConstants.EMPTY_STRING,
+    val date: String?=AppConstants.EMPTY_STRING
 )
 
 
 data class TimeSlot(
-    val _id: String,
-    val endTime: String,
-    val startTime: String
+    //val _id: String,
+    val endTime: String?=AppConstants.EMPTY_STRING,
+    val startTime: String?=AppConstants.EMPTY_STRING
 )
 
 
 data class Posts(val url: String, val name: String)
-data class TimeSlots(val slots: String?= AppConstants.EMPTY_STRING, val initialSelection: Boolean = false){
+data class TimeSlots(var slots: String?= AppConstants.EMPTY_STRING, val initialSelection: Boolean = false){
     var selected by mutableStateOf(initialSelection)
 }
+
