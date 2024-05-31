@@ -34,6 +34,8 @@ class ReportViewModel  @Inject constructor(
     private val stateHandle: SavedStateHandle
 ) : ViewModel() {
 
+    val selectedItem: MutableList<TimeSlots> = mutableListOf<TimeSlots>()
+
     private val _timeSlots = mutableStateOf(TimeSlots())
     val timeSlots: State<TimeSlots> = _timeSlots
 
@@ -44,49 +46,25 @@ class ReportViewModel  @Inject constructor(
     val viewState = _viewState.asStateFlow()
 
     init {
-        getProfileId()?.let {
-            Log.d("TAG", " stateHandle  : $it")
-            getProfileId()?.let { makeProfileRequestForReview(profileId = it) }
+        getProfileId()?.let { id->
+            Log.d("TAG", " stateHandle  : $id")
+            getProfileId()?.let { makeProfileRequestForReview(profileId = id) }
         }
     }
 
-    fun getProfileId() = stateHandle.get<String>(AppConstants.PROFILE_ID)
+    private fun getProfileId() = stateHandle.get<String>(AppConstants.PROFILE_ID)
 
     fun getTimeSlots():List<TimeSlots>{
         val timeSlotsList:MutableList<TimeSlots> = mutableListOf()
-        Log.d("TAG", "getTimeSlots : ${reportState.value.isSuccessful}")
         if (reportState.value.isSuccessful){
             reportState.value?.profile?.profile?.timeSlots?.let{
                 it?.forEach { slots->
-
                     timeSlotsList.add(TimeSlots(slots.startTime?.trim().plus(" - "+slots.endTime?.trim())))
-                    //Log.d("TAG", "ProfileDetailScreen TimeSlots List : ${Gson().toJson(timeSlots)}")
+                    Log.d("TAG", "ProfileDetailScreen TimeSlots List : ${Gson().toJson(timeSlots)}")
                 }
             }
         }
         return timeSlotsList
-    }
-
-    val myItems = mutableStateListOf<TimeSlots>()
-        .apply {
-            getTimeSlots().forEach {
-                add(TimeSlots(it.slots))
-            }
-        }
-
-
-    fun getSelectedItems() = myItems.filter { it.selected }
-
-    fun toggleSelection(index: Int) {
-
-        val item = myItems[index]
-        val isSelected = item.selected
-
-        if (isSelected) {
-            myItems[index] = item.copy(initialSelection = false)
-        } else {
-            myItems[index] = item.copy(initialSelection = true)
-        }
     }
 
     fun onUiEvent(reportUiEvent: ReportUiEvent) {
@@ -143,7 +121,6 @@ class ReportViewModel  @Inject constructor(
                     if (result.status == true){
                         result.data?.let { response->
                             _reportState.value = _reportState.value.copy(isLoading = false, profile = response, isSuccessful = true)
-                            getTimeSlots()
                         }
                         Log.d("TAG", "makeProfileRequestForReview->: ${Gson().toJson(_reportState.value)}")
                     }

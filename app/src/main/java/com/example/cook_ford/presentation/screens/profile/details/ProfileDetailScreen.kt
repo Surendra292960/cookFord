@@ -137,7 +137,7 @@ fun ProfileDetailScreen(
 						}
 
 						Spacer(modifier = Modifier.height(10.dp))
-						StatusCard()
+						FooterStatus()
 					}
 				}
 			}
@@ -781,7 +781,7 @@ fun Ratings(text: String, feedbackRating: Float?) {
 }
 
 @Composable
-fun StatusCard() {
+fun FooterStatus() {
 	Row(modifier = Modifier
 		.background(Color.LightGray)
 		.padding(bottom = 20.dp)) {

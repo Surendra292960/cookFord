@@ -6,6 +6,8 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -14,18 +16,21 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
-import androidx.compose.material3.SuggestionChip
-import androidx.compose.material3.SuggestionChipDefaults
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Done
+import androidx.compose.material3.FilterChip
+import androidx.compose.material3.FilterChipDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -43,9 +48,7 @@ import com.example.cook_ford.data.remote.profile_response.TimeSlots
 import com.example.cook_ford.presentation.component.widgets.snack_bar.MainViewState
 import com.example.cook_ford.presentation.component.widgets.topbar_nav.TopBarNavigation
 import com.example.cook_ford.presentation.screens.profile.report.state.ReportUiEvent
-import com.example.cook_ford.presentation.theme.Purple80
-import com.example.cook_ford.presentation.theme.PurpleGrey40
-
+import com.google.gson.Gson
 
 @Preview(showSystemUi = true, showBackground = true)
 @Composable
@@ -56,6 +59,7 @@ fun Preview() {
     )
 }
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun ReportScreen(
     navController: NavController? = null,
@@ -67,12 +71,6 @@ fun ReportScreen(
 
     val timeSlots:List<TimeSlots> = emptyList()
 
-    LaunchedEffect (key1 = true){
-        reportViewModel.getTimeSlots()
-    }
-
-    fun chipChangeListener(item: TimeSlots, checked: Boolean) =
-        timeSlots.find { it.slots == item.slots }?.let { task -> task.selected = checked }
     if (reportState.isSuccessful){
         Log.d("TAG", "Data isSuccessful : ${reportState.isSuccessful}")
         Column(modifier = Modifier
@@ -91,7 +89,7 @@ fun ReportScreen(
                      }
                  }
              })*/
-            SuggestionChipLayout()
+            TimeSlotsComponent(timeSlots = reportViewModel.getTimeSlots())
 
             ReportForm(
                 reportState = reportState,
@@ -163,97 +161,50 @@ fun ImageWithUserName(profileRes: ProfileResponse) {
     }
 }
 
-/*
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-fun TimeSlotsComponent(
-    timeSlots: List<TimeSlots>,
-    modifier: Modifier = Modifier,
-    selectedCar: TimeSlots? = null,
-    onSelectedChanged: (TimeSlots, Boolean) -> Unit) {
+fun TimeSlotsComponent(timeSlots: List<TimeSlots>) {
     FlowRow {
-        timeSlots.forEach {
-            SuggestionChipEachRow(label = it.slots.toString()*//*, selected = it.slots == chipState*//*) { chip ->
-                onSelectedChanged(it, !it.selected)
+        timeSlots.forEach { timeSlots ->
+            timeSlots?.slots?.let {
+                FilterChip(
+                    timeSlots = timeSlots
+                )
             }
         }
     }
 }
 
-
 @Composable
-fun SuggestionChipEachRow(
-    label: String,
-    selected: Boolean=false,
-    onChipChange: (String) -> Unit
-) {
+fun FilterChip(timeSlots: TimeSlots) {
+    var selected by remember { mutableStateOf(false) }
+    val reportViewModel:ReportViewModel = hiltViewModel()
+    Log.d("TAG", "FilterChipExample: ${Gson().toJson(reportViewModel.selectedItem)}")
 
-    SuggestionChip(onClick = {
-        if (!selected)
-            onChipChange(label)
-        else
-            onChipChange("")
-    }, label = {
-        Text(text = label)
-    }, modifier = Modifier.padding(horizontal = 4.dp),
-        shape = RoundedCornerShape(8.dp),
-        colors = SuggestionChipDefaults.suggestionChipColors(
-            containerColor = if (selected) Purple80 else Color.Transparent
-        ),
-        border = SuggestionChipDefaults.suggestionChipBorder(
-            enabled = true,
-            borderWidth = 1.dp,
-            borderColor = if (selected) Color.Transparent else PurpleGrey40
-        )
+    FilterChip(
+        modifier = Modifier.padding(horizontal = 5.dp),
+        onClick = {
+            selected = !selected
+            if (selected){
+                reportViewModel.selectedItem.add(timeSlots)
+            }else{
+                reportViewModel.selectedItem.remove(timeSlots)
+            }
+        },
+        label = {
+            Text(timeSlots.slots.toString())
+        },
+        selected = selected,
+        leadingIcon = if (selected) {
+            {
+                Icon(
+                    imageVector = Icons.Filled.Done,
+                    contentDescription = "Done icon",
+                    modifier = Modifier.size(FilterChipDefaults.IconSize)
+                )
+            }
+        } else {
+            null
+        },
     )
-}*/
-
-
-
-@Composable
-fun SuggestionChipLayout() {
-    val reportViewModel: ReportViewModel = hiltViewModel()
-
-    val chipState by remember { mutableStateOf(TimeSlots()) }
-
-    val selectedItems = reportViewModel.getSelectedItems().map { it.slots }
-    Log.d("TAG", "SuggestionChipLayout: $selectedItems")
-
-    reportViewModel.myItems.forEachIndexed { index , item ->
-        SuggestionChipEachRow(index = index, label = item.slots.toString(), selected = item == chipState, reportViewModel, onChipChange={
-            Log.d("TAG", "SuggestionChipLayout: $it")
-        })
-    }
-}
-
-
-@Composable
-fun SuggestionChipEachRow(
-    index :Int,
-    label: String,
-    selected: Boolean,
-    reportViewModel: ReportViewModel,
-    onChipChange: (String) -> Unit
-) {
-    Log.d("TAG", "SuggestionChipEachRow: $label $selected")
-    SuggestionChip(onClick = {
-        reportViewModel.toggleSelection(index)
-        if (!selected)
-            onChipChange(label)
-        else
-            onChipChange("")
-    }, label = {
-        Text(text = label)
-    },// modifier = Modifier.padding(horizontal = 5.dp),
-        shape = RoundedCornerShape(8.dp),
-        colors = SuggestionChipDefaults.suggestionChipColors(
-            containerColor = if (selected) Purple80 else Color.Transparent
-        ),
-        border = SuggestionChipDefaults.suggestionChipBorder(
-            enabled = selected,
-            borderWidth = 1.dp,
-            borderColor = if (selected) Color.Transparent else PurpleGrey40
-        )
-    )
-
 }

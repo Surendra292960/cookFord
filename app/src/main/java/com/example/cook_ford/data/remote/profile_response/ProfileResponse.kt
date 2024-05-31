@@ -78,7 +78,6 @@ data class TimeSlot(
 
 
 data class Posts(val url: String, val name: String)
-data class TimeSlots(var slots: String?= AppConstants.EMPTY_STRING, val initialSelection: Boolean = false){
-    var selected by mutableStateOf(initialSelection)
-}
+data class TimeSlots(var slots: String?= AppConstants.EMPTY_STRING, var selected: Boolean = false)
+
 

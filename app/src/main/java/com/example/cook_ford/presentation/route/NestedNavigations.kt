@@ -10,6 +10,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.example.cook_ford.presentation.screens.SplashScreen
+import com.example.cook_ford.presentation.screens.account.AccountScreen
 import com.example.cook_ford.presentation.screens.profile.report.ReportScreen
 import com.example.cook_ford.presentation.screens.dashboard.home.UserDashBoard
 import com.example.cook_ford.presentation.screens.onboard.OnBoardingScreen
@@ -120,7 +121,9 @@ fun HomeNavGraph(navController: NavHostController) {
         }
         composable(NavigationRoutes.HomeNavigation.Search.route) {  }
         //composable(NavigationRoutes.BottomNavigation.List.route) {  }
-        composable(NavigationRoutes.HomeNavigation.Profile.route) { }
+        composable(NavigationRoutes.HomeNavigation.Profile.route) {
+            AccountScreen ()
+        }
         detailNavGraph(navController = navController)
     }
 }

@@ -51,11 +51,11 @@ import com.example.cook_ford.presentation.theme.BlueViolet2
 import com.example.cook_ford.presentation.theme.BlueViolet3
 import com.example.cook_ford.presentation.theme.ButtonGreen
 import com.example.cook_ford.presentation.theme.DarkerButtonGreen
-import com.example.cook_ford.presentation.theme.DeepBlue
+import com.example.cook_ford.presentation.theme.DeepGreen
+import com.example.cook_ford.presentation.theme.LightGreen
 import com.example.cook_ford.presentation.theme.LightGreen1
 import com.example.cook_ford.presentation.theme.LightGreen2
 import com.example.cook_ford.presentation.theme.LightGreen3
-import com.example.cook_ford.presentation.theme.LightRed
 import com.example.cook_ford.presentation.theme.OrangeYellow1
 import com.example.cook_ford.presentation.theme.OrangeYellow2
 import com.example.cook_ford.presentation.theme.OrangeYellow3
@@ -150,7 +150,7 @@ fun BottomMenu(items: List<BottomMenuContent>, modifier: Modifier = Modifier, ac
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier
             .fillMaxWidth()
-            .background(DeepBlue)
+            .background(DeepGreen)
             .padding(15.dp)
     ) {
         items.forEachIndexed { index, item ->
@@ -255,7 +255,7 @@ fun ChipSection(chips: List<String>) {
 }
 
 @Composable
-fun suggestionSection(color: Color = LightRed) {
+fun suggestionSection(color: Color = LightGreen) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween,
