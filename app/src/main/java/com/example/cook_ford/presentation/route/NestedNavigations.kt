@@ -10,15 +10,16 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.example.cook_ford.presentation.screens.SplashScreen
-import com.example.cook_ford.presentation.screens.account.AccountScreen
-import com.example.cook_ford.presentation.screens.profile.report.ReportScreen
+import com.example.cook_ford.presentation.screens.authenticated.account.AccountScreen
+import com.example.cook_ford.presentation.screens.authenticated.account.profile.EditProfileScreen
 import com.example.cook_ford.presentation.screens.dashboard.home.UserDashBoard
 import com.example.cook_ford.presentation.screens.onboard.OnBoardingScreen
-import com.example.cook_ford.presentation.screens.profile.details.ProfileDetailScreen
-import com.example.cook_ford.presentation.screens.profile.list.ProfilesScreen
-import com.example.cook_ford.presentation.screens.profile.reviews.ReviewScreen
-import com.example.cook_ford.presentation.screens.sign_in.SignInScreen
-import com.example.cook_ford.presentation.screens.sign_up.SignUpScreen
+import com.example.cook_ford.presentation.screens.authenticated.profile.details.ProfileDetailScreen
+import com.example.cook_ford.presentation.screens.authenticated.profile.list.ProfilesScreen
+import com.example.cook_ford.presentation.screens.authenticated.profile.report.ReportScreen
+import com.example.cook_ford.presentation.screens.authenticated.profile.reviews.ReviewScreen
+import com.example.cook_ford.presentation.screens.un_authenticated.sign_in.SignInScreen
+import com.example.cook_ford.presentation.screens.un_authenticated.sign_up.SignUpScreen
 import com.example.cook_ford.utils.AppConstants
 
 /**
@@ -122,12 +123,25 @@ fun HomeNavGraph(navController: NavHostController) {
         composable(NavigationRoutes.HomeNavigation.Search.route) {  }
         //composable(NavigationRoutes.BottomNavigation.List.route) {  }
         composable(NavigationRoutes.HomeNavigation.Profile.route) {
-            AccountScreen ()
+            AccountScreen (
+                onNavigateToEditProfile = { /*profileId ->*/
+                    navController.navigate(route = NavigationRoutes.AccountNavigation.EditProfile.route /*+ "/${profileId}"*/) {
+                        popUpTo(route = NavigationRoutes.Authenticated.NavigationRoute.route) {
+                            inclusive = true
+                        }
+                    }
+                }
+            )
         }
         detailNavGraph(navController = navController)
+        accountNavGraph(navController = navController)
     }
 }
 
+/**
+ * Details screens nav graph builder
+ * (Unauthenticated user)
+ */
 @OptIn(ExperimentalFoundationApi::class)
 fun NavGraphBuilder.detailNavGraph(navController: NavHostController) {
     navigation(route = NavigationRoutes.DetailsNavigation.NavigationRoute.route,
@@ -177,6 +191,29 @@ fun NavGraphBuilder.detailNavGraph(navController: NavHostController) {
                             }*/
                     }
                 }
+            )
+        }
+    }
+}
+
+/**
+ * Account screens nav graph builder
+ * (Unauthenticated user)
+ */
+fun NavGraphBuilder.accountNavGraph(navController: NavHostController) {
+    navigation(route = NavigationRoutes.AccountNavigation.NavigationRoute.route,
+        startDestination =  NavigationRoutes.AccountNavigation.EditProfile.route /*+ "/{${AppConstants.PROFILE_ID}}"*/) {
+        composable(NavigationRoutes.AccountNavigation.EditProfile.route /*+ "/{profileId}"*/) {
+            EditProfileScreen(
+                //onNavigateToRegistration = { navController.navigate(route = NavigationRoutes.Unauthenticated.SignUp.route) },
+                onNavigateToSignOut = {},
+                onNavigateToAuthenticatedRoute = {
+                    navController.navigate(route = NavigationRoutes.Authenticated.NavigationRoute.route) {
+                        popUpTo(route = NavigationRoutes.Unauthenticated.NavigationRoute.route) {
+                            inclusive = true
+                        }
+                    }
+                },
             )
         }
     }

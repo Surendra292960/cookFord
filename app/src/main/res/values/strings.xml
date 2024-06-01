@@ -92,5 +92,6 @@ affordable price</string>
     <string name="videos">Videos</string>
     <string name="profile">Profile</string>
     <string name="back">Back</string>
+    <string name="sign_out_button_text">Sign Out</string>
 
 </resources>

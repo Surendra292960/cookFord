@@ -30,7 +30,7 @@
         </activity>
 
         <provider
-            android:name=".presentation.screens.profile.details.model.GenericFileProvider"
+            android:name=".presentation.screens.authenticated.profile.details.model.GenericFileProvider"
             android:authorities="${applicationId}.com.vips.jetcapture.provider"
             android:exported="false"
             android:grantUriPermissions="true">

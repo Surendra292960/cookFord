@@ -11,6 +11,9 @@ val PurpleGrey40 = Color(0xFF625b71)
 val Pink40 = Color(0xFF7D5260)
 
 
+val OrangeYellow1 = Color(0xfff0bd28)
+val Orange = Color(0xFFE22209)
+
 val TextWhite = Color(0xffeeeeee)
 val DeepGreen = Color(0xFF1B5E20)
 val ButtonGreen = Color(0xFF43A047)
@@ -21,7 +24,7 @@ val AquaBlue = Color(0xff9aa5c4)
 val skyblue1 = Color(0xFF4FC3F7)
 val skyblue2 = Color(0xFF29B6F6)
 val skyblue3 = Color(0xFF03A9F4)
-val OrangeYellow1 = Color(0xfff0bd28)
+
 val OrangeYellow2 = Color(0xfff1c746)
 val OrangeYellow3 = Color(0xfff4cf65)
 val Beige1 = Color(0xfffdbda1)

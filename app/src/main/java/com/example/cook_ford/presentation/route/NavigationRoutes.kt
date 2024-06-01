@@ -42,4 +42,10 @@ sealed class NavigationRoutes {
         data object ProfileReview : DetailsNavigation(route = NavTitle.REVIEW)
         data object ProfileReport : DetailsNavigation(route = NavTitle.REPORT)
     }
+
+    sealed class AccountNavigation(val route: String) : NavigationRoutes() {
+        data object NavigationRoute : AccountNavigation(route = NavTitle.ACCOUNT_NAVIGATION)
+
+        data object EditProfile : AccountNavigation(route = NavTitle.EDIT_PROFILE)
+    }
 }

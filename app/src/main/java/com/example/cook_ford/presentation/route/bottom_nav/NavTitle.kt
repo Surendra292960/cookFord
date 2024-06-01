@@ -25,5 +25,8 @@ object NavTitle {
     const val REVIEW = "Review"
     const val REPORT = "Report"
     const val ADD_NOTE = "AddNote"
+    //Details
+    const val ACCOUNT_NAVIGATION = "Account"
+    const val EDIT_PROFILE = "EditProfile"
 }
 

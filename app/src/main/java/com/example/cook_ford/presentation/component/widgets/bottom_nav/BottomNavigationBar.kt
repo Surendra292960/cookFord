@@ -92,6 +92,9 @@ fun BottomNavigationBar(
     }
 
     //hide topBar
+    /**
+     * Home Navigation
+     */
     when (navBackStackEntry?.destination?.route) {
         NavigationRoutes.HomeNavigation.Home.route -> {
             bottomNavVisibility = true
@@ -105,6 +108,9 @@ fun BottomNavigationBar(
             bottomNavVisibility = true
             isVisible.invoke(true)
         }
+        /**
+         * Detail Navigation
+         */
         NavigationRoutes.DetailsNavigation.ProfileDetail.route + "/{${AppConstants.PROFILE_ID}}" -> {
             bottomNavVisibility = false
             isVisible.invoke(false)
@@ -116,6 +122,14 @@ fun BottomNavigationBar(
         NavigationRoutes.DetailsNavigation.ProfileReport.route + "/{${AppConstants.PROFILE_ID}}" -> {
             bottomNavVisibility = false
             isVisible(false)
+        }
+
+        /**
+         * Account Navigation
+         */
+        NavigationRoutes.AccountNavigation.EditProfile.route /*+ "/{${AppConstants.PROFILE_ID}}"*/ -> {
+            bottomNavVisibility = false
+            isVisible(true)
         }
         /*
         DetailScreen.NotificationScreen.route -> {

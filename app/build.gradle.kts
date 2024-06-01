@@ -86,6 +86,7 @@ dependencies {
     implementation(libs.androidx.constraintlayout.compose)
     implementation(libs.androidx.constraintlayout.compose)
     implementation(libs.androidx.coil.compose)
+    implementation(libs.androidx.compose.font)
 
     ksp(libs.androidx.hilt.compiler)
 
