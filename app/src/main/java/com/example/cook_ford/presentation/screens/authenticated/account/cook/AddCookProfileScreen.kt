@@ -1,11 +1,12 @@
-package com.example.cook_ford.presentation.screens.authenticated.account.profile
-
+package com.example.cook_ford.presentation.screens.authenticated.account.cook
 import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -16,6 +17,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Card
 import androidx.compose.material.SnackbarHostState
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
@@ -30,38 +32,42 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.repeatOnLifecycle
 import com.example.cook_ford.R
+import com.example.cook_ford.presentation.component.widgets.MultiChoiceCardInFlowRow
+import com.example.cook_ford.presentation.component.widgets.SegmentedControl
 import com.example.cook_ford.presentation.component.widgets.dialog.CustomDialog
 import com.example.cook_ford.presentation.component.widgets.dialog.ResetWarning
 import com.example.cook_ford.presentation.component.widgets.snack_bar.MainViewState
-import com.example.cook_ford.presentation.screens.authenticated.account.profile.state.EditProfileState
-import com.example.cook_ford.presentation.screens.authenticated.account.profile.state.EditProfileUiEvent
+import com.example.cook_ford.presentation.screens.authenticated.account.cook.state.AddCookProfileState
+import com.example.cook_ford.presentation.screens.authenticated.account.cook.state.AddCookProfileUiEvent
+import com.example.cook_ford.utils.FontName
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 
+data class Option(val option: String="", val selected: Boolean=false)
 @Composable
-fun EditProfileScreen(
-    onNavigateBack: () -> Unit,
-    onNavigateToSignOut: () -> Unit,
+fun AddCookProfileScreen(
     uploadProfileImage: (String) -> Unit,
+    onNavigateBack: () -> Unit,
     onNavigateToAuthenticatedRoute: () -> Unit) {
-    val editProfileViewModel: EditProfileViewModel = hiltViewModel()
-    val editProfileState by remember { editProfileViewModel.editProfileState }
-    val showDialogState: Boolean by editProfileViewModel.showDialog.collectAsState()
+    val addCookProfileViewModel: AddCookProfileViewModel = hiltViewModel()
+    val addCookProfileState by remember { addCookProfileViewModel.addCookProfileState }
+    val showDialogState: Boolean by addCookProfileViewModel.showDialog.collectAsState()
     val snackBarHostState = remember { SnackbarHostState() }
     val changeProfileState = remember { mutableStateOf("") }
-    val viewState: MainViewState by editProfileViewModel.viewState.collectAsState()
+    val viewState: MainViewState by addCookProfileViewModel.viewState.collectAsState()
     val lifecycle = LocalLifecycleOwner.current.lifecycle
 
-    if (editProfileState.isEditSuccessful) {
+    if (addCookProfileState.isCookAddedSuccessful) {
 
-        ShowCustomDialog("message", editProfileViewModel, showDialogState)
+        ShowCustomDialog("message", addCookProfileViewModel, showDialogState)
 
         Log.d("TAG", "EditProfileScreen: $showDialogState")
         /**
@@ -76,24 +82,39 @@ fun EditProfileScreen(
     } else {
 
         // Full Screen Content
-        Column(modifier = Modifier
-            .fillMaxSize()
-            .padding(start = 16.dp, end = 16.dp)
-            .height(300.dp)
-            .background(Color.White)
-            .verticalScroll(rememberScrollState()),
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(start = 16.dp, end = 16.dp)
+                .background(Color.White)
+                .verticalScroll(rememberScrollState()),
             horizontalAlignment = Alignment.CenterHorizontally,
             // verticalArrangement = Arrangement.Center
         ) {
-            // Image
+            // Profile Image
             ProfileImage(uploadProfileImage = {}, changeProfileState)
 
-            EditProfileForm(editProfileState, editProfileViewModel, viewState, onNavigateToSignOut, changeProfileImageState={
-                changeProfileState.value = it
-                Log.d("TAG", "EditProfileScreen: ${changeProfileState.value}")
-            })
+            val options = listOf("Option 1", "Option 2", "Option 3", "Option 4")
 
-            ShowSnackbar(editProfileViewModel, lifecycle, snackBarHostState)
+            MultiChoiceCardInFlowRow(
+                options = options,
+                onSelectionChanged = { newSelection ->
+                    // Handle the new selection here
+                }
+            )
+
+            // EditProfile Inputs Composable
+            CookProfileForm(
+                addCookProfileState,
+                addCookProfileViewModel,
+                viewState,
+                changeProfileImageState = {
+                    changeProfileState.value = it
+                    Log.d("TAG", "EditProfileScreen: ${changeProfileState.value}")
+                })
+
+            // Show Snackbar
+            ShowSnackbar(addCookProfileViewModel, lifecycle, snackBarHostState)
         }
     }
 }
@@ -137,60 +158,61 @@ fun ProfileImage(uploadProfileImage:()->Unit, changeProfileState: MutableState<S
 
 
 @Composable
-fun EditProfileForm(
-    editProfileState: EditProfileState,
-    editProfileViewModel: EditProfileViewModel,
+fun CookProfileForm(
+    addCookProfileState: AddCookProfileState,
+    addCookProfileViewModel: AddCookProfileViewModel,
     viewState: MainViewState,
-    onNavigateToSignOut: () -> Unit,
     changeProfileImageState: (String) -> Unit) {
 
     // EditProfile Inputs Composable
-    EditProfileForm(
-        editProfileState = editProfileState,
+    AddCookProfileForm(
+        addCookProfileState = addCookProfileState,
         viewState = viewState,
 
         onUserNameChange = { inputString ->
-            editProfileViewModel.onUiEvent(
-                editProfileUiEvent = EditProfileUiEvent.UserNameChanged(
-                    inputString
-                )
-            )
-        },
-        onEmailChange = { inputString ->
-            editProfileViewModel.onUiEvent(
-                editProfileUiEvent = EditProfileUiEvent.EmailChanged(
+            addCookProfileViewModel.onUiEvent(
+                addCookProfileUiEvent = AddCookProfileUiEvent.UserNameChanged(
                     inputString
                 )
             )
         },
         onPhoneChange = { inputString ->
-            editProfileViewModel.onUiEvent(
-                editProfileUiEvent = EditProfileUiEvent.PhoneChanged(
+            addCookProfileViewModel.onUiEvent(
+                addCookProfileUiEvent = AddCookProfileUiEvent.PhoneChanged(
+                    inputString
+                )
+            )
+        },
+        onAlternatePhoneChange = { inputString ->
+            addCookProfileViewModel.onUiEvent(
+                addCookProfileUiEvent = AddCookProfileUiEvent.AlternatePhoneChanged(
                     inputString
                 )
             )
         },
         onGenderChange = { inputString ->
             changeProfileImageState(inputString)
-            editProfileViewModel.onUiEvent(
-                editProfileUiEvent = EditProfileUiEvent.GenderChange(
+            addCookProfileViewModel.onUiEvent(
+                addCookProfileUiEvent = AddCookProfileUiEvent.GenderChange(
                     inputString
                 )
             )
         },
         onSubmit = {
-            editProfileViewModel.onUiEvent(editProfileUiEvent = EditProfileUiEvent.Submit)
+            addCookProfileViewModel.onUiEvent(addCookProfileUiEvent = AddCookProfileUiEvent.Submit)
         },
-        onSignOutClick = onNavigateToSignOut
+        //onSignOutClick = onNavigateToSignOut
     )
+
 }
 
+
 @Composable
-fun ShowSnackbar(editProfileViewModel: EditProfileViewModel, lifecycle: Lifecycle, snackBarHostState: SnackbarHostState) {
+fun ShowSnackbar(addCookProfileViewModel: AddCookProfileViewModel, lifecycle: Lifecycle, snackBarHostState: SnackbarHostState) {
     LaunchedEffect(key1 = Unit) {
         lifecycle.repeatOnLifecycle(state = Lifecycle.State.STARTED) {
             launch {
-                editProfileViewModel.onProcessSuccess.collectLatest { message: String ->
+                addCookProfileViewModel.onProcessSuccess.collectLatest { message: String ->
                     Log.d("TAG", "EditProfile: Event success")
                     snackBarHostState.showSnackbar(message)
                 }
@@ -202,7 +224,7 @@ fun ShowSnackbar(editProfileViewModel: EditProfileViewModel, lifecycle: Lifecycl
 @Composable
 fun ShowCustomDialog(
     title: String,
-    editProfileViewModel: EditProfileViewModel,
+    addCookProfileViewModel: AddCookProfileViewModel,
     showDialogState: Boolean) {
 
     val isDismiss = remember { mutableStateOf(true) }
@@ -210,7 +232,7 @@ fun ShowCustomDialog(
     CustomDialog(
         showDialog = showDialogState,
         isAnimate = isDismiss.value,
-        onDismissRequest =  editProfileViewModel::onDialogDismiss) {
+        onDismissRequest =  addCookProfileViewModel::onDialogDismiss) {
         ResetWarning(color= Color.Green, title = title,  onDismissRequest = { })
     }
 }
@@ -219,5 +241,5 @@ fun ShowCustomDialog(
 @Preview(showBackground = true)
 @Composable
 fun PreviewProfileScreen() {
-    EditProfileScreen(onNavigateToSignOut = {}, onNavigateToAuthenticatedRoute = {}, uploadProfileImage = {}, onNavigateBack = {})
+    AddCookProfileScreen(onNavigateToAuthenticatedRoute = {}, uploadProfileImage = {}, onNavigateBack = {})
 }

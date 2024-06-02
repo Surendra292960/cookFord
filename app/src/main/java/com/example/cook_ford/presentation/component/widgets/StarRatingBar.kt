@@ -28,11 +28,8 @@ fun StarRatingBar(
     val starSize = (12f * density).dp
     val starSpacing = (0.5f * density).dp
 
-    Row(
-        modifier = Modifier
-            .selectableGroup(),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
+    Row(modifier = Modifier.selectableGroup(),
+        verticalAlignment = Alignment.CenterVertically) {
         for (i in 1..maxStars) {
             val isSelected = i <= rating
             val icon = if (isSelected) Icons.Filled.Star else Icons.Default.Star

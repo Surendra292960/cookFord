@@ -27,6 +27,8 @@ object NavTitle {
     const val ADD_NOTE = "AddNote"
     //Details
     const val ACCOUNT_NAVIGATION = "Account"
+    const val PROFILE_ACCOUNT = "ProfileAccount"
     const val EDIT_PROFILE = "EditProfile"
+    const val ADD_COOK_PROFILE = "AddCookProfile"
 }
 

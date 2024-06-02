@@ -127,7 +127,11 @@ fun BottomNavigationBar(
         /**
          * Account Navigation
          */
-        NavigationRoutes.AccountNavigation.EditProfile.route /*+ "/{${AppConstants.PROFILE_ID}}"*/ -> {
+        NavigationRoutes.AccountNavigation.EditProfile.route + "/{${AppConstants.PROFILE_ID}}" -> {
+            bottomNavVisibility = false
+            isVisible(true)
+        }
+        NavigationRoutes.AccountNavigation.AddCookProfile.route + "/{${AppConstants.PROFILE_ID}}" -> {
             bottomNavVisibility = false
             isVisible(true)
         }

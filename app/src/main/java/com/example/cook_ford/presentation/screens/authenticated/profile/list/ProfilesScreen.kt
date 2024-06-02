@@ -1,6 +1,7 @@
 package com.example.cook_ford.presentation.screens.authenticated.profile.list
 
 import android.util.Log
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -22,6 +23,7 @@ import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
@@ -129,11 +131,31 @@ fun UsersProfileList(index: Int, onItemClick: (String) -> Unit, profileState: Pr
                             .wrapContentHeight()
                             .clip(CircleShape)
                             .background(Color.White)) {
-                            Image(painter = painterResource(id = R.drawable.ic_chef_round),
-                                contentDescription = "",
-                                contentScale = ContentScale.Crop,
-                                modifier = Modifier.size(80.dp)
-                            )
+                            Card(
+                                modifier = Modifier
+                                    .size(100.dp)
+                                    .clip(CircleShape)
+                                    .align(Alignment.Center),
+                                shape = CircleShape,
+                                elevation = 2.dp,
+                                border = BorderStroke(1.dp, Color.LightGray)
+                            ) {
+                                if (profileState.profile?.get(index)?.gender == "Female") {
+                                    Image(
+                                        painter = painterResource(id = R.drawable.female_chef),
+                                        contentDescription = "Profile Photo",
+                                        modifier = Modifier,
+                                        contentScale = ContentScale.Crop,
+                                    )
+                                }else{
+                                    Image(
+                                        painter = painterResource(id = R.drawable.male_chef),
+                                        contentDescription = "Profile Photo",
+                                        modifier = Modifier,
+                                        contentScale = ContentScale.Crop,
+                                    )
+                                }
+                            }
                         }
 
                         profileState?.profile?.get(index)?.profile?.total_rating?.let {

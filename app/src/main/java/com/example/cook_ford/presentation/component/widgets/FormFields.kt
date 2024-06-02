@@ -1,23 +1,35 @@
 package com.example.cook_ford.presentation.component.widgets
+import android.util.Log
+import androidx.annotation.ColorRes
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.selection.selectable
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Checkbox
+import androidx.compose.material3.FilterChip
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Text
@@ -35,6 +47,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -42,8 +55,14 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.zIndex
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.cook_ford.R
+import com.example.cook_ford.presentation.screens.authenticated.account.cook.AddCookProfileViewModel
 import com.example.cook_ford.presentation.theme.AppTheme
 import com.example.cook_ford.utils.FontName
 
@@ -193,6 +212,7 @@ fun InputTextField(
     isError: Boolean = false,
     errorText: String = "",
     maxChar: Int = 0,
+    texColor:Color
     /*submit: () -> Unit*/) {
 
     var isPasswordVisible by remember { mutableStateOf(false) }
@@ -238,7 +258,7 @@ fun InputTextField(
             fontSize = 17.sp,
             fontFamily = FontName,
             fontWeight = FontWeight.Bold,
-            color = Color.LightGray
+            color = texColor
         ),
         keyboardActions = KeyboardActions {
             if (keyboardOptions.imeAction == ImeAction.Done) {
@@ -299,6 +319,172 @@ fun Textarea(
         }
     )
 }
+
+
+
+@Composable
+fun SegmentedControl(
+    items: List<String>,
+    defaultSelectedItemIndex: Int = 0,
+    useFixedWidth: Boolean = false,
+    itemWidth: Dp = 120.dp,
+    cornerRadius : Int = 10,
+    @ColorRes color : Int = R.color.gray,
+    onItemSelection: (selectedItemIndex: Int) -> Unit, ) {
+    val selectedIndex = remember { mutableStateOf(defaultSelectedItemIndex) }
+
+    Row(modifier = Modifier) {
+        items.forEachIndexed { index, item ->
+            OutlinedButton(
+                modifier = when (index) {
+                    0 -> {
+                        if (useFixedWidth) {
+                            Modifier
+                                .width(itemWidth)
+                                .offset(0.dp, 0.dp)
+                                .zIndex(if (selectedIndex.value == index) 1f else 0f)
+                        } else {
+                            Modifier
+                                .wrapContentSize()
+                                .offset(0.dp, 0.dp)
+                                .zIndex(if (selectedIndex.value == index) 1f else 0f)
+                        }
+                    } else -> {
+                        if (useFixedWidth)
+                            Modifier
+                                .width(itemWidth)
+                                .offset((-1 * index).dp, 0.dp)
+                                .zIndex(if (selectedIndex.value == index) 1f else 0f)
+                        else Modifier
+                            .wrapContentSize()
+                            .offset((-1 * index).dp, 0.dp)
+                            .zIndex(if (selectedIndex.value == index) 1f else 0f)
+                    }
+                },
+                onClick = {
+                    selectedIndex.value = index
+                    onItemSelection(selectedIndex.value)
+                },
+                shape = when (index) {
+                    /**
+                     * left outer button
+                     */
+                    0 -> RoundedCornerShape(
+                        topStartPercent = cornerRadius,
+                        topEndPercent = 0,
+                        bottomStartPercent = cornerRadius,
+                        bottomEndPercent = 0
+                    )
+                    /**
+                     * right outer button
+                     */
+                    items.size - 1 -> RoundedCornerShape(
+                        topStartPercent = 0,
+                        topEndPercent = cornerRadius,
+                        bottomStartPercent = 0,
+                        bottomEndPercent = cornerRadius
+                    )
+                    /**
+                     * middle button
+                     */
+                    else -> RoundedCornerShape(
+                        topStartPercent = 0,
+                        topEndPercent = 0,
+                        bottomStartPercent = 0,
+                        bottomEndPercent = 0
+                    )
+                },
+                border = BorderStroke(
+                    1.dp, if (selectedIndex.value == index) {
+                        colorResource(id = color)
+                    } else {
+                        colorResource(id = color).copy(alpha = 0.75f)
+                    }
+                ),
+                colors = if (selectedIndex.value == index) {
+                    /**
+                     * selected colors
+                     */
+                    onItemSelection(selectedIndex.value)
+                    ButtonDefaults.outlinedButtonColors(
+                        contentColor = Color.White,
+                        containerColor = colorResource(id = color)
+                    )
+                } else {
+                    /**
+                     * not selected colors
+                     */
+                    ButtonDefaults.outlinedButtonColors(
+                        contentColor = Color.Gray,
+                        containerColor = Color.Transparent)
+                },
+            ) {
+                Text(
+                    text = item,
+                    fontFamily = FontName,
+                    fontWeight = FontWeight.SemiBold,
+                    color = if (selectedIndex.value == index) {
+                        Color.White
+                    } else {
+                        colorResource(id = color).copy(alpha = 0.9f)
+                    },
+                )
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalLayoutApi::class)
+@Composable
+fun MultiChoiceCardInFlowRow(options: List<String>,  onSelectionChanged: (String) -> Unit) {
+    FlowRow(modifier = Modifier
+        .fillMaxWidth()
+        .padding(horizontal = 5.dp)){
+        options.forEach { option ->
+            MultiChoiceCard(
+                options = option,
+                onSelectionChanged={}
+            )
+        }
+    }
+}
+
+@Composable
+fun MultiChoiceCard(options: String,  onSelectionChanged: (String) -> Unit) {
+    var selected by remember { mutableStateOf(false) }
+    val addCookProfileViewModel: AddCookProfileViewModel = hiltViewModel()
+    Log.d("TAG", "MultiChoiceCard: ${addCookProfileViewModel.selectedItem}")
+
+    FilterChip(
+        modifier = Modifier
+            .padding(all = 5.dp)
+            .wrapContentHeight(),
+        onClick = {
+            selected = !selected
+            if (selected) {
+                addCookProfileViewModel.selectedItem.add(options)
+            } else {
+                addCookProfileViewModel.selectedItem.remove(options)
+            }
+        },
+        label = {
+            Text(
+                text = options,
+                style = TextStyle(fontSize = 15.sp),
+                fontWeight = FontWeight.Bold,
+                fontFamily = FontName,
+                textAlign = TextAlign.Center,
+                modifier = Modifier
+                    .height(50.dp)
+                    .width(130.dp)
+                    .padding(5.dp)
+            )
+        },
+        selected = selected,
+    )
+}
+
+
 @Composable
 fun RadioButton() {
     val selectedValue = remember { mutableStateOf("") }
@@ -360,7 +546,8 @@ fun SubmitButton(
     text: String,
     isLoading: Boolean,
     onClick: () -> Unit) {
-    Button(modifier = modifier.height(AppTheme.dimens.normalButtonHeight)
+    Button(modifier = modifier
+        .height(AppTheme.dimens.normalButtonHeight)
         .fillMaxWidth(),
         enabled = !isLoading,
         onClick = onClick) {
@@ -368,6 +555,28 @@ fun SubmitButton(
             Progressbar(isLoading)
         } else {
             Text(text = text, style = MaterialTheme.typography.titleMedium)
+        }
+    }
+}
+
+
+@Composable
+fun OutlinedSubmitButton(
+    modifier: Modifier = Modifier,
+    textColor: Color,
+    text: String,
+    isLoading: Boolean,
+    onClick: () -> Unit) {
+    OutlinedButton(modifier = modifier
+        .height(AppTheme.dimens.normalButtonHeight)
+        .fillMaxWidth(),
+        enabled = !isLoading,
+        border = BorderStroke(1.dp, color = textColor),
+        onClick = onClick) {
+        if (isLoading) {
+            Progressbar(isLoading)
+        } else {
+            Text(text = text, style = MaterialTheme.typography.titleMedium, color = textColor)
         }
     }
 }

@@ -1,13 +1,16 @@
 package com.example.cook_ford.presentation.screens.authenticated.account
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
@@ -15,6 +18,7 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.Card
 import androidx.compose.material.ExtendedFloatingActionButton
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.icons.Icons
@@ -37,6 +41,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -53,17 +58,21 @@ import com.example.cook_ford.utils.FontName
 
 
 @Composable
-fun AccountScreen(onNavigateToEditProfile:()->Unit) {
+fun AccountScreen(
+    onNavigateToEditProfile: (String) -> Unit,
+    onNavigateToAddCookScreen: (String) -> Unit,
+    onNavigateToPostJobScreen: () -> Unit,
+    onNavigateToContactUsScreen: () -> Unit,
+    onNavigateToReviewUsScreen: () -> Unit) {
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .verticalScroll(rememberScrollState()),
+    Column(modifier = Modifier.fillMaxSize().verticalScroll(rememberScrollState()),
         verticalArrangement = Arrangement.SpaceBetween,
         horizontalAlignment = Alignment.CenterHorizontally) {
-        AccountProfileImage(onNavigateToEditProfile = {onNavigateToEditProfile.invoke()})
+
+        AccountProfileImage(onNavigateToEditProfile = { it->onNavigateToEditProfile.invoke(it) })
         HorizontalDivider(modifier = Modifier.padding(top = 10.dp), color = Color.LightGray)
         CallCreditButtons()
+
         AccountProfileContent(
             textColor = Orange,
             leadingIcon = Icons.Filled.Circle,
@@ -72,8 +81,26 @@ fun AccountScreen(onNavigateToEditProfile:()->Unit) {
             subtitle = "Play and Win Call Credits and Documents",
             tintColor = Orange,
             trailingIconSize = 17.dp,
-            leadingIconSize = 30.dp
+            leadingIconSize = 30.dp,
+            navigationRoute = "Spin",
+            onNavigateTo = { route->
+                when (route) {
+                    "Spin" -> {
+                        onNavigateToPostJobScreen.invoke()
+                    }
+                    "AddCook" -> {
+                        onNavigateToAddCookScreen.invoke("dtrfjikol")
+                    }
+                    "ContactUs" -> {
+                        onNavigateToContactUsScreen.invoke()
+                    }
+                    "ReviewUs" -> {
+                        onNavigateToReviewUsScreen.invoke()
+                    }
+                }
+            },
         )
+        Spacer(modifier = Modifier.height(10.dp))
         AccountProfileContent(
             textColor = Color.DarkGray,
             leadingIcon = Icons.Filled.NotificationsActive,
@@ -82,18 +109,54 @@ fun AccountScreen(onNavigateToEditProfile:()->Unit) {
             subtitle = "Get Notification when any cook shows interest",
             tintColor = Color.DarkGray,
             trailingIconSize = 17.dp,
-            leadingIconSize = 30.dp
+            leadingIconSize = 30.dp,
+            navigationRoute = "Job",
+            onNavigateTo = { route->
+                when (route) {
+                    "Spin" -> {
+                        onNavigateToPostJobScreen.invoke()
+                    }
+                    "AddCook" -> {
+                        onNavigateToAddCookScreen.invoke("dtrfjikol")
+                    }
+                    "ContactUs" -> {
+                        onNavigateToContactUsScreen.invoke()
+                    }
+                    "ReviewUs" -> {
+                        onNavigateToReviewUsScreen.invoke()
+                    }
+                }
+            },
         )
+        Spacer(modifier = Modifier.height(10.dp))
         AccountProfileContent(
             textColor = Color.DarkGray,
             leadingIcon = Icons.Filled.PersonAdd,
             trailingIcon = Icons.Filled.ArrowForwardIos,
-            title = "Add Network",
+            title = "Add Your Cook",
             subtitle = "",
             tintColor = Color.DarkGray,
             trailingIconSize = 17.dp,
-            leadingIconSize = 30.dp
+            leadingIconSize = 30.dp,
+            navigationRoute = "AddCook",
+            onNavigateTo = { route->
+                when (route) {
+                    "Spin" -> {
+                        onNavigateToPostJobScreen.invoke()
+                    }
+                    "AddCook" -> {
+                        onNavigateToAddCookScreen.invoke("dtrfjikol")
+                    }
+                    "ContactUs" -> {
+                        onNavigateToContactUsScreen.invoke()
+                    }
+                    "ReviewUs" -> {
+                        onNavigateToReviewUsScreen.invoke()
+                    }
+                }
+            },
         )
+        Spacer(modifier = Modifier.height(10.dp))
         AccountProfileContent(
             textColor = Color.DarkGray,
             leadingIcon = Icons.Filled.People,
@@ -102,8 +165,11 @@ fun AccountScreen(onNavigateToEditProfile:()->Unit) {
             subtitle = "",
             tintColor = Color.DarkGray,
             trailingIconSize = 17.dp,
-            leadingIconSize = 30.dp
+            leadingIconSize = 30.dp,
+            navigationRoute = "",
+            onNavigateTo = {},
         )
+        Spacer(modifier = Modifier.height(10.dp))
         AccountProfileContent(
             textColor = Color.DarkGray,
             leadingIcon = Icons.Filled.ContactPhone,
@@ -112,8 +178,26 @@ fun AccountScreen(onNavigateToEditProfile:()->Unit) {
             subtitle = "",
             tintColor = Color.DarkGray,
             trailingIconSize = 25.dp,
-            leadingIconSize = 30.dp
+            leadingIconSize = 30.dp,
+            navigationRoute = "ContactUs",
+            onNavigateTo = { route->
+                when (route) {
+                    "Spin" -> {
+                        onNavigateToPostJobScreen.invoke()
+                    }
+                    "AddCook" -> {
+                        onNavigateToAddCookScreen.invoke("dtrfjikol")
+                    }
+                    "ContactUs" -> {
+                        onNavigateToContactUsScreen.invoke()
+                    }
+                    "ReviewUs" -> {
+                        onNavigateToReviewUsScreen.invoke()
+                    }
+                }
+            },
         )
+        Spacer(modifier = Modifier.height(10.dp))
         AccountProfileContent(
             textColor = Color.DarkGray,
             leadingIcon = Icons.Filled.Reviews,
@@ -122,7 +206,24 @@ fun AccountScreen(onNavigateToEditProfile:()->Unit) {
             subtitle = "Good or bad. we are listening",
             tintColor = Color.DarkGray,
             trailingIconSize = 17.dp,
-            leadingIconSize = 30.dp
+            leadingIconSize = 30.dp,
+            navigationRoute = "ReviewUs",
+            onNavigateTo = { route->
+                when (route) {
+                    "Spin" -> {
+                        onNavigateToPostJobScreen.invoke()
+                    }
+                    "AddCook" -> {
+                        onNavigateToAddCookScreen.invoke("dtrfjikol")
+                    }
+                    "ContactUs" -> {
+                        onNavigateToContactUsScreen.invoke()
+                    }
+                    "ReviewUs" -> {
+                        onNavigateToReviewUsScreen.invoke()
+                    }
+                }
+            },
         )
         HorizontalDivider(modifier = Modifier.padding(top = 10.dp), color = Color.Gray)
 
@@ -130,11 +231,28 @@ fun AccountScreen(onNavigateToEditProfile:()->Unit) {
             textColor = Color.DarkGray,
             leadingIcon = Icons.Filled.Person,
             trailingIcon = Icons.Filled.ArrowForwardIos,
-            title = "Login as Cook",
+            title = "SignIn as Cook",
             subtitle = "Good or bad. we are listening",
             tintColor = Color.DarkGray,
             trailingIconSize = 17.dp,
-            leadingIconSize = 30.dp
+            leadingIconSize = 30.dp,
+            navigationRoute = "SignInAsCook",
+            onNavigateTo = { route->
+                when (route) {
+                    "Spin" -> {
+                        onNavigateToPostJobScreen.invoke()
+                    }
+                    "AddCook" -> {
+                        onNavigateToAddCookScreen.invoke("dtrfjikol")
+                    }
+                    "ContactUs" -> {
+                        onNavigateToContactUsScreen.invoke()
+                    }
+                    "ReviewUs" -> {
+                        onNavigateToReviewUsScreen.invoke()
+                    }
+                }
+            },
         )
 
         FooterStatus()
@@ -192,10 +310,11 @@ fun CallCreditButtons() {
 
 
 @Composable
-fun AccountProfileImage(onNavigateToEditProfile:()->Unit) {
+fun AccountProfileImage(onNavigateToEditProfile: (String) -> Unit) {
     Box(
         modifier = Modifier
-            .fillMaxWidth().padding(start = 20.dp, end = 20.dp, top = 20.dp)
+            .fillMaxWidth()
+            .padding(start = 20.dp, end = 20.dp, top = 20.dp)
     ) {
         Row(
             modifier = Modifier
@@ -209,10 +328,33 @@ fun AccountProfileImage(onNavigateToEditProfile:()->Unit) {
                     .size(80.dp)
                     .clip(CircleShape)
             ) {
-                Image(
-                    painterResource(id = R.drawable.ic_chef_round),
-                    contentDescription = "Artist image"
-                )
+                Card(
+                    modifier = Modifier
+                        .size(100.dp)
+                        .clip(CircleShape)
+                        .align(Alignment.Center),
+                    shape = CircleShape,
+                    elevation = 2.dp,
+                    border = BorderStroke(1.dp, Color.LightGray)
+                ) {
+                    /* if (changeProfileState.value == "Female") {
+                         Image(
+                             painter = painterResource(id = R.drawable.female_chef),
+                             contentDescription = "Profile Photo",
+                             modifier = Modifier,
+                             contentScale = ContentScale.Crop,
+                         )
+                     }else*/{
+
+                }
+
+                    Image(
+                        painter = painterResource(id = R.drawable.male_chef),
+                        contentDescription = "Profile Photo",
+                        modifier = Modifier,
+                        contentScale = ContentScale.Crop,
+                    )
+                }
                 Icon(
                     painter = painterResource(id = R.drawable.ic_verified),
                     tint = Color.Green,
@@ -254,7 +396,7 @@ fun AccountProfileImage(onNavigateToEditProfile:()->Unit) {
             modifier = Modifier
                 .align(Alignment.BottomEnd)
                 .padding(10.dp)
-                .clickable { onNavigateToEditProfile.invoke() }
+                .clickable { onNavigateToEditProfile.invoke("dtrfjikol") }
         )
     }
 }
@@ -268,8 +410,10 @@ fun AccountProfileContent(
     subtitle: String,
     tintColor: Color,
     trailingIconSize: Dp,
-    leadingIconSize: Dp
-) {
+    leadingIconSize: Dp,
+    navigationRoute: String,
+    onNavigateTo: (String) -> Unit) {
+
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -277,7 +421,8 @@ fun AccountProfileContent(
     ) {
         Row(
             modifier = Modifier
-                .wrapContentSize(),
+                .wrapContentSize()
+                .clickable {onNavigateTo.invoke(navigationRoute)},
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
@@ -306,7 +451,7 @@ fun AccountProfileContent(
                     Text(
                         text = subtitle,
                         color = textColor,
-                        fontSize = 12.sp,
+                        fontSize = 13.sp,
                         fontFamily = FontName,
                         fontWeight = FontWeight.Normal,
                         style = MaterialTheme.typography.subtitle2,
@@ -371,6 +516,10 @@ fun FooterStatus() {
 @Composable
 fun PreviewAccountScreen() {
     AccountScreen(
-        onNavigateToEditProfile={}
+        onNavigateToEditProfile = {},
+        onNavigateToAddCookScreen = {},
+        onNavigateToPostJobScreen = {},
+        onNavigateToContactUsScreen = {},
+        onNavigateToReviewUsScreen = {}
     )
 }

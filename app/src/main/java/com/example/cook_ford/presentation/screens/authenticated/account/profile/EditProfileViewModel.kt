@@ -5,17 +5,18 @@ import android.util.Patterns
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import com.example.cook_ford.data.local.UserSession
-import com.example.cook_ford.domain.use_cases.SignInUseCase
 import com.example.cook_ford.presentation.component.widgets.snack_bar.MainViewState
 import com.example.cook_ford.presentation.screens.authenticated.account.profile.state.EditProfileErrorState
 import com.example.cook_ford.presentation.screens.authenticated.account.profile.state.EditProfileState
 import com.example.cook_ford.presentation.screens.authenticated.account.profile.state.EditProfileUiEvent
 import com.example.cook_ford.presentation.screens.un_authenticated.sign_in.state.ErrorState
+import com.example.cook_ford.presentation.screens.un_authenticated.sign_in.state.genderSelectionErrorState
 import com.example.cook_ford.presentation.screens.un_authenticated.sign_in.state.passwordEmptyErrorState
 import com.example.cook_ford.presentation.screens.un_authenticated.sign_in.state.phoneEmptyErrorState
 import com.example.cook_ford.presentation.screens.un_authenticated.sign_up.state.emailEmptyErrorState
 import com.example.cook_ford.presentation.screens.un_authenticated.sign_up.state.invalidUserNameErrorState
 import com.example.cook_ford.presentation.screens.un_authenticated.sign_up.state.usernameEmptyErrorState
+import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -26,7 +27,6 @@ import javax.inject.Inject
 
 @HiltViewModel
 class EditProfileViewModel @Inject constructor(
-    private val signInUseCase: SignInUseCase,
     private val userSession: UserSession
 ) : ViewModel() {
     var editProfileState = mutableStateOf(EditProfileState())
@@ -98,12 +98,28 @@ class EditProfileViewModel @Inject constructor(
                 )
             }
 
+            //GenderChange changed
+            is EditProfileUiEvent.GenderChange -> {
+                editProfileState.value = editProfileState.value.copy(
+                    gender = editProfileUiEvent.inputValue,
+                    errorState = editProfileState.value.errorState.copy(
+                        phoneErrorState = if (editProfileUiEvent.inputValue.trim().isNotEmpty())
+                            ErrorState()
+                        else
+                            genderSelectionErrorState
+                    )
+                )
+            }
+
             // Submit
             is EditProfileUiEvent.Submit -> {
                 val inputsValidated = validateInputs()
-                Log.d("TAG", "onUiEvent: $inputsValidated")
+                //Log.d("TAG", "onUiEvent: $inputsValidated")
+               // Log.d("TAG", "onUiEvent: ${editProfileState.value}")
                 if (inputsValidated) {
+                    Log.d("TAG", "onUiEvent: ${editProfileState.value}")
                     // TODO Trigger Edit Profile in authentication flow
+
                     //makeSigInRequest(SignInRequest(email = editProfileState.value.email, password = editProfileState.value.username))
                 }
             }
@@ -120,6 +136,7 @@ class EditProfileViewModel @Inject constructor(
         val userName = editProfileState.value.username.trim()
         val email = editProfileState.value.email.trim()
         val phone = editProfileState.value.phone.trim()
+        val gender = editProfileState.value.gender.trim()
 
         // userName empty
         if (userName.isEmpty()) {
@@ -156,6 +173,16 @@ class EditProfileViewModel @Inject constructor(
             editProfileState.value = editProfileState.value.copy(
                 errorState = EditProfileErrorState(
                     phoneErrorState = phoneEmptyErrorState
+                )
+            )
+            return false
+        }
+
+        //Gender Not Selected
+        if (gender.isEmpty()) {
+            editProfileState.value = editProfileState.value.copy(
+                errorState = EditProfileErrorState(
+                    genderErrorState = genderSelectionErrorState
                 )
             )
             return false

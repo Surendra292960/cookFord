@@ -40,12 +40,12 @@
     <string name="sign_up_error_msg_valid_password">at least 1 special character | no white spaces | at least 4 characters </string>
     <string name="sign_up_error_msg_empty_confirm_password">Please confirm your password</string>
     <string name="sign_up_error_msg_password_mismatch">Please enter the same password here as above</string>
+    <string name="sign_up_error_msg_gender_not_selected">Gender not selected</string>
 
     <!--Dashboard-->
     <string name="dashboard_title_welcome_user">Welcome User</string>
     <string name="try_again_button_text">Try again</string>
     <string name="dismiss_button_text">Dismiss</string>
-
 
     <!--Review/Report/Note Text-->
     <string name="submit_button_text">Submit</string>
@@ -54,7 +54,10 @@
     <string name="note_error_msg_empty">Add Note</string>
     <string name="save_button_text">Save</string>
 
-
+    <!--Cook-->
+    <string name="cook_error_msg_empty_name">Please enter cook name</string>
+    <string name="cook_error_msg_empty_phone">Please enter phone number</string>
+    <string name="cook_error_msg_empty_alternate_phone">Please enter alternate phone number</string>
 
 
 
@@ -93,5 +96,6 @@ affordable price</string>
     <string name="profile">Profile</string>
     <string name="back">Back</string>
     <string name="sign_out_button_text">Sign Out</string>
+
 
 </resources>

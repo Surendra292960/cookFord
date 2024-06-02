@@ -11,6 +11,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.example.cook_ford.presentation.screens.SplashScreen
 import com.example.cook_ford.presentation.screens.authenticated.account.AccountScreen
+import com.example.cook_ford.presentation.screens.authenticated.account.cook.AddCookProfileScreen
 import com.example.cook_ford.presentation.screens.authenticated.account.profile.EditProfileScreen
 import com.example.cook_ford.presentation.screens.dashboard.home.UserDashBoard
 import com.example.cook_ford.presentation.screens.onboard.OnBoardingScreen
@@ -121,11 +122,21 @@ fun HomeNavGraph(navController: NavHostController) {
             )
         }
         composable(NavigationRoutes.HomeNavigation.Search.route) {  }
-        //composable(NavigationRoutes.BottomNavigation.List.route) {  }
+
         composable(NavigationRoutes.HomeNavigation.Profile.route) {
             AccountScreen (
-                onNavigateToEditProfile = { /*profileId ->*/
-                    navController.navigate(route = NavigationRoutes.AccountNavigation.EditProfile.route /*+ "/${profileId}"*/) {
+                onNavigateToAddCookScreen = { profileId ->
+                    navController.navigate(route = NavigationRoutes.AccountNavigation.AddCookProfile.route + "/${profileId}"){
+                       /* popUpTo(route = NavigationRoutes.Authenticated.NavigationRoute.route) {
+                            inclusive = true
+                        }*/
+                    }
+                },
+                onNavigateToPostJobScreen={},
+                onNavigateToContactUsScreen={},
+                onNavigateToReviewUsScreen={},
+                onNavigateToEditProfile = { profileId ->
+                    navController.navigate(route = NavigationRoutes.AccountNavigation.EditProfile.route + "/${profileId}") {
                         popUpTo(route = NavigationRoutes.Authenticated.NavigationRoute.route) {
                             inclusive = true
                         }
@@ -134,7 +145,6 @@ fun HomeNavGraph(navController: NavHostController) {
             )
         }
         detailNavGraph(navController = navController)
-        accountNavGraph(navController = navController)
     }
 }
 
@@ -167,7 +177,6 @@ fun NavGraphBuilder.detailNavGraph(navController: NavHostController) {
         }
 
         composable(route = NavigationRoutes.DetailsNavigation.ProfileReview.route+ "/{profileId}"){
-            Log.d("TAG", "detailNavGraph: ProfileReviewScreen")
             ReviewScreen (
                 onNavigateBack = { navController.navigateUp() },
                 onNavigateToAuthenticatedHomeRoute = {
@@ -181,7 +190,6 @@ fun NavGraphBuilder.detailNavGraph(navController: NavHostController) {
         }
 
         composable(route = NavigationRoutes.DetailsNavigation.ProfileReport.route+ "/{profileId}"){
-            Log.d("TAG", "detailNavGraph: ProfileReportScreen")
             ReportScreen (
                 onNavigateBack = { navController.navigateUp() },
                 onNavigateToAuthenticatedHomeRoute = {
@@ -193,6 +201,7 @@ fun NavGraphBuilder.detailNavGraph(navController: NavHostController) {
                 }
             )
         }
+        accountNavGraph(navController = navController)
     }
 }
 
@@ -202,16 +211,30 @@ fun NavGraphBuilder.detailNavGraph(navController: NavHostController) {
  */
 fun NavGraphBuilder.accountNavGraph(navController: NavHostController) {
     navigation(route = NavigationRoutes.AccountNavigation.NavigationRoute.route,
-        startDestination =  NavigationRoutes.AccountNavigation.EditProfile.route /*+ "/{${AppConstants.PROFILE_ID}}"*/) {
-        composable(NavigationRoutes.AccountNavigation.EditProfile.route /*+ "/{profileId}"*/) {
+        startDestination =  NavigationRoutes.AccountNavigation.EditProfile.route + "/{${AppConstants.PROFILE_ID}}") {
+        composable(NavigationRoutes.AccountNavigation.EditProfile.route + "/{profileId}") {
             EditProfileScreen(
-                //onNavigateToRegistration = { navController.navigate(route = NavigationRoutes.Unauthenticated.SignUp.route) },
+                onNavigateBack = { navController.navigateUp() },
                 onNavigateToSignOut = {},
+                uploadProfileImage = {},
                 onNavigateToAuthenticatedRoute = {
-                    navController.navigate(route = NavigationRoutes.Authenticated.NavigationRoute.route) {
-                        popUpTo(route = NavigationRoutes.Unauthenticated.NavigationRoute.route) {
+                    navController.navigate(route = NavigationRoutes.AccountNavigation.EditProfile.route) {
+                        /* popUpTo(route = NavigationRoutes.Unauthenticated.NavigationRoute.route) {
                             inclusive = true
-                        }
+                        }*/
+                    }
+                },
+            )
+        }
+        composable(route = NavigationRoutes.AccountNavigation.AddCookProfile.route+ "/{profileId}") {
+            AddCookProfileScreen(
+                onNavigateBack = { navController.navigateUp() },
+                uploadProfileImage = {},
+                onNavigateToAuthenticatedRoute = {
+                    navController.navigate(route = NavigationRoutes.AccountNavigation.AddCookProfile.route) {
+                        /* popUpTo(route = NavigationRoutes.Unauthenticated.NavigationRoute.route) {
+                             inclusive = true
+                         }*/
                     }
                 },
             )
