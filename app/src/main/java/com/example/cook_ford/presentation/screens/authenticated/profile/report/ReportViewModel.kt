@@ -33,7 +33,7 @@ class ReportViewModel  @Inject constructor(
     private val stateHandle: SavedStateHandle
 ) : ViewModel() {
 
-    val selectedItem: MutableList<TimeSlots> = mutableListOf()
+    val selectedItem = mutableSetOf<TimeSlots>()
 
     private val _timeSlots = mutableStateOf(TimeSlots())
     val timeSlots: State<TimeSlots> = _timeSlots

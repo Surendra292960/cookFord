@@ -2,6 +2,7 @@ package com.example.cook_ford.presentation.screens.authenticated.account
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -34,8 +35,17 @@ import androidx.compose.material.icons.filled.People
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.PersonAdd
 import androidx.compose.material.icons.filled.Reviews
+import androidx.compose.material3.BottomSheetDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -48,9 +58,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.wear.compose.material.Icon
 import androidx.wear.compose.material.Text
 import com.example.cook_ford.R
+import com.example.cook_ford.presentation.component.widgets.StarRatingBar
+import com.example.cook_ford.presentation.screens.authenticated.profile.details.NoteForm
+import com.example.cook_ford.presentation.screens.authenticated.profile.details.ProfileDetailsViewModel
+import com.example.cook_ford.presentation.screens.authenticated.profile.details.state.note_satate.NoteUiEvent
 import com.example.cook_ford.presentation.theme.LightGreen
 import com.example.cook_ford.presentation.theme.Orange
 import com.example.cook_ford.presentation.theme.OrangeYellow1
@@ -65,7 +80,11 @@ fun AccountScreen(
     onNavigateToContactUsScreen: () -> Unit,
     onNavigateToReviewUsScreen: () -> Unit) {
 
-    Column(modifier = Modifier.fillMaxSize().verticalScroll(rememberScrollState()),
+    var showReviewBottomSheet by remember { mutableStateOf(false) }
+
+    Column(modifier = Modifier
+        .fillMaxSize()
+        .verticalScroll(rememberScrollState()),
         verticalArrangement = Arrangement.SpaceBetween,
         horizontalAlignment = Alignment.CenterHorizontally) {
 
@@ -95,6 +114,7 @@ fun AccountScreen(
                         onNavigateToContactUsScreen.invoke()
                     }
                     "ReviewUs" -> {
+                        showReviewBottomSheet = true
                         onNavigateToReviewUsScreen.invoke()
                     }
                 }
@@ -123,6 +143,7 @@ fun AccountScreen(
                         onNavigateToContactUsScreen.invoke()
                     }
                     "ReviewUs" -> {
+                        showReviewBottomSheet = true
                         onNavigateToReviewUsScreen.invoke()
                     }
                 }
@@ -151,6 +172,7 @@ fun AccountScreen(
                         onNavigateToContactUsScreen.invoke()
                     }
                     "ReviewUs" -> {
+                        showReviewBottomSheet = true
                         onNavigateToReviewUsScreen.invoke()
                     }
                 }
@@ -192,6 +214,7 @@ fun AccountScreen(
                         onNavigateToContactUsScreen.invoke()
                     }
                     "ReviewUs" -> {
+                        showReviewBottomSheet = true
                         onNavigateToReviewUsScreen.invoke()
                     }
                 }
@@ -220,6 +243,7 @@ fun AccountScreen(
                         onNavigateToContactUsScreen.invoke()
                     }
                     "ReviewUs" -> {
+                        showReviewBottomSheet = true
                         onNavigateToReviewUsScreen.invoke()
                     }
                 }
@@ -249,6 +273,7 @@ fun AccountScreen(
                         onNavigateToContactUsScreen.invoke()
                     }
                     "ReviewUs" -> {
+                        showReviewBottomSheet = true
                         onNavigateToReviewUsScreen.invoke()
                     }
                 }
@@ -256,6 +281,12 @@ fun AccountScreen(
         )
 
         FooterStatus()
+
+        if (showReviewBottomSheet) {
+            BottomSheet("Call") {
+                showReviewBottomSheet = false
+            }
+        }
     }
 }
 
@@ -422,7 +453,7 @@ fun AccountProfileContent(
         Row(
             modifier = Modifier
                 .wrapContentSize()
-                .clickable {onNavigateTo.invoke(navigationRoute)},
+                .clickable { onNavigateTo.invoke(navigationRoute) },
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
@@ -509,6 +540,100 @@ fun FooterStatus() {
             fontWeight = FontWeight.Normal,
             style = MaterialTheme.typography.subtitle2
         )
+    }
+}
+
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun BottomSheet(sheetType:String, onDismiss: () -> Unit) {
+    val modalBottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+
+    ModalBottomSheet(
+        onDismissRequest = { onDismiss() },
+        sheetState = modalBottomSheetState,
+        dragHandle = { BottomSheetDefaults.DragHandle() }) {
+
+
+        val profileDetailsViewModel: ProfileDetailsViewModel = hiltViewModel()
+        //val viewState by remember { profileDetailsViewModel.viewState }
+        val noteState by remember { profileDetailsViewModel.noteState }
+        var rating1 by remember { mutableFloatStateOf(0.0f) }
+
+        Column(
+            modifier = Modifier
+                .background(Color.White)
+                .fillMaxWidth()
+                .padding(start = 20.dp, end = 20.dp)) {
+            Text(
+                text = "We are listening",
+                color = Color.DarkGray,
+                fontSize = 24.sp,
+                fontFamily = FontName,
+                fontWeight = FontWeight.Normal,
+                style = MaterialTheme.typography.subtitle2,
+                modifier = Modifier.align(Alignment.Start)
+            )
+            Text(
+                text = "Tell us what did you like or what we can improve for you",
+                color = Color.Gray,
+                fontSize = 15.sp,
+                fontFamily = FontName,
+                fontWeight = FontWeight.Normal,
+                style = MaterialTheme.typography.subtitle2,
+                modifier = Modifier.align(Alignment.Start)
+            )
+            Spacer(modifier = Modifier.height(20.dp))
+            Row(modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween) {
+                Text(
+                    text = "How did we do?",
+                    color = Color.DarkGray,
+                    fontSize = 18.sp,
+                    fontFamily = FontName,
+                    fontWeight = FontWeight.Normal,
+                    style = MaterialTheme.typography.subtitle2,
+                )
+                Text(
+                    text = "Not Rated",
+                    color = Color.Red,
+                    fontSize = 15.sp,
+                    fontFamily = FontName,
+                    fontWeight = FontWeight.Normal,
+                    style = MaterialTheme.typography.subtitle2,
+                )
+            }
+
+            Spacer(modifier = Modifier.height(20.dp))
+
+            StarRatingBar(
+                maxStars = 5,
+                rating = rating1,
+                onRatingChanged = {
+                    rating1 = it
+                }
+            )
+
+            Spacer(modifier = Modifier.height(20.dp))
+
+            NoteForm(
+                noteState = noteState,
+                //viewState = false,
+                modifier = Modifier
+                    .fillMaxWidth(),
+                onNoteChange = { inputString ->
+                    profileDetailsViewModel.onUiEvent(
+                        noteUiEvent = NoteUiEvent.NoteChanged(
+                            inputString
+                        )
+                    )
+                },
+                onSubmit = {
+                    profileDetailsViewModel.onUiEvent(noteUiEvent = NoteUiEvent.Submit)
+                })
+            Spacer(modifier = Modifier.height(20.dp))
+        }
     }
 }
 

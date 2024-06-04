@@ -1,10 +1,8 @@
 package com.example.cook_ford.presentation.screens.authenticated.account.cook
 import android.util.Log
-import android.util.Patterns
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import com.example.cook_ford.data.local.UserSession
-import com.example.cook_ford.data.remote.profile_response.TimeSlots
 import com.example.cook_ford.presentation.component.widgets.snack_bar.MainViewState
 import com.example.cook_ford.presentation.screens.authenticated.account.cook.state.AddCookProfileErrorState
 import com.example.cook_ford.presentation.screens.authenticated.account.cook.state.AddCookProfileState
@@ -14,11 +12,6 @@ import com.example.cook_ford.presentation.screens.authenticated.account.cook.sta
 import com.example.cook_ford.presentation.screens.authenticated.account.cook.state.cook_phoneEmptyErrorState
 import com.example.cook_ford.presentation.screens.un_authenticated.sign_in.state.ErrorState
 import com.example.cook_ford.presentation.screens.un_authenticated.sign_in.state.genderSelectionErrorState
-import com.example.cook_ford.presentation.screens.un_authenticated.sign_in.state.passwordEmptyErrorState
-import com.example.cook_ford.presentation.screens.un_authenticated.sign_in.state.phoneEmptyErrorState
-import com.example.cook_ford.presentation.screens.un_authenticated.sign_up.state.emailEmptyErrorState
-import com.example.cook_ford.presentation.screens.un_authenticated.sign_up.state.invalidUserNameErrorState
-import com.example.cook_ford.presentation.screens.un_authenticated.sign_up.state.usernameEmptyErrorState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -31,7 +24,7 @@ import javax.inject.Inject
 class AddCookProfileViewModel  @Inject constructor(
     private val userSession: UserSession
 ) : ViewModel() {
-    val selectedItem: MutableList<String> = mutableListOf()
+    val selectedItem = mutableSetOf<String>()
     var addCookProfileState = mutableStateOf(AddCookProfileState())
         private set
 
@@ -43,6 +36,7 @@ class AddCookProfileViewModel  @Inject constructor(
 
     private val _onProcessSuccess = MutableSharedFlow<String>()
     val onProcessSuccess = _onProcessSuccess.asSharedFlow()
+
 
     fun onOpenDialogClicked() {
         _showDialog.value = true
@@ -122,7 +116,6 @@ class AddCookProfileViewModel  @Inject constructor(
                 Log.d("TAG", "onUiEvent: ${addCookProfileState.value}")
                 if (inputsValidated) {
                     // TODO Trigger Edit Profile in authentication flow
-
                     //makeSigInRequest(SignInRequest(email = editProfileState.value.email, password = editProfileState.value.username))
                 }
             }

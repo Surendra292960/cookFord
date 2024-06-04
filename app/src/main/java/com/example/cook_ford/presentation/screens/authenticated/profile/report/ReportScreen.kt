@@ -188,7 +188,7 @@ fun FilterChip(timeSlots: TimeSlots) {
             if (selected){
                 reportViewModel.selectedItem.add(timeSlots)
             }else{
-                reportViewModel.selectedItem.remove(timeSlots)
+                reportViewModel.selectedItem.removeIf { it.slots.toString() == timeSlots.slots.toString() }
             }
         },
         label = {

@@ -34,6 +34,7 @@ import com.example.cook_ford.presentation.component.widgets.InputTextField
 import com.example.cook_ford.presentation.component.widgets.KeyboardOption
 import com.example.cook_ford.presentation.component.widgets.OutlinedSubmitButton
 import com.example.cook_ford.presentation.component.widgets.SegmentedControl
+import com.example.cook_ford.presentation.component.widgets.Spinner
 import com.example.cook_ford.presentation.component.widgets.snack_bar.MainViewState
 import com.example.cook_ford.presentation.screens.authenticated.account.cook.state.AddCookProfileState
 import com.example.cook_ford.utils.AppConstants
@@ -57,11 +58,16 @@ fun AddCookProfileForm(
 
         val genders = listOf("Male", "Female")
 
-        Row(modifier = Modifier.fillMaxWidth().padding(start = 10.dp, end = 10.dp),
+        Row(modifier = Modifier
+            .fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically) {
             Text(text = "Select cook`s city", fontFamily = FontName, fontWeight = FontWeight.Bold)
             DropDownMenue()
+            /*val mCities = listOf("Delhi", "Mumbai", "Chennai", "Kolkata", "Hyderabad", "Bengaluru", "Pune")
+            Spinner(selectedValue = "Select City", options = mCities, onValueChange = {
+                Log.d("TAG", "AddCookProfileForm: ")
+            })*/
 
         }
         Spacer(modifier = Modifier.height(10.dp))
