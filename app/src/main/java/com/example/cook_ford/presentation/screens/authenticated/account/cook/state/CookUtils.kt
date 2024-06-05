@@ -19,3 +19,23 @@ val cook_alternate_phoneEmptyErrorState = ErrorState(
     errorMessageStringResource = R.string.cook_error_msg_empty_alternate_phone
 )
 
+
+val cook_cityEmptyErrorState = ErrorState(
+    hasError = true,
+    errorMessageStringResource = R.string.cook_error_msg_empty_city
+)
+
+
+
+val cook_jobTypeEmptyErrorState = ErrorState(
+    hasError = true,
+    errorMessageStringResource = R.string.cook_error_msg_empty_job_type
+)
+
+
+
+val cook_profileImageEmptyErrorState = ErrorState(
+    hasError = true,
+    errorMessageStringResource = R.string.cook_error_msg_empty_profile_image
+)
+

@@ -14,6 +14,7 @@ import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Phone
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -27,6 +28,7 @@ import com.example.cook_ford.presentation.component.widgets.DefaultIcons
 import com.example.cook_ford.presentation.component.widgets.InputTextField
 import com.example.cook_ford.presentation.component.widgets.KeyboardOption
 import com.example.cook_ford.presentation.component.widgets.OutlinedSubmitButton
+import com.example.cook_ford.presentation.component.widgets.ProfileImage
 import com.example.cook_ford.presentation.component.widgets.SegmentedControl
 import com.example.cook_ford.presentation.component.widgets.snack_bar.MainViewState
 import com.example.cook_ford.presentation.screens.authenticated.account.profile.state.EditProfileState
@@ -35,18 +37,26 @@ import com.example.cook_ford.utils.FontName
 
 @Composable
 fun EditProfileForm(
+    changeProfileState:MutableState<String>,
     editProfileState: EditProfileState,
     viewState: MainViewState,
     onUserNameChange: (String) -> Unit,
     onEmailChange: (String) -> Unit,
     onPhoneChange: (String) -> Unit,
     onGenderChange: (String) -> Unit,
+    onProfileImageChange: (String) -> Unit,
     onSubmit: () -> Unit,
     onSignOutClick: () -> Unit){
 
     Column(modifier = Modifier.fillMaxSize(),
         //verticalArrangement = Arrangement.SpaceBetween,
         horizontalAlignment = Alignment.CenterHorizontally) {
+
+        // Profile Image
+        ProfileImage(
+            changeProfileState,
+            onChange = onProfileImageChange
+        )
 
         //Spacer(modifier = Modifier.height(10.dp))
 

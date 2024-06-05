@@ -1,13 +1,10 @@
 package com.example.cook_ford.presentation.component.widgets
-import android.util.Log
 import androidx.annotation.ColorRes
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -16,7 +13,6 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -25,7 +21,6 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Checkbox
-import androidx.compose.material3.FilterChip
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -55,14 +50,11 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
-import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.cook_ford.R
-import com.example.cook_ford.presentation.screens.authenticated.account.cook.AddCookProfileViewModel
 import com.example.cook_ford.presentation.theme.AppTheme
 import com.example.cook_ford.utils.FontName
 
@@ -242,7 +234,7 @@ fun InputTextField(
 
     TextField(
         value = value,
-        onValueChange = { if (it.length <= maxChar) onChange.invoke(it)},
+        onValueChange = { if (it.length <= maxChar) onChange.invoke(it) },
         modifier = modifier.background(Color.White),
         leadingIcon = leadingIcon,
         trailingIcon = trailingIcon,
@@ -314,10 +306,10 @@ fun Textarea(
             focusedContainerColor = Color.White,
             unfocusedContainerColor = Color.White,
         ),
-        isError = isError,
         keyboardOptions = KeyboardOptions(imeAction = keyboardOptions.imeAction, keyboardType = keyboardOptions.keyboardType),
         placeholder = { Text(keyboardOptions.placeholder) },
         label = { Text(keyboardOptions.label) },
+        isError = isError,
         supportingText = {
             if (isError) {
                 ErrorTextInputField(text = errorText)
@@ -439,57 +431,6 @@ fun SegmentedControl(
         }
     }
 }
-
-@OptIn(ExperimentalLayoutApi::class)
-@Composable
-fun MultiChoiceCardInFlowRow(options: List<String>,  onSelectionChanged: (String) -> Unit) {
-    FlowRow(modifier = Modifier
-        .fillMaxWidth()
-        .padding(horizontal = 5.dp)){
-        options.forEach { option ->
-            MultiChoiceCard(
-                options = option,
-                onSelectionChanged={}
-            )
-        }
-    }
-}
-
-@Composable
-fun MultiChoiceCard(options: String,  onSelectionChanged: (String) -> Unit) {
-    var selected by remember { mutableStateOf(false) }
-    val addCookProfileViewModel: AddCookProfileViewModel = hiltViewModel()
-    Log.d("TAG", "MultiChoiceCard: ${addCookProfileViewModel.selectedItem}")
-
-    FilterChip(
-        modifier = Modifier
-            .padding(all = 5.dp)
-            .wrapContentHeight(),
-        onClick = {
-            selected = !selected
-            if (selected) {
-                addCookProfileViewModel.selectedItem.add(options)
-            } else {
-                addCookProfileViewModel.selectedItem.remove(options)
-            }
-        },
-        label = {
-            Text(
-                text = options,
-                style = TextStyle(fontSize = 15.sp),
-                fontWeight = FontWeight.Bold,
-                fontFamily = FontName,
-                textAlign = TextAlign.Center,
-                modifier = Modifier
-                    .height(50.dp)
-                    .width(130.dp)
-                    .padding(5.dp)
-            )
-        },
-        selected = selected,
-    )
-}
-
 
 @Composable
 fun RadioButton() {

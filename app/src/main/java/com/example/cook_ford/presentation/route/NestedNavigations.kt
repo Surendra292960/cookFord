@@ -13,12 +13,12 @@ import com.example.cook_ford.presentation.screens.SplashScreen
 import com.example.cook_ford.presentation.screens.authenticated.account.AccountScreen
 import com.example.cook_ford.presentation.screens.authenticated.account.cook.AddCookProfileScreen
 import com.example.cook_ford.presentation.screens.authenticated.account.profile.EditProfileScreen
-import com.example.cook_ford.presentation.screens.dashboard.home.UserDashBoard
-import com.example.cook_ford.presentation.screens.onboard.OnBoardingScreen
 import com.example.cook_ford.presentation.screens.authenticated.profile.details.ProfileDetailScreen
 import com.example.cook_ford.presentation.screens.authenticated.profile.list.ProfilesScreen
 import com.example.cook_ford.presentation.screens.authenticated.profile.report.ReportScreen
 import com.example.cook_ford.presentation.screens.authenticated.profile.reviews.ReviewScreen
+import com.example.cook_ford.presentation.screens.dashboard.home.UserDashBoard
+import com.example.cook_ford.presentation.screens.onboard.OnBoardingScreen
 import com.example.cook_ford.presentation.screens.un_authenticated.sign_in.SignInScreen
 import com.example.cook_ford.presentation.screens.un_authenticated.sign_up.SignUpScreen
 import com.example.cook_ford.utils.AppConstants
@@ -216,7 +216,6 @@ fun NavGraphBuilder.accountNavGraph(navController: NavHostController) {
             EditProfileScreen(
                 onNavigateBack = { navController.navigateUp() },
                 onNavigateToSignOut = {},
-                uploadProfileImage = {},
                 onNavigateToAuthenticatedRoute = {
                     navController.navigate(route = NavigationRoutes.AccountNavigation.EditProfile.route) {
                         /* popUpTo(route = NavigationRoutes.Unauthenticated.NavigationRoute.route) {
@@ -229,7 +228,6 @@ fun NavGraphBuilder.accountNavGraph(navController: NavHostController) {
         composable(route = NavigationRoutes.AccountNavigation.AddCookProfile.route+ "/{profileId}") {
             AddCookProfileScreen(
                 onNavigateBack = { navController.navigateUp() },
-                uploadProfileImage = {},
                 onNavigateToAuthenticatedRoute = {
                     navController.navigate(route = NavigationRoutes.AccountNavigation.AddCookProfile.route) {
                         /* popUpTo(route = NavigationRoutes.Unauthenticated.NavigationRoute.route) {

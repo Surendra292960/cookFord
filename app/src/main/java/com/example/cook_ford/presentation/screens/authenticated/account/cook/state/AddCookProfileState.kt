@@ -12,6 +12,9 @@ data class AddCookProfileState(
     val phone: String = EMPTY_STRING,
     val alternatePhone: String = EMPTY_STRING,
     val gender: String = EMPTY_STRING,
+    val profileImage: String = EMPTY_STRING,
+    val city: String = EMPTY_STRING,
+    val jobType: MutableSet<String>?= mutableSetOf(),
     val errorState: AddCookProfileErrorState = AddCookProfileErrorState(),
     var isCookAddedSuccessful: Boolean = false
 )
@@ -25,4 +28,7 @@ data class AddCookProfileErrorState(
     val phoneErrorState: ErrorState = ErrorState(),
     val alternatePhoneErrorState: ErrorState = ErrorState(),
     val genderErrorState: ErrorState = ErrorState(),
+    val cityErrorState: ErrorState = ErrorState(),
+    val jobTypeErrorState: ErrorState = ErrorState(),
+    val profileImageErrorState: ErrorState = ErrorState(),
 )

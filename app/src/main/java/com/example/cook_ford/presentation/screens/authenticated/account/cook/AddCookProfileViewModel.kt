@@ -8,10 +8,14 @@ import com.example.cook_ford.presentation.screens.authenticated.account.cook.sta
 import com.example.cook_ford.presentation.screens.authenticated.account.cook.state.AddCookProfileState
 import com.example.cook_ford.presentation.screens.authenticated.account.cook.state.AddCookProfileUiEvent
 import com.example.cook_ford.presentation.screens.authenticated.account.cook.state.cook_alternate_phoneEmptyErrorState
+import com.example.cook_ford.presentation.screens.authenticated.account.cook.state.cook_cityEmptyErrorState
+import com.example.cook_ford.presentation.screens.authenticated.account.cook.state.cook_jobTypeEmptyErrorState
 import com.example.cook_ford.presentation.screens.authenticated.account.cook.state.cook_nameEmptyErrorState
 import com.example.cook_ford.presentation.screens.authenticated.account.cook.state.cook_phoneEmptyErrorState
+import com.example.cook_ford.presentation.screens.authenticated.account.cook.state.cook_profileImageEmptyErrorState
 import com.example.cook_ford.presentation.screens.un_authenticated.sign_in.state.ErrorState
 import com.example.cook_ford.presentation.screens.un_authenticated.sign_in.state.genderSelectionErrorState
+import com.example.cook_ford.utils.AppConstants
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -24,6 +28,7 @@ import javax.inject.Inject
 class AddCookProfileViewModel  @Inject constructor(
     private val userSession: UserSession
 ) : ViewModel() {
+
     val selectedItem = mutableSetOf<String>()
     var addCookProfileState = mutableStateOf(AddCookProfileState())
         private set
@@ -56,6 +61,48 @@ class AddCookProfileViewModel  @Inject constructor(
      */
     fun onUiEvent(addCookProfileUiEvent: AddCookProfileUiEvent) {
         when (addCookProfileUiEvent) {
+
+            //Profile Image changed
+            is AddCookProfileUiEvent.ProfileImageChanged -> {
+                Log.d("TAG", "onUiEvent: ${addCookProfileUiEvent.inputValue}")
+                addCookProfileState.value = addCookProfileState.value.copy(
+                    profileImage = addCookProfileUiEvent.inputValue,
+                    errorState = addCookProfileState.value.errorState.copy(
+                        profileImageErrorState = if (addCookProfileUiEvent.inputValue.trim().isNotEmpty())
+                            ErrorState()
+                        else
+                            cook_profileImageEmptyErrorState
+                    )
+                )
+            }
+
+
+            //JobType changed
+            is AddCookProfileUiEvent.JobTypeChange -> {
+                Log.d("TAG", "onUiEvent: ${addCookProfileUiEvent.inputValue}")
+                addCookProfileState.value = addCookProfileState.value.copy(
+                    jobType = addCookProfileUiEvent.inputValue,
+                    errorState = addCookProfileState.value.errorState.copy(
+                        jobTypeErrorState = if (addCookProfileUiEvent.inputValue.isNotEmpty())
+                            ErrorState()
+                        else
+                            cook_jobTypeEmptyErrorState
+                    )
+                )
+            }
+
+            //CityChange changed
+            is AddCookProfileUiEvent.CityChanged -> {
+                addCookProfileState.value = addCookProfileState.value.copy(
+                    city = addCookProfileUiEvent.inputValue,
+                    errorState = addCookProfileState.value.errorState.copy(
+                        cityErrorState = if (addCookProfileUiEvent.inputValue.trim().isNotEmpty())
+                            ErrorState()
+                        else
+                            cook_cityEmptyErrorState
+                    )
+                )
+            }
 
             // UserName changed
             is AddCookProfileUiEvent.UserNameChanged -> {
@@ -133,6 +180,40 @@ class AddCookProfileViewModel  @Inject constructor(
         val phone = addCookProfileState.value.phone.trim()
         val alternatePhone = addCookProfileState.value.alternatePhone.trim()
         val gender = addCookProfileState.value.gender.trim()
+        val city = addCookProfileState.value.city.trim()
+        val profileImage = addCookProfileState.value.profileImage.trim()
+        val jobType = addCookProfileState.value.jobType
+
+
+        //ProfileImage Not Selected
+       /* if (profileImage.isEmpty()) {
+            addCookProfileState.value = addCookProfileState.value.copy(
+                errorState = AddCookProfileErrorState(
+                    profileImageErrorState = cook_profileImageEmptyErrorState
+                )
+            )
+            return false
+        }*/
+
+        //JobType Not Selected
+        if (jobType?.size == AppConstants.ZERO) {
+            addCookProfileState.value = addCookProfileState.value.copy(
+                errorState = AddCookProfileErrorState(
+                    jobTypeErrorState = cook_jobTypeEmptyErrorState
+                )
+            )
+            return false
+        }
+
+        //City Not Selected
+        if (city.isEmpty()) {
+            addCookProfileState.value = addCookProfileState.value.copy(
+                errorState = AddCookProfileErrorState(
+                    cityErrorState = cook_cityEmptyErrorState
+                )
+            )
+            return false
+        }
 
         // userName empty
         if (userName.isEmpty()) {

@@ -12,6 +12,7 @@ data class EditProfileState(
     val email: String = EMPTY_STRING,
     val phone: String = EMPTY_STRING,
     val gender: String = EMPTY_STRING,
+    val profileImage: String = EMPTY_STRING,
     val errorState: EditProfileErrorState = EditProfileErrorState(),
     var isEditSuccessful: Boolean = false
 )
@@ -25,4 +26,5 @@ data class EditProfileErrorState(
     val emailErrorState: ErrorState = ErrorState(),
     val phoneErrorState: ErrorState = ErrorState(),
     val genderErrorState: ErrorState = ErrorState(),
+    val profileImageErrorState: ErrorState = ErrorState(),
 )

@@ -58,13 +58,9 @@
     <string name="cook_error_msg_empty_name">Please enter cook name</string>
     <string name="cook_error_msg_empty_phone">Please enter phone number</string>
     <string name="cook_error_msg_empty_alternate_phone">Please enter alternate phone number</string>
-
-
-
-
-
-
-
+    <string name="cook_error_msg_empty_city">Please select city</string>
+    <string name="cook_error_msg_empty_job_type">Please select job type</string>
+    <string name="cook_error_msg_empty_profile_image">Please select profile image</string>
 
 
     <string name="onbaord_title1">Plan trip to more</string>
