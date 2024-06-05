@@ -89,7 +89,7 @@ fun AccountScreen(
         horizontalAlignment = Alignment.CenterHorizontally) {
 
         AccountProfileImage(onNavigateToEditProfile = { it->onNavigateToEditProfile.invoke(it) })
-        HorizontalDivider(modifier = Modifier.padding(top = 10.dp), color = Color.LightGray)
+        HorizontalDivider(modifier = Modifier, color = Color.LightGray)
         CallCreditButtons()
 
         AccountProfileContent(
@@ -120,7 +120,7 @@ fun AccountScreen(
                 }
             },
         )
-        Spacer(modifier = Modifier.height(10.dp))
+
         AccountProfileContent(
             textColor = Color.DarkGray,
             leadingIcon = Icons.Filled.NotificationsActive,
@@ -149,7 +149,7 @@ fun AccountScreen(
                 }
             },
         )
-        Spacer(modifier = Modifier.height(10.dp))
+
         AccountProfileContent(
             textColor = Color.DarkGray,
             leadingIcon = Icons.Filled.PersonAdd,
@@ -178,7 +178,7 @@ fun AccountScreen(
                 }
             },
         )
-        Spacer(modifier = Modifier.height(10.dp))
+
         AccountProfileContent(
             textColor = Color.DarkGray,
             leadingIcon = Icons.Filled.People,
@@ -191,7 +191,7 @@ fun AccountScreen(
             navigationRoute = "",
             onNavigateTo = {},
         )
-        Spacer(modifier = Modifier.height(10.dp))
+
         AccountProfileContent(
             textColor = Color.DarkGray,
             leadingIcon = Icons.Filled.ContactPhone,
@@ -220,7 +220,7 @@ fun AccountScreen(
                 }
             },
         )
-        Spacer(modifier = Modifier.height(10.dp))
+
         AccountProfileContent(
             textColor = Color.DarkGray,
             leadingIcon = Icons.Filled.Reviews,
@@ -249,7 +249,7 @@ fun AccountScreen(
                 }
             },
         )
-        HorizontalDivider(modifier = Modifier.padding(top = 10.dp), color = Color.Gray)
+        HorizontalDivider(modifier = Modifier.padding(top = 5.dp), color = Color.LightGray)
 
         AccountProfileContent(
             textColor = Color.DarkGray,
@@ -292,9 +292,7 @@ fun AccountScreen(
 
 @Composable
 fun CallCreditButtons() {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
+    Row(modifier = Modifier.fillMaxWidth()
             .padding(start = 10.dp, end = 10.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween
@@ -345,7 +343,7 @@ fun AccountProfileImage(onNavigateToEditProfile: (String) -> Unit) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(start = 20.dp, end = 20.dp, top = 20.dp)
+            .padding(start = 20.dp, end = 20.dp, top = 8.dp)
     ) {
         Row(
             modifier = Modifier
