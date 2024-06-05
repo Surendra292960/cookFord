@@ -295,7 +295,7 @@ fun Textarea(
     maxChar: Int = 0) {
     val focusManager = LocalFocusManager.current
     val keyboardController = LocalSoftwareKeyboardController.current
-    TextField(
+    OutlinedTextField(
         value = value,
         modifier = modifier,
         onValueChange = {if (it.length <= maxChar) onChange.invoke(it)},
@@ -303,8 +303,8 @@ fun Textarea(
             focusedIndicatorColor = Color.LightGray,
             unfocusedIndicatorColor = Color.LightGray,
             cursorColor = Color.Gray,
-            focusedContainerColor = Color.White,
-            unfocusedContainerColor = Color.White,
+            focusedContainerColor = Color.Transparent,
+            unfocusedContainerColor = Color.Transparent,
         ),
         keyboardOptions = KeyboardOptions(imeAction = keyboardOptions.imeAction, keyboardType = keyboardOptions.keyboardType),
         placeholder = { Text(keyboardOptions.placeholder) },

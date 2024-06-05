@@ -1,4 +1,5 @@
-package com.example.cook_ford.presentation.screens.authenticated.profile.details
+package com.example.cook_ford.presentation.screens.authenticated.account.accounts
+
 import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
@@ -7,16 +8,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.cook_ford.data.local.UserSession
 import com.example.cook_ford.data.remote.NetworkResult
-import com.example.cook_ford.data.remote.profile_response.TimeSlots
 import com.example.cook_ford.domain.use_cases.ProfileUseCase
 import com.example.cook_ford.presentation.component.widgets.snack_bar.MainViewState
+import com.example.cook_ford.presentation.screens.authenticated.account.accounts.state.ReviewErrorState
 import com.example.cook_ford.presentation.screens.authenticated.account.accounts.state.ReviewState
 import com.example.cook_ford.presentation.screens.authenticated.account.accounts.state.ReviewUiEvent
 import com.example.cook_ford.presentation.screens.authenticated.profile.details.state.ProfileDetailState
-import com.example.cook_ford.presentation.screens.authenticated.profile.details.state.note_satate.NoteErrorState
-import com.example.cook_ford.presentation.screens.authenticated.profile.details.state.note_satate.NoteState
-import com.example.cook_ford.presentation.screens.authenticated.profile.details.state.note_satate.NoteUiEvent
-import com.example.cook_ford.presentation.screens.authenticated.profile.details.state.note_satate.noteEmptyErrorState
+import com.example.cook_ford.presentation.screens.authenticated.profile.details.state.note_satate.ratingEmptyErrorState
 import com.example.cook_ford.presentation.screens.authenticated.profile.details.state.note_satate.reviewEmptyErrorState
 import com.example.cook_ford.presentation.screens.un_authenticated.sign_in.state.ErrorState
 import com.example.cook_ford.utils.AppConstants
@@ -29,17 +27,13 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-open class ProfileDetailsViewModel @Inject constructor(
+class AccountViewModel @Inject constructor(
     private val profileUseCase: ProfileUseCase,
-    private val userSession: UserSession,
-    private val stateHandle: SavedStateHandle
+private val userSession: UserSession,
+private val stateHandle: SavedStateHandle
 ) : ViewModel() {
 
-    private val _timeSlots = mutableStateOf(TimeSlots())
-    val timeSlots: State<TimeSlots> = _timeSlots
-
-    private val _noteState = mutableStateOf(NoteState())
-    val noteState: State<NoteState> = _noteState
+    val reviewState = mutableStateOf(ReviewState())
 
     private val _viewState = MutableStateFlow(MainViewState())
     val viewState = _viewState.asStateFlow()
@@ -53,28 +47,41 @@ open class ProfileDetailsViewModel @Inject constructor(
             getProfileId()?.let { makeProfileRequest(profileId = it) }
         }
     }
-
     fun getProfileId() = stateHandle.get<String>(AppConstants.PROFILE_ID)
 
-    fun onNoteUiEvent(noteUiEvent: NoteUiEvent) {
-        when (noteUiEvent) {
-            //Note changed
-            is NoteUiEvent.NoteChanged -> {
-                _noteState.value = _noteState.value.copy(
-                    note = noteUiEvent.inputValue,
-                    errorState = _noteState.value.errorState.copy(
-                        noteErrorState = if (noteUiEvent.inputValue.trim().isNotEmpty())
+    fun onReViewUiEvent(reviewUiEvent: ReviewUiEvent) {
+        when (reviewUiEvent) {
+            //Rating changed
+            is ReviewUiEvent.RatingChanged -> {
+                reviewState.value = reviewState.value.copy(
+                    rating = reviewUiEvent.inputValue,
+                    errorState = reviewState.value.errorState.copy(
+                        reviewErrorState = if (reviewUiEvent.inputValue != 0.0f)
                             ErrorState()
                         else
-                            noteEmptyErrorState
+                            ratingEmptyErrorState
+                    )
+                )
+            }
+            //Review changed
+            is ReviewUiEvent.ReViewChanged -> {
+                reviewState.value = reviewState.value.copy(
+                    review = reviewUiEvent.inputValue,
+                    errorState = reviewState.value.errorState.copy(
+                        reviewErrorState = if (reviewUiEvent.inputValue.trim().isNotEmpty())
+                            ErrorState()
+                        else
+                            reviewEmptyErrorState
                     )
                 )
             }
 
-            NoteUiEvent.Submit -> {
+            ReviewUiEvent.Submit -> {
                 val inputsValidated = validateInputs()
-                Log.d("TAG", "onNoteUiEvent: $inputsValidated")
                 if (inputsValidated) {
+                    reviewState.value = reviewState.value.copy(isSuccessful = true)
+                    //reviewState.value = ReviewState()
+                    Log.d("TAG", "onReViewUiEvent: ${Gson().toJson(reviewState.value)}")
                     // TODO Trigger login in authentication flow
                 }
             }
@@ -83,13 +90,13 @@ open class ProfileDetailsViewModel @Inject constructor(
 
 
     private fun validateInputs(): Boolean {
-        val note = _noteState.value.note.trim()
+        val review = reviewState.value.review.trim()
 
         // Review empty
-        if (note.isEmpty()) {
-            _noteState.value = _noteState.value.copy(
-                errorState = NoteErrorState(
-                    noteErrorState = noteEmptyErrorState
+        if (review.isEmpty()) {
+            reviewState.value = reviewState.value.copy(
+                errorState = ReviewErrorState(
+                    reviewErrorState = reviewEmptyErrorState
                 )
             )
             return false
@@ -97,23 +104,9 @@ open class ProfileDetailsViewModel @Inject constructor(
         // No errors
         else {
             // Set default error state
-            _noteState.value = _noteState.value.copy(errorState = NoteErrorState())
+            reviewState.value = reviewState.value.copy(errorState = ReviewErrorState())
             return true
         }
-    }
-
-
-    fun getTimeSlots():List<TimeSlots>{
-        val timeSlotsList:MutableList<TimeSlots> = mutableListOf()
-        if (profileState.value.isSuccessful){
-            profileState.value?.profile?.get(0)?.profile?.timeSlots?.let{
-                it?.forEach { slots->
-                    timeSlotsList.add(TimeSlots(slots.startTime?.trim().plus(" - "+slots.endTime?.trim())))
-                    Log.d("TAG", "ProfileDetailScreen TimeSlots List : ${Gson().toJson(timeSlots)}")
-                }
-            }
-        }
-        return timeSlotsList
     }
 
     private fun makeProfileRequest(profileId: String) = viewModelScope.launch(Dispatchers.IO) {
@@ -141,4 +134,3 @@ open class ProfileDetailsViewModel @Inject constructor(
         }
     }
 }
-

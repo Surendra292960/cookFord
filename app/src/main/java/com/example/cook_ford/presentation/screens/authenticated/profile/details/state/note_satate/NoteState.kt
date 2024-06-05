@@ -17,5 +17,5 @@ data class NoteState(
  * text field validation errors
  */
 data class NoteErrorState(
-    val noteErrorState: ErrorState = ErrorState(),
+    val noteErrorState: ErrorState = ErrorState()
 )

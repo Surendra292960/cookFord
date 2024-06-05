@@ -88,6 +88,7 @@ import com.example.cook_ford.presentation.screens.authenticated.profile.details.
 import com.example.cook_ford.presentation.theme.AppTheme
 import com.example.cook_ford.presentation.theme.Cook_fordTheme
 import com.example.cook_ford.presentation.theme.OrangeYellow1
+import com.example.cook_ford.utils.FontName
 import com.example.cook_ford.utils.Utility.shareProfile
 
 
@@ -822,12 +823,22 @@ fun BottomSheet(sheetType:String, onDismiss: () -> Unit) {
 fun ByCallCreditSheet(){
 	Column(modifier = Modifier
 		.fillMaxWidth()
-		.padding(20.dp)
+		.padding(start = 20.dp, end = 20.dp, bottom = 20.dp)
 		.navigationBarsPadding(),
+		horizontalAlignment = Alignment.CenterHorizontally,
+		verticalArrangement = Arrangement.spacedBy(20.dp, Alignment.CenterVertically)) {
 
-		verticalArrangement = Arrangement.spacedBy(10.dp, Alignment.CenterVertically)) {
+		Text(
+			text = "Call before you hire . . .",
+			style = MaterialTheme.typography.subtitle2,
+			color = Color.DarkGray,
+			fontSize = 17.sp,
+			fontWeight = FontWeight.Bold,
+			fontFamily = FontName
+		)
 
-		Row(horizontalArrangement = Arrangement.spacedBy(10.dp,
+		Row(modifier = Modifier.fillMaxWidth(),
+			horizontalArrangement = Arrangement.spacedBy(10.dp,
 			Alignment.Start),
 			verticalAlignment = Alignment.CenterVertically){
 			Icon(Icons.Filled.CheckCircle, contentDescription = null, tint = Color.Green)
@@ -837,7 +848,8 @@ fun ByCallCreditSheet(){
 				color = Color.DarkGray
 			)
 		}
-		Row(horizontalArrangement = Arrangement.spacedBy(10.dp,
+		Row(modifier = Modifier.fillMaxWidth(),
+			horizontalArrangement = Arrangement.spacedBy(10.dp,
 			Alignment.Start),
 			verticalAlignment = Alignment.CenterVertically){
 			Icon(Icons.Filled.CheckCircle, contentDescription = null, tint = Color.Green)
@@ -847,9 +859,10 @@ fun ByCallCreditSheet(){
 				color = Color.DarkGray
 			)
 		}
-		Row(horizontalArrangement = Arrangement.spacedBy(10.dp,
+		Row(modifier = Modifier.fillMaxWidth(),
+			horizontalArrangement = Arrangement.spacedBy(10.dp,
 			Alignment.Start),
-			verticalAlignment = Alignment.CenterVertically) {
+			verticalAlignment = Alignment.CenterVertically){
 			Icon(Icons.Filled.CheckCircle, contentDescription = null, tint = Color.Green)
 			Text(
 				text = "Report issue directly from the cook`s profile",
@@ -890,7 +903,7 @@ fun ByCallCreditSheet(){
 			}
 		}
 
-		Spacer(modifier = Modifier.height(100.dp))
+		Spacer(modifier = Modifier.height(60.dp))
 
 		Row(modifier = Modifier.fillMaxWidth(),
 			horizontalArrangement = Arrangement.spacedBy(10.dp, Alignment.Start),
@@ -958,14 +971,14 @@ fun AddNote() {
 				.fillMaxWidth()
 				.padding(start = 10.dp, end = 10.dp),
 			onNoteChange = { inputString ->
-				profileDetailsViewModel.onUiEvent(
+				profileDetailsViewModel.onNoteUiEvent(
 					noteUiEvent = NoteUiEvent.NoteChanged(
 						inputString
 					)
 				)
 			},
 			onSubmit = {
-				profileDetailsViewModel.onUiEvent(noteUiEvent = NoteUiEvent.Submit)
+				profileDetailsViewModel.onNoteUiEvent(noteUiEvent = NoteUiEvent.Submit)
 			})
 	}
 }

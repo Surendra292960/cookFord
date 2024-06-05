@@ -1,5 +1,8 @@
-package com.example.cook_ford.presentation.screens.authenticated.account
+package com.example.cook_ford.presentation.screens.authenticated.account.accounts
 
+import android.os.Build.VERSION.SDK_INT
+import android.util.Log
+import android.widget.ImageView
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -35,14 +38,13 @@ import androidx.compose.material.icons.filled.People
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.PersonAdd
 import androidx.compose.material.icons.filled.Reviews
-import androidx.compose.material3.BottomSheetDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -52,8 +54,11 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -61,15 +66,29 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.wear.compose.material.Icon
 import androidx.wear.compose.material.Text
+import coil.ComponentRegistry
+import coil.ImageLoader
+import coil.compose.AsyncImagePainter
+import coil.compose.rememberAsyncImagePainter
+import coil.compose.rememberImagePainter
+import coil.decode.ImageDecoderDecoder
+import coil.request.ImageRequest
+import coil.size.OriginalSize
+import coil.size.Size
+import com.bumptech.glide.Glide
+import com.bumptech.glide.gifdecoder.GifDecoder
 import com.example.cook_ford.R
-import com.example.cook_ford.presentation.component.widgets.StarRatingBar
-import com.example.cook_ford.presentation.screens.authenticated.profile.details.NoteForm
-import com.example.cook_ford.presentation.screens.authenticated.profile.details.ProfileDetailsViewModel
-import com.example.cook_ford.presentation.screens.authenticated.profile.details.state.note_satate.NoteUiEvent
+import com.example.cook_ford.presentation.component.widgets.SubmitButton
+import com.example.cook_ford.presentation.screens.authenticated.account.accounts.state.ReviewState
+import com.example.cook_ford.presentation.screens.authenticated.account.accounts.state.ReviewUiEvent
+import com.example.cook_ford.presentation.theme.AppTheme
+import com.example.cook_ford.presentation.theme.DeepGreen
 import com.example.cook_ford.presentation.theme.LightGreen
+import com.example.cook_ford.presentation.theme.LightGreen1
 import com.example.cook_ford.presentation.theme.Orange
 import com.example.cook_ford.presentation.theme.OrangeYellow1
 import com.example.cook_ford.utils.FontName
+import com.google.gson.Gson
 
 
 @Composable
@@ -81,6 +100,9 @@ fun AccountScreen(
     onNavigateToReviewUsScreen: () -> Unit) {
 
     var showReviewBottomSheet by remember { mutableStateOf(false) }
+    val accountViewModel : AccountViewModel = hiltViewModel()
+    //val viewState by remember { profileDetailsViewModel.viewState }
+    val reviewState by remember { accountViewModel.reviewState }
 
     Column(modifier = Modifier
         .fillMaxSize()
@@ -283,8 +305,10 @@ fun AccountScreen(
         FooterStatus()
 
         if (showReviewBottomSheet) {
-            BottomSheet("Call") {
+            BottomSheet("Review", reviewState = reviewState, accountViewModel = accountViewModel) {
                 showReviewBottomSheet = false
+                accountViewModel.reviewState.value = ReviewState()
+                Log.d("TAG", "AccountScreen dismiss : ")
             }
         }
     }
@@ -292,8 +316,9 @@ fun AccountScreen(
 
 @Composable
 fun CallCreditButtons() {
-    Row(modifier = Modifier.fillMaxWidth()
-            .padding(start = 10.dp, end = 10.dp),
+    Row(modifier = Modifier
+        .fillMaxWidth()
+        .padding(start = 10.dp, end = 10.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
@@ -541,96 +566,193 @@ fun FooterStatus() {
     }
 }
 
-
+@Composable
+fun AnimatedImage() {
+    val context = LocalContext.current
+    val imageLoader = ImageLoader.Builder(context)
+        .components {
+            if (SDK_INT >= 28) {
+                add(ImageDecoderDecoder.Factory())
+            } else {
+                //add(GifDecoder.Factory())
+            }
+        }
+        .build()
+    Image(
+        painter = rememberAsyncImagePainter(
+            model = ImageRequest.Builder(context).data(data = R.drawable.ic_check).apply(block = {
+                size(Size.ORIGINAL)
+            }).build(),
+            imageLoader = imageLoader
+        ),
+        contentDescription = null,
+        modifier = Modifier
+            .size(100.dp)
+            .fillMaxWidth(),
+    )
+}
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun BottomSheet(sheetType:String, onDismiss: () -> Unit) {
-    val modalBottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+fun BottomSheet(
+    sheetType: String,
+    reviewState: ReviewState,
+    accountViewModel: AccountViewModel,
+    onDismiss: () -> Unit) {
+    Log.d("TAG", "BottomSheet: ${Gson().toJson(reviewState)}")
+    val reviewBottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+    if (sheetType == "Review") {
+        ModalBottomSheet(
+            onDismissRequest = { onDismiss() },
+            sheetState = reviewBottomSheetState,
+            dragHandle = null) {
 
-    ModalBottomSheet(
-        onDismissRequest = { onDismiss() },
-        sheetState = modalBottomSheetState,
-        dragHandle = { BottomSheetDefaults.DragHandle() }) {
+            if (reviewState.isSuccessful) {
+                Column(
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    modifier = Modifier
+                        .background(Color.White)
+                        .fillMaxWidth()
+                        .padding(top = 40.dp, start = 20.dp, end = 20.dp)) {
 
+                    AnimatedImage()
 
-        val profileDetailsViewModel: ProfileDetailsViewModel = hiltViewModel()
-        //val viewState by remember { profileDetailsViewModel.viewState }
-        val noteState by remember { profileDetailsViewModel.noteState }
-        var rating1 by remember { mutableFloatStateOf(0.0f) }
+                    Spacer(modifier = Modifier.height(20.dp))
 
-        Column(
-            modifier = Modifier
-                .background(Color.White)
-                .fillMaxWidth()
-                .padding(start = 20.dp, end = 20.dp)) {
-            Text(
-                text = "We are listening",
-                color = Color.DarkGray,
-                fontSize = 24.sp,
-                fontFamily = FontName,
-                fontWeight = FontWeight.Normal,
-                style = MaterialTheme.typography.subtitle2,
-                modifier = Modifier.align(Alignment.Start)
-            )
-            Text(
-                text = "Tell us what did you like or what we can improve for you",
-                color = Color.Gray,
-                fontSize = 15.sp,
-                fontFamily = FontName,
-                fontWeight = FontWeight.Normal,
-                style = MaterialTheme.typography.subtitle2,
-                modifier = Modifier.align(Alignment.Start)
-            )
-            Spacer(modifier = Modifier.height(20.dp))
-            Row(modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween) {
-                Text(
-                    text = "How did we do?",
-                    color = Color.DarkGray,
-                    fontSize = 18.sp,
-                    fontFamily = FontName,
-                    fontWeight = FontWeight.Normal,
-                    style = MaterialTheme.typography.subtitle2,
-                )
-                Text(
-                    text = "Not Rated",
-                    color = Color.Red,
-                    fontSize = 15.sp,
-                    fontFamily = FontName,
-                    fontWeight = FontWeight.Normal,
-                    style = MaterialTheme.typography.subtitle2,
-                )
-            }
-
-            Spacer(modifier = Modifier.height(20.dp))
-
-            StarRatingBar(
-                maxStars = 5,
-                rating = rating1,
-                onRatingChanged = {
-                    rating1 = it
-                }
-            )
-
-            Spacer(modifier = Modifier.height(20.dp))
-
-            NoteForm(
-                noteState = noteState,
-                //viewState = false,
-                modifier = Modifier
-                    .fillMaxWidth(),
-                onNoteChange = { inputString ->
-                    profileDetailsViewModel.onUiEvent(
-                        noteUiEvent = NoteUiEvent.NoteChanged(
-                            inputString
-                        )
+                    Text(
+                        text = "Thank you",
+                        color = Color.DarkGray,
+                        fontSize = 24.sp,
+                        textAlign = TextAlign.Center,
+                        fontFamily = FontName,
+                        fontWeight = FontWeight.Bold,
+                        style = MaterialTheme.typography.subtitle2
                     )
-                },
-                onSubmit = {
-                    profileDetailsViewModel.onUiEvent(noteUiEvent = NoteUiEvent.Submit)
-                })
-            Spacer(modifier = Modifier.height(20.dp))
+
+                    Spacer(modifier = Modifier.height(10.dp))
+
+                    Text(
+                        text = "Thanks for sharing your thoughts.\n We appreciate your feedback!",
+                        color = Color.Gray,
+                        fontSize = 15.sp,
+                        fontFamily = FontName,
+                        textAlign = TextAlign.Center,
+                        fontWeight = FontWeight.Normal,
+                        style = MaterialTheme.typography.subtitle2
+                    )
+                    Spacer(modifier = Modifier.height(20.dp))
+                    // SignIn Submit Button
+                    SubmitButton(
+                        modifier = Modifier.padding(top = AppTheme.dimens.paddingLarge),
+                        text = stringResource(id = R.string.done_button_text),
+                        isLoading = false,
+                        onClick = onDismiss
+                    )
+
+                    Spacer(modifier = Modifier.height(20.dp))
+                }
+            } else {
+
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(all = 20.dp)
+                        .background(Color.White)
+                ) {
+                    Text(
+                        text = "We are listening",
+                        color = Color.DarkGray,
+                        fontSize = 24.sp,
+                        fontFamily = FontName,
+                        fontWeight = FontWeight.Normal,
+                        style = MaterialTheme.typography.subtitle2,
+                        modifier = Modifier.align(Alignment.Start)
+                    )
+                    Text(
+                        text = "Tell us what did you like or what we can improve for you",
+                        color = Color.Gray,
+                        fontSize = 15.sp,
+                        fontFamily = FontName,
+                        fontWeight = FontWeight.Normal,
+                        style = MaterialTheme.typography.subtitle2,
+                        modifier = Modifier.align(Alignment.Start)
+                    )
+                    Spacer(modifier = Modifier.height(20.dp))
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        Text(
+                            text = "How did we do?",
+                            color = Color.DarkGray,
+                            fontSize = 18.sp,
+                            fontFamily = FontName,
+                            fontWeight = FontWeight.Normal,
+                            style = MaterialTheme.typography.subtitle2,
+                        )
+                        Text(
+                            text = if (reviewState.rating == 0.0f) {
+                                "Not Rated"
+                            } else if (reviewState.rating == 1.0f) {
+                                "Not so good"
+                            } else if (reviewState.rating == 2.0f) {
+                                "Can be better"
+                            } else if (reviewState.rating == 3.0f) {
+                                "Good"
+                            } else if (reviewState.rating == 4.0f) {
+                                "Liked it"
+                            } else {
+                                "Loved it"
+                            },
+                            color = if (reviewState.rating == 0.0f) {
+                                Color.Red
+                            } else if (reviewState.rating == 1.0f) {
+                                Color.Red
+                            } else if (reviewState.rating == 2.0f) {
+                                OrangeYellow1
+                            } else if (reviewState.rating == 3.0f) {
+                                LightGreen
+                            } else if (reviewState.rating == 4.0f) {
+                                LightGreen1
+                            } else {
+                                DeepGreen
+                            },
+                            fontSize = 16.sp,
+                            fontFamily = FontName,
+                            fontWeight = FontWeight.Bold,
+                            style = MaterialTheme.typography.subtitle2,
+                        )
+                    }
+
+
+                    Spacer(modifier = Modifier.height(20.dp))
+
+                    ReviewForm(
+                        reviewState = reviewState,
+                        //viewState = false,
+                        modifier = Modifier
+                            .fillMaxWidth(),
+                        onRatingChange = { inputString ->
+                            accountViewModel.onReViewUiEvent(
+                                reviewUiEvent = ReviewUiEvent.RatingChanged(
+                                    inputString
+                                )
+                            )
+                        },
+                        onReviewChange = { inputString ->
+                            accountViewModel.onReViewUiEvent(
+                                reviewUiEvent = ReviewUiEvent.ReViewChanged(
+                                    inputString
+                                )
+                            )
+                        },
+                        onSubmit = {
+                            accountViewModel.onReViewUiEvent(reviewUiEvent = ReviewUiEvent.Submit)
+                        })
+                    Spacer(modifier = Modifier.height(20.dp))
+                }
+            }
         }
     }
 }

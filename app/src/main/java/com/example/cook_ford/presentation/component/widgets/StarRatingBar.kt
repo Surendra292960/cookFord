@@ -12,11 +12,17 @@ import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.filled.StarOutline
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
+import com.example.cook_ford.presentation.theme.DeepGreen
+import com.example.cook_ford.presentation.theme.LightGreen
+import com.example.cook_ford.presentation.theme.LightGreen1
 import com.example.cook_ford.presentation.theme.OrangeYellow1
 
 @Composable
@@ -24,6 +30,7 @@ fun StarRatingBar(
     maxStars: Int = 5,
     rating: Float,
     onRatingChanged: (Float) -> Unit) {
+    val userRating = remember { mutableFloatStateOf(rating) }
     val density = LocalDensity.current.density
     val starSize = (12f * density).dp
     val starSpacing = (0.5f * density).dp
@@ -33,7 +40,23 @@ fun StarRatingBar(
         for (i in 1..maxStars) {
             val isSelected = i <= rating
             val icon = if (isSelected) Icons.Filled.Star else Icons.Default.Star
-            val iconTintColor = if (isSelected) OrangeYellow1 else Color.LightGray
+            val iconTintColor = if (isSelected && userRating.floatValue == 0.0f) {
+                Color.Red
+            } else if (isSelected && userRating.floatValue == 1.0f) {
+                Color.Red
+            } else if (isSelected && userRating.floatValue == 2.0f) {
+                OrangeYellow1
+            } else if (isSelected && userRating.floatValue == 3.0f) {
+                LightGreen
+            } else if (isSelected && userRating.floatValue == 4.0f) {
+                LightGreen1
+            } else if (isSelected && userRating.floatValue == 5.0f) {
+                DeepGreen
+            } else if (isSelected && userRating.floatValue == 6.0f) {
+                DeepGreen
+            } else {
+                Color.LightGray
+            }
             Icon(
                 imageVector = icon,
                 contentDescription = null,
@@ -43,6 +66,7 @@ fun StarRatingBar(
                         selected = isSelected,
                         onClick = {
                             onRatingChanged(i.toFloat())
+                            userRating.floatValue = i.toFloat()
                         }
                     )
                     .width(starSize)

@@ -8,3 +8,13 @@ val noteEmptyErrorState = ErrorState(
     hasError = true,
     errorMessageStringResource = R.string.note_error_msg_empty
 )
+
+val reviewEmptyErrorState = ErrorState(
+    hasError = true,
+    errorMessageStringResource = R.string.review_error_msg_empty
+)
+
+val ratingEmptyErrorState = ErrorState(
+    hasError = true,
+    errorMessageStringResource = R.string.rating_error_msg_empty
+)

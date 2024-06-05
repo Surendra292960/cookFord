@@ -49,10 +49,12 @@
 
     <!--Review/Report/Note Text-->
     <string name="submit_button_text">Submit</string>
-    <string name="review_error_msg_empty">Please enter your review</string>
+    <string name="review_error_msg_empty">Please write your review</string>
     <string name="report_error_msg_empty">Add more details</string>
-    <string name="note_error_msg_empty">Add Note</string>
+    <string name="note_error_msg_empty">Please write your review</string>
+    <string name="rating_error_msg_empty">Please rate us</string>
     <string name="save_button_text">Save</string>
+    <string name="done_button_text">Done</string>
 
     <!--Cook-->
     <string name="cook_error_msg_empty_name">Please enter cook name</string>

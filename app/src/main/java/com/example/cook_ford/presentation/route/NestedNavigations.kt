@@ -10,7 +10,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.example.cook_ford.presentation.screens.SplashScreen
-import com.example.cook_ford.presentation.screens.authenticated.account.AccountScreen
+import com.example.cook_ford.presentation.screens.authenticated.account.accounts.AccountScreen
 import com.example.cook_ford.presentation.screens.authenticated.account.cook.AddCookProfileScreen
 import com.example.cook_ford.presentation.screens.authenticated.account.profile.EditProfileScreen
 import com.example.cook_ford.presentation.screens.authenticated.profile.details.ProfileDetailScreen
