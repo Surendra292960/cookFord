@@ -1,4 +1,4 @@
-package com.example.cook_ford.presentation.screens.authenticated.account.accounts.state
+package com.example.cook_ford.presentation.screens.authenticated.accounts.account.state
 
 sealed class ReviewUiEvent {
     data class ReViewChanged(val inputValue: String) : ReviewUiEvent()

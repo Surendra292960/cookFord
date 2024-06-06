@@ -1,8 +1,7 @@
-package com.example.cook_ford.presentation.screens.authenticated.account.accounts
+package com.example.cook_ford.presentation.screens.authenticated.accounts.account
 
 import android.os.Build.VERSION.SDK_INT
 import android.util.Log
-import android.widget.ImageView
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -43,7 +42,6 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -66,22 +64,15 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.wear.compose.material.Icon
 import androidx.wear.compose.material.Text
-import coil.ComponentRegistry
 import coil.ImageLoader
-import coil.compose.AsyncImagePainter
 import coil.compose.rememberAsyncImagePainter
-import coil.compose.rememberImagePainter
 import coil.decode.ImageDecoderDecoder
 import coil.request.ImageRequest
-import coil.size.OriginalSize
 import coil.size.Size
-import com.bumptech.glide.Glide
-import com.bumptech.glide.gifdecoder.GifDecoder
 import com.example.cook_ford.R
 import com.example.cook_ford.presentation.component.widgets.SubmitButton
-import com.example.cook_ford.presentation.screens.authenticated.account.accounts.state.ReviewState
-import com.example.cook_ford.presentation.screens.authenticated.account.accounts.state.ReviewUiEvent
-import com.example.cook_ford.presentation.theme.AppTheme
+import com.example.cook_ford.presentation.screens.authenticated.accounts.account.state.ReviewState
+import com.example.cook_ford.presentation.screens.authenticated.accounts.account.state.ReviewUiEvent
 import com.example.cook_ford.presentation.theme.DeepGreen
 import com.example.cook_ford.presentation.theme.LightGreen
 import com.example.cook_ford.presentation.theme.LightGreen1
@@ -95,7 +86,7 @@ import com.google.gson.Gson
 fun AccountScreen(
     onNavigateToEditProfile: (String) -> Unit,
     onNavigateToAddCookScreen: (String) -> Unit,
-    onNavigateToPostJobScreen: () -> Unit,
+    onNavigateToPostJobScreen: (String) -> Unit,
     onNavigateToContactUsScreen: () -> Unit,
     onNavigateToReviewUsScreen: () -> Unit) {
 
@@ -110,7 +101,7 @@ fun AccountScreen(
         verticalArrangement = Arrangement.SpaceBetween,
         horizontalAlignment = Alignment.CenterHorizontally) {
 
-        AccountProfileImage(onNavigateToEditProfile = { it->onNavigateToEditProfile.invoke(it) })
+        AccountProfileImage(onNavigateToEditProfile = { onNavigateToEditProfile.invoke(it) })
         HorizontalDivider(modifier = Modifier, color = Color.LightGray)
         CallCreditButtons()
 
@@ -127,7 +118,7 @@ fun AccountScreen(
             onNavigateTo = { route->
                 when (route) {
                     "Spin" -> {
-                        onNavigateToPostJobScreen.invoke()
+                        //onNavigateToPostJobScreen.invoke()
                     }
                     "AddCook" -> {
                         onNavigateToAddCookScreen.invoke("dtrfjikol")
@@ -138,6 +129,9 @@ fun AccountScreen(
                     "ReviewUs" -> {
                         showReviewBottomSheet = true
                         onNavigateToReviewUsScreen.invoke()
+                    }
+                    "PostJob" -> {
+                        onNavigateToPostJobScreen.invoke("dtrfjikol")
                     }
                 }
             },
@@ -152,11 +146,11 @@ fun AccountScreen(
             tintColor = Color.DarkGray,
             trailingIconSize = 17.dp,
             leadingIconSize = 30.dp,
-            navigationRoute = "Job",
+            navigationRoute = "PostJob",
             onNavigateTo = { route->
                 when (route) {
                     "Spin" -> {
-                        onNavigateToPostJobScreen.invoke()
+                       // onNavigateToPostJobScreen.invoke()
                     }
                     "AddCook" -> {
                         onNavigateToAddCookScreen.invoke("dtrfjikol")
@@ -167,6 +161,9 @@ fun AccountScreen(
                     "ReviewUs" -> {
                         showReviewBottomSheet = true
                         onNavigateToReviewUsScreen.invoke()
+                    }
+                    "PostJob" -> {
+                        onNavigateToPostJobScreen.invoke("dtrfjikol")
                     }
                 }
             },
@@ -185,7 +182,7 @@ fun AccountScreen(
             onNavigateTo = { route->
                 when (route) {
                     "Spin" -> {
-                        onNavigateToPostJobScreen.invoke()
+                        //onNavigateToPostJobScreen.invoke()
                     }
                     "AddCook" -> {
                         onNavigateToAddCookScreen.invoke("dtrfjikol")
@@ -196,6 +193,9 @@ fun AccountScreen(
                     "ReviewUs" -> {
                         showReviewBottomSheet = true
                         onNavigateToReviewUsScreen.invoke()
+                    }
+                    "PostJob" -> {
+                        onNavigateToPostJobScreen.invoke("dtrfjikol")
                     }
                 }
             },
@@ -227,7 +227,7 @@ fun AccountScreen(
             onNavigateTo = { route->
                 when (route) {
                     "Spin" -> {
-                        onNavigateToPostJobScreen.invoke()
+                       // onNavigateToPostJobScreen.invoke()
                     }
                     "AddCook" -> {
                         onNavigateToAddCookScreen.invoke("dtrfjikol")
@@ -238,6 +238,9 @@ fun AccountScreen(
                     "ReviewUs" -> {
                         showReviewBottomSheet = true
                         onNavigateToReviewUsScreen.invoke()
+                    }
+                    "PostJob" -> {
+                        onNavigateToPostJobScreen.invoke("dtrfjikol")
                     }
                 }
             },
@@ -256,7 +259,7 @@ fun AccountScreen(
             onNavigateTo = { route->
                 when (route) {
                     "Spin" -> {
-                        onNavigateToPostJobScreen.invoke()
+                        //onNavigateToPostJobScreen.invoke()
                     }
                     "AddCook" -> {
                         onNavigateToAddCookScreen.invoke("dtrfjikol")
@@ -267,6 +270,9 @@ fun AccountScreen(
                     "ReviewUs" -> {
                         showReviewBottomSheet = true
                         onNavigateToReviewUsScreen.invoke()
+                    }
+                    "PostJob" -> {
+                        onNavigateToPostJobScreen.invoke("dtrfjikol")
                     }
                 }
             },
@@ -286,7 +292,7 @@ fun AccountScreen(
             onNavigateTo = { route->
                 when (route) {
                     "Spin" -> {
-                        onNavigateToPostJobScreen.invoke()
+                        //onNavigateToPostJobScreen.invoke()
                     }
                     "AddCook" -> {
                         onNavigateToAddCookScreen.invoke("dtrfjikol")
@@ -297,6 +303,9 @@ fun AccountScreen(
                     "ReviewUs" -> {
                         showReviewBottomSheet = true
                         onNavigateToReviewUsScreen.invoke()
+                    }
+                    "PostJob" -> {
+                        onNavigateToPostJobScreen.invoke("dtrfjikol")
                     }
                 }
             },
@@ -612,8 +621,9 @@ fun BottomSheet(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     modifier = Modifier
                         .background(Color.White)
-                        .fillMaxWidth()
-                        .padding(top = 40.dp, start = 20.dp, end = 20.dp)) {
+                        .fillMaxWidth()) {
+
+                    Spacer(modifier = Modifier.height(20.dp))
 
                     AnimatedImage()
 
@@ -640,10 +650,10 @@ fun BottomSheet(
                         fontWeight = FontWeight.Normal,
                         style = MaterialTheme.typography.subtitle2
                     )
-                    Spacer(modifier = Modifier.height(20.dp))
+                    Spacer(modifier = Modifier.height(10.dp))
                     // SignIn Submit Button
                     SubmitButton(
-                        modifier = Modifier.padding(top = AppTheme.dimens.paddingLarge),
+                        modifier = Modifier.padding(start = 20.dp, end = 20.dp, top = 10.dp),
                         text = stringResource(id = R.string.done_button_text),
                         isLoading = false,
                         onClick = onDismiss
@@ -654,11 +664,14 @@ fun BottomSheet(
             } else {
 
                 Column(
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally,
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(all = 20.dp)
                         .background(Color.White)
-                ) {
+                        .fillMaxWidth()) {
+
+                    Spacer(modifier = Modifier.height(20.dp))
+
                     Text(
                         text = "We are listening",
                         color = Color.DarkGray,
@@ -666,7 +679,7 @@ fun BottomSheet(
                         fontFamily = FontName,
                         fontWeight = FontWeight.Normal,
                         style = MaterialTheme.typography.subtitle2,
-                        modifier = Modifier.align(Alignment.Start)
+                        modifier = Modifier.align(Alignment.Start).padding(start = 20.dp, end = 20.dp, top = 20.dp)
                     )
                     Text(
                         text = "Tell us what did you like or what we can improve for you",
@@ -675,11 +688,11 @@ fun BottomSheet(
                         fontFamily = FontName,
                         fontWeight = FontWeight.Normal,
                         style = MaterialTheme.typography.subtitle2,
-                        modifier = Modifier.align(Alignment.Start)
+                        modifier = Modifier.align(Alignment.Start).padding(start = 20.dp, end = 20.dp)
                     )
                     Spacer(modifier = Modifier.height(20.dp))
                     Row(
-                        modifier = Modifier.fillMaxWidth(),
+                        modifier = Modifier.fillMaxWidth().padding(start = 20.dp, end = 20.dp),
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
@@ -732,7 +745,7 @@ fun BottomSheet(
                         reviewState = reviewState,
                         //viewState = false,
                         modifier = Modifier
-                            .fillMaxWidth(),
+                            .fillMaxWidth().padding(start = 20.dp, end = 20.dp),
                         onRatingChange = { inputString ->
                             accountViewModel.onReViewUiEvent(
                                 reviewUiEvent = ReviewUiEvent.RatingChanged(

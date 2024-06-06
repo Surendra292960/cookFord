@@ -506,6 +506,23 @@ fun SubmitButton(
     }
 }
 
+@Composable
+fun SubmitButtonAutoSize(
+    modifier: Modifier = Modifier,
+    text: String,
+    isLoading: Boolean,
+    onClick: () -> Unit) {
+    Button(modifier = modifier,
+        enabled = !isLoading,
+        onClick = onClick) {
+        if (isLoading) {
+            Progressbar(isLoading)
+        } else {
+            Text(text = text, modifier=modifier, style = MaterialTheme.typography.titleMedium)
+        }
+    }
+}
+
 
 @Composable
 fun OutlinedSubmitButton(

@@ -765,7 +765,9 @@ private fun ProfileUI(jetCaptureView: MutableState<ProfileCardView>?) {
 @Composable
 fun Ratings(text: String, feedbackRating: Float?) {
 	var rating by remember { mutableFloatStateOf(0.0f) }
-	Row(modifier = Modifier.fillMaxWidth().padding(start = 10.dp, end = 10.dp),
+	Row(modifier = Modifier
+		.fillMaxWidth()
+		.padding(start = 10.dp, end = 10.dp),
 		verticalAlignment = Alignment.CenterVertically,
 		horizontalArrangement = Arrangement.SpaceBetween) {
 		Text(text = text, color = Color.DarkGray)
@@ -809,7 +811,7 @@ fun BottomSheet(sheetType:String, onDismiss: () -> Unit) {
 	ModalBottomSheet(
 		onDismissRequest = { onDismiss() },
 		sheetState = modalBottomSheetState,
-		dragHandle = { BottomSheetDefaults.DragHandle() }) {
+		dragHandle = null) {
 		if (sheetType == "Call"){
 			ByCallCreditSheet()
 
@@ -823,10 +825,10 @@ fun BottomSheet(sheetType:String, onDismiss: () -> Unit) {
 fun ByCallCreditSheet(){
 	Column(modifier = Modifier
 		.fillMaxWidth()
-		.padding(start = 20.dp, end = 20.dp, bottom = 20.dp)
+		.padding(all = 20.dp)
 		.navigationBarsPadding(),
 		horizontalAlignment = Alignment.CenterHorizontally,
-		verticalArrangement = Arrangement.spacedBy(20.dp, Alignment.CenterVertically)) {
+		verticalArrangement = Arrangement.spacedBy(14.dp, Alignment.CenterVertically)) {
 
 		Text(
 			text = "Call before you hire . . .",
@@ -954,16 +956,16 @@ fun ByCallCreditSheet(){
 
 @Composable
 fun AddNote() {
-
 	val profileDetailsViewModel: ProfileDetailsViewModel = hiltViewModel()
 	//val viewState by remember { profileDetailsViewModel.viewState }
 	val noteState by remember { profileDetailsViewModel.noteState }
 
-	Column(
-		modifier = Modifier
-			.fillMaxWidth()
-			.padding(16.dp)
-	) {
+	Column(modifier = Modifier
+		.fillMaxWidth()
+		.padding(all = 20.dp)) {
+
+		Spacer(modifier = Modifier.height(10.dp))
+
 		NoteForm(
 			noteState = noteState,
 			//viewState = false,

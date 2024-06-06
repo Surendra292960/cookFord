@@ -1,4 +1,4 @@
-package com.example.cook_ford.presentation.screens.authenticated.account.profile
+package com.example.cook_ford.presentation.screens.authenticated.accounts.profile
 import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -31,7 +31,7 @@ import com.example.cook_ford.presentation.component.widgets.OutlinedSubmitButton
 import com.example.cook_ford.presentation.component.widgets.ProfileImage
 import com.example.cook_ford.presentation.component.widgets.SegmentedControl
 import com.example.cook_ford.presentation.component.widgets.snack_bar.MainViewState
-import com.example.cook_ford.presentation.screens.authenticated.account.profile.state.EditProfileState
+import com.example.cook_ford.presentation.screens.authenticated.accounts.profile.state.EditProfileState
 import com.example.cook_ford.utils.AppConstants
 import com.example.cook_ford.utils.FontName
 

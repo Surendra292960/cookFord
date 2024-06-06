@@ -1,4 +1,4 @@
-package com.example.cook_ford.presentation.screens.authenticated.account.accounts
+package com.example.cook_ford.presentation.screens.authenticated.accounts.account
 
 
 import androidx.compose.foundation.layout.Column
@@ -7,10 +7,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableFloatStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
@@ -21,8 +17,7 @@ import com.example.cook_ford.presentation.component.widgets.KeyboardOption
 import com.example.cook_ford.presentation.component.widgets.StarRatingBar
 import com.example.cook_ford.presentation.component.widgets.SubmitButton
 import com.example.cook_ford.presentation.component.widgets.Textarea
-import com.example.cook_ford.presentation.screens.authenticated.account.accounts.state.ReviewState
-import com.example.cook_ford.presentation.screens.authenticated.profile.details.state.note_satate.NoteState
+import com.example.cook_ford.presentation.screens.authenticated.accounts.account.state.ReviewState
 import com.example.cook_ford.presentation.theme.AppTheme
 import com.example.cook_ford.utils.AppConstants
 
@@ -65,7 +60,7 @@ fun ReviewForm(
             /*submit = { TODO() }*/
         )
 
-        Spacer(modifier = Modifier.height(50.dp))
+        Spacer(modifier = Modifier.height(40.dp))
 
         // Submit Button
         SubmitButton(

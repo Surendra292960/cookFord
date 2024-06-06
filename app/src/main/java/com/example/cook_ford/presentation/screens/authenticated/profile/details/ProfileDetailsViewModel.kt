@@ -10,14 +10,11 @@ import com.example.cook_ford.data.remote.NetworkResult
 import com.example.cook_ford.data.remote.profile_response.TimeSlots
 import com.example.cook_ford.domain.use_cases.ProfileUseCase
 import com.example.cook_ford.presentation.component.widgets.snack_bar.MainViewState
-import com.example.cook_ford.presentation.screens.authenticated.account.accounts.state.ReviewState
-import com.example.cook_ford.presentation.screens.authenticated.account.accounts.state.ReviewUiEvent
 import com.example.cook_ford.presentation.screens.authenticated.profile.details.state.ProfileDetailState
 import com.example.cook_ford.presentation.screens.authenticated.profile.details.state.note_satate.NoteErrorState
 import com.example.cook_ford.presentation.screens.authenticated.profile.details.state.note_satate.NoteState
 import com.example.cook_ford.presentation.screens.authenticated.profile.details.state.note_satate.NoteUiEvent
 import com.example.cook_ford.presentation.screens.authenticated.profile.details.state.note_satate.noteEmptyErrorState
-import com.example.cook_ford.presentation.screens.authenticated.profile.details.state.note_satate.reviewEmptyErrorState
 import com.example.cook_ford.presentation.screens.un_authenticated.sign_in.state.ErrorState
 import com.example.cook_ford.utils.AppConstants
 import com.google.gson.Gson

@@ -30,5 +30,6 @@ object NavTitle {
     const val PROFILE_ACCOUNT = "ProfileAccount"
     const val EDIT_PROFILE = "EditProfile"
     const val ADD_COOK_PROFILE = "AddCookProfile"
+    const val POST_JOB = "PostJob"
 }
 

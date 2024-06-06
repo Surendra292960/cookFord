@@ -1,4 +1,4 @@
-package com.example.cook_ford.presentation.screens.authenticated.account.accounts.state
+package com.example.cook_ford.presentation.screens.authenticated.accounts.account.state
 
 import com.example.cook_ford.data.remote.profile_response.ProfileResponse
 import com.example.cook_ford.presentation.screens.un_authenticated.sign_in.state.ErrorState

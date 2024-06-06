@@ -25,8 +25,7 @@ fun NoteForm(
     //viewState: MainViewState,
     modifier: Modifier,
     onNoteChange: (String) -> Unit,
-    onSubmit: () -> Unit
-) {
+    onSubmit: () -> Unit) {
 
     Column(modifier = modifier) {
 
@@ -50,7 +49,7 @@ fun NoteForm(
             /*submit = { TODO() }*/
         )
 
-        Spacer(modifier = Modifier.height(50.dp))
+        Spacer(modifier = Modifier.height(30.dp))
 
         // SignIn Submit Button
         SubmitButton(

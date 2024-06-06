@@ -1,4 +1,4 @@
-package com.example.cook_ford.presentation.screens.authenticated.account.cook.state
+package com.example.cook_ford.presentation.screens.authenticated.accounts.cook.state
 
 import com.example.cook_ford.R
 import com.example.cook_ford.presentation.screens.un_authenticated.sign_in.state.ErrorState

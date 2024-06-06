@@ -1,4 +1,4 @@
-package com.example.cook_ford.presentation.screens.authenticated.account.profile
+package com.example.cook_ford.presentation.screens.authenticated.accounts.profile
 
 import android.util.Log
 import android.util.Patterns
@@ -6,10 +6,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import com.example.cook_ford.data.local.UserSession
 import com.example.cook_ford.presentation.component.widgets.snack_bar.MainViewState
-import com.example.cook_ford.presentation.screens.authenticated.account.cook.state.cook_profileImageEmptyErrorState
-import com.example.cook_ford.presentation.screens.authenticated.account.profile.state.EditProfileErrorState
-import com.example.cook_ford.presentation.screens.authenticated.account.profile.state.EditProfileState
-import com.example.cook_ford.presentation.screens.authenticated.account.profile.state.EditProfileUiEvent
+import com.example.cook_ford.presentation.screens.authenticated.accounts.cook.state.cook_profileImageEmptyErrorState
+import com.example.cook_ford.presentation.screens.authenticated.accounts.profile.state.EditProfileErrorState
+import com.example.cook_ford.presentation.screens.authenticated.accounts.profile.state.EditProfileState
+import com.example.cook_ford.presentation.screens.authenticated.accounts.profile.state.EditProfileUiEvent
 import com.example.cook_ford.presentation.screens.un_authenticated.sign_in.state.ErrorState
 import com.example.cook_ford.presentation.screens.un_authenticated.sign_in.state.genderSelectionErrorState
 import com.example.cook_ford.presentation.screens.un_authenticated.sign_in.state.passwordEmptyErrorState

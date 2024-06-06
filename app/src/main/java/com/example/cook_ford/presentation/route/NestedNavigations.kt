@@ -10,9 +10,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.example.cook_ford.presentation.screens.SplashScreen
-import com.example.cook_ford.presentation.screens.authenticated.account.accounts.AccountScreen
-import com.example.cook_ford.presentation.screens.authenticated.account.cook.AddCookProfileScreen
-import com.example.cook_ford.presentation.screens.authenticated.account.profile.EditProfileScreen
+import com.example.cook_ford.presentation.screens.authenticated.accounts.account.AccountScreen
+import com.example.cook_ford.presentation.screens.authenticated.accounts.cook.AddCookProfileScreen
+import com.example.cook_ford.presentation.screens.authenticated.accounts.job.PostJobScreen
+import com.example.cook_ford.presentation.screens.authenticated.accounts.profile.EditProfileScreen
 import com.example.cook_ford.presentation.screens.authenticated.profile.details.ProfileDetailScreen
 import com.example.cook_ford.presentation.screens.authenticated.profile.list.ProfilesScreen
 import com.example.cook_ford.presentation.screens.authenticated.profile.report.ReportScreen
@@ -132,7 +133,13 @@ fun HomeNavGraph(navController: NavHostController) {
                         }*/
                     }
                 },
-                onNavigateToPostJobScreen={},
+                onNavigateToPostJobScreen={ profileId ->
+                    navController.navigate(route = NavigationRoutes.AccountNavigation.PostJob.route + "/${profileId}") {
+                        popUpTo(route = NavigationRoutes.Authenticated.NavigationRoute.route) {
+                            inclusive = true
+                        }
+                    }
+                },
                 onNavigateToContactUsScreen={},
                 onNavigateToReviewUsScreen={},
                 onNavigateToEditProfile = { profileId ->
@@ -230,6 +237,18 @@ fun NavGraphBuilder.accountNavGraph(navController: NavHostController) {
                 onNavigateBack = { navController.navigateUp() },
                 onNavigateToAuthenticatedRoute = {
                     navController.navigate(route = NavigationRoutes.AccountNavigation.AddCookProfile.route) {
+                        /* popUpTo(route = NavigationRoutes.Unauthenticated.NavigationRoute.route) {
+                             inclusive = true
+                         }*/
+                    }
+                },
+            )
+        }
+        composable(route = NavigationRoutes.AccountNavigation.PostJob.route+ "/{profileId}") {
+            PostJobScreen(
+                onNavigateBack = { navController.navigateUp() },
+                onNavigateToAuthenticatedRoute = {
+                    navController.navigate(route = NavigationRoutes.AccountNavigation.PostJob.route) {
                         /* popUpTo(route = NavigationRoutes.Unauthenticated.NavigationRoute.route) {
                              inclusive = true
                          }*/
