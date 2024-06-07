@@ -135,6 +135,10 @@ fun BottomNavigationBar(
             bottomNavVisibility = false
             isVisible(true)
         }
+        NavigationRoutes.AccountNavigation.PostJob.route + "/{${AppConstants.PROFILE_ID}}" -> {
+            bottomNavVisibility = false
+            isVisible(true)
+        }
         /*
         DetailScreen.NotificationScreen.route -> {
             bottomNavVisibility = false

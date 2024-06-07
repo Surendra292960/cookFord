@@ -1,7 +1,6 @@
 package com.example.cook_ford.presentation.component.widgets
 import androidx.annotation.ColorRes
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -235,7 +234,7 @@ fun InputTextField(
     TextField(
         value = value,
         onValueChange = { if (it.length <= maxChar) onChange.invoke(it) },
-        modifier = modifier.background(Color.White),
+        modifier = modifier,
         leadingIcon = leadingIcon,
         trailingIcon = trailingIcon,
         keyboardOptions = KeyboardOptions(imeAction = keyboardOptions.imeAction, keyboardType = keyboardOptions.keyboardType),
@@ -243,8 +242,8 @@ fun InputTextField(
             focusedIndicatorColor = Color.LightGray,
             unfocusedIndicatorColor = Color.LightGray,
             cursorColor = Color.Gray,
-            focusedContainerColor = Color.White,
-            unfocusedContainerColor = Color.White,
+            focusedContainerColor = Color.Transparent,
+            unfocusedContainerColor = Color.Transparent,
         ),
         textStyle = TextStyle(
             fontSize = 17.sp,
