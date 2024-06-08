@@ -1,5 +1,4 @@
 package com.example.cook_ford.presentation.component.widgets
-import androidx.annotation.ColorRes
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -31,6 +30,7 @@ import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -53,7 +53,6 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
-import com.example.cook_ford.R
 import com.example.cook_ford.presentation.theme.AppTheme
 import com.example.cook_ford.utils.FontName
 
@@ -325,10 +324,9 @@ fun SegmentedControl(
     defaultSelectedItemIndex: Int = 0,
     useFixedWidth: Boolean = false,
     itemWidth: Dp = 120.dp,
-    cornerRadius : Int = 10,
-    @ColorRes color : Int = R.color.gray,
+    cornerRadius : Int = 3,
     onItemSelection: (selectedItemIndex: Int) -> Unit, ) {
-    val selectedIndex = remember { mutableStateOf(defaultSelectedItemIndex) }
+    val selectedIndex = remember { mutableIntStateOf(defaultSelectedItemIndex) }
 
     Row(modifier = Modifier) {
         items.forEachIndexed { index, item ->
@@ -339,28 +337,28 @@ fun SegmentedControl(
                             Modifier
                                 .width(itemWidth)
                                 .offset(0.dp, 0.dp)
-                                .zIndex(if (selectedIndex.value == index) 1f else 0f)
+                               // .zIndex(if (selectedIndex.intValue == index) 1f else 0f)
                         } else {
                             Modifier
                                 .wrapContentSize()
                                 .offset(0.dp, 0.dp)
-                                .zIndex(if (selectedIndex.value == index) 1f else 0f)
+                                .zIndex(if (selectedIndex.intValue == index) 1f else 0f)
                         }
                     } else -> {
                         if (useFixedWidth)
                             Modifier
                                 .width(itemWidth)
                                 .offset((-1 * index).dp, 0.dp)
-                                .zIndex(if (selectedIndex.value == index) 1f else 0f)
+                                .zIndex(if (selectedIndex.intValue == index) 1f else 0f)
                         else Modifier
                             .wrapContentSize()
                             .offset((-1 * index).dp, 0.dp)
-                            .zIndex(if (selectedIndex.value == index) 1f else 0f)
+                            .zIndex(if (selectedIndex.intValue == index) 1f else 0f)
                     }
                 },
                 onClick = {
-                    selectedIndex.value = index
-                    onItemSelection(selectedIndex.value)
+                    selectedIndex.intValue = index
+                    onItemSelection(selectedIndex.intValue)
                 },
                 shape = when (index) {
                     /**
@@ -392,20 +390,20 @@ fun SegmentedControl(
                     )
                 },
                 border = BorderStroke(
-                    1.dp, if (selectedIndex.value == index) {
-                        colorResource(id = color)
+                    1.dp, if (selectedIndex.intValue == index) {
+                        Color.Gray
                     } else {
-                        colorResource(id = color).copy(alpha = 0.75f)
+                        Color.Gray.copy(alpha = 0.75f)
                     }
                 ),
-                colors = if (selectedIndex.value == index) {
+                colors = if (selectedIndex.intValue == index) {
                     /**
                      * selected colors
                      */
-                    onItemSelection(selectedIndex.value)
+                    onItemSelection(selectedIndex.intValue)
                     ButtonDefaults.outlinedButtonColors(
                         contentColor = Color.White,
-                        containerColor = colorResource(id = color)
+                        containerColor = Color.LightGray
                     )
                 } else {
                     /**
@@ -413,17 +411,17 @@ fun SegmentedControl(
                      */
                     ButtonDefaults.outlinedButtonColors(
                         contentColor = Color.Gray,
-                        containerColor = Color.Transparent)
+                        containerColor = Color.White)
                 },
             ) {
                 Text(
                     text = item,
                     fontFamily = FontName,
                     fontWeight = FontWeight.SemiBold,
-                    color = if (selectedIndex.value == index) {
+                    color = if (selectedIndex.intValue == index) {
                         Color.White
                     } else {
-                        colorResource(id = color).copy(alpha = 0.9f)
+                        Color.Gray.copy(alpha = 0.9f)
                     },
                 )
             }

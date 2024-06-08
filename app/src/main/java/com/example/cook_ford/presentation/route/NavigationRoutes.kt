@@ -50,5 +50,6 @@ sealed class NavigationRoutes {
         data object EditProfile : AccountNavigation(route = NavTitle.EDIT_PROFILE)
         data object AddCookProfile : AccountNavigation(route = NavTitle.ADD_COOK_PROFILE)
         data object PostJob : AccountNavigation(route = NavTitle.POST_JOB)
+        data object CookPreferences : AccountNavigation(route = NavTitle.COOK_PREFERENCES)
     }
 }

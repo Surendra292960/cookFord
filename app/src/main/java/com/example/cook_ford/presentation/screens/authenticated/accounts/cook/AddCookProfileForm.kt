@@ -218,6 +218,7 @@ fun JobTypeSection(
         columns = GridCells.Fixed(columnsCount),
         modifier = Modifier
             .fillMaxWidth()
+            .padding(top = 5.dp)
             .height(160.dp),
         verticalArrangement = Arrangement.spacedBy(4.dp),
         horizontalArrangement = Arrangement.spacedBy(4.dp)) {

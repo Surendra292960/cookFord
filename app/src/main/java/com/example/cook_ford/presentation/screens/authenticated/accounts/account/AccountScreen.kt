@@ -24,6 +24,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Card
 import androidx.compose.material.ExtendedFloatingActionButton
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Surface
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowForwardIos
 import androidx.compose.material.icons.filled.Circle
@@ -610,10 +611,7 @@ fun BottomSheet(
     Log.d("TAG", "BottomSheet: ${Gson().toJson(reviewState)}")
     val reviewBottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     if (sheetType == "Review") {
-        ModalBottomSheet(
-            onDismissRequest = { onDismiss() },
-            sheetState = reviewBottomSheetState,
-            dragHandle = null) {
+        ModalBottomSheet(onDismissRequest = { onDismiss() }, sheetState = reviewBottomSheetState, dragHandle = null) {
 
             if (reviewState.isSuccessful) {
                 Column(

@@ -1,5 +1,6 @@
 package com.example.cook_ford.presentation.screens.authenticated.accounts.job
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -53,7 +54,8 @@ import com.example.cook_ford.utils.FontName
 @Composable
 fun PostJobScreen(
     onNavigateBack: () -> Unit,
-    onNavigateToAuthenticatedRoute: () -> Unit){
+    onNavigateToAuthenticatedRoute: () -> Unit,
+    onNavigateToCookPreferences: (String) -> Unit,){
 
     val postJobViewModel:PostJobViewModel = hiltViewModel()
     val changeProfileState = remember { mutableStateOf("Male") }
@@ -113,7 +115,8 @@ fun PostJobScreen(
                 subtitle = "Sector 62, Noida Uttar Pradesh",
                 tintColor = MaterialTheme.colors.primary,
                 trailingIconSize = 17.dp,
-                leadingIconSize = 30.dp
+                leadingIconSize = 30.dp,
+                onNavigateToCookPreferences = onNavigateToCookPreferences
             )
 
             Spacer(modifier = Modifier.height(20.dp))
@@ -129,7 +132,8 @@ fun PostJobScreen(
                         "Availability: [8am-9pm]\nGender: Male\nCook type: Part time\nNumber of visits: One Visit\nExperience: 0-2 Years",
                 tintColor = MaterialTheme.colors.primary,
                 trailingIconSize = 17.dp,
-                leadingIconSize = 30.dp
+                leadingIconSize = 30.dp,
+                onNavigateToCookPreferences = onNavigateToCookPreferences
             )
 
             Spacer(modifier = Modifier.height(20.dp))
@@ -144,7 +148,8 @@ fun PostJobScreen(
                 subtitle = "",
                 tintColor = MaterialTheme.colors.primary,
                 trailingIconSize = 17.dp,
-                leadingIconSize = 30.dp
+                leadingIconSize = 30.dp,
+                onNavigateToCookPreferences = onNavigateToCookPreferences
             )
 
             Spacer(modifier = Modifier.height(20.dp))
@@ -210,7 +215,8 @@ fun PostJobScreen(
                 subtitle = "Matched cooks will be able to call you on\n +919899199199",
                 tintColor = MaterialTheme.colors.primary,
                 trailingIconSize = 17.dp,
-                leadingIconSize = 30.dp
+                leadingIconSize = 30.dp,
+                onNavigateToCookPreferences = onNavigateToCookPreferences
             )
 
             Spacer(modifier = Modifier.height(20.dp))
@@ -225,7 +231,8 @@ fun PostJobScreen(
                 subtitle = "cookford@gmail.com",
                 tintColor = MaterialTheme.colors.primary,
                 trailingIconSize = 17.dp,
-                leadingIconSize = 30.dp
+                leadingIconSize = 30.dp,
+                onNavigateToCookPreferences = onNavigateToCookPreferences
             )
 
 
@@ -241,7 +248,8 @@ fun PostJobScreen(
                 subtitle = "7 june 2024, 09:00 AM",
                 tintColor = MaterialTheme.colors.primary,
                 trailingIconSize = 17.dp,
-                leadingIconSize = 30.dp
+                leadingIconSize = 30.dp,
+                onNavigateToCookPreferences = onNavigateToCookPreferences
             )
 
             Spacer(modifier = Modifier
@@ -249,10 +257,11 @@ fun PostJobScreen(
                 .padding(start = 20.dp, end = 20.dp))
 
             Text(
-                text = "job will be auto deleted after 3 months. if not updated.For catering, Job will be auto deleted on the next day of the event.",
+                modifier = Modifier.padding(start = 20.dp, end = 20.dp),
+                text = "Job will be auto deleted after 3 months. if not updated.For catering, Job will be auto deleted on the next day of the event.",
                 style = MaterialTheme.typography.subtitle2,
                 fontSize = 14.sp,
-                textAlign = TextAlign.Center,
+                textAlign = TextAlign.Start,
                 color = Color.DarkGray,
                 fontFamily = FontName,
                 fontWeight = FontWeight.Medium,
@@ -273,15 +282,15 @@ fun AccountProfileContent(
     subtitle: String,
     tintColor: Color,
     trailingIconSize: Dp,
-    leadingIconSize: Dp) {
+    leadingIconSize: Dp,
+    onNavigateToCookPreferences: (String) -> Unit) {
 
     Box(modifier = Modifier
         .fillMaxWidth()
         .padding(start = 20.dp, end = 20.dp)) {
         Row(modifier = Modifier
                 .wrapContentSize()
-                /*.clickable { onNavigateTo.invoke(navigationRoute)
-                           }*/,
+                .clickable { onNavigateToCookPreferences.invoke("qeqwdcwf") },
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween) {
 
@@ -336,5 +345,5 @@ fun AccountProfileContent(
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun PreviewScreen(){
-    PostJobScreen(  onNavigateBack = {}, onNavigateToAuthenticatedRoute = {})
+    PostJobScreen(  onNavigateBack = {}, onNavigateToAuthenticatedRoute = {}, onNavigateToCookPreferences={})
 }

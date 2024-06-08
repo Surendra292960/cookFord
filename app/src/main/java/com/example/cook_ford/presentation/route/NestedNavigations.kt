@@ -12,6 +12,7 @@ import androidx.navigation.navigation
 import com.example.cook_ford.presentation.screens.SplashScreen
 import com.example.cook_ford.presentation.screens.authenticated.accounts.account.AccountScreen
 import com.example.cook_ford.presentation.screens.authenticated.accounts.cook.AddCookProfileScreen
+import com.example.cook_ford.presentation.screens.authenticated.accounts.cook_preferences.CookPreferencesScreen
 import com.example.cook_ford.presentation.screens.authenticated.accounts.job.PostJobScreen
 import com.example.cook_ford.presentation.screens.authenticated.accounts.profile.EditProfileScreen
 import com.example.cook_ford.presentation.screens.authenticated.profile.details.ProfileDetailScreen
@@ -166,13 +167,8 @@ fun NavGraphBuilder.detailNavGraph(navController: NavHostController) {
         composable(NavigationRoutes.DetailsNavigation.ProfileDetail.route + "/{profileId}") {
             ProfileDetailScreen (
                 onNavigateBack = { navController.navigateUp() },
-                onNavigateToReViewScreen = { profileId->
-                    navController.navigate(route = NavigationRoutes.DetailsNavigation.ProfileReview.route + "/${profileId}")
-                },
-                onNavigateToReportScreen = { profileId->
-                    Log.d("TAG", "detailNavGraph: onNavigateToReportScreen")
-                    navController.navigate(route = NavigationRoutes.DetailsNavigation.ProfileReport.route + "/${profileId}")
-                },
+                onNavigateToReViewScreen = { profileId-> navController.navigate(route = NavigationRoutes.DetailsNavigation.ProfileReview.route + "/${profileId}") },
+                onNavigateToReportScreen = { profileId-> navController.navigate(route = NavigationRoutes.DetailsNavigation.ProfileReport.route + "/${profileId}") },
                 onNavigateToAuthenticatedHomeRoute = {
                     navController.navigate(route = NavigationRoutes.DetailsNavigation.ProfileDetail.route){
                    /*    popUpTo(route = NavigationRoutes.HomeNavigation.NavigationRoute.route) {
@@ -247,8 +243,21 @@ fun NavGraphBuilder.accountNavGraph(navController: NavHostController) {
         composable(route = NavigationRoutes.AccountNavigation.PostJob.route+ "/{profileId}") {
             PostJobScreen(
                 onNavigateBack = { navController.navigateUp() },
+                onNavigateToCookPreferences = {profileId-> navController.navigate(route = NavigationRoutes.AccountNavigation.CookPreferences.route + "/${profileId}")},
                 onNavigateToAuthenticatedRoute = {
                     navController.navigate(route = NavigationRoutes.AccountNavigation.PostJob.route) {
+                        /* popUpTo(route = NavigationRoutes.Unauthenticated.NavigationRoute.route) {
+                             inclusive = true
+                         }*/
+                    }
+                },
+            )
+        }
+        composable(route = NavigationRoutes.AccountNavigation.CookPreferences.route+ "/{profileId}") {
+            CookPreferencesScreen(
+                onNavigateBack = { navController.navigateUp() },
+                onNavigateToAuthenticatedRoute = {
+                    navController.navigate(route = NavigationRoutes.AccountNavigation.CookPreferences.route) {
                         /* popUpTo(route = NavigationRoutes.Unauthenticated.NavigationRoute.route) {
                              inclusive = true
                          }*/
