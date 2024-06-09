@@ -2,12 +2,16 @@ package com.example.cook_ford.presentation.screens.authenticated.profile.list
 import com.example.cook_ford.presentation.screens.authenticated.profile.list.state.ProfileState
 import android.util.Log
 import androidx.compose.runtime.State
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.cook_ford.data.local.SessionConstant
 import com.example.cook_ford.data.local.UserSession
 import com.example.cook_ford.data.remote.NetworkResult
+import com.example.cook_ford.data.remote.profile_response.Location
+import com.example.cook_ford.data.remote.profile_response.ProfileResponse
 import com.example.cook_ford.domain.use_cases.ProfileUseCase
 import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -21,6 +25,9 @@ class ProfileViewModel @Inject constructor(
     private val profileUseCase: ProfileUseCase,
     private val userSession: UserSession,
 ) : ViewModel() {
+
+    var shareProfile by mutableStateOf(ProfileResponse())
+
 
     private val _profileState = mutableStateOf(ProfileState())
     val profileState: State<ProfileState> = _profileState

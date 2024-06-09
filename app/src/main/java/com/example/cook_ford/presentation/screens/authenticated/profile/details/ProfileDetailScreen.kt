@@ -97,10 +97,10 @@ import com.example.cook_ford.utils.Utility.shareProfile
 fun ProfileDetailScreen(
 	navController: NavController? = null,
 	onNavigateBack: () -> Unit,
+	profileResponse:ProfileResponse,
 	onNavigateToReViewScreen: (String) -> Unit,
 	onNavigateToReportScreen: (String) -> Unit,
-	onNavigateToAuthenticatedHomeRoute: () -> Unit,
-) {
+	onNavigateToAuthenticatedHomeRoute: () -> Unit, ) {
 	val profileDetailsViewModel: ProfileDetailsViewModel = hiltViewModel()
 	val profileState by remember { profileDetailsViewModel.profileState }
 
@@ -120,7 +120,17 @@ fun ProfileDetailScreen(
 					if (profileState?.profile!![index].userType=="provider") {
 						Stats(profileState.profile!![index], "10.1M", "100")
 						Spacer(modifier = Modifier.height(10.dp))
-						ProviderSocialMediaIconsCard(profileDetailsViewModel, onNavigateToReViewScreen ={onNavigateToReViewScreen.invoke(profileDetailsViewModel.getProfileId().toString())}, onNavigateToReportScreen = {onNavigateToReportScreen.invoke(profileDetailsViewModel.getProfileId().toString())})
+						ProviderSocialMediaIconsCard(profileDetailsViewModel,
+							onNavigateToReViewScreen = {
+								onNavigateToReViewScreen.invoke(
+									profileDetailsViewModel.getProfileId().toString()
+								)
+							},
+							onNavigateToReportScreen = {
+								onNavigateToReportScreen.invoke(
+									profileDetailsViewModel.getProfileId().toString()
+								)
+							})
 						HorizontalDivider(modifier = Modifier.background(Color.LightGray))
 						Spacer(modifier = Modifier.height(10.dp))
 						ExperienceCard(profileState?.profile!![index], timeSlots = profileDetailsViewModel.getTimeSlots())
@@ -992,6 +1002,7 @@ fun ProfilePreview() {
 	Cook_fordTheme {
 		ProfileDetailScreen(
 			onNavigateBack = {},
+			profileResponse = ProfileResponse(),
 			onNavigateToReViewScreen = {},
 			onNavigateToReportScreen = {},
 			onNavigateToAuthenticatedHomeRoute = {})

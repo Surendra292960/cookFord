@@ -482,11 +482,11 @@ fun AccountProfileContent(
         modifier = Modifier
             .fillMaxWidth()
             .padding(start = 20.dp, end = 20.dp)
+            .clickable { onNavigateTo.invoke(navigationRoute) },
     ) {
         Row(
             modifier = Modifier
-                .wrapContentSize()
-                .clickable { onNavigateTo.invoke(navigationRoute) },
+                .wrapContentSize(),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {

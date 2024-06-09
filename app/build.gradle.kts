@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.kotlinAndroidKsp)
     alias(libs.plugins.hiltAndroid)
+    alias(libs.plugins.kotlin.parcelize)
 }
 
 android {
@@ -77,6 +78,7 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel.compose)
     implementation(libs.androidx.hilt.android)
     implementation(libs.androidx.hilt.navigation.compose)
+    ksp(libs.androidx.hilt.compiler)
     implementation(libs.androidx.databinding.runtime)
     implementation(libs.androidx.accompanist.pager)
     implementation(libs.androidx.lifecycle.runtime.compose)
@@ -89,8 +91,6 @@ dependencies {
     implementation(libs.androidx.coil.gif)
     implementation(libs.androidx.activity.ktx)
     implementation(libs.androidx.glide)
-
-    ksp(libs.androidx.hilt.compiler)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

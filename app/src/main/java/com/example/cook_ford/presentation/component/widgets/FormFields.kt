@@ -324,7 +324,7 @@ fun SegmentedControl(
     defaultSelectedItemIndex: Int = 0,
     useFixedWidth: Boolean = false,
     itemWidth: Dp = 120.dp,
-    cornerRadius : Int = 3,
+    cornerRadius : Int = 1,
     onItemSelection: (selectedItemIndex: Int) -> Unit, ) {
     val selectedIndex = remember { mutableIntStateOf(defaultSelectedItemIndex) }
 

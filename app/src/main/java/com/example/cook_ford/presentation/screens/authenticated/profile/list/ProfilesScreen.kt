@@ -47,6 +47,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.SavedStateHandle
+import androidx.navigation.NavHostController
 import com.example.cook_ford.R
 import com.example.cook_ford.data.remote.profile_response.ProfileResponse
 import com.example.cook_ford.presentation.component.widgets.Child
@@ -54,6 +56,7 @@ import com.example.cook_ford.presentation.component.widgets.Progressbar
 import com.example.cook_ford.presentation.screens.authenticated.profile.list.state.ProfileState
 import com.example.cook_ford.presentation.theme.AppTheme
 import com.example.cook_ford.presentation.theme.OrangeYellow1
+import com.google.gson.Gson
 
 @Preview(showSystemUi = true, showBackground = true)
 @Composable
@@ -63,8 +66,10 @@ fun Preview() {
     )
 }
 
+data class ProfileData(var firstName:String="Surendra", var lastName:String="Kumar")
 @Composable
 fun ProfilesScreen(
+    navController: NavHostController,
     profileLazyListState: LazyListState = rememberLazyListState(),
     onNavigateToProfileDetails: (String) -> Unit) {
     val profileViewModel: ProfileViewModel = hiltViewModel()
@@ -79,6 +84,7 @@ fun ProfilesScreen(
     }
 
     if (profileState.isSuccessful) {
+        val data = ProfileData(firstName = "Surendra", lastName = "Kumar")
         Log.d("TAG", "ProfileListScreen getResponseFromPref: ${profileViewModel.getResponseFromPref()}")
         LazyColumn(
             modifier = Modifier.fillMaxSize(),
@@ -92,6 +98,7 @@ fun ProfilesScreen(
                         profileState = profileState,
                         index = index,
                         onItemClick = { profileId ->
+                            navController.currentBackStackEntry?.savedStateHandle?.apply { set("profileResponse", Gson().toJson(profileState.profile!![index])) }
                             onNavigateToProfileDetails.invoke(profileId)
                         }
                     )
