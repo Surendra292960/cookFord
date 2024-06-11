@@ -64,6 +64,9 @@
     <string name="cook_error_msg_empty_job_type">Please select job type</string>
     <string name="cook_error_msg_empty_profile_image">Please select profile image</string>
 
+    <!--OTP-->
+
+    <string name="verify_button_text">Verify</string>
 
     <string name="onbaord_title1">Plan trip to more</string>
     <string name="onbaord_title2">Hassle free and quick</string>

@@ -9,20 +9,20 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.example.cook_ford.data.remote.profile_response.ProfileResponse
-import com.example.cook_ford.presentation.screens.SplashScreen
-import com.example.cook_ford.presentation.screens.authenticated.accounts.account.AccountScreen
-import com.example.cook_ford.presentation.screens.authenticated.accounts.cook.AddCookProfileScreen
+import com.example.cook_ford.presentation.screens.un_authenticated.main_screen_component.SplashScreen
+import com.example.cook_ford.presentation.screens.authenticated.accounts.account_screen_component.AccountScreen
+import com.example.cook_ford.presentation.screens.authenticated.accounts.cook_screen_component.AddCookProfileScreen
 import com.example.cook_ford.presentation.screens.authenticated.accounts.cook_preferences.CookPreferencesScreen
-import com.example.cook_ford.presentation.screens.authenticated.accounts.job.PostJobScreen
-import com.example.cook_ford.presentation.screens.authenticated.accounts.profile.EditProfileScreen
-import com.example.cook_ford.presentation.screens.authenticated.profile.details.ProfileDetailScreen
-import com.example.cook_ford.presentation.screens.authenticated.profile.list.ProfilesScreen
-import com.example.cook_ford.presentation.screens.authenticated.profile.report.ReportScreen
-import com.example.cook_ford.presentation.screens.authenticated.profile.reviews.ReviewScreen
-import com.example.cook_ford.presentation.screens.dashboard.home.UserDashBoard
-import com.example.cook_ford.presentation.screens.onboard.OnBoardingScreen
-import com.example.cook_ford.presentation.screens.un_authenticated.sign_in.SignInScreen
-import com.example.cook_ford.presentation.screens.un_authenticated.sign_up.SignUpScreen
+import com.example.cook_ford.presentation.screens.authenticated.accounts.job_screen_component.PostJobScreen
+import com.example.cook_ford.presentation.screens.authenticated.accounts.profile_screen_component.EditProfileScreen
+import com.example.cook_ford.presentation.screens.authenticated.profile_screen_component.details_screen_component.ProfileDetailScreen
+import com.example.cook_ford.presentation.screens.authenticated.profile_screen_component.list_screen_component.ProfilesScreen
+import com.example.cook_ford.presentation.screens.authenticated.profile_screen_component.report_screen_component.ReportScreen
+import com.example.cook_ford.presentation.screens.authenticated.profile_screen_component.reviews_screen_component.ReviewScreen
+import com.example.cook_ford.presentation.screens.dashboard_screen_component.home_screen_component.UserDashBoard
+import com.example.cook_ford.presentation.screens.onboard_screen_component.OnBoardingScreen
+import com.example.cook_ford.presentation.screens.un_authenticated.sign_in_screen_component.SignInScreen
+import com.example.cook_ford.presentation.screens.un_authenticated.sign_up_screen_component.SignUpScreen
 import com.google.gson.Gson
 
 
