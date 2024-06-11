@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.cook_ford.data.local.UserSession
 import com.example.cook_ford.data.remote.NetworkResult
+import com.example.cook_ford.data.remote.profile_response.ProfileResponse
 import com.example.cook_ford.data.remote.profile_response.TimeSlots
 import com.example.cook_ford.domain.use_cases.ProfileUseCase
 import com.example.cook_ford.presentation.component.widgets.snack_bar.MainViewState
@@ -24,6 +25,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 import com.example.cook_ford.presentation.screens.authenticated.profile.report.state.reportEmptyErrorState
 import com.example.cook_ford.presentation.screens.authenticated.profile.report.state.ReportUiEvent
+import com.example.cook_ford.presentation.screens.authenticated.profile.report.state.issueEmptyErrorState
 
 
 @HiltViewModel
@@ -33,41 +35,32 @@ class ReportViewModel  @Inject constructor(
     private val stateHandle: SavedStateHandle
 ) : ViewModel() {
 
-    val selectedItem = mutableSetOf<TimeSlots>()
+    val selectedItem = mutableSetOf<String>()
 
-    private val _timeSlots = mutableStateOf(TimeSlots())
-    val timeSlots: State<TimeSlots> = _timeSlots
-
-    private val _reportState = MutableStateFlow(ReportState())
-    val reportState = _reportState.asStateFlow()
+    private val _reportState = mutableStateOf(ReportState())
+    val reportState : State<ReportState> = _reportState
 
     private val _viewState = MutableStateFlow(MainViewState())
     val viewState = _viewState.asStateFlow()
 
-    init {
-        getProfileId()?.let { id->
-            Log.d("TAG", " stateHandle  : $id")
-            getProfileId()?.let { makeProfileRequestForReview(profileId = id) }
-        }
-    }
+    val issueList = listOf("issue in cook`s food", "profile not updated", "issue in cook`s profile")
 
-    private fun getProfileId() = stateHandle.get<String>(AppConstants.PROFILE_ID)
-
-    fun getTimeSlots():List<TimeSlots>{
-        val timeSlotsList:MutableList<TimeSlots> = mutableListOf()
-        if (reportState.value.isSuccessful){
-            reportState.value?.profile?.profile?.timeSlots?.let{
-                it?.forEach { slots->
-                    timeSlotsList.add(TimeSlots(slots.startTime?.trim().plus(" - "+slots.endTime?.trim())))
-                    Log.d("TAG", "ProfileDetailScreen TimeSlots List : ${Gson().toJson(timeSlots)}")
-                }
-            }
-        }
-        return timeSlotsList
-    }
 
     fun onUiEvent(reportUiEvent: ReportUiEvent) {
         when (reportUiEvent) {
+
+            //Issue changed
+            is ReportUiEvent.IssueChanged -> {
+                _reportState.value = _reportState.value.copy(
+                    issue = reportUiEvent.inputValue,
+                    errorState = _reportState.value.errorState.copy(
+                       reportErrorState = if (reportUiEvent.inputValue.trim().isNotEmpty())
+                            ErrorState()
+                        else
+                            issueEmptyErrorState
+                    )
+                )
+            }
             //Report changed
             is ReportUiEvent.ReportChanged -> {
                 _reportState.value = _reportState.value.copy(
@@ -93,7 +86,17 @@ class ReportViewModel  @Inject constructor(
 
     private fun validateInputs(): Boolean {
         val report = _reportState.value.report.trim()
+        val issue = _reportState.value.issue.trim()
 
+        // Issue empty
+        if (issue.isEmpty()) {
+            _reportState.value = _reportState.value.copy(
+                errorState = ReportErrorState(
+                    issueErrorState = issueEmptyErrorState
+                )
+            )
+            return false
+        }
         // Review empty
         if (report.isEmpty()) {
             _reportState.value = _reportState.value.copy(
@@ -119,7 +122,7 @@ class ReportViewModel  @Inject constructor(
                 is NetworkResult.Success->{
                     if (result.status == true){
                         result.data?.let { response->
-                            _reportState.value = _reportState.value.copy(isLoading = false, profile = response, isSuccessful = true)
+                            _reportState.value = _reportState.value.copy(isLoading = false, profileResponse = response, isSuccessful = true)
                         }
                         Log.d("TAG", "makeProfileRequestForReview->: ${Gson().toJson(_reportState.value)}")
                     }
@@ -134,5 +137,9 @@ class ReportViewModel  @Inject constructor(
                 }
             }
         }
+    }
+
+    fun setProfileData(profileResponse: ProfileResponse?) {
+        _reportState.value = _reportState.value.copy(isLoading = false, profileResponse = profileResponse, isSuccessful = true)
     }
 }

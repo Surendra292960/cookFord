@@ -1,8 +1,9 @@
 package com.example.cook_ford.presentation.screens.authenticated.accounts.profile.state
 
+import com.example.cook_ford.data.remote.profile_response.ProfileResponse
 import com.example.cook_ford.presentation.screens.un_authenticated.sign_in.state.ErrorState
+import com.example.cook_ford.utils.AppConstants
 import com.example.cook_ford.utils.AppConstants.EMPTY_STRING
-
 
 /**
  * EditProfile State holding ui input values
@@ -14,7 +15,12 @@ data class EditProfileState(
     val gender: String = EMPTY_STRING,
     val profileImage: String = EMPTY_STRING,
     val errorState: EditProfileErrorState = EditProfileErrorState(),
-    var isEditSuccessful: Boolean = false
+    var isEditSuccessful: Boolean = false,
+    var isLoading: Boolean = true,
+    var profileResponse: ProfileResponse? = null,
+    val errorMessage: String?= EMPTY_STRING,
+    var isSuccessful: Boolean = false
+
 )
 
 /**

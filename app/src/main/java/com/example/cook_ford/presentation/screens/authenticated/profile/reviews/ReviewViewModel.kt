@@ -1,11 +1,14 @@
 package com.example.cook_ford.presentation.screens.authenticated.profile.reviews
 
 import android.util.Log
+import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.cook_ford.data.local.UserSession
 import com.example.cook_ford.data.remote.NetworkResult
+import com.example.cook_ford.data.remote.profile_response.ProfileResponse
 import com.example.cook_ford.domain.use_cases.ProfileUseCase
 import com.example.cook_ford.presentation.component.widgets.snack_bar.MainViewState
 import com.example.cook_ford.presentation.screens.authenticated.profile.reviews.state.ReviewState
@@ -13,7 +16,6 @@ import com.example.cook_ford.presentation.screens.authenticated.profile.reviews.
 import com.example.cook_ford.presentation.screens.authenticated.profile.reviews.state.ReviewUiEvent
 import com.example.cook_ford.presentation.screens.authenticated.profile.reviews.state.reviewEmptyErrorState
 import com.example.cook_ford.presentation.screens.un_authenticated.sign_in.state.ErrorState
-import com.example.cook_ford.utils.AppConstants
 import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -23,26 +25,21 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class ReViewViewModel  @Inject constructor(
+class ReviewViewModel  @Inject constructor(
     private val profileUseCase: ProfileUseCase,
     private val userSession: UserSession,
     private val stateHandle: SavedStateHandle
 ) : ViewModel() {
-   
-    private val _reviewState = MutableStateFlow(ReviewState())
-    val reviewState = _reviewState.asStateFlow()
+
+    private val _reviewState = mutableStateOf(ReviewState())
+    val reviewState: State<ReviewState> = _reviewState
+
 
     private val _viewState = MutableStateFlow(MainViewState())
     val viewState = _viewState.asStateFlow()
 
-    init {
-        getProfileId()?.let {
-            Log.d("TAG", " stateHandle  : $it")
-            getProfileId()?.let { makeProfileRequestForReview(profileId = it) }
-        }
-    }
 
-    fun getProfileId() = stateHandle.get<String>(AppConstants.PROFILE_ID)
+
 
     fun onUiEvent(reviewUiEvent: ReviewUiEvent) {
         when (reviewUiEvent) {
@@ -97,7 +94,7 @@ class ReViewViewModel  @Inject constructor(
                 is NetworkResult.Success->{
                     if (result.status == true){
                         result.data?.let { response->
-                            _reviewState.value = _reviewState.value.copy(isLoading = false, profile = response, isSuccessful = true)
+                            _reviewState.value = _reviewState.value.copy(isLoading = false, profileResponse = response, isSuccessful = true)
                         }
                         Log.d("TAG", "makeProfileRequestForReview->: ${Gson().toJson(_reviewState.value)}")
                     }
@@ -112,5 +109,9 @@ class ReViewViewModel  @Inject constructor(
                 }
             }
         }
+    }
+
+    fun setProfileData(profileResponse: ProfileResponse) {
+        _reviewState.value = _reviewState.value.copy(isLoading = false, profileResponse = profileResponse, isSuccessful = true)
     }
 }

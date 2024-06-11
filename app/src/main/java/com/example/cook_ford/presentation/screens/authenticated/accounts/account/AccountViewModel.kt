@@ -6,10 +6,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.cook_ford.data.local.SessionConstant
 import com.example.cook_ford.data.local.UserSession
 import com.example.cook_ford.data.remote.NetworkResult
 import com.example.cook_ford.domain.use_cases.ProfileUseCase
 import com.example.cook_ford.presentation.component.widgets.snack_bar.MainViewState
+import com.example.cook_ford.presentation.screens.authenticated.accounts.account.state.AccountState
 import com.example.cook_ford.presentation.screens.authenticated.accounts.account.state.ReviewErrorState
 import com.example.cook_ford.presentation.screens.authenticated.accounts.account.state.ReviewState
 import com.example.cook_ford.presentation.screens.authenticated.accounts.account.state.ReviewUiEvent
@@ -33,21 +35,17 @@ private val userSession: UserSession,
 private val stateHandle: SavedStateHandle
 ) : ViewModel() {
 
+    private val _accountState = mutableStateOf(AccountState())
+    val accountState: State<AccountState> = _accountState
+
     val reviewState = mutableStateOf(ReviewState())
 
     private val _viewState = MutableStateFlow(MainViewState())
     val viewState = _viewState.asStateFlow()
 
-    private val _profileState = mutableStateOf(ProfileDetailState())
-    val profileState: State<ProfileDetailState> = _profileState
-
     init {
-        getProfileId()?.let {
-            Log.d("TAG", " stateHandle  : $it")
-            getProfileId()?.let { makeProfileRequest(profileId = it) }
-        }
+        userSession.getString(SessionConstant.USER_ID)?.let { getProfileRequest(it) }
     }
-    fun getProfileId() = stateHandle.get<String>(AppConstants.PROFILE_ID)
 
     fun onReViewUiEvent(reviewUiEvent: ReviewUiEvent) {
         when (reviewUiEvent) {
@@ -111,24 +109,49 @@ private val stateHandle: SavedStateHandle
 
     private fun makeProfileRequest(profileId: String) = viewModelScope.launch(Dispatchers.IO) {
         Log.d("TAG", "makeProfileRequest profileId: $profileId")
-        // _profileState.value = _profileState.value.copy(isLoading = true)
+        // _accountState.value = _accountState.value.copy(isLoading = true)
         profileUseCase.invoke(profileId).collect { result ->
             when(result){
                 is NetworkResult.Success->{
                     if (result.status == true){
                         result.data?.let { response->
-                            _profileState.value = _profileState.value.copy(isLoading = false, profile = listOf(response), isSuccessful = true)
+                            _accountState.value = _accountState.value.copy(isLoading = false, profileResponse = response, isSuccessful = true)
                         }
-                        Log.d("TAG", "makeProfileRequest-> getProfileResponse: ${Gson().toJson(_profileState.value)}")
+                        Log.d("TAG", "makeProfileRequest-> getProfileResponse: ${Gson().toJson(_accountState.value)}")
                     }
                 }
                 is NetworkResult.Error->{
-                    Log.d("TAG", "makeProfileRequest-> Error: ${Gson().toJson(_profileState.value)}")
-                    _profileState.value = _profileState.value.copy(errorMessage = result.message!!)
+                    Log.d("TAG", "makeProfileRequest-> Error: ${Gson().toJson(_accountState.value)}")
+                    _accountState.value = _accountState.value.copy(errorMessage = result.message!!)
                 }
                 is NetworkResult.Loading->{
                     Log.d("TAG", "makeProfileRequest->: Loading")
-                    _profileState.value = _profileState.value.copy(isLoading = true)
+                    _accountState.value = _accountState.value.copy(isLoading = true)
+                }
+            }
+        }
+    }
+
+    private fun getProfileRequest(profileId: String) = viewModelScope.launch(Dispatchers.IO) {
+        Log.d("TAG", "makeProfileRequest profileId: $profileId")
+        // _accountState.value = _accountState.value.copy(isLoading = true)
+        profileUseCase.invoke(profileId).collect { result ->
+            when(result){
+                is NetworkResult.Success->{
+                    if (result.status == true){
+                        result.data?.let { response->
+                            _accountState.value = _accountState.value.copy(isLoading = false, profileResponse = response, isSuccessful = true)
+                        }
+                        Log.d("TAG", "makeProfileRequest-> getProfileResponse: ${Gson().toJson(_accountState.value)}")
+                    }
+                }
+                is NetworkResult.Error->{
+                    Log.d("TAG", "makeProfileRequest-> Error: ${Gson().toJson(_accountState.value)}")
+                    _accountState.value = _accountState.value.copy(errorMessage = result.message!!)
+                }
+                is NetworkResult.Loading->{
+                    Log.d("TAG", "makeProfileRequest->: Loading")
+                    _accountState.value = _accountState.value.copy(isLoading = true)
                 }
             }
         }

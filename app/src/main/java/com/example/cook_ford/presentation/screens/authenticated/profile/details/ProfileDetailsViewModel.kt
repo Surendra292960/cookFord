@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.cook_ford.data.local.UserSession
 import com.example.cook_ford.data.remote.NetworkResult
+import com.example.cook_ford.data.remote.profile_response.ProfileResponse
 import com.example.cook_ford.data.remote.profile_response.TimeSlots
 import com.example.cook_ford.domain.use_cases.ProfileUseCase
 import com.example.cook_ford.presentation.component.widgets.snack_bar.MainViewState
@@ -20,6 +21,7 @@ import com.example.cook_ford.utils.AppConstants
 import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -44,12 +46,12 @@ open class ProfileDetailsViewModel @Inject constructor(
     private val _profileState = mutableStateOf(ProfileDetailState())
     val profileState: State<ProfileDetailState> = _profileState
 
-    init {
+   /* init {
         getProfileId()?.let {
             Log.d("TAG", " stateHandle  : $it")
             getProfileId()?.let { makeProfileRequest(profileId = it) }
         }
-    }
+    }*/
 
     fun getProfileId() = stateHandle.get<String>(AppConstants.PROFILE_ID)
 
@@ -103,7 +105,7 @@ open class ProfileDetailsViewModel @Inject constructor(
     fun getTimeSlots():List<TimeSlots>{
         val timeSlotsList:MutableList<TimeSlots> = mutableListOf()
         if (profileState.value.isSuccessful){
-            profileState.value?.profile?.get(0)?.profile?.timeSlots?.let{
+            profileState.value?.profileResponse?.get(0)?.profile?.timeSlots?.let{
                 it?.forEach { slots->
                     timeSlotsList.add(TimeSlots(slots.startTime?.trim().plus(" - "+slots.endTime?.trim())))
                     Log.d("TAG", "ProfileDetailScreen TimeSlots List : ${Gson().toJson(timeSlots)}")
@@ -121,7 +123,7 @@ open class ProfileDetailsViewModel @Inject constructor(
                 is NetworkResult.Success->{
                     if (result.status == true){
                         result.data?.let { response->
-                            _profileState.value = _profileState.value.copy(isLoading = false, profile = listOf(response), isSuccessful = true)
+                            //_profileState.value = _profileState.value.copy(isLoading = false, profile = listOf(response), isSuccessful = true)
                         }
                         Log.d("TAG", "makeProfileRequest-> getProfileResponse: ${Gson().toJson(_profileState.value)}")
                     }
@@ -136,6 +138,11 @@ open class ProfileDetailsViewModel @Inject constructor(
                 }
             }
         }
+    }
+
+
+    fun setProfileData(profileResponse: ProfileResponse) {
+        _profileState.value = _profileState.value.copy(isLoading = false, profileResponse = listOf(profileResponse), isSuccessful = true)
     }
 }
 

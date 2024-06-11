@@ -337,7 +337,7 @@ fun SegmentedControl(
                             Modifier
                                 .width(itemWidth)
                                 .offset(0.dp, 0.dp)
-                               // .zIndex(if (selectedIndex.intValue == index) 1f else 0f)
+                                .zIndex(if (selectedIndex.intValue == index) 1f else 0f)
                         } else {
                             Modifier
                                 .wrapContentSize()

@@ -7,7 +7,7 @@ data class ReviewState(
     val review: String = EMPTY_STRING,
     val errorState: ReviewErrorState = ReviewErrorState(),
     val isLoading: Boolean = false,
-    val profile: ProfileResponse? = null,
+    val profileResponse: ProfileResponse? = null,
     val errorMessage: String = "",
     var isSuccessful: Boolean = false
 )

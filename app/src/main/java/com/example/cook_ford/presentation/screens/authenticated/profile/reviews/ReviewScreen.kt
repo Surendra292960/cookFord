@@ -17,6 +17,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
@@ -32,9 +33,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
 import com.example.cook_ford.R
 import com.example.cook_ford.data.remote.profile_response.ProfileResponse
+import com.example.cook_ford.presentation.component.widgets.Progressbar
 import com.example.cook_ford.presentation.component.widgets.StarRatingBar
 import com.example.cook_ford.presentation.component.widgets.snack_bar.MainViewState
 import com.example.cook_ford.presentation.screens.authenticated.profile.reviews.state.ReviewUiEvent
@@ -44,18 +45,25 @@ import com.example.cook_ford.presentation.screens.authenticated.profile.reviews.
 fun Preview() {
     ReviewScreen(
         onNavigateBack = {},
+        profileResponse = ProfileResponse(),
         onNavigateToAuthenticatedHomeRoute = {}
     )
 }
 
 @Composable
 fun ReviewScreen(
-    navController: NavController? = null,
     onNavigateBack:()->Unit,
+    profileResponse:ProfileResponse,
     onNavigateToAuthenticatedHomeRoute: () -> Unit) {
-    val reViewViewModel:ReViewViewModel = hiltViewModel()
-    val reviewState by reViewViewModel.reviewState.collectAsState()
-    val viewState:MainViewState by reViewViewModel.viewState.collectAsState()
+    val reviewViewModel:ReviewViewModel = hiltViewModel()
+    val viewState:MainViewState by reviewViewModel.viewState.collectAsState()
+
+    val reviewState by remember { reviewViewModel.reviewState }
+    Progressbar(reviewState.isLoading)
+    LaunchedEffect(key1 = true) {
+        reviewViewModel.setProfileData(profileResponse)
+    }
+
     var rating1 by remember { mutableFloatStateOf(0.0f) }
     var rating2 by remember { mutableFloatStateOf(0.0f) }
     var rating3 by remember { mutableFloatStateOf(0.0f) }
@@ -63,11 +71,11 @@ fun ReviewScreen(
     var rating5 by remember { mutableFloatStateOf(0.0f) }
 
     Column(modifier = Modifier
-        .fillMaxSize().padding(top = 20.dp)
+        .fillMaxSize()
+        .padding(top = 20.dp)
         .verticalScroll(rememberScrollState())) {
 
-        //TopBarNavigation(onNavigateBack={onNavigateBack.invoke()}, title = "Cook Review")
-        reviewState?.profile?.let { ImageWithUserName(it) }
+        reviewState?.profileResponse?.let { ImageWithUserName(it) }
 
         Row(modifier = Modifier
             .padding(top = 20.dp, start = 20.dp, end = 20.dp)
@@ -149,14 +157,14 @@ fun ReviewScreen(
                 .fillMaxWidth()
                 .padding(start = 10.dp, end = 10.dp),
             onReviewChange = { inputString ->
-                reViewViewModel.onUiEvent(
+                reviewViewModel.onUiEvent(
                     reviewUiEvent = ReviewUiEvent.ReviewChanged(
                         inputString
                     )
                 )
             },
             onSubmit = {
-                reViewViewModel.onUiEvent(reviewUiEvent = ReviewUiEvent.Submit)
+                reviewViewModel.onUiEvent(reviewUiEvent = ReviewUiEvent.Submit)
             })
     }
 }

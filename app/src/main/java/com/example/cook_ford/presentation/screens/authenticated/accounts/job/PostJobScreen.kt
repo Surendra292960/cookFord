@@ -44,6 +44,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.wear.compose.material.Icon
 import androidx.wear.compose.material.Text
 import com.example.cook_ford.R
+import com.example.cook_ford.data.remote.profile_response.ProfileResponse
 import com.example.cook_ford.presentation.component.widgets.DefaultIcons
 import com.example.cook_ford.presentation.component.widgets.InputTextField
 import com.example.cook_ford.presentation.component.widgets.KeyboardOption
@@ -54,6 +55,7 @@ import com.example.cook_ford.utils.FontName
 @Composable
 fun PostJobScreen(
     onNavigateBack: () -> Unit,
+    profileResponse: ProfileResponse?=null,
     onNavigateToAuthenticatedRoute: () -> Unit,
     onNavigateToCookPreferences: (String) -> Unit,){
 

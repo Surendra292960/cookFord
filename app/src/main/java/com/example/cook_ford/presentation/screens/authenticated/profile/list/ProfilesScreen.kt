@@ -66,25 +66,23 @@ fun Preview() {
     )
 }
 
-data class ProfileData(var firstName:String="Surendra", var lastName:String="Kumar")
+
 @Composable
 fun ProfilesScreen(
     navController: NavHostController,
     profileLazyListState: LazyListState = rememberLazyListState(),
-    onNavigateToProfileDetails: (String) -> Unit) {
+    onNavigateToProfileDetails: () -> Unit) {
     val profileViewModel: ProfileViewModel = hiltViewModel()
     val profileState by remember { profileViewModel.profileState }
 
     Progressbar(profileState.isLoading)
-    //Log.d("TAG", "ProfileListScreen isLoading: ${profileState.isLoading}")
-    Log.d("TAG", "ProfileListScreen isLoading: ${profileViewModel.getResponseFromPref()}")
+    Log.d("TAG", "ProfileListScreen isLoading: ${profileState.isLoading}")
     LaunchedEffect(Unit) {
         profileViewModel.getProfileRequest()
 
     }
 
     if (profileState.isSuccessful) {
-        val data = ProfileData(firstName = "Surendra", lastName = "Kumar")
         Log.d("TAG", "ProfileListScreen getResponseFromPref: ${profileViewModel.getResponseFromPref()}")
         LazyColumn(
             modifier = Modifier.fillMaxSize(),
@@ -99,7 +97,7 @@ fun ProfilesScreen(
                         index = index,
                         onItemClick = { profileId ->
                             navController.currentBackStackEntry?.savedStateHandle?.apply { set("profileResponse", Gson().toJson(profileState.profile!![index])) }
-                            onNavigateToProfileDetails.invoke(profileId)
+                            onNavigateToProfileDetails.invoke()
                         }
                     )
                 }

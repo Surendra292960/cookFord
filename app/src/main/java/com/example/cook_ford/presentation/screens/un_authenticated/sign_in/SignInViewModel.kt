@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.cook_ford.data.local.SessionConstant.ACCESS_TOKEN
+import com.example.cook_ford.data.local.SessionConstant.USER_ID
 import com.example.cook_ford.data.local.SessionConstant.USER_TYPE
 import com.example.cook_ford.data.local.UserSession
 import com.example.cook_ford.data.remote.NetworkResult
@@ -199,6 +200,7 @@ class SignInViewModel @Inject constructor(private val signInUseCase: SignInUseCa
                             //TODO save token after dialog dismiss
                             userSession.put(ACCESS_TOKEN, response.accessToken)
                             userSession.put(USER_TYPE, response.userType)
+                            userSession.put(USER_ID, response.user_id)
                             _viewState.update { currentState -> currentState.copy(isLoading = false) }
                         }
                     }

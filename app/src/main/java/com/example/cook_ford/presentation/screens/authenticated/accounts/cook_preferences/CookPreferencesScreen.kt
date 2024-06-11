@@ -29,6 +29,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.cook_ford.data.remote.profile_response.ProfileResponse
 import com.example.cook_ford.presentation.component.widgets.SegmentedControl
 import com.example.cook_ford.utils.FontName
 import com.google.gson.Gson
@@ -36,6 +37,7 @@ import com.google.gson.Gson
 @Composable
 fun CookPreferencesScreen(
     onNavigateBack: () -> Unit,
+    profileResponse: ProfileResponse?=null,
     onNavigateToAuthenticatedRoute: () -> Unit){
 
     val jobType = listOf(

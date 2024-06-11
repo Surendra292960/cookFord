@@ -45,6 +45,7 @@ import androidx.navigation.NavController
 import com.example.cook_ford.R
 import com.example.cook_ford.data.remote.profile_response.ProfileResponse
 import com.example.cook_ford.data.remote.profile_response.TimeSlots
+import com.example.cook_ford.presentation.component.widgets.Progressbar
 import com.example.cook_ford.presentation.component.widgets.snack_bar.MainViewState
 import com.example.cook_ford.presentation.component.widgets.topbar_nav.TopBarNavigation
 import com.example.cook_ford.presentation.screens.authenticated.profile.report.state.ReportUiEvent
@@ -59,17 +60,20 @@ fun Preview() {
     )
 }
 
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun ReportScreen(
-    navController: NavController? = null,
     onNavigateBack:()->Unit,
+    profileResponse: ProfileResponse?=null,
     onNavigateToAuthenticatedHomeRoute: () -> Unit) {
+
     val reportViewModel: ReportViewModel = hiltViewModel()
-    val reportState by reportViewModel.reportState.collectAsState()
+    val reportState by reportViewModel.reportState
     val viewState:MainViewState by reportViewModel.viewState.collectAsState()
 
-    val timeSlots:List<TimeSlots> = emptyList()
+    Progressbar(reportState.isLoading)
+    LaunchedEffect(key1 = true) {
+        reportViewModel.setProfileData(profileResponse)
+    }
 
     if (reportState.isSuccessful){
         Log.d("TAG", "Data isSuccessful : ${reportState.isSuccessful}")
@@ -78,18 +82,7 @@ fun ReportScreen(
             .verticalScroll(rememberScrollState())) {
 
             TopBarNavigation(title = "Cook Report", onNavigateBack={onNavigateBack.invoke()})
-            reportState?.profile?.let { ImageWithUserName(it) }
-
-            /* TimeSlotsComponent(timeSlots = reportViewModel.getTimeSlots(), onSelectedChanged = { slots, selected->
-                 chipChangeListener(slots, selected).let {
-                     reportViewModel.getTimeSlots().toSet().forEach {
-                         if (it.selected){
-                             //Log.d("TAG", "ExperienceCard: ${it.slots}")
-                         }
-                     }
-                 }
-             })*/
-            TimeSlotsComponent(timeSlots = reportViewModel.getTimeSlots())
+            reportState?.profileResponse?.let { ImageWithUserName(it) }
 
             ReportForm(
                 reportState = reportState,
@@ -97,6 +90,13 @@ fun ReportScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(start = 10.dp, end = 10.dp),
+                onIssueChange = { inputString ->
+                    reportViewModel.onUiEvent(
+                        reportUiEvent = ReportUiEvent.IssueChanged(
+                            inputString
+                        )
+                    )
+                },
                 onReportChange = { inputString ->
                     reportViewModel.onUiEvent(
                         reportUiEvent = ReportUiEvent.ReportChanged(
@@ -106,7 +106,8 @@ fun ReportScreen(
                 },
                 onSubmit = {
                     reportViewModel.onUiEvent(reportUiEvent = ReportUiEvent.Submit)
-                })
+                }
+            )
         }
     }
 }
@@ -161,50 +162,3 @@ fun ImageWithUserName(profileRes: ProfileResponse) {
     }
 }
 
-@OptIn(ExperimentalLayoutApi::class)
-@Composable
-fun TimeSlotsComponent(timeSlots: List<TimeSlots>) {
-    FlowRow {
-        timeSlots.forEach { timeSlots ->
-            timeSlots?.slots?.let {
-                FilterChip(
-                    timeSlots = timeSlots
-                )
-            }
-        }
-    }
-}
-
-@Composable
-fun FilterChip(timeSlots: TimeSlots) {
-    var selected by remember { mutableStateOf(false) }
-    val reportViewModel:ReportViewModel = hiltViewModel()
-    Log.d("TAG", "FilterChipExample: ${Gson().toJson(reportViewModel.selectedItem)}")
-
-    FilterChip(
-        modifier = Modifier.padding(horizontal = 5.dp),
-        onClick = {
-            selected = !selected
-            if (selected){
-                reportViewModel.selectedItem.add(timeSlots)
-            }else{
-                reportViewModel.selectedItem.removeIf { it.slots.toString() == timeSlots.slots.toString() }
-            }
-        },
-        label = {
-            Text(timeSlots.slots.toString())
-        },
-        selected = selected,
-        leadingIcon = if (selected) {
-            {
-                Icon(
-                    imageVector = Icons.Filled.Done,
-                    contentDescription = "Done icon",
-                    modifier = Modifier.size(FilterChipDefaults.IconSize)
-                )
-            }
-        } else {
-            null
-        },
-    )
-}

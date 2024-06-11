@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.repeatOnLifecycle
+import com.example.cook_ford.data.remote.profile_response.ProfileResponse
 import com.example.cook_ford.presentation.component.widgets.dialog.CustomDialog
 import com.example.cook_ford.presentation.component.widgets.dialog.ResetWarning
 import com.example.cook_ford.presentation.component.widgets.snack_bar.MainViewState
@@ -35,6 +36,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun AddCookProfileScreen(
     onNavigateBack: () -> Unit,
+    profileResponse: ProfileResponse?=null,
     onNavigateToAuthenticatedRoute: () -> Unit) {
     val addCookProfileViewModel: AddCookProfileViewModel = hiltViewModel()
     val addCookProfileState by remember { addCookProfileViewModel.addCookProfileState }

@@ -60,61 +60,67 @@ fun EditProfileForm(
 
         //Spacer(modifier = Modifier.height(10.dp))
 
-        InputTextField(
-            value = editProfileState.username,
-            onChange = onUserNameChange,
-            modifier = Modifier.fillMaxWidth(),
-            keyboardOptions = KeyboardOption(
-                imeAction = ImeAction.Next,
-                keyboardType = KeyboardType.Text,
-                label = AppConstants.NAME,
-                placeholder = AppConstants.NAME_PLACEHOLDER
-            ),
-            DefaultIcons(leadingIcon = Icons.Default.Person),
-            isError = editProfileState.errorState.usernameErrorState.hasError,
-            errorText = stringResource(id = editProfileState.errorState.usernameErrorState.errorMessageStringResource),
-            maxChar = 30,
-            texColor = Color.Gray
-            /*submit = { TODO() }*/
-        )
+        editProfileState.profileResponse?.username?.let {
+            InputTextField(
+                value = it,
+                onChange = onUserNameChange,
+                modifier = Modifier.fillMaxWidth(),
+                keyboardOptions = KeyboardOption(
+                    imeAction = ImeAction.Next,
+                    keyboardType = KeyboardType.Text,
+                    label = AppConstants.NAME,
+                    placeholder = AppConstants.NAME_PLACEHOLDER
+                ),
+                DefaultIcons(leadingIcon = Icons.Default.Person),
+                isError = editProfileState.errorState.usernameErrorState.hasError,
+                errorText = stringResource(id = editProfileState.errorState.usernameErrorState.errorMessageStringResource),
+                maxChar = 30,
+                texColor = Color.Gray
+                /*submit = { TODO() }*/
+            )
+        }
         Spacer(modifier = Modifier.height(10.dp))
 
-        InputTextField(
-            value = editProfileState.email,
-            onChange = onEmailChange,
-            modifier = Modifier.fillMaxWidth(),
-            keyboardOptions = KeyboardOption(
-                imeAction = ImeAction.Next,
-                keyboardType = KeyboardType.Email,
-                label = AppConstants.EMAIL,
-                placeholder = AppConstants.EMAIL_PLACEHOLDER
-            ),
-            DefaultIcons(leadingIcon = Icons.Default.Email),
-            isError = editProfileState.errorState.emailErrorState.hasError,
-            errorText = stringResource(id = editProfileState.errorState.emailErrorState.errorMessageStringResource),
-            maxChar = 30,
-            texColor = Color.Gray
-            /*submit = { TODO() }*/
-        )
+        editProfileState.profileResponse?.email?.let {
+            InputTextField(
+                value = it,
+                onChange = onEmailChange,
+                modifier = Modifier.fillMaxWidth(),
+                keyboardOptions = KeyboardOption(
+                    imeAction = ImeAction.Next,
+                    keyboardType = KeyboardType.Email,
+                    label = AppConstants.EMAIL,
+                    placeholder = AppConstants.EMAIL_PLACEHOLDER
+                ),
+                DefaultIcons(leadingIcon = Icons.Default.Email),
+                isError = editProfileState.errorState.emailErrorState.hasError,
+                errorText = stringResource(id = editProfileState.errorState.emailErrorState.errorMessageStringResource),
+                maxChar = 30,
+                texColor = Color.Gray
+                /*submit = { TODO() }*/
+            )
+        }
         Spacer(modifier = Modifier.height(10.dp))
 
-        InputTextField(
-            value = editProfileState.phone,
-            onChange = onPhoneChange,
-            modifier = Modifier.fillMaxWidth(),
-            keyboardOptions = KeyboardOption(
-                imeAction = ImeAction.Done,
-                keyboardType = KeyboardType.Phone,
-                label = AppConstants.PHONE,
-                placeholder = AppConstants.PHONE_PLACEHOLDER
-            ),
-            DefaultIcons(leadingIcon = Icons.Default.Phone),
-            isError = editProfileState.errorState.phoneErrorState.hasError,
-            errorText = stringResource(id = editProfileState.errorState.phoneErrorState.errorMessageStringResource),
-            maxChar = 12,
-            texColor = Color.Gray
-            /*submit = { TODO() }*/
-        )
+        editProfileState.profileResponse?.phone?.let {
+            InputTextField(
+                value = it,
+                onChange = onPhoneChange,
+                modifier = Modifier.fillMaxWidth(),
+                keyboardOptions = KeyboardOption(
+                    imeAction = ImeAction.Done,
+                    keyboardType = KeyboardType.Phone,
+                    label = AppConstants.PHONE,
+                    placeholder = AppConstants.PHONE_PLACEHOLDER
+                ),
+                DefaultIcons(leadingIcon = Icons.Default.Phone),
+                isError = editProfileState.errorState.phoneErrorState.hasError,
+                errorText = stringResource(id = editProfileState.errorState.phoneErrorState.errorMessageStringResource),
+                maxChar = 12,
+                texColor = Color.Gray
+                /*submit = { TODO() }*/
+            )
+        }
 
         Spacer(modifier = Modifier.height(10.dp))
 

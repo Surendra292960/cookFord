@@ -2,9 +2,11 @@ package com.example.cook_ford.presentation.screens.authenticated.accounts.profil
 
 import android.util.Log
 import android.util.Patterns
+import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import com.example.cook_ford.data.local.UserSession
+import com.example.cook_ford.data.remote.profile_response.ProfileResponse
 import com.example.cook_ford.presentation.component.widgets.snack_bar.MainViewState
 import com.example.cook_ford.presentation.screens.authenticated.accounts.cook.state.cook_profileImageEmptyErrorState
 import com.example.cook_ford.presentation.screens.authenticated.accounts.profile.state.EditProfileErrorState
@@ -29,8 +31,8 @@ import javax.inject.Inject
 class EditProfileViewModel @Inject constructor(
     private val userSession: UserSession
 ) : ViewModel() {
-    var editProfileState = mutableStateOf(EditProfileState())
-        private set
+    private val _editProfileState = mutableStateOf(EditProfileState())
+    val editProfileState:State<EditProfileState> = _editProfileState
 
     private val _showDialog = MutableStateFlow(true)
     val showDialog: StateFlow<Boolean> = _showDialog.asStateFlow()
@@ -62,9 +64,9 @@ class EditProfileViewModel @Inject constructor(
 
             // Profile Image changed
             is EditProfileUiEvent.ProfileImageChanged -> {
-                editProfileState.value = editProfileState.value.copy(
+                _editProfileState.value = _editProfileState.value.copy(
                     profileImage = editProfileUiEvent.inputValue,
-                    errorState = editProfileState.value.errorState.copy(
+                    errorState = _editProfileState.value.errorState.copy(
                         profileImageErrorState = if (editProfileUiEvent.inputValue.trim().isNotEmpty())
                             ErrorState()
                         else
@@ -75,9 +77,10 @@ class EditProfileViewModel @Inject constructor(
 
             // UserName changed
             is EditProfileUiEvent.UserNameChanged -> {
-                editProfileState.value = editProfileState.value.copy(
+                Log.d("TAG", "onUiEvent: ${editProfileUiEvent.inputValue}")
+                _editProfileState.value = _editProfileState.value.copy(
                     username = editProfileUiEvent.inputValue,
-                    errorState = editProfileState.value.errorState.copy(
+                    errorState = _editProfileState.value.errorState.copy(
                         usernameErrorState = if (editProfileUiEvent.inputValue.trim().isNotEmpty())
                             ErrorState()
                         else
@@ -87,9 +90,10 @@ class EditProfileViewModel @Inject constructor(
             }
             // Email changed
             is EditProfileUiEvent.EmailChanged -> {
-                editProfileState.value = editProfileState.value.copy(
+                Log.d("TAG", "onUiEvent: ${editProfileUiEvent.inputValue}")
+                _editProfileState.value = _editProfileState.value.copy(
                     email = editProfileUiEvent.inputValue,
-                    errorState = editProfileState.value.errorState.copy(
+                    errorState = _editProfileState.value.errorState.copy(
                         emailErrorState = if (editProfileUiEvent.inputValue.trim().isNotEmpty())
                             ErrorState()
                         else
@@ -100,9 +104,10 @@ class EditProfileViewModel @Inject constructor(
 
             //Mobile changed
             is EditProfileUiEvent.PhoneChanged -> {
-                editProfileState.value = editProfileState.value.copy(
+                Log.d("TAG", "onUiEvent: ${editProfileUiEvent.inputValue}")
+                _editProfileState.value = _editProfileState.value.copy(
                     phone = editProfileUiEvent.inputValue,
-                    errorState = editProfileState.value.errorState.copy(
+                    errorState = _editProfileState.value.errorState.copy(
                         phoneErrorState = if (editProfileUiEvent.inputValue.trim().isNotEmpty())
                             ErrorState()
                         else
@@ -113,9 +118,9 @@ class EditProfileViewModel @Inject constructor(
 
             //GenderChange changed
             is EditProfileUiEvent.GenderChange -> {
-                editProfileState.value = editProfileState.value.copy(
+                _editProfileState.value = _editProfileState.value.copy(
                     gender = editProfileUiEvent.inputValue,
-                    errorState = editProfileState.value.errorState.copy(
+                    errorState = _editProfileState.value.errorState.copy(
                         phoneErrorState = if (editProfileUiEvent.inputValue.trim().isNotEmpty())
                             ErrorState()
                         else
@@ -128,12 +133,12 @@ class EditProfileViewModel @Inject constructor(
             is EditProfileUiEvent.Submit -> {
                 val inputsValidated = validateInputs()
                 //Log.d("TAG", "onUiEvent: $inputsValidated")
-               // Log.d("TAG", "onUiEvent: ${editProfileState.value}")
+               // Log.d("TAG", "onUiEvent: ${_editProfileState.value}")
                 if (inputsValidated) {
-                    Log.d("TAG", "onUiEvent: ${editProfileState.value}")
+                    Log.d("TAG", "onUiEvent: ${_editProfileState.value}")
                     // TODO Trigger Edit Profile in authentication flow
 
-                    //makeSigInRequest(SignInRequest(email = editProfileState.value.email, password = editProfileState.value.username))
+                    //makeSigInRequest(SignInRequest(email = _editProfileState.value.email, password = _editProfileState.value.username))
                 }
             }
         }
@@ -153,7 +158,7 @@ class EditProfileViewModel @Inject constructor(
 
         // userName empty
         if (userName.isEmpty()) {
-            editProfileState.value = editProfileState.value.copy(
+            _editProfileState.value = _editProfileState.value.copy(
                 errorState = EditProfileErrorState(
                     usernameErrorState = usernameEmptyErrorState
                 )
@@ -162,7 +167,7 @@ class EditProfileViewModel @Inject constructor(
         }
         // Email empty
         if (email.isEmpty()) {
-            editProfileState.value = editProfileState.value.copy(
+            _editProfileState.value = _editProfileState.value.copy(
                 errorState = EditProfileErrorState(
                     emailErrorState = emailEmptyErrorState
                 )
@@ -172,7 +177,7 @@ class EditProfileViewModel @Inject constructor(
         // Email Matcher
         if (email.isNotEmpty()) {
             if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-                editProfileState.value = editProfileState.value.copy(
+                _editProfileState.value = _editProfileState.value.copy(
                     errorState = EditProfileErrorState(
                         emailErrorState = invalidUserNameErrorState
                     )
@@ -183,7 +188,7 @@ class EditProfileViewModel @Inject constructor(
 
         //Phone Empty
         if (phone.isEmpty()) {
-            editProfileState.value = editProfileState.value.copy(
+            _editProfileState.value = _editProfileState.value.copy(
                 errorState = EditProfileErrorState(
                     phoneErrorState = phoneEmptyErrorState
                 )
@@ -193,7 +198,7 @@ class EditProfileViewModel @Inject constructor(
 
         //Gender Not Selected
         if (gender.isEmpty()) {
-            editProfileState.value = editProfileState.value.copy(
+            _editProfileState.value = _editProfileState.value.copy(
                 errorState = EditProfileErrorState(
                     genderErrorState = genderSelectionErrorState
                 )
@@ -204,8 +209,12 @@ class EditProfileViewModel @Inject constructor(
         // No errors
         else {
             // Set default error state
-            editProfileState.value = editProfileState.value.copy(errorState = EditProfileErrorState())
+            _editProfileState.value = _editProfileState.value.copy(errorState = EditProfileErrorState())
             return true
         }
+    }
+
+    fun setProfileData(profileResponse: ProfileResponse?) {
+        _editProfileState.value = _editProfileState.value.copy(isLoading = false, profileResponse = profileResponse, isSuccessful = true)
     }
 }

@@ -38,7 +38,6 @@ import androidx.compose.material.icons.filled.Call
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.ExposureZero
 import androidx.compose.material.icons.filled.Star
-import androidx.compose.material3.BottomSheetDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilterChip
@@ -48,6 +47,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
@@ -75,6 +75,8 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import coil.compose.rememberAsyncImagePainter
 import com.example.cook_ford.R
 import com.example.cook_ford.data.remote.profile_response.ProfileResponse
@@ -90,56 +92,56 @@ import com.example.cook_ford.presentation.theme.Cook_fordTheme
 import com.example.cook_ford.presentation.theme.OrangeYellow1
 import com.example.cook_ford.utils.FontName
 import com.example.cook_ford.utils.Utility.shareProfile
+import com.google.gson.Gson
 
 
 @ExperimentalFoundationApi
 @Composable
 fun ProfileDetailScreen(
-	navController: NavController? = null,
+	navController: NavHostController,
 	onNavigateBack: () -> Unit,
 	profileResponse:ProfileResponse,
-	onNavigateToReViewScreen: (String) -> Unit,
-	onNavigateToReportScreen: (String) -> Unit,
-	onNavigateToAuthenticatedHomeRoute: () -> Unit, ) {
+	onNavigateToReViewScreen: () -> Unit,
+	onNavigateToReportScreen: () -> Unit,
+	onNavigateToAuthenticatedHomeRoute: () -> Unit) {
+
 	val profileDetailsViewModel: ProfileDetailsViewModel = hiltViewModel()
 	val profileState by remember { profileDetailsViewModel.profileState }
-
-
 	Progressbar(profileState.isLoading)
-	Log.d("TAG", "ProfileDetailScreen isLoading: ${profileState.isSuccessful}")
-
+	LaunchedEffect(key1 = true) {
+		profileDetailsViewModel.setProfileData(profileResponse)
+	}
+	Log.d("TAG", "ProfileDetailScreen isLoading: ${profileState.isLoading}")
 	if (profileState.isSuccessful) {
 		LazyColumn(modifier = Modifier
 			.fillMaxSize(),
 			horizontalAlignment = Alignment.CenterHorizontally) {
-			profileState.profile?.size?.let { size->
+			profileState.profileResponse?.size?.let { size->
 				items(size){  index->
 					TopBar(onNavigateBack = { onNavigateBack.invoke() })
 					Spacer(modifier = Modifier.height(10.dp))
 
-					if (profileState?.profile!![index].userType=="provider") {
-						Stats(profileState.profile!![index], "10.1M", "100")
+					if (profileState?.profileResponse!![index].userType=="provider") {
+						Stats(profileState.profileResponse!![index], "10.1M", "100")
 						Spacer(modifier = Modifier.height(10.dp))
 						ProviderSocialMediaIconsCard(profileDetailsViewModel,
 							onNavigateToReViewScreen = {
-								onNavigateToReViewScreen.invoke(
-									profileDetailsViewModel.getProfileId().toString()
-								)
+								navController.currentBackStackEntry?.savedStateHandle?.apply { set("profileResponse", Gson().toJson(profileState.profileResponse!![index])) }
+								onNavigateToReViewScreen.invoke()
 							},
 							onNavigateToReportScreen = {
-								onNavigateToReportScreen.invoke(
-									profileDetailsViewModel.getProfileId().toString()
-								)
+								navController.currentBackStackEntry?.savedStateHandle?.apply { set("profileResponse", Gson().toJson(profileState.profileResponse!![index])) }
+								onNavigateToReportScreen.invoke()
 							})
 						HorizontalDivider(modifier = Modifier.background(Color.LightGray))
 						Spacer(modifier = Modifier.height(10.dp))
-						ExperienceCard(profileState?.profile!![index], timeSlots = profileDetailsViewModel.getTimeSlots())
-						profileState.profile!![index].profile?.topCuisineUrls?.let {
+						ExperienceCard(profileState?.profileResponse!![index], timeSlots = profileDetailsViewModel.getTimeSlots())
+						profileState.profileResponse!![index].profile?.topCuisineUrls?.let {
 							CuisineImages(topCuisineUrls = it, modifier = Modifier.padding(top = 10.dp))
 						}
 						Spacer(modifier = Modifier.height(10.dp))
 
-						profileState?.profile!![index]?.profile?.feedback_rating?.forEach { rating->
+						profileState?.profileResponse!![index]?.profile?.feedback_rating?.forEach { rating->
 							Ratings(text = "FoodQuality", feedbackRating = rating?.food_quality?.toFloat())
 							Ratings(text = "Hygiene", feedbackRating = rating?.hygiene?.toFloat())
 							Ratings(text = "Service", feedbackRating = rating?.service?.toFloat())
@@ -706,7 +708,7 @@ fun TimeSlotsComponent(timeSlots: List<TimeSlots>) {
 	FlowRow {
 		timeSlots.forEach { timeSlots ->
 			timeSlots.slots?.let {
-				Log.d("TAG", "TimeSlotsComponent data: $it")
+				Log.d("TAG", "TimeSlotsComponent profileState: $it")
 				FilterChip(
 					modifier = Modifier.padding(horizontal = 2.dp),
 					onClick = { },
@@ -1001,6 +1003,7 @@ fun AddNote() {
 fun ProfilePreview() {
 	Cook_fordTheme {
 		ProfileDetailScreen(
+			navController = rememberNavController(),
 			onNavigateBack = {},
 			profileResponse = ProfileResponse(),
 			onNavigateToReViewScreen = {},

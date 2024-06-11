@@ -24,6 +24,9 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.NavHostController
+import com.example.cook_ford.data.remote.profile_response.ProfileResponse
+import com.example.cook_ford.presentation.component.widgets.Progressbar
 import com.example.cook_ford.presentation.component.widgets.dialog.CustomDialog
 import com.example.cook_ford.presentation.component.widgets.dialog.ResetWarning
 import com.example.cook_ford.presentation.component.widgets.snack_bar.MainViewState
@@ -35,6 +38,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun EditProfileScreen(
     onNavigateBack: () -> Unit,
+    profileResponse: ProfileResponse?=null,
     onNavigateToSignOut: () -> Unit,
     onNavigateToAuthenticatedRoute: () -> Unit) {
     val editProfileViewModel: EditProfileViewModel = hiltViewModel()
@@ -44,6 +48,13 @@ fun EditProfileScreen(
     val changeProfileState = remember { mutableStateOf("") }
     val viewState: MainViewState by editProfileViewModel.viewState.collectAsState()
     val lifecycle = LocalLifecycleOwner.current.lifecycle
+
+    Progressbar(editProfileState.isLoading)
+    Log.d("TAG", "ProfileListScreen isLoading: ${editProfileState.isLoading}")
+    LaunchedEffect(Unit) {
+        editProfileViewModel.setProfileData(profileResponse)
+
+    }
 
     if (editProfileState.isEditSuccessful) {
 

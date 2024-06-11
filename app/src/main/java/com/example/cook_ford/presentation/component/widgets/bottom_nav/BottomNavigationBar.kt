@@ -111,15 +111,15 @@ fun BottomNavigationBar(
         /**
          * Detail Navigation
          */
-        NavigationRoutes.DetailsNavigation.ProfileDetail.route + "/{${AppConstants.PROFILE_ID}}" -> {
+        NavigationRoutes.DetailsNavigation.ProfileDetail.route -> {
             bottomNavVisibility = false
             isVisible.invoke(false)
         }
-        NavigationRoutes.DetailsNavigation.ProfileReview.route + "/{${AppConstants.PROFILE_ID}}" -> {
+        NavigationRoutes.DetailsNavigation.ProfileReview.route -> {
             bottomNavVisibility = false
             isVisible(false)
         }
-        NavigationRoutes.DetailsNavigation.ProfileReport.route + "/{${AppConstants.PROFILE_ID}}" -> {
+        NavigationRoutes.DetailsNavigation.ProfileReport.route -> {
             bottomNavVisibility = false
             isVisible(false)
         }
@@ -127,19 +127,19 @@ fun BottomNavigationBar(
         /**
          * Account Navigation
          */
-        NavigationRoutes.AccountNavigation.EditProfile.route + "/{${AppConstants.PROFILE_ID}}" -> {
+        NavigationRoutes.AccountNavigation.EditProfile.route  -> {
             bottomNavVisibility = false
             isVisible(true)
         }
-        NavigationRoutes.AccountNavigation.AddCookProfile.route + "/{${AppConstants.PROFILE_ID}}" -> {
+        NavigationRoutes.AccountNavigation.AddCookProfile.route -> {
             bottomNavVisibility = false
             isVisible(true)
         }
-        NavigationRoutes.AccountNavigation.PostJob.route + "/{${AppConstants.PROFILE_ID}}" -> {
+        NavigationRoutes.AccountNavigation.PostJob.route -> {
             bottomNavVisibility = false
             isVisible(true)
         }
-        NavigationRoutes.AccountNavigation.CookPreferences.route + "/{${AppConstants.PROFILE_ID}}" -> {
+        NavigationRoutes.AccountNavigation.CookPreferences.route -> {
             bottomNavVisibility = false
             isVisible(true)
         }

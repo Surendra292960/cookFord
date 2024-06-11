@@ -63,6 +63,9 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import androidx.wear.compose.material.Icon
 import androidx.wear.compose.material.Text
 import coil.ImageLoader
@@ -71,7 +74,9 @@ import coil.decode.ImageDecoderDecoder
 import coil.request.ImageRequest
 import coil.size.Size
 import com.example.cook_ford.R
+import com.example.cook_ford.presentation.component.widgets.Progressbar
 import com.example.cook_ford.presentation.component.widgets.SubmitButton
+import com.example.cook_ford.presentation.screens.authenticated.accounts.account.state.AccountState
 import com.example.cook_ford.presentation.screens.authenticated.accounts.account.state.ReviewState
 import com.example.cook_ford.presentation.screens.authenticated.accounts.account.state.ReviewUiEvent
 import com.example.cook_ford.presentation.theme.DeepGreen
@@ -85,240 +90,266 @@ import com.google.gson.Gson
 
 @Composable
 fun AccountScreen(
-    onNavigateToEditProfile: (String) -> Unit,
-    onNavigateToAddCookScreen: (String) -> Unit,
-    onNavigateToPostJobScreen: (String) -> Unit,
+    navController: NavHostController,
+    onNavigateToEditProfile: () -> Unit,
+    onNavigateToAddCookScreen: () -> Unit,
+    onNavigateToPostJobScreen: () -> Unit,
     onNavigateToContactUsScreen: () -> Unit,
     onNavigateToReviewUsScreen: () -> Unit) {
 
     var showReviewBottomSheet by remember { mutableStateOf(false) }
     val accountViewModel : AccountViewModel = hiltViewModel()
     //val viewState by remember { profileDetailsViewModel.viewState }
+    val accountState by remember { accountViewModel.accountState }
     val reviewState by remember { accountViewModel.reviewState }
 
-    Column(modifier = Modifier
-        .fillMaxSize()
-        .verticalScroll(rememberScrollState()),
-        verticalArrangement = Arrangement.SpaceBetween,
-        horizontalAlignment = Alignment.CenterHorizontally) {
+    Progressbar(showProgressbar = accountState.isLoading)
+    if (accountState.isSuccessful){
+        Column(modifier = Modifier
+            .fillMaxSize()
+            .verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.SpaceBetween, horizontalAlignment = Alignment.CenterHorizontally) {
 
-        AccountProfileImage(onNavigateToEditProfile = { onNavigateToEditProfile.invoke(it) })
-        HorizontalDivider(modifier = Modifier, color = Color.LightGray)
-        CallCreditButtons()
+            AccountProfileImage(
+                accountState = accountState,
+                onNavigateToEditProfile = {
+                navController.currentBackStackEntry?.savedStateHandle?.apply { set("profileResponse", Gson().toJson(accountState.profileResponse)) }
+                onNavigateToEditProfile.invoke()
+            })
+            HorizontalDivider(modifier = Modifier, color = Color.LightGray)
+            CallCreditButtons()
 
-        AccountProfileContent(
-            textColor = Orange,
-            leadingIcon = Icons.Filled.Circle,
-            trailingIcon = Icons.Filled.ArrowForwardIos,
-            title = "Spin the Wheel",
-            subtitle = "Play and Win Call Credits and Documents",
-            tintColor = Orange,
-            trailingIconSize = 17.dp,
-            leadingIconSize = 30.dp,
-            navigationRoute = "Spin",
-            onNavigateTo = { route->
-                when (route) {
-                    "Spin" -> {
-                        //onNavigateToPostJobScreen.invoke()
+            AccountProfileContent(
+                textColor = Orange,
+                leadingIcon = Icons.Filled.Circle,
+                trailingIcon = Icons.Filled.ArrowForwardIos,
+                title = "Spin the Wheel",
+                subtitle = "Play and Win Call Credits and Documents",
+                tintColor = Orange,
+                trailingIconSize = 17.dp,
+                leadingIconSize = 30.dp,
+                navigationRoute = "Spin",
+                onNavigateTo = { route->
+                    when (route) {
+                        "Spin" -> {
+                            //onNavigateToPostJobScreen.invoke()
+                        }
+                        "AddCook" -> {
+                            navController.currentBackStackEntry?.savedStateHandle?.apply { set("profileResponse", Gson().toJson(accountState.profileResponse)) }
+                            onNavigateToAddCookScreen.invoke()
+                        }
+                        "ContactUs" -> {
+                            navController.currentBackStackEntry?.savedStateHandle?.apply { set("profileResponse", Gson().toJson(accountState.profileResponse)) }
+                            onNavigateToContactUsScreen.invoke()
+                        }
+                        "ReviewUs" -> {
+                            showReviewBottomSheet = true
+                            onNavigateToReviewUsScreen.invoke()
+                        }
+                        "PostJob" -> {
+                            navController.currentBackStackEntry?.savedStateHandle?.apply { set("profileResponse", Gson().toJson(accountState.profileResponse)) }
+                            onNavigateToPostJobScreen.invoke()
+                        }
                     }
-                    "AddCook" -> {
-                        onNavigateToAddCookScreen.invoke("dtrfjikol")
+                },
+            )
+
+            AccountProfileContent(
+                textColor = Color.DarkGray,
+                leadingIcon = Icons.Filled.NotificationsActive,
+                trailingIcon = Icons.Filled.ArrowForwardIos,
+                title = "Post Job",
+                subtitle = "Get Notification when any cook shows interest",
+                tintColor = Color.DarkGray,
+                trailingIconSize = 17.dp,
+                leadingIconSize = 30.dp,
+                navigationRoute = "PostJob",
+                onNavigateTo = { route->
+                    when (route) {
+                        "Spin" -> {
+                            // onNavigateToPostJobScreen.invoke()
+                        }
+                        "AddCook" -> {
+                            navController.currentBackStackEntry?.savedStateHandle?.apply { set("profileResponse", Gson().toJson(accountState.profileResponse)) }
+                            onNavigateToAddCookScreen.invoke()
+                        }
+                        "ContactUs" -> {
+                            navController.currentBackStackEntry?.savedStateHandle?.apply { set("profileResponse", Gson().toJson(accountState.profileResponse)) }
+                            onNavigateToContactUsScreen.invoke()
+                        }
+                        "ReviewUs" -> {
+                            showReviewBottomSheet = true
+                            onNavigateToReviewUsScreen.invoke()
+                        }
+                        "PostJob" -> {
+                            navController.currentBackStackEntry?.savedStateHandle?.apply { set("profileResponse", Gson().toJson(accountState.profileResponse)) }
+                            onNavigateToPostJobScreen.invoke()
+                        }
                     }
-                    "ContactUs" -> {
-                        onNavigateToContactUsScreen.invoke()
+                },
+            )
+
+            AccountProfileContent(
+                textColor = Color.DarkGray,
+                leadingIcon = Icons.Filled.PersonAdd,
+                trailingIcon = Icons.Filled.ArrowForwardIos,
+                title = "Add Your Cook",
+                subtitle = "",
+                tintColor = Color.DarkGray,
+                trailingIconSize = 17.dp,
+                leadingIconSize = 30.dp,
+                navigationRoute = "AddCook",
+                onNavigateTo = { route->
+                    when (route) {
+                        "Spin" -> {
+                            //onNavigateToPostJobScreen.invoke()
+                        }
+                        "AddCook" -> {
+                            navController.currentBackStackEntry?.savedStateHandle?.apply { set("profileResponse", Gson().toJson(accountState.profileResponse)) }
+                            onNavigateToAddCookScreen.invoke()
+                        }
+                        "ContactUs" -> {
+                            navController.currentBackStackEntry?.savedStateHandle?.apply { set("profileResponse", Gson().toJson(accountState.profileResponse)) }
+                            onNavigateToContactUsScreen.invoke()
+                        }
+                        "ReviewUs" -> {
+                            showReviewBottomSheet = true
+                            onNavigateToReviewUsScreen.invoke()
+                        }
+                        "PostJob" -> {
+                            navController.currentBackStackEntry?.savedStateHandle?.apply { set("profileResponse", Gson().toJson(accountState.profileResponse)) }
+                            onNavigateToPostJobScreen.invoke()
+                        }
                     }
-                    "ReviewUs" -> {
-                        showReviewBottomSheet = true
-                        onNavigateToReviewUsScreen.invoke()
+                },
+            )
+
+            AccountProfileContent(
+                textColor = Color.DarkGray,
+                leadingIcon = Icons.Filled.People,
+                trailingIcon = Icons.Filled.ArrowForwardIos,
+                title = "Tell Your friends and family",
+                subtitle = "",
+                tintColor = Color.DarkGray,
+                trailingIconSize = 17.dp,
+                leadingIconSize = 30.dp,
+                navigationRoute = "",
+                onNavigateTo = {},
+            )
+
+            AccountProfileContent(
+                textColor = Color.DarkGray,
+                leadingIcon = Icons.Filled.ContactPhone,
+                trailingIcon = Icons.Filled.Email,
+                title = "Contact Us",
+                subtitle = "",
+                tintColor = Color.DarkGray,
+                trailingIconSize = 25.dp,
+                leadingIconSize = 30.dp,
+                navigationRoute = "ContactUs",
+                onNavigateTo = { route->
+                    when (route) {
+                        "Spin" -> {
+                            // onNavigateToPostJobScreen.invoke()
+                        }
+                        "AddCook" -> {
+                            navController.currentBackStackEntry?.savedStateHandle?.apply { set("profileResponse", Gson().toJson(accountState.profileResponse)) }
+                            onNavigateToAddCookScreen.invoke()
+                        }
+                        "ContactUs" -> {
+                            navController.currentBackStackEntry?.savedStateHandle?.apply { set("profileResponse", Gson().toJson(accountState.profileResponse)) }
+                            onNavigateToContactUsScreen.invoke()
+                        }
+                        "ReviewUs" -> {
+                            showReviewBottomSheet = true
+                            onNavigateToReviewUsScreen.invoke()
+                        }
+                        "PostJob" -> {
+                            navController.currentBackStackEntry?.savedStateHandle?.apply { set("profileResponse", Gson().toJson(accountState.profileResponse)) }
+                            onNavigateToPostJobScreen.invoke()
+                        }
                     }
-                    "PostJob" -> {
-                        onNavigateToPostJobScreen.invoke("dtrfjikol")
+                },
+            )
+
+            AccountProfileContent(
+                textColor = Color.DarkGray,
+                leadingIcon = Icons.Filled.Reviews,
+                trailingIcon = Icons.Filled.ArrowForwardIos,
+                title = "Review us",
+                subtitle = "Good or bad. we are listening",
+                tintColor = Color.DarkGray,
+                trailingIconSize = 17.dp,
+                leadingIconSize = 30.dp,
+                navigationRoute = "ReviewUs",
+                onNavigateTo = { route->
+                    when (route) {
+                        "Spin" -> {
+                            //onNavigateToPostJobScreen.invoke()
+                        }
+                        "AddCook" -> {
+                            navController.currentBackStackEntry?.savedStateHandle?.apply { set("profileResponse", Gson().toJson(accountState.profileResponse)) }
+                            onNavigateToAddCookScreen.invoke()
+                        }
+                        "ContactUs" -> {
+                            navController.currentBackStackEntry?.savedStateHandle?.apply { set("profileResponse", Gson().toJson(accountState.profileResponse)) }
+                            onNavigateToContactUsScreen.invoke()
+                        }
+                        "ReviewUs" -> {
+                            showReviewBottomSheet = true
+                            onNavigateToReviewUsScreen.invoke()
+                        }
+                        "PostJob" -> {
+                            navController.currentBackStackEntry?.savedStateHandle?.apply { set("profileResponse", Gson().toJson(accountState.profileResponse)) }
+                            onNavigateToPostJobScreen.invoke()
+                        }
                     }
+                },
+            )
+            HorizontalDivider(modifier = Modifier.padding(top = 5.dp), color = Color.LightGray)
+
+            AccountProfileContent(
+                textColor = Color.DarkGray,
+                leadingIcon = Icons.Filled.Person,
+                trailingIcon = Icons.Filled.ArrowForwardIos,
+                title = "SignIn as Cook",
+                subtitle = "Good or bad. we are listening",
+                tintColor = Color.DarkGray,
+                trailingIconSize = 17.dp,
+                leadingIconSize = 30.dp,
+                navigationRoute = "SignInAsCook",
+                onNavigateTo = { route->
+                    when (route) {
+                        "Spin" -> {
+                            //onNavigateToPostJobScreen.invoke()
+                        }
+                        "AddCook" -> {
+                            navController.currentBackStackEntry?.savedStateHandle?.apply { set("profileResponse", Gson().toJson(accountState.profileResponse)) }
+                            onNavigateToAddCookScreen.invoke()
+                        }
+                        "ContactUs" -> {
+                            navController.currentBackStackEntry?.savedStateHandle?.apply { set("profileResponse", Gson().toJson(accountState.profileResponse)) }
+                            onNavigateToContactUsScreen.invoke()
+                        }
+                        "ReviewUs" -> {
+                            showReviewBottomSheet = true
+                            onNavigateToReviewUsScreen.invoke()
+                        }
+                        "PostJob" -> {
+                            navController.currentBackStackEntry?.savedStateHandle?.apply { set("profileResponse", Gson().toJson(accountState.profileResponse)) }
+                            onNavigateToPostJobScreen.invoke()
+                        }
+                    }
+                },
+            )
+
+            FooterStatus()
+
+            if (showReviewBottomSheet) {
+                BottomSheet("Review", reviewState = reviewState, accountViewModel = accountViewModel) {
+                    showReviewBottomSheet = false
+                    accountViewModel.reviewState.value = ReviewState()
+                    Log.d("TAG", "AccountScreen dismiss : ")
                 }
-            },
-        )
-
-        AccountProfileContent(
-            textColor = Color.DarkGray,
-            leadingIcon = Icons.Filled.NotificationsActive,
-            trailingIcon = Icons.Filled.ArrowForwardIos,
-            title = "Post Job",
-            subtitle = "Get Notification when any cook shows interest",
-            tintColor = Color.DarkGray,
-            trailingIconSize = 17.dp,
-            leadingIconSize = 30.dp,
-            navigationRoute = "PostJob",
-            onNavigateTo = { route->
-                when (route) {
-                    "Spin" -> {
-                       // onNavigateToPostJobScreen.invoke()
-                    }
-                    "AddCook" -> {
-                        onNavigateToAddCookScreen.invoke("dtrfjikol")
-                    }
-                    "ContactUs" -> {
-                        onNavigateToContactUsScreen.invoke()
-                    }
-                    "ReviewUs" -> {
-                        showReviewBottomSheet = true
-                        onNavigateToReviewUsScreen.invoke()
-                    }
-                    "PostJob" -> {
-                        onNavigateToPostJobScreen.invoke("dtrfjikol")
-                    }
-                }
-            },
-        )
-
-        AccountProfileContent(
-            textColor = Color.DarkGray,
-            leadingIcon = Icons.Filled.PersonAdd,
-            trailingIcon = Icons.Filled.ArrowForwardIos,
-            title = "Add Your Cook",
-            subtitle = "",
-            tintColor = Color.DarkGray,
-            trailingIconSize = 17.dp,
-            leadingIconSize = 30.dp,
-            navigationRoute = "AddCook",
-            onNavigateTo = { route->
-                when (route) {
-                    "Spin" -> {
-                        //onNavigateToPostJobScreen.invoke()
-                    }
-                    "AddCook" -> {
-                        onNavigateToAddCookScreen.invoke("dtrfjikol")
-                    }
-                    "ContactUs" -> {
-                        onNavigateToContactUsScreen.invoke()
-                    }
-                    "ReviewUs" -> {
-                        showReviewBottomSheet = true
-                        onNavigateToReviewUsScreen.invoke()
-                    }
-                    "PostJob" -> {
-                        onNavigateToPostJobScreen.invoke("dtrfjikol")
-                    }
-                }
-            },
-        )
-
-        AccountProfileContent(
-            textColor = Color.DarkGray,
-            leadingIcon = Icons.Filled.People,
-            trailingIcon = Icons.Filled.ArrowForwardIos,
-            title = "Tell Your friends and family",
-            subtitle = "",
-            tintColor = Color.DarkGray,
-            trailingIconSize = 17.dp,
-            leadingIconSize = 30.dp,
-            navigationRoute = "",
-            onNavigateTo = {},
-        )
-
-        AccountProfileContent(
-            textColor = Color.DarkGray,
-            leadingIcon = Icons.Filled.ContactPhone,
-            trailingIcon = Icons.Filled.Email,
-            title = "Contact Us",
-            subtitle = "",
-            tintColor = Color.DarkGray,
-            trailingIconSize = 25.dp,
-            leadingIconSize = 30.dp,
-            navigationRoute = "ContactUs",
-            onNavigateTo = { route->
-                when (route) {
-                    "Spin" -> {
-                       // onNavigateToPostJobScreen.invoke()
-                    }
-                    "AddCook" -> {
-                        onNavigateToAddCookScreen.invoke("dtrfjikol")
-                    }
-                    "ContactUs" -> {
-                        onNavigateToContactUsScreen.invoke()
-                    }
-                    "ReviewUs" -> {
-                        showReviewBottomSheet = true
-                        onNavigateToReviewUsScreen.invoke()
-                    }
-                    "PostJob" -> {
-                        onNavigateToPostJobScreen.invoke("dtrfjikol")
-                    }
-                }
-            },
-        )
-
-        AccountProfileContent(
-            textColor = Color.DarkGray,
-            leadingIcon = Icons.Filled.Reviews,
-            trailingIcon = Icons.Filled.ArrowForwardIos,
-            title = "Review us",
-            subtitle = "Good or bad. we are listening",
-            tintColor = Color.DarkGray,
-            trailingIconSize = 17.dp,
-            leadingIconSize = 30.dp,
-            navigationRoute = "ReviewUs",
-            onNavigateTo = { route->
-                when (route) {
-                    "Spin" -> {
-                        //onNavigateToPostJobScreen.invoke()
-                    }
-                    "AddCook" -> {
-                        onNavigateToAddCookScreen.invoke("dtrfjikol")
-                    }
-                    "ContactUs" -> {
-                        onNavigateToContactUsScreen.invoke()
-                    }
-                    "ReviewUs" -> {
-                        showReviewBottomSheet = true
-                        onNavigateToReviewUsScreen.invoke()
-                    }
-                    "PostJob" -> {
-                        onNavigateToPostJobScreen.invoke("dtrfjikol")
-                    }
-                }
-            },
-        )
-        HorizontalDivider(modifier = Modifier.padding(top = 5.dp), color = Color.LightGray)
-
-        AccountProfileContent(
-            textColor = Color.DarkGray,
-            leadingIcon = Icons.Filled.Person,
-            trailingIcon = Icons.Filled.ArrowForwardIos,
-            title = "SignIn as Cook",
-            subtitle = "Good or bad. we are listening",
-            tintColor = Color.DarkGray,
-            trailingIconSize = 17.dp,
-            leadingIconSize = 30.dp,
-            navigationRoute = "SignInAsCook",
-            onNavigateTo = { route->
-                when (route) {
-                    "Spin" -> {
-                        //onNavigateToPostJobScreen.invoke()
-                    }
-                    "AddCook" -> {
-                        onNavigateToAddCookScreen.invoke("dtrfjikol")
-                    }
-                    "ContactUs" -> {
-                        onNavigateToContactUsScreen.invoke()
-                    }
-                    "ReviewUs" -> {
-                        showReviewBottomSheet = true
-                        onNavigateToReviewUsScreen.invoke()
-                    }
-                    "PostJob" -> {
-                        onNavigateToPostJobScreen.invoke("dtrfjikol")
-                    }
-                }
-            },
-        )
-
-        FooterStatus()
-
-        if (showReviewBottomSheet) {
-            BottomSheet("Review", reviewState = reviewState, accountViewModel = accountViewModel) {
-                showReviewBottomSheet = false
-                accountViewModel.reviewState.value = ReviewState()
-                Log.d("TAG", "AccountScreen dismiss : ")
             }
         }
     }
@@ -374,24 +405,21 @@ fun CallCreditButtons() {
 
 
 @Composable
-fun AccountProfileImage(onNavigateToEditProfile: (String) -> Unit) {
+fun AccountProfileImage(accountState:AccountState, onNavigateToEditProfile: () -> Unit) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(start = 20.dp, end = 20.dp, top = 8.dp)
-    ) {
+            .padding(start = 20.dp, end = 20.dp, top = 8.dp)) {
         Row(
             modifier = Modifier
                 .wrapContentSize(),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
+            horizontalArrangement = Arrangement.SpaceBetween) {
 
             Box(
                 modifier = Modifier
                     .size(80.dp)
-                    .clip(CircleShape)
-            ) {
+                    .clip(CircleShape)) {
                 Card(
                     modifier = Modifier
                         .size(100.dp)
@@ -430,8 +458,7 @@ fun AccountProfileImage(onNavigateToEditProfile: (String) -> Unit) {
             Column(
                 modifier = Modifier.padding(start = 10.dp),
                 horizontalAlignment = Alignment.Start,
-                verticalArrangement = Arrangement.Center
-            ) {
+                verticalArrangement = Arrangement.Center) {
                 Text(
                     text = "Welcome Back",
                     color = Color.Gray,
@@ -441,15 +468,17 @@ fun AccountProfileImage(onNavigateToEditProfile: (String) -> Unit) {
                     style = MaterialTheme.typography.subtitle2,
                     modifier = Modifier.align(Alignment.Start)
                 )
-                Text(
-                    text = "William",
-                    color = Color.DarkGray,
-                    fontSize = 20.sp,
-                    fontFamily = FontName,
-                    fontWeight = FontWeight.Bold,
-                    style = MaterialTheme.typography.subtitle2,
-                    modifier = Modifier.align(Alignment.Start)
-                )
+                accountState.profileResponse?.let {
+                    Text(
+                        text = it.username.toString(),
+                        color = Color.DarkGray,
+                        fontSize = 20.sp,
+                        fontFamily = FontName,
+                        fontWeight = FontWeight.Bold,
+                        style = MaterialTheme.typography.subtitle2,
+                        modifier = Modifier.align(Alignment.Start)
+                    )
+                }
             }
         }
 
@@ -460,7 +489,7 @@ fun AccountProfileImage(onNavigateToEditProfile: (String) -> Unit) {
             modifier = Modifier
                 .align(Alignment.BottomEnd)
                 .padding(10.dp)
-                .clickable { onNavigateToEditProfile.invoke("dtrfjikol") }
+                .clickable { onNavigateToEditProfile.invoke() }
         )
     }
 }
@@ -677,7 +706,9 @@ fun BottomSheet(
                         fontFamily = FontName,
                         fontWeight = FontWeight.Normal,
                         style = MaterialTheme.typography.subtitle2,
-                        modifier = Modifier.align(Alignment.Start).padding(start = 20.dp, end = 20.dp, top = 20.dp)
+                        modifier = Modifier
+                            .align(Alignment.Start)
+                            .padding(start = 20.dp, end = 20.dp, top = 20.dp)
                     )
                     Text(
                         text = "Tell us what did you like or what we can improve for you",
@@ -686,11 +717,15 @@ fun BottomSheet(
                         fontFamily = FontName,
                         fontWeight = FontWeight.Normal,
                         style = MaterialTheme.typography.subtitle2,
-                        modifier = Modifier.align(Alignment.Start).padding(start = 20.dp, end = 20.dp)
+                        modifier = Modifier
+                            .align(Alignment.Start)
+                            .padding(start = 20.dp, end = 20.dp)
                     )
                     Spacer(modifier = Modifier.height(20.dp))
                     Row(
-                        modifier = Modifier.fillMaxWidth().padding(start = 20.dp, end = 20.dp),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(start = 20.dp, end = 20.dp),
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
@@ -743,7 +778,8 @@ fun BottomSheet(
                         reviewState = reviewState,
                         //viewState = false,
                         modifier = Modifier
-                            .fillMaxWidth().padding(start = 20.dp, end = 20.dp),
+                            .fillMaxWidth()
+                            .padding(start = 20.dp, end = 20.dp),
                         onRatingChange = { inputString ->
                             accountViewModel.onReViewUiEvent(
                                 reviewUiEvent = ReviewUiEvent.RatingChanged(
@@ -772,6 +808,7 @@ fun BottomSheet(
 @Composable
 fun PreviewAccountScreen() {
     AccountScreen(
+        navController = rememberNavController(),
         onNavigateToEditProfile = {},
         onNavigateToAddCookScreen = {},
         onNavigateToPostJobScreen = {},

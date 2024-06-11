@@ -8,3 +8,8 @@ val reportEmptyErrorState = ErrorState(
     hasError = true,
     errorMessageStringResource = R.string.report_error_msg_empty
 )
+
+val issueEmptyErrorState = ErrorState(
+    hasError = true,
+    errorMessageStringResource = R.string.issue_error_msg_empty
+)

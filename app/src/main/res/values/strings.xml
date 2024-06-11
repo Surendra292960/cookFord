@@ -95,6 +95,7 @@ affordable price</string>
     <string name="back">Back</string>
     <string name="sign_out_button_text">Sign Out</string>
     <string name="post_job_button_text">Post a Job</string>
+    <string name="issue_error_msg_empty">Please select issue</string>
 
 
 </resources>

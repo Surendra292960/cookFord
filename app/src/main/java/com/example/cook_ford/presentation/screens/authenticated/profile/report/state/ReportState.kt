@@ -6,9 +6,10 @@ import com.example.cook_ford.utils.AppConstants.EMPTY_STRING
 
 data class ReportState(
     val report: String = EMPTY_STRING,
+    val issue: String = EMPTY_STRING,
     val errorState: ReportErrorState = ReportErrorState(),
     val isLoading: Boolean = false,
-    val profile: ProfileResponse? = null,
+    val profileResponse: ProfileResponse? = null,
     val errorMessage: String = "",
     var isSuccessful: Boolean = false
 )
@@ -19,4 +20,5 @@ data class ReportState(
  */
 data class ReportErrorState(
     val reportErrorState: ErrorState = ErrorState(),
+    val issueErrorState: ErrorState = ErrorState(),
 )
