@@ -1,4 +1,4 @@
-package com.example.cook_ford.presentation.component.widgets
+package com.example.cook_ford.presentation.component
 import android.view.MotionEvent
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.layout.Arrangement
@@ -90,7 +90,7 @@ fun StarIcon(
     Spacer(modifier = Modifier.width(starSpacing))
 }
 
-@Preview
+@Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun PreviewUserRatingBar() {
 

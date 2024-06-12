@@ -1,4 +1,4 @@
-package com.example.cook_ford.presentation.screens.authenticated.accounts.profile_screen_component.state
+package com.example.cook_ford.presentation.screens.authenticated.accounts.update_profile_screen_component.state
 
 sealed class EditProfileUiEvent {
     data class UserNameChanged(val inputValue: String) : EditProfileUiEvent()

@@ -50,7 +50,7 @@ import com.example.cook_ford.presentation.component.widgets.InputTextField
 import com.example.cook_ford.presentation.component.widgets.KeyboardOption
 import com.example.cook_ford.presentation.component.widgets.ProfileImage
 import com.example.cook_ford.presentation.component.widgets.SubmitButtonAutoSize
-import com.example.cook_ford.utils.FontName
+import com.example.cook_ford.presentation.theme.FontName
 
 @Composable
 fun PostJobScreen(

@@ -29,8 +29,8 @@ import javax.inject.Inject
 @HiltViewModel
 class AccountViewModel @Inject constructor(
     private val profileUseCase: ProfileUseCase,
-private val userSession: UserSession,
-private val stateHandle: SavedStateHandle
+    private val userSession: UserSession,
+    private val stateHandle: SavedStateHandle
 ) : ViewModel() {
 
     private val _accountState = mutableStateOf(AccountState())

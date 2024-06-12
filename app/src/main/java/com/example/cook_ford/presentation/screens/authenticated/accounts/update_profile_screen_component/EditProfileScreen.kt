@@ -1,4 +1,4 @@
-package com.example.cook_ford.presentation.screens.authenticated.accounts.profile_screen_component
+package com.example.cook_ford.presentation.screens.authenticated.accounts.update_profile_screen_component
 import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -29,8 +29,8 @@ import com.example.cook_ford.presentation.component.widgets.Progressbar
 import com.example.cook_ford.presentation.component.widgets.dialog.CustomDialog
 import com.example.cook_ford.presentation.component.widgets.dialog.ResetWarning
 import com.example.cook_ford.presentation.component.widgets.snack_bar.MainViewState
-import com.example.cook_ford.presentation.screens.authenticated.accounts.profile_screen_component.state.EditProfileState
-import com.example.cook_ford.presentation.screens.authenticated.accounts.profile_screen_component.state.EditProfileUiEvent
+import com.example.cook_ford.presentation.screens.authenticated.accounts.update_profile_screen_component.state.EditProfileState
+import com.example.cook_ford.presentation.screens.authenticated.accounts.update_profile_screen_component.state.EditProfileUiEvent
 import com.example.cook_ford.utils.AppConstants
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch

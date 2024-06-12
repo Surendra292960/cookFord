@@ -1,4 +1,4 @@
-package com.example.cook_ford.presentation.screens.authenticated.accounts.profile_screen_component
+package com.example.cook_ford.presentation.screens.authenticated.accounts.update_profile_screen_component
 
 import android.util.Log
 import android.util.Patterns
@@ -8,10 +8,10 @@ import androidx.lifecycle.ViewModel
 import com.example.cook_ford.data.local.UserSession
 import com.example.cook_ford.data.remote.profile_response.ProfileResponse
 import com.example.cook_ford.presentation.component.widgets.snack_bar.MainViewState
-import com.example.cook_ford.presentation.screens.authenticated.accounts.cook_screen_component.state.cook_profileImageEmptyErrorState
-import com.example.cook_ford.presentation.screens.authenticated.accounts.profile_screen_component.state.EditProfileErrorState
-import com.example.cook_ford.presentation.screens.authenticated.accounts.profile_screen_component.state.EditProfileState
-import com.example.cook_ford.presentation.screens.authenticated.accounts.profile_screen_component.state.EditProfileUiEvent
+import com.example.cook_ford.presentation.screens.authenticated.accounts.add_cook_screen_component.state.cook_profileImageEmptyErrorState
+import com.example.cook_ford.presentation.screens.authenticated.accounts.update_profile_screen_component.state.EditProfileErrorState
+import com.example.cook_ford.presentation.screens.authenticated.accounts.update_profile_screen_component.state.EditProfileState
+import com.example.cook_ford.presentation.screens.authenticated.accounts.update_profile_screen_component.state.EditProfileUiEvent
 import com.example.cook_ford.presentation.screens.un_authenticated.sign_in_screen_component.state.ErrorState
 import com.example.cook_ford.presentation.screens.un_authenticated.sign_in_screen_component.state.genderSelectionErrorState
 import com.example.cook_ford.presentation.screens.un_authenticated.sign_in_screen_component.state.passwordEmptyErrorState
@@ -217,6 +217,14 @@ class EditProfileViewModel @Inject constructor(
     }
 
     fun setProfileData(profileResponse: ProfileResponse?) {
-        _editProfileState.value = _editProfileState.value.copy(isLoading = false, profileResponse = profileResponse, isSuccessful = true)
+        _editProfileState.value = _editProfileState.value.copy(
+            isLoading = false,
+            profileResponse = profileResponse,
+            isSuccessful = true,
+            username = profileResponse?.username.toString(),
+            email = profileResponse?.email.toString(),
+            phone = profileResponse?.phone.toString(),
+            gender = profileResponse?.gender.toString()
+        )
     }
 }

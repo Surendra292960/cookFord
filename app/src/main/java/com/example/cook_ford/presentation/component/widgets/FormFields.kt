@@ -1,4 +1,5 @@
 package com.example.cook_ford.presentation.component.widgets
+import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -41,7 +42,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -54,7 +54,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
 import com.example.cook_ford.presentation.theme.AppTheme
-import com.example.cook_ford.utils.FontName
+import com.example.cook_ford.presentation.theme.FontName
 
 /*
 @Composable
@@ -326,6 +326,7 @@ fun SegmentedControl(
     itemWidth: Dp = 120.dp,
     cornerRadius : Int = 1,
     onItemSelection: (selectedItemIndex: Int) -> Unit, ) {
+    Log.d("TAG", "SegmentedControl: $defaultSelectedItemIndex")
     val selectedIndex = remember { mutableIntStateOf(defaultSelectedItemIndex) }
 
     Row(modifier = Modifier) {
@@ -357,6 +358,7 @@ fun SegmentedControl(
                     }
                 },
                 onClick = {
+                    Log.d("TAG", "selectedIndex: $index")
                     selectedIndex.intValue = index
                     onItemSelection(selectedIndex.intValue)
                 },

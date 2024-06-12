@@ -1,4 +1,4 @@
-package com.example.cook_ford.presentation.screens.authenticated.accounts.cook_screen_component
+package com.example.cook_ford.presentation.screens.authenticated.accounts.add_cook_screen_component
 import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -48,9 +48,9 @@ import com.example.cook_ford.presentation.component.widgets.OutlinedSubmitButton
 import com.example.cook_ford.presentation.component.widgets.ProfileImage
 import com.example.cook_ford.presentation.component.widgets.SegmentedControl
 import com.example.cook_ford.presentation.component.widgets.snack_bar.MainViewState
-import com.example.cook_ford.presentation.screens.authenticated.accounts.cook_screen_component.state.AddCookProfileState
+import com.example.cook_ford.presentation.screens.authenticated.accounts.add_cook_screen_component.state.AddCookProfileState
 import com.example.cook_ford.utils.AppConstants
-import com.example.cook_ford.utils.FontName
+import com.example.cook_ford.presentation.theme.FontName
 import com.google.gson.Gson
 
 @Composable

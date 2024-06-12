@@ -82,6 +82,7 @@ import com.example.cook_ford.data.remote.profile_response.ProfileResponse
 import com.example.cook_ford.data.remote.profile_response.TimeSlots
 import com.example.cook_ford.presentation.component.widgets.Child
 import com.example.cook_ford.presentation.component.widgets.Progressbar
+import com.example.cook_ford.presentation.component.widgets.RatingStar
 import com.example.cook_ford.presentation.component.widgets.StarRatingBar
 import com.example.cook_ford.presentation.screens.un_authenticated.main_screen_component.MainActivity
 import com.example.cook_ford.presentation.screens.authenticated.profile_screen_component.details_screen_component.model.ProfileCardView
@@ -89,7 +90,7 @@ import com.example.cook_ford.presentation.screens.authenticated.profile_screen_c
 import com.example.cook_ford.presentation.theme.AppTheme
 import com.example.cook_ford.presentation.theme.Cook_fordTheme
 import com.example.cook_ford.presentation.theme.OrangeYellow1
-import com.example.cook_ford.utils.FontName
+import com.example.cook_ford.presentation.theme.FontName
 import com.example.cook_ford.utils.Utility.shareProfile
 import com.google.gson.Gson
 
@@ -114,7 +115,8 @@ fun ProfileDetailScreen(
 	if (profileState.isSuccessful) {
 		LazyColumn(modifier = Modifier
 			.fillMaxSize(),
-			horizontalAlignment = Alignment.CenterHorizontally) {
+		//	horizontalAlignment = Alignment.CenterHorizontally
+		) {
 			profileState.profileResponse?.size?.let { size->
 				items(size){  index->
 					TopBar(onNavigateBack = { onNavigateBack.invoke() })
@@ -140,15 +142,83 @@ fun ProfileDetailScreen(
 						}
 						Spacer(modifier = Modifier.height(10.dp))
 
-						profileState?.profileResponse!![index]?.profile?.feedback_rating?.forEach { rating->
-							Ratings(text = "FoodQuality", feedbackRating = rating?.food_quality?.toFloat())
-							Ratings(text = "Hygiene", feedbackRating = rating?.hygiene?.toFloat())
-							Ratings(text = "Service", feedbackRating = rating?.service?.toFloat())
-							Ratings(text = "Cleanliness", feedbackRating = rating?.cleanliness?.toFloat())
-							Ratings(text = "Punctuality", feedbackRating = rating?.punctuality?.toFloat())
+						Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.Start) {
+
+							profileState?.profileResponse!![index]?.profile?.feedback_rating?.forEach { rating->
+								Text(
+									text = "[ Ratings ]",
+									style = MaterialTheme.typography.subtitle2,
+									fontWeight = FontWeight.Bold,
+									fontSize = 15.sp,
+									color = Color.DarkGray,
+									modifier = Modifier.padding(10.dp)
+								)
+
+								Ratings(text = "FoodQuality", feedbackRating = rating?.food_quality?.toFloat())
+								Ratings(text = "Hygiene", feedbackRating = rating?.hygiene?.toFloat())
+								Ratings(text = "Service", feedbackRating = rating?.service?.toFloat())
+								Ratings(text = "Cleanliness", feedbackRating = rating?.cleanliness?.toFloat())
+								Ratings(text = "Punctuality", feedbackRating = rating?.punctuality?.toFloat())
+							}
+
+							Spacer(modifier = Modifier.height(10.dp))
+
+							profileState?.profileResponse!![index]?.profile?.headline?.let {
+								Text(
+									text = "[ Headlines ]",
+									style = MaterialTheme.typography.subtitle2,
+									fontWeight = FontWeight.Bold,
+									fontSize = 15.sp,
+									color = Color.DarkGray,
+									modifier = Modifier.padding(10.dp)
+								)
+								Text(
+									text = it,
+									style = MaterialTheme.typography.subtitle2,
+									color = Color.Gray,
+									modifier = Modifier.padding(start = 10.dp, end = 10.dp, top = 10.dp)
+								)
+							}
+
+							profileState?.profileResponse!![index]?.profile?.bio?.let {
+								Text(
+									text = "[ Bio Data ]",
+									style = MaterialTheme.typography.subtitle2,
+									fontWeight = FontWeight.Bold,
+									fontSize = 15.sp,
+									color = Color.DarkGray,
+									modifier = Modifier.padding(10.dp)
+								)
+								Text(
+									text = it,
+									style = MaterialTheme.typography.subtitle2,
+									color = Color.Gray,
+									modifier = Modifier.padding(start = 10.dp, end = 10.dp, top = 10.dp)
+								)
+							}
+
+							profileState?.profileResponse!![index]?.profile?.about?.let {
+								Text(
+									text = "[ Bio ]",
+									style = MaterialTheme.typography.subtitle2,
+									fontWeight = FontWeight.Bold,
+									fontSize = 15.sp,
+									color = Color.DarkGray,
+									modifier = Modifier.padding(10.dp)
+								)
+								Text(
+									text = it,
+									style = MaterialTheme.typography.subtitle2,
+									color = Color.Gray,
+									modifier = Modifier.padding(start = 10.dp, end = 10.dp, top = 10.dp)
+								)
+							}
 						}
 
 						Spacer(modifier = Modifier.height(10.dp))
+
+
+						Spacer(modifier = Modifier.height(20.dp))
 						FooterStatus()
 					}
 				}
@@ -635,14 +705,16 @@ fun ExperienceCard(profile: ProfileResponse, timeSlots: List<TimeSlots>) {
 		}
 
 		//Available Time Slots
-		Text(
-			modifier = Modifier.padding(top = AppTheme.dimens.paddingSmall),
-			text = "Available Part-Time Time Slots",
-			style = MaterialTheme.typography.subtitle2,
-			color = Color.DarkGray
-		)
+		if (timeSlots.isNotEmpty()) {
+			Text(
+				modifier = Modifier.padding(top = AppTheme.dimens.paddingSmall),
+				text = "Available Part-Time Time Slots",
+				style = MaterialTheme.typography.subtitle2,
+				color = Color.DarkGray
+			)
 
-		TimeSlotsComponent(timeSlots = timeSlots)
+			TimeSlotsComponent(timeSlots = timeSlots)
+		}
 
 		//Expectation
 		Text(
@@ -776,19 +848,24 @@ private fun ProfileUI(jetCaptureView: MutableState<ProfileCardView>?) {
 @Composable
 fun Ratings(text: String, feedbackRating: Float?) {
 	var rating by remember { mutableFloatStateOf(0.0f) }
+
 	Row(modifier = Modifier
 		.fillMaxWidth()
 		.padding(start = 10.dp, end = 10.dp),
 		verticalAlignment = Alignment.CenterVertically,
 		horizontalArrangement = Arrangement.SpaceBetween) {
-		Text(text = text, color = Color.DarkGray)
+		Text(
+			text = text,
+			modifier = Modifier.padding(top = AppTheme.dimens.paddingSmall),
+			style = MaterialTheme.typography.subtitle2,
+			color = Color.DarkGray
+		)
 		if (feedbackRating != null) {
-			StarRatingBar(
-				maxStars = 5,
+			RatingStar(
 				rating = feedbackRating,
-				onRatingChanged = {
-					rating = it
-				}
+				maxRating = 5,
+				onStarClick = {},
+				isIndicator = false
 			)
 		}
 	}

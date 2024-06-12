@@ -11,10 +11,10 @@ import androidx.navigation.navigation
 import com.example.cook_ford.data.remote.profile_response.ProfileResponse
 import com.example.cook_ford.presentation.screens.un_authenticated.main_screen_component.SplashScreen
 import com.example.cook_ford.presentation.screens.authenticated.accounts.account_screen_component.AccountScreen
-import com.example.cook_ford.presentation.screens.authenticated.accounts.cook_screen_component.AddCookProfileScreen
+import com.example.cook_ford.presentation.screens.authenticated.accounts.add_cook_screen_component.AddCookProfileScreen
 import com.example.cook_ford.presentation.screens.authenticated.accounts.cook_preferences.CookPreferencesScreen
 import com.example.cook_ford.presentation.screens.authenticated.accounts.job_screen_component.PostJobScreen
-import com.example.cook_ford.presentation.screens.authenticated.accounts.profile_screen_component.EditProfileScreen
+import com.example.cook_ford.presentation.screens.authenticated.accounts.update_profile_screen_component.EditProfileScreen
 import com.example.cook_ford.presentation.screens.authenticated.profile_screen_component.details_screen_component.ProfileDetailScreen
 import com.example.cook_ford.presentation.screens.authenticated.profile_screen_component.list_screen_component.ProfilesScreen
 import com.example.cook_ford.presentation.screens.authenticated.profile_screen_component.report_screen_component.ReportScreen
@@ -38,9 +38,7 @@ fun NavGraphBuilder.unauthenticatedGraph(navController: NavController) {
 
         // Splash
         composable(route = NavigationRoutes.Unauthenticated.Splash.route) {
-            SplashScreen(
-                navController
-            )
+            SplashScreen(navController = navController,)
         }
 
         //OnBoard

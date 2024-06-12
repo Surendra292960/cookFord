@@ -82,7 +82,7 @@ import com.example.cook_ford.presentation.theme.LightGreen
 import com.example.cook_ford.presentation.theme.LightGreen1
 import com.example.cook_ford.presentation.theme.Orange
 import com.example.cook_ford.presentation.theme.OrangeYellow1
-import com.example.cook_ford.utils.FontName
+import com.example.cook_ford.presentation.theme.FontName
 import com.google.gson.Gson
 
 

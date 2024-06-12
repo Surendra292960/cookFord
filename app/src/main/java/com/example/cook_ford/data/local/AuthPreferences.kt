@@ -1,4 +1,3 @@
-import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
@@ -9,12 +8,12 @@ class AuthPreferences(private val dataStore: DataStore<Preferences>) {
 
     suspend fun saveAuthToken(loginToken:String){
         dataStore.edit { pref ->
-            pref[AUTH_KEY] = setOf(loginToken)
+            pref[AUTH_KEY] = loginToken
         }
     }
     suspend fun saveAuthId(id:String){
         dataStore.edit { pref ->
-            pref[AUTH_KEY] = setOf(id)
+            pref[AUTH_KEY] = id
         }
     }
 

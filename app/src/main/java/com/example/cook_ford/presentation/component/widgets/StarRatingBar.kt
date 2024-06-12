@@ -1,7 +1,12 @@
 package com.example.cook_ford.presentation.component.widgets
 
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -9,17 +14,23 @@ import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Star
-import androidx.compose.material.icons.filled.StarOutline
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableFloatStateOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Outline
+import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Density
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
+import androidx.wear.compose.material.MaterialTheme
 import com.example.cook_ford.presentation.theme.DeepGreen
 import com.example.cook_ford.presentation.theme.LightGreen
 import com.example.cook_ford.presentation.theme.LightGreen1
@@ -69,8 +80,7 @@ fun StarRatingBar(
                             userRating.floatValue = i.toFloat()
                         }
                     )
-                    .width(starSize)
-                    .height(starSize)
+
             )
 
             if (i < maxStars) {
@@ -80,8 +90,7 @@ fun StarRatingBar(
     }
 }
 
-
-/*@Composable
+@Composable
 fun RatingStar(rating: Float = 5f, maxRating: Int = 5, onStarClick: (Int) -> Unit, isIndicator: Boolean = false) {
     Row {
         for (i in 1..maxRating) {
@@ -91,8 +100,7 @@ fun RatingStar(rating: Float = 5f, maxRating: Int = 5, onStarClick: (Int) -> Uni
                     imageVector = Icons.Default.Star,
                     contentDescription = null,
                     tint = MaterialTheme.colors.secondary,
-                    modifier = Modifier
-                        .size(24.dp)
+                    modifier = Modifier.size(30.dp)
                         .clickable(!isIndicator) {
                             onStarClick(i)
                         }
@@ -106,8 +114,7 @@ fun RatingStar(rating: Float = 5f, maxRating: Int = 5, onStarClick: (Int) -> Uni
                     imageVector = Icons.Default.Star,
                     contentDescription = null,
                     tint = Color.Gray,
-                    modifier = Modifier
-                        .size(24.dp)
+                    modifier = Modifier.size(30.dp)
                         .clickable(!isIndicator) {
                             onStarClick(i)
                         }
@@ -125,7 +132,7 @@ private fun PartialStar(fraction: Float) {
             imageVector = Icons.Default.Star,
             contentDescription = null,
             tint = Color.Gray,
-            modifier = Modifier.size(24.dp)
+            modifier = Modifier.size(30.dp)
         )
         Box(
             modifier = Modifier
@@ -138,15 +145,16 @@ private fun PartialStar(fraction: Float) {
                 imageVector = Icons.Default.Star,
                 contentDescription = null,
                 tint = MaterialTheme.colors.secondary,
-                modifier = Modifier.size(24.dp)
+                modifier = Modifier.size(30.dp)
             )
         }
     }
 }
 
 private class FractionalClipShape(private val fraction: Float) : Shape {
+
     override fun createOutline(
-        size: Size,
+        size: androidx.compose.ui.geometry.Size,
         layoutDirection: LayoutDirection,
         density: Density
     ): Outline {
@@ -154,9 +162,21 @@ private class FractionalClipShape(private val fraction: Float) : Shape {
             rect = Rect(
                 left = 0f,
                 top = 0f,
-                right = size.width * fraction,
-                bottom = size.height
+                right = fraction ,
+                bottom = fraction
             )
         )
     }
-}*/
+}
+
+@Preview(showBackground = true, showSystemUi = true)
+@Composable
+fun PreviewUserRatingBar() {
+
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally,) {
+        RatingStar(rating = 5f, maxRating = 5, onStarClick = {})
+    }
+}

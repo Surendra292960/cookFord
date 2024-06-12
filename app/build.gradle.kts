@@ -4,6 +4,9 @@ plugins {
     alias(libs.plugins.kotlinAndroidKsp)
     alias(libs.plugins.hiltAndroid)
     alias(libs.plugins.kotlin.parcelize)
+    alias(libs.plugins.google.gms.google.services)
+    alias(libs.plugins.google.firebase.crashlytics)
+    alias(libs.plugins.google.firebase.firebase.perf)
 }
 
 android {
@@ -78,6 +81,7 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel.compose)
     implementation(libs.androidx.hilt.android)
     implementation(libs.androidx.hilt.navigation.compose)
+    implementation(libs.bundles.firebase)
     ksp(libs.androidx.hilt.compiler)
     implementation(libs.androidx.databinding.runtime)
     implementation(libs.androidx.accompanist.pager)

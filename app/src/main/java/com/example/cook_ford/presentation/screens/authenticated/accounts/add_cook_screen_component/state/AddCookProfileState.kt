@@ -1,4 +1,4 @@
-package com.example.cook_ford.presentation.screens.authenticated.accounts.cook_screen_component.state
+package com.example.cook_ford.presentation.screens.authenticated.accounts.add_cook_screen_component.state
 
 import com.example.cook_ford.presentation.screens.un_authenticated.sign_in_screen_component.state.ErrorState
 import com.example.cook_ford.utils.AppConstants.EMPTY_STRING

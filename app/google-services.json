@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "692109989517",
+    "project_id": "cook-ford",
+    "storage_bucket": "cook-ford.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:692109989517:android:d8ad3b1a420508e07674c4",
+        "android_client_info": {
+          "package_name": "com.example.cook_ford"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA4IT31YTWvDlKi86nxCbpJUl_GSvWg49A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

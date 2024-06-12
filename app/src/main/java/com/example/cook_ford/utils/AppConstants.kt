@@ -1,6 +1,5 @@
 package com.example.cook_ford.utils
-
-import androidx.datastore.preferences.core.preferencesSetKey
+import androidx.datastore.preferences.core.stringPreferencesKey
 import java.util.regex.Pattern
 
 object AppConstants {
@@ -19,7 +18,7 @@ object AppConstants {
     const val PLEASE_CHECK_INTERNET = "Please check your network connection"
    // const val AUTH_PREFERENCES = "AUTH_PREF"
     const val ERROR = "error"
-    val AUTH_KEY = preferencesSetKey<String>("auth_key")
+    val AUTH_KEY = stringPreferencesKey("auth_key")
 
     //SignIn Const
     const val EMAIL = "Email"

@@ -29,7 +29,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.unit.toSize
 import com.example.cook_ford.utils.AppConstants
-import com.example.cook_ford.utils.FontName
+import com.example.cook_ford.presentation.theme.FontName
 
 @Composable
 fun DropDownMenu(

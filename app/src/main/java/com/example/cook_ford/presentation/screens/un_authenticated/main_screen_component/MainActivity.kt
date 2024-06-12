@@ -27,6 +27,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.cook_ford.R
 import com.example.cook_ford.data.local.SessionConstant.ACCESS_TOKEN
@@ -110,11 +111,13 @@ fun MainAppNavHost(
         modifier = modifier,
         navController = navController,
         startDestination = NavigationRoutes.Unauthenticated.NavigationRoute.route) {
+
         // Unauthenticated user flow screens
         unauthenticatedGraph(navController = navController)
 
         // Authenticated user flow screens
         authenticatedGraph(navController = navController)
+
 
     }
 }
