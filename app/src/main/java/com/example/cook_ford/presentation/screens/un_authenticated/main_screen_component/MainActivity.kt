@@ -27,7 +27,6 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.cook_ford.R
 import com.example.cook_ford.data.local.SessionConstant.ACCESS_TOKEN
@@ -75,10 +74,18 @@ fun SplashScreen(navController: NavController) {
             navController.navigate(route = NavigationRoutes.Unauthenticated.OnBoard.route)
         }else*/ if (userSession.check(ACCESS_TOKEN)){
             Log.d("TAG", "SplashScreen if: ${userSession.check(ACCESS_TOKEN)}")
-            navController.navigate(route = NavigationRoutes.Authenticated.Dashboard.route)
+            navController.navigate(route = NavigationRoutes.Authenticated.Dashboard.route){
+                popUpTo(NavigationRoutes.Unauthenticated.Splash.route){
+                    inclusive = true
+                }
+            }
         }else{
             Log.d("TAG", "SplashScreen else: ${userSession.check(ACCESS_TOKEN)}")
-            navController.navigate(route = NavigationRoutes.Unauthenticated.SignIn.route)
+            navController.navigate(route = NavigationRoutes.Unauthenticated.SignIn.route){
+                popUpTo(NavigationRoutes.Unauthenticated.Splash.route){
+                    inclusive = true
+                }
+            }
         }
     }
 
