@@ -13,7 +13,7 @@ import com.example.cook_ford.presentation.screens.un_authenticated.main_screen_c
 import com.example.cook_ford.presentation.screens.authenticated.accounts.account_screen_component.AccountScreen
 import com.example.cook_ford.presentation.screens.authenticated.accounts.add_cook_screen_component.AddCookProfileScreen
 import com.example.cook_ford.presentation.screens.authenticated.accounts.cook_preferences.CookPreferencesScreen
-import com.example.cook_ford.presentation.screens.authenticated.accounts.job_screen_component.PostJobScreen
+import com.example.cook_ford.presentation.screens.authenticated.accounts.post_job_screen_component.PostJobScreen
 import com.example.cook_ford.presentation.screens.authenticated.accounts.update_profile_screen_component.EditProfileScreen
 import com.example.cook_ford.presentation.screens.authenticated.profile_screen_component.details_screen_component.ProfileDetailScreen
 import com.example.cook_ford.presentation.screens.authenticated.profile_screen_component.list_screen_component.ProfilesScreen
@@ -21,6 +21,7 @@ import com.example.cook_ford.presentation.screens.authenticated.profile_screen_c
 import com.example.cook_ford.presentation.screens.authenticated.profile_screen_component.reviews_screen_component.ReviewScreen
 import com.example.cook_ford.presentation.screens.dashboard_screen_component.home_screen_component.UserDashBoard
 import com.example.cook_ford.presentation.screens.onboard_screen_component.OnBoardingScreen
+import com.example.cook_ford.presentation.screens.un_authenticated.otp_screen_component.PhoneVerificationScreen
 import com.example.cook_ford.presentation.screens.un_authenticated.sign_in_screen_component.SignInScreen
 import com.example.cook_ford.presentation.screens.un_authenticated.sign_up_screen_component.SignUpScreen
 import com.google.gson.Gson
@@ -39,6 +40,11 @@ fun NavGraphBuilder.unauthenticatedGraph(navController: NavController) {
         // Splash
         composable(route = NavigationRoutes.Unauthenticated.Splash.route) {
             SplashScreen(navController = navController,)
+        }
+
+        //PhoneVerificationScreen
+        composable(route = NavigationRoutes.Unauthenticated.PhoneVerification.route) {
+            PhoneVerificationScreen(navController = navController,)
         }
 
         //OnBoard

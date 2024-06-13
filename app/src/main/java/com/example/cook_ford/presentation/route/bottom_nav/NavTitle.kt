@@ -5,6 +5,7 @@ object NavTitle {
     //UnAuthenticated
     const val UNAUTHENTICATED = "unauthenticated"
     const val SPLASH = "splash"
+    const val PHONE_VERIFICATION = "PhoneVerification"
     const val ONBOARD = "onboard"
     const val SIGN_IN = "login"
     const val SIGN_UP = "registration"

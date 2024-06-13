@@ -81,7 +81,7 @@ fun SplashScreen(navController: NavController) {
             }
         }else{
             Log.d("TAG", "SplashScreen else: ${userSession.check(ACCESS_TOKEN)}")
-            navController.navigate(route = NavigationRoutes.Unauthenticated.SignIn.route){
+            navController.navigate(route = NavigationRoutes.Unauthenticated.PhoneVerification.route){
                 popUpTo(NavigationRoutes.Unauthenticated.Splash.route){
                     inclusive = true
                 }
@@ -103,12 +103,6 @@ fun SplashScreen(navController: NavController) {
     }
 }
 
-@Composable
-fun MainApp() {
-    Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
-        MainAppNavHost()
-    }
-}
 
 @Composable
 fun MainAppNavHost(
@@ -128,6 +122,15 @@ fun MainAppNavHost(
 
     }
 }
+
+
+@Composable
+fun MainApp() {
+    Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
+        MainAppNavHost()
+    }
+}
+
 @Preview(showSystemUi = true, showBackground = true)
 @Composable
 fun Preview(){

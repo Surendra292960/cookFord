@@ -99,7 +99,7 @@ fun RatingStar(rating: Float = 5f, maxRating: Int = 5, onStarClick: (Int) -> Uni
                 Icon(
                     imageVector = Icons.Default.Star,
                     contentDescription = null,
-                    tint = MaterialTheme.colors.secondary,
+                    tint = OrangeYellow1,
                     modifier = Modifier.size(30.dp)
                         .clickable(!isIndicator) {
                             onStarClick(i)
@@ -144,7 +144,7 @@ private fun PartialStar(fraction: Float) {
             Icon(
                 imageVector = Icons.Default.Star,
                 contentDescription = null,
-                tint = MaterialTheme.colors.secondary,
+                tint = OrangeYellow1,
                 modifier = Modifier.size(30.dp)
             )
         }

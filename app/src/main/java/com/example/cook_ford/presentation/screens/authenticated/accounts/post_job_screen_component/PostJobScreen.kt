@@ -1,4 +1,4 @@
-package com.example.cook_ford.presentation.screens.authenticated.accounts.job_screen_component
+package com.example.cook_ford.presentation.screens.authenticated.accounts.post_job_screen_component
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement

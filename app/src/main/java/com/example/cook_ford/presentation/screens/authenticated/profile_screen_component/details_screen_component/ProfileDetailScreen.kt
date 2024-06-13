@@ -142,7 +142,7 @@ fun ProfileDetailScreen(
 						}
 						Spacer(modifier = Modifier.height(10.dp))
 
-						Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.Start) {
+						Column(modifier = Modifier.padding(start = 10.dp, end = 10.dp).fillMaxWidth(),verticalArrangement = Arrangement.spacedBy(5.dp), horizontalAlignment = Alignment.Start) {
 
 							profileState?.profileResponse!![index]?.profile?.feedback_rating?.forEach { rating->
 								Text(
@@ -151,7 +151,6 @@ fun ProfileDetailScreen(
 									fontWeight = FontWeight.Bold,
 									fontSize = 15.sp,
 									color = Color.DarkGray,
-									modifier = Modifier.padding(10.dp)
 								)
 
 								Ratings(text = "FoodQuality", feedbackRating = rating?.food_quality?.toFloat())
@@ -170,13 +169,11 @@ fun ProfileDetailScreen(
 									fontWeight = FontWeight.Bold,
 									fontSize = 15.sp,
 									color = Color.DarkGray,
-									modifier = Modifier.padding(10.dp)
 								)
 								Text(
 									text = it,
 									style = MaterialTheme.typography.subtitle2,
 									color = Color.Gray,
-									modifier = Modifier.padding(start = 10.dp, end = 10.dp, top = 10.dp)
 								)
 							}
 
@@ -186,14 +183,12 @@ fun ProfileDetailScreen(
 									style = MaterialTheme.typography.subtitle2,
 									fontWeight = FontWeight.Bold,
 									fontSize = 15.sp,
-									color = Color.DarkGray,
-									modifier = Modifier.padding(10.dp)
+									color = Color.DarkGray
 								)
 								Text(
 									text = it,
 									style = MaterialTheme.typography.subtitle2,
-									color = Color.Gray,
-									modifier = Modifier.padding(start = 10.dp, end = 10.dp, top = 10.dp)
+									color = Color.Gray
 								)
 							}
 
@@ -203,14 +198,12 @@ fun ProfileDetailScreen(
 									style = MaterialTheme.typography.subtitle2,
 									fontWeight = FontWeight.Bold,
 									fontSize = 15.sp,
-									color = Color.DarkGray,
-									modifier = Modifier.padding(10.dp)
+									color = Color.DarkGray
 								)
 								Text(
 									text = it,
 									style = MaterialTheme.typography.subtitle2,
-									color = Color.Gray,
-									modifier = Modifier.padding(start = 10.dp, end = 10.dp, top = 10.dp)
+									color = Color.Gray
 								)
 							}
 						}
@@ -759,15 +752,17 @@ fun ExperienceCard(profile: ProfileResponse, timeSlots: List<TimeSlots>) {
 				)
 			}
 
-			profile?.profile?.parttimeprice?.let {
-				Text(
-					modifier = Modifier
-						.weight(0.3f)
-						.padding(top = AppTheme.dimens.paddingSmall),
-					text = ("Rs. ").plus(it).plus("/month"),
-					style = MaterialTheme.typography.subtitle2,
-					color = Color.DarkGray
-				)
+			profile?.profile?.parttimeprice?.let { price->
+				if (price!=0){
+					Text(
+						modifier = Modifier
+							.weight(0.3f)
+							.padding(top = AppTheme.dimens.paddingSmall),
+						text = ("Rs. ").plus(price).plus("/month"),
+						style = MaterialTheme.typography.subtitle2,
+						color = Color.DarkGray
+					)
+				}
 			}
 		}
 	}
@@ -799,31 +794,33 @@ fun TimeSlotsComponent(timeSlots: List<TimeSlots>) {
 fun CuisineImages(topCuisineUrls: Array<out String>, modifier: Modifier = Modifier) {
 	//Log.d("TAG", "CuisineImages topCuisineUrls : $topCuisineUrls")
 	val listState = rememberLazyListState()
-	Column(modifier = modifier
-		.fillMaxWidth()
-		.padding(start = 10.dp, end = 10.dp),
-		verticalArrangement = Arrangement.SpaceBetween) {
-		Text(
-			textAlign = TextAlign.Start,
-			text = "Best Dishes",
-			style = MaterialTheme.typography.subtitle2,
-			color = Color.DarkGray
-		)
+	if (topCuisineUrls.isNotEmpty()){
+		Column(modifier = modifier
+			.fillMaxWidth()
+			.padding(start = 10.dp, end = 10.dp),
+			verticalArrangement = Arrangement.SpaceBetween) {
+			Text(
+				textAlign = TextAlign.Start,
+				text = "Best Dishes",
+				style = MaterialTheme.typography.subtitle2,
+				color = Color.DarkGray
+			)
 
 
-		LazyRow(state = listState, modifier = modifier.scale(1.01f)) {
-			items(topCuisineUrls.size) { index->
-				Log.d("TAG", "CuisineImages: ${topCuisineUrls[index]}")
-				Card(modifier = Modifier
-					.width(300.dp)
-					.height(150.dp)
-					.padding(horizontal = 5.dp)) {
-					Image(
-						painter = rememberAsyncImagePainter(topCuisineUrls[index]),
-						contentDescription = "",
-						modifier = Modifier.fillMaxSize(),
-						contentScale = ContentScale.Crop,
-					)
+			LazyRow(state = listState, modifier = modifier.scale(1.01f)) {
+				items(topCuisineUrls.size) { index->
+					Log.d("TAG", "CuisineImages: ${topCuisineUrls[index]}")
+					Card(modifier = Modifier
+						.width(300.dp)
+						.height(150.dp)
+						.padding(horizontal = 5.dp)) {
+						Image(
+							painter = rememberAsyncImagePainter(topCuisineUrls[index]),
+							contentDescription = "",
+							modifier = Modifier.fillMaxSize(),
+							contentScale = ContentScale.Crop,
+						)
+					}
 				}
 			}
 		}
@@ -850,8 +847,7 @@ fun Ratings(text: String, feedbackRating: Float?) {
 	var rating by remember { mutableFloatStateOf(0.0f) }
 
 	Row(modifier = Modifier
-		.fillMaxWidth()
-		.padding(start = 10.dp, end = 10.dp),
+		.fillMaxWidth(),
 		verticalAlignment = Alignment.CenterVertically,
 		horizontalArrangement = Arrangement.SpaceBetween) {
 		Text(

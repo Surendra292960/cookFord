@@ -258,8 +258,10 @@ fun InputTextField(
             }
         },
         placeholder = { Text(keyboardOptions.placeholder,fontFamily = FontName,
+            fontSize = 16.sp,
             fontWeight = FontWeight.Bold, color = Color.LightGray) },
         label = { Text(keyboardOptions.label,fontFamily = FontName,
+            fontSize = 14.sp,
             fontWeight = FontWeight.Normal, color = Color.Gray) },
         singleLine = true,
         maxLines = 1,
