@@ -13,11 +13,11 @@ import com.example.cook_ford.presentation.screens.authenticated.accounts.update_
 import com.example.cook_ford.presentation.screens.authenticated.accounts.update_profile_screen_component.state.EditProfileState
 import com.example.cook_ford.presentation.screens.authenticated.accounts.update_profile_screen_component.state.EditProfileUiEvent
 import com.example.cook_ford.presentation.screens.un_authenticated.sign_in_screen_component.state.ErrorState
-import com.example.cook_ford.presentation.screens.un_authenticated.sign_in_screen_component.state.genderSelectionErrorState
 import com.example.cook_ford.presentation.screens.un_authenticated.sign_in_screen_component.state.passwordEmptyErrorState
-import com.example.cook_ford.presentation.screens.un_authenticated.sign_in_screen_component.state.phoneEmptyErrorState
 import com.example.cook_ford.presentation.screens.un_authenticated.sign_up_screen_component.state.emailEmptyErrorState
+import com.example.cook_ford.presentation.screens.un_authenticated.sign_up_screen_component.state.genderSelectionErrorState
 import com.example.cook_ford.presentation.screens.un_authenticated.sign_up_screen_component.state.invalidUserNameErrorState
+import com.example.cook_ford.presentation.screens.un_authenticated.sign_up_screen_component.state.phoneEmptyErrorState
 import com.example.cook_ford.presentation.screens.un_authenticated.sign_up_screen_component.state.usernameEmptyErrorState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow

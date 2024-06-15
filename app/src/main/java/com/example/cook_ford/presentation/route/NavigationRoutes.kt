@@ -14,6 +14,7 @@ sealed class NavigationRoutes {
     sealed class Unauthenticated(val route: String) : NavigationRoutes() {
         data object NavigationRoute : Unauthenticated(route = NavTitle.UNAUTHENTICATED)
         data object Splash : Unauthenticated(route = NavTitle.SPLASH)
+        data object Landing : Unauthenticated(route = NavTitle.LANDING)
         data object PhoneVerification : Unauthenticated(route = NavTitle.PHONE_VERIFICATION)
         data object OnBoard : Unauthenticated(route = NavTitle.ONBOARD)
         data object SignIn : Unauthenticated(route = NavTitle.SIGN_IN)

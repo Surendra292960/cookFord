@@ -15,16 +15,16 @@ import com.example.cook_ford.presentation.component.widgets.dialog.DialogState
 import com.example.cook_ford.presentation.component.widgets.snack_bar.MainViewState
 import com.example.cook_ford.presentation.screens.un_authenticated.sign_in_screen_component.state.ErrorState
 import com.example.cook_ford.presentation.screens.un_authenticated.sign_in_screen_component.state.passwordEmptyErrorState
-import com.example.cook_ford.presentation.screens.un_authenticated.sign_in_screen_component.state.phoneEmptyErrorState
 import com.example.cook_ford.presentation.screens.un_authenticated.sign_up_screen_component.state.SignUpErrorState
 import com.example.cook_ford.presentation.screens.un_authenticated.sign_up_screen_component.state.SignUpState
 import com.example.cook_ford.presentation.screens.un_authenticated.sign_up_screen_component.state.SignUpUiEvent
 import com.example.cook_ford.presentation.screens.un_authenticated.sign_up_screen_component.state.confirmPasswordEmptyErrorState
+import com.example.cook_ford.presentation.screens.un_authenticated.sign_up_screen_component.state.emailEmptyErrorState
 import com.example.cook_ford.presentation.screens.un_authenticated.sign_up_screen_component.state.invalidPasswordErrorState
 import com.example.cook_ford.presentation.screens.un_authenticated.sign_up_screen_component.state.invalidUserNameErrorState
-import com.example.cook_ford.presentation.screens.un_authenticated.sign_up_screen_component.state.usernameEmptyErrorState
 import com.example.cook_ford.presentation.screens.un_authenticated.sign_up_screen_component.state.passwordMismatchErrorState
-import com.example.cook_ford.presentation.screens.un_authenticated.sign_up_screen_component.state.emailEmptyErrorState
+import com.example.cook_ford.presentation.screens.un_authenticated.sign_up_screen_component.state.phoneEmptyErrorState
+import com.example.cook_ford.presentation.screens.un_authenticated.sign_up_screen_component.state.usernameEmptyErrorState
 import com.example.cook_ford.utils.AppConstants
 import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -218,15 +218,13 @@ class SignUpViewModel @Inject constructor(private val signUpUseCase: SignUpUseCa
         }
 
         // Email Matcher
-        if (email.isNotEmpty()) {
-            if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
-                signUpState.value = signUpState.value.copy(
-                    errorState = SignUpErrorState(
-                        emailErrorState = invalidUserNameErrorState
-                    )
+        if (email.isNotEmpty() && !Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            signUpState.value = signUpState.value.copy(
+                errorState = SignUpErrorState(
+                    emailErrorState = invalidUserNameErrorState
                 )
-                return false
-            }
+            )
+            return false
         }
 
         //Mobile Number Empty
@@ -250,15 +248,13 @@ class SignUpViewModel @Inject constructor(private val signUpUseCase: SignUpUseCa
         }
 
         //Password Matcher
-        if (password.isNotEmpty()) {
-            if (!AppConstants.PASSWORD_PATTERN?.matcher(password)!!.matches()){
-                signUpState.value = signUpState.value.copy(
-                    errorState = SignUpErrorState(
-                        passwordErrorState = invalidPasswordErrorState
-                    )
+        if (password.isNotEmpty() &&!AppConstants.PASSWORD_PATTERN?.matcher(password)!!.matches()) {
+            signUpState.value = signUpState.value.copy(
+                errorState = SignUpErrorState(
+                    passwordErrorState = invalidPasswordErrorState
                 )
-                return false
-            }
+            )
+            return false
         }
 
         //Confirm Password Empty

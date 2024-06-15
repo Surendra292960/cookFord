@@ -19,7 +19,12 @@ val emailEmptyErrorState = ErrorState(
 
 val phoneEmptyErrorState = ErrorState(
     hasError = true,
-    errorMessageStringResource = R.string.sign_in_error_msg_empty_mobile
+    errorMessageStringResource = R.string.sign_up_error_msg_empty_mobile
+)
+
+val invalidPhoneEmptyErrorState = ErrorState(
+    hasError = true,
+    errorMessageStringResource = R.string.sign_up_error_msg_valid_mobile
 )
 
 val invalidPasswordErrorState = ErrorState(
@@ -40,4 +45,9 @@ val confirmPasswordEmptyErrorState = ErrorState(
 val passwordMismatchErrorState = ErrorState(
     hasError = true,
     errorMessageStringResource = R.string.sign_up_error_msg_password_mismatch
+)
+
+val genderSelectionErrorState = ErrorState(
+    hasError = true,
+    errorMessageStringResource = R.string.sign_up_error_msg_gender_not_selected
 )

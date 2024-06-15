@@ -18,10 +18,9 @@ import com.example.cook_ford.presentation.screens.un_authenticated.sign_in_scree
 import com.example.cook_ford.presentation.screens.un_authenticated.sign_in_screen_component.state.SignInState
 import com.example.cook_ford.presentation.screens.un_authenticated.sign_in_screen_component.state.SignInUiEvent
 import com.example.cook_ford.presentation.screens.un_authenticated.sign_in_screen_component.state.passwordEmptyErrorState
-import com.example.cook_ford.presentation.screens.un_authenticated.sign_in_screen_component.state.phoneEmptyErrorState
+import com.example.cook_ford.presentation.screens.un_authenticated.sign_up_screen_component.state.emailEmptyErrorState
 import com.example.cook_ford.presentation.screens.un_authenticated.sign_up_screen_component.state.invalidPasswordErrorState
 import com.example.cook_ford.presentation.screens.un_authenticated.sign_up_screen_component.state.invalidUserNameErrorState
-import com.example.cook_ford.presentation.screens.un_authenticated.sign_up_screen_component.state.emailEmptyErrorState
 import com.example.cook_ford.utils.AppConstants.PASSWORD_PATTERN
 import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -72,18 +71,6 @@ class SignInViewModel @Inject constructor(private val signInUseCase: SignInUseCa
     fun onUiEvent(signInUiEvent: SignInUiEvent) {
         when (signInUiEvent) {
 
-            //Mobile changed
-            is SignInUiEvent.PhoneChanged -> {
-                signInState.value = signInState.value.copy(
-                    email = signInUiEvent.inputValue,
-                    errorState = signInState.value.errorState.copy(
-                        phoneErrorState = if (signInUiEvent.inputValue.trim().isNotEmpty())
-                            ErrorState()
-                        else
-                            phoneEmptyErrorState
-                    )
-                )
-            }
             // Email changed
             is SignInUiEvent.EmailChanged -> {
                 signInState.value = signInState.value.copy(
@@ -129,9 +116,8 @@ class SignInViewModel @Inject constructor(private val signInUseCase: SignInUseCa
      * @return false -> inputs are invalid
      */
     private fun validateInputs(): Boolean {
-
         val email = signInState.value.email.trim()
-        val password = signInState.value.password
+        val password = signInState.value.password.trim()
 
         // Email empty
         if (email.isEmpty()) {
@@ -143,15 +129,13 @@ class SignInViewModel @Inject constructor(private val signInUseCase: SignInUseCa
             return false
         }
         // Email Matcher
-        if (email.isNotEmpty()) {
-           if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
-               signInState.value = signInState.value.copy(
-                   errorState = SignInErrorState(
-                       emailErrorState = invalidUserNameErrorState
-                   )
-               )
-               return false
-           }
+        if (email.isNotEmpty() && !Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            signInState.value = signInState.value.copy(
+                errorState = SignInErrorState(
+                    emailErrorState = invalidUserNameErrorState
+                )
+            )
+            return false
         }
 
         //Password Empty
@@ -165,17 +149,13 @@ class SignInViewModel @Inject constructor(private val signInUseCase: SignInUseCa
         }
 
         //Password Matcher
-        if (password.isNotEmpty()) {
-            if (!PASSWORD_PATTERN?.matcher(password)!!.matches()){
-                signInState.value = signInState.value.copy(
-                    errorState = SignInErrorState(
-                        passwordErrorState = invalidPasswordErrorState
-                    )
+        if (password.isNotEmpty() && !PASSWORD_PATTERN?.matcher(password)!!.matches()) {
+            signInState.value = signInState.value.copy(
+                errorState = SignInErrorState(
+                    passwordErrorState = invalidPasswordErrorState
                 )
-                return false
-            }else{
-                return true
-            }
+            )
+            return false
         }
 
         // No errors

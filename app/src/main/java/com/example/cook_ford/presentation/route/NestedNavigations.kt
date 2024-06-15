@@ -21,7 +21,8 @@ import com.example.cook_ford.presentation.screens.authenticated.profile_screen_c
 import com.example.cook_ford.presentation.screens.authenticated.profile_screen_component.reviews_screen_component.ReviewScreen
 import com.example.cook_ford.presentation.screens.dashboard_screen_component.home_screen_component.UserDashBoard
 import com.example.cook_ford.presentation.screens.onboard_screen_component.OnBoardingScreen
-import com.example.cook_ford.presentation.screens.un_authenticated.otp_screen_component.PhoneVerificationScreen
+import com.example.cook_ford.presentation.screens.un_authenticated.landind_screen_component.LandingScreen
+import com.example.cook_ford.presentation.screens.un_authenticated.phone_verification_screen_component.PhoneVerificationScreen
 import com.example.cook_ford.presentation.screens.un_authenticated.sign_in_screen_component.SignInScreen
 import com.example.cook_ford.presentation.screens.un_authenticated.sign_up_screen_component.SignUpScreen
 import com.google.gson.Gson
@@ -39,12 +40,26 @@ fun NavGraphBuilder.unauthenticatedGraph(navController: NavController) {
 
         // Splash
         composable(route = NavigationRoutes.Unauthenticated.Splash.route) {
-            SplashScreen(navController = navController,)
+            SplashScreen(navController = navController)
+        }
+
+        // Landing
+        composable(route = NavigationRoutes.Unauthenticated.Landing.route) {
+            LandingScreen(navController = navController,
+                onNavigateToAuthenticatedRoute = {
+                    navController.navigate(route = NavigationRoutes.Unauthenticated.PhoneVerification.route)
+                }
+            )
         }
 
         //PhoneVerificationScreen
         composable(route = NavigationRoutes.Unauthenticated.PhoneVerification.route) {
-            PhoneVerificationScreen(navController = navController,)
+            PhoneVerificationScreen(navController = navController,
+                onNavigateBack = { navController.navigateUp() },
+                onNavigateToAuthenticatedRoute = {
+                    navController.navigate(route = NavigationRoutes.Unauthenticated.SignIn.route)
+                }
+            )
         }
 
         //OnBoard

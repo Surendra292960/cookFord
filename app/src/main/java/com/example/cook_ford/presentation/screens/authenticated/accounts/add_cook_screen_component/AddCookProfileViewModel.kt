@@ -14,7 +14,7 @@ import com.example.cook_ford.presentation.screens.authenticated.accounts.add_coo
 import com.example.cook_ford.presentation.screens.authenticated.accounts.add_cook_screen_component.state.cook_phoneEmptyErrorState
 import com.example.cook_ford.presentation.screens.authenticated.accounts.add_cook_screen_component.state.cook_profileImageEmptyErrorState
 import com.example.cook_ford.presentation.screens.un_authenticated.sign_in_screen_component.state.ErrorState
-import com.example.cook_ford.presentation.screens.un_authenticated.sign_in_screen_component.state.genderSelectionErrorState
+import com.example.cook_ford.presentation.screens.un_authenticated.sign_up_screen_component.state.genderSelectionErrorState
 import com.example.cook_ford.utils.AppConstants
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow

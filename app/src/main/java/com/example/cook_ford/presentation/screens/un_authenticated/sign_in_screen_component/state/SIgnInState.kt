@@ -19,6 +19,5 @@ data class SignInState(
  */
 data class SignInErrorState(
     val emailErrorState: ErrorState = ErrorState(),
-    val phoneErrorState: ErrorState = ErrorState(),
     val passwordErrorState: ErrorState = ErrorState()
 )
