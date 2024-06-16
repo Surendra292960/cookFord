@@ -1,5 +1,6 @@
 package com.example.cook_ford.presentation.screens.authenticated.profile_screen_component.report_screen_component
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
@@ -89,7 +90,7 @@ fun IssueComponent(issueList: List<String>, onIssueChange: (String) -> Unit) {
     FlowRow {
         issueList.forEachIndexed { index,issue ->
             FilterChip(
-                modifier = Modifier.padding(horizontal = 5.dp),
+                modifier = Modifier.padding(horizontal = 1.dp),
                 onClick = {
                     selectedIndex.intValue = index
                     onIssueChange(issueList[selectedIndex.intValue])

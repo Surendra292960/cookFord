@@ -15,6 +15,9 @@ import java.util.TimeZone
 
 
 object Utility {
+    fun stringToWords(s : String) = s.trim().splitToSequence(' ')
+        .filter { it.isNotEmpty() } // or: .filter { it.isNotBlank() }
+        .toList()
 
     fun getDays(updatedAt:String):String{
         var days:String = AppConstants.EMPTY_STRING

@@ -22,6 +22,11 @@ val phoneEmptyErrorState = ErrorState(
     errorMessageStringResource = R.string.sign_up_error_msg_empty_mobile
 )
 
+val otpEmptyErrorState = ErrorState(
+    hasError = true,
+    errorMessageStringResource = R.string.sign_up_error_msg_empty_otp
+)
+
 val invalidPhoneEmptyErrorState = ErrorState(
     hasError = true,
     errorMessageStringResource = R.string.sign_up_error_msg_valid_mobile

@@ -8,16 +8,16 @@ import com.example.cook_ford.data.remote.auth_request.SignUpRequest
 import com.example.cook_ford.data.remote.auth_response.SignInResponse
 import com.example.cook_ford.data.remote.auth_response.SignUpResponse
 import com.example.cook_ford.data.remote.profile_response.ProfileResponse
-import com.example.cook_ford.domain.repository.AuthRepositoryImpl
+import com.example.cook_ford.domain.repository.AuthRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 
-class AuthRepository(
+class AuthRepositoryImpl(
     private val apiService: ApiService,
     //private val preferences: AuthPreferences
-) : AuthRepositoryImpl, BaseRepo() {
+) : AuthRepository, BaseRepo() {
 
     override suspend fun signIn(signInRequest: SignInRequest): Flow<NetworkResult<SignInResponse>> {
         return flow {

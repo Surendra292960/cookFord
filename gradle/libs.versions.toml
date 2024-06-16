@@ -41,6 +41,8 @@ firebaseVertexai = "16.0.0-beta01"
 firebasePerf = "21.0.1"
 googleFirebaseFirebasePerf = "1.4.2"
 firebaseAuth = "23.0.0"
+googlePlayAuth = "20.1.0"
+googlePlayAPIAuthPhone = "18.0.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -102,6 +104,9 @@ firebase-config = { group = "com.google.firebase", name = "firebase-config", ver
 firebase-vertexai = { group = "com.google.firebase", name = "firebase-vertexai", version.ref = "firebaseVertexai" }
 firebase-perf = { group = "com.google.firebase", name = "firebase-perf", version.ref = "firebasePerf" }
 firebase-auth = { group = "com.google.firebase", name = "firebase-auth", version.ref = "firebaseAuth" }
+google-play-services-auth = { group = "com.google.android.gms", name = "play-services-auth", version.ref = "googlePlayAuth" }
+google-play-services-auth-api-phone = { group = "com.google.android.gms", name = "play-services-auth-api-phone", version.ref = "googlePlayAPIAuthPhone" }
+
 
 
 [plugins]

@@ -3,10 +3,16 @@ import android.content.Context
 import com.example.cook_ford.data.ApiConstants.BASE_URL
 import com.example.cook_ford.data.ApiService
 import com.example.cook_ford.data.local.UserSession
-import com.example.cook_ford.data.repository.AuthRepository
+import com.example.cook_ford.data.repository.AuthRepositoryImpl
+import com.example.cook_ford.data.repository.FirebaseAuthRepositoryImpl
+import com.example.cook_ford.domain.repository.FirebaseAuthRepository
 import com.example.cook_ford.domain.use_cases.ProfileUseCase
 import com.example.cook_ford.domain.use_cases.SignInUseCase
 import com.example.cook_ford.domain.use_cases.SignUpUseCase
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
+import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -25,7 +31,7 @@ import javax.inject.Singleton
 object AppModule {
 
 
-/*    @Provides
+    /*    @Provides
     @Singleton
     fun providePreferenceDataStore(@ApplicationContext context: Context): DataStore<Preferences> =
         context.createDataStore(AUTH_PREFERENCES)
@@ -35,8 +41,6 @@ object AppModule {
     @Singleton
     fun provideAuthPreferences(dataStore: DataStore<Preferences>) =
         AuthPreferences(dataStore)*/
-
-
 
     @Singleton
     @Provides
@@ -64,43 +68,46 @@ object AppModule {
             .create(ApiService::class.java)
     }
 
-/*    @Singleton
+    /*
+    @Singleton
     @Provides
     fun provideService(retrofit: Retrofit): ApiService =
         retrofit.create(ApiService::class.java)*/
 
     @Provides
     @Singleton
-    fun providesAuthRepository(
-        apiService: ApiService,
-    ): AuthRepository {
-        return AuthRepository(
-            apiService = apiService
-        )
-    }
+    fun providesAuthRepository(apiService: ApiService): AuthRepositoryImpl = AuthRepositoryImpl(apiService = apiService)
+
+    @Singleton
+    @Provides
+    fun providesFirebaseAuth():FirebaseAuth = Firebase.auth
+    @Singleton
+    @Provides
+    fun providesFirebaseAuthRepository(repo:FirebaseAuthRepositoryImpl):FirebaseAuthRepository = repo
 
     @Provides
     @Singleton
     fun provideSharedPreference(@ApplicationContext context: Context): UserSession {
         return UserSession(context)
     }
+
     @Provides
     @Singleton
-    fun providesLoginUseCase(repository: AuthRepository): SignInUseCase {
+    fun providesLoginUseCase(repository: AuthRepositoryImpl): SignInUseCase {
         return SignInUseCase(repository)
     }
 
     @Provides
     @Singleton
-    fun providesProfileUseCase(repository: AuthRepository): ProfileUseCase {
+    fun providesProfileUseCase(repository: AuthRepositoryImpl): ProfileUseCase {
         return ProfileUseCase(repository)
     }
 
 
-      @Provides
-      @Singleton
-      fun providesRegisterUseCase(repository: AuthRepository): SignUpUseCase {
-          return SignUpUseCase(repository)
-      }
+    @Provides
+    @Singleton
+    fun providesRegisterUseCase(repository: AuthRepositoryImpl): SignUpUseCase {
+        return SignUpUseCase(repository)
+    }
 
 }

@@ -6,7 +6,8 @@ data class PhoneVerificationState(
     val phone: String = AppConstants.EMPTY_STRING,
     val otp: String = AppConstants.EMPTY_STRING,
     val errorState: PhoneVerificationErrorState = PhoneVerificationErrorState(),
-    var isOTPSent: Boolean = false,
+    var nevigateToOTPScreen: Boolean = false,
+    var nevigateToSignIn: Boolean = false,
     var isSuccessful: Boolean = false
 )
 

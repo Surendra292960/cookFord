@@ -6,21 +6,29 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Slider
+import androidx.compose.material3.SliderDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -31,8 +39,21 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.cook_ford.data.remote.profile_response.ProfileResponse
 import com.example.cook_ford.presentation.component.widgets.SegmentedControl
+import com.example.cook_ford.presentation.screens.authenticated.profile_screen_component.report_screen_component.IssueComponent
 import com.example.cook_ford.presentation.theme.FontName
 import com.google.gson.Gson
+
+
+val jobType = listOf("Part time\n(Daily/Occasional meals)", "Full day\n(Domestic)", "Live in\n(Domestic)", "Catering\n(Parties & Events)")
+val jobTypeLast = listOf("Restaurant chef\n(Commercial)")
+val genders = listOf("Male", "Female", "Any")
+val visits = listOf("One Visit", "Two Visit", "Three Visit")
+val mCities = listOf("Delhi", "Mumbai", "Chennai", "Kolkata", "Hyderabad", "Bengaluru", "Pune")
+val morning = listOf("5am-6am", "6am-7am", "7am-8am", "8am-9am", "9am-10am", "10am-11am", "11am-12am")
+val afternoon = listOf("12pm-1pm", "1pm-2pm", "2pm-3pm", "3pm-4pm", "4pm-5pm")
+val evening = listOf("5pm-6pm", "6pm-7pm", "7pm-8pm", "8pm-9pm", "9pm-10pm", "10pm-11pm", "11pm-12pm")
+val cuisine = listOf("North Indian", "South indian", "Punjabi", "Andhra", "Kerala", "Tamillian", "Karnataka", "Jain", "Rajasthani", "Gujarati", "Bengali", "Maharashtrian", "Chinese", "Mughalai", "Nepali", "Mangalorean", "Kashmiri", "Assamese", "Arabic", "Italic", "Maxican", "Parsi", "Goan", "Thai", "Afghani", "Turkish")
+val languages = listOf("Hindi", "English", "Kanada", "Odia", "Tamil", "Punjabi", "Telugu", "Telugu", "Malayalam", "Bhojpuri", "Rajasthani", "Gujarati", "Marathi", "Nepali", "Assamese", "Bengali", "Konkani", "Tulu", "Urdu")
 
 @Composable
 fun CookPreferencesScreen(
@@ -40,23 +61,12 @@ fun CookPreferencesScreen(
     profileResponse: ProfileResponse?=null,
     onNavigateToAuthenticatedRoute: () -> Unit){
 
-    val jobType = listOf(
-        "Part time\n(Daily/Occasional meals)",
-        "Full day\n(Domestic)",
-        "Live in\n(Domestic)",
-        "Catering\n(Parties & Events)")
-    val jobTypeLast = listOf("Restaurant chef\n(Commercial)")
-    val genders = listOf("Male", "Female", "Any")
-    val visits = listOf("One Visit", "Two Visit", "Three Visit")
-    val mCities = listOf("Delhi", "Mumbai", "Chennai", "Kolkata", "Hyderabad", "Bengaluru", "Pune")
-
     Column( modifier = Modifier
         .fillMaxSize()
-        .padding(20.dp)
+        .padding(start = 20.dp, end = 20.dp)
         .verticalScroll(rememberScrollState()),
         //verticalArrangement = Arrangement.SpaceEvenly,
         horizontalAlignment = Alignment.Start) {
-
 
         Spacer(modifier = Modifier.height(20.dp))
         
@@ -84,12 +94,86 @@ fun CookPreferencesScreen(
             defaultSelectedItemIndex = 0) {
             Log.e("CustomToggle", "Selected item : ${genders[it]}")
         }
-
-
+    //Time Shift
+        Spacer(modifier = Modifier.height(20.dp))
         Text(text = "Who is available for (any of the selected)", fontFamily = FontName, fontWeight = FontWeight.Bold)
+        Spacer(modifier = Modifier.height(5.dp))
+        Text(modifier = Modifier.align(Alignment.Start), text = "Morning", fontFamily = FontName, fontWeight = FontWeight.Bold)
+        Spacer(modifier = Modifier.height(10.dp))
+        IssueComponent(
+            issueList = morning,
+            onIssueChange = {}
+        )
+
+        Spacer(modifier = Modifier.height(10.dp))
+        Text(modifier = Modifier.align(Alignment.Start), text = "Afternoon", fontFamily = FontName, fontWeight = FontWeight.Bold)
+        Spacer(modifier = Modifier.height(10.dp))
+        IssueComponent(
+            issueList = afternoon,
+            onIssueChange = {}
+        )
+
+        Text(modifier = Modifier.align(Alignment.Start), text = "Evening", fontFamily = FontName, fontWeight = FontWeight.Bold)
+        Spacer(modifier = Modifier.height(10.dp))
+        IssueComponent(
+            issueList = evening,
+            onIssueChange = {}
+        )
+
+        //Cuisine
+        Spacer(modifier = Modifier.height(20.dp))
+        Text(text = "Who can prepare (any of the selected)", fontFamily = FontName, fontWeight = FontWeight.Bold)
+        Spacer(modifier = Modifier.height(10.dp))
+        IssueComponent(
+            issueList = cuisine,
+            onIssueChange = {}
+        )
+
+        //Languages
+        Spacer(modifier = Modifier.height(20.dp))
+        Text(text = "Who can speak (any of the selected)", fontFamily = FontName, fontWeight = FontWeight.Bold)
+        Spacer(modifier = Modifier.height(10.dp))
+        IssueComponent(
+            issueList = languages,
+            onIssueChange = {}
+        )
+
+        Spacer(modifier = Modifier.height(20.dp))
+
+        Text(text = "Who is Experienced between", fontFamily = FontName, fontWeight = FontWeight.Bold)
+        Spacer(modifier = Modifier.height(10.dp))
+        SliderAdvancedExample(selectedExperience = {
+            Log.d("TAG","Slider Data : ${it.toInt()}")
+        })
+
+        Spacer(modifier = Modifier.height(20.dp))
     }
 }
 
+@Composable
+fun SliderAdvancedExample(selectedExperience:(Float)->Unit) {
+    var sliderPosition by remember { mutableFloatStateOf(0f) }
+    Row(modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.spacedBy(10.dp, Alignment.Start),
+        verticalAlignment = Alignment.CenterVertically) {
+        Text(text = "0 yr", fontFamily = FontName, fontWeight = FontWeight.Bold)
+        Slider(
+            modifier = Modifier.weight(1f),
+            value = sliderPosition,
+            onValueChange = { selectedExperience.invoke(it)
+                                sliderPosition = it
+                            },
+            colors = SliderDefaults.colors(
+                thumbColor = MaterialTheme.colorScheme.secondary,
+                activeTrackColor = MaterialTheme.colorScheme.primary,
+                inactiveTrackColor = MaterialTheme.colorScheme.secondaryContainer,
+            ),
+            steps = 50,
+            valueRange = 0f..50f
+        )
+        Text(text = sliderPosition.toInt().toString().plus(" Yr"), fontFamily = FontName, fontWeight = FontWeight.Bold)
+    }
+}
 
 @Composable
 fun JobTypeSection(
