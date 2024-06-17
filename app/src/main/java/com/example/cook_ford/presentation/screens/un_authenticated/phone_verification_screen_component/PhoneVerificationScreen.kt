@@ -67,37 +67,9 @@ fun PhoneVerificationScreen(
     val viewState: MainViewState by phoneVerificationViewModel.viewState.collectAsState()
     val context = LocalContext.current as MainActivity
 
-
-
-
-    /**
-     * Right now we don't have support for Autofill in Compose.
-     * See [com.appmason.jetplayground.ui.components.Autofill] for some temporary solutions.
-     *
-     * If we have support in the future and want user to autofill OTP from keyboard manually,
-     * then we do not need to fetch OTP automatically using Google SMS Retriever API and in
-     * that case, we can totally remove this [OtpReceiverEffect] and let Autofill handle it.
-     * But Google SMS Retriever API is a great way anyways to fetch and populate OTP!
-     */
-   /* OtpReceiverEffect(
-        context = context,
-        onOtpReceived = { otp ->
-            otpValue = otp
-            if (otpValue.length == 6) {
-                keyboardController?.hide()
-                isOtpFilled = true
-            }
-        }
-    )*/
-
- /*   LaunchedEffect(Unit) {
-        focusRequester.requestFocus()
-        keyboardController?.show()
-    }*/
-
     LaunchedEffect(key1 = true) {
         if (phoneVerificationState.nevigateToSignIn){
-            //Log.d("TAG", "PhoneVerificationScreen: nevigateToSignIn ${phoneVerificationState.nevigateToSignIn}")
+            Log.d("TAG", "PhoneVerificationScreen: nevigateToSignIn ${phoneVerificationState.nevigateToSignIn}")
             onNavigateToAuthenticatedRoute.invoke()
         }
     }
@@ -135,7 +107,7 @@ fun PhoneVerificationScreen(
             }
         }
 
-        if (phoneVerificationState.nevigateToOTPScreen) {
+        if (!phoneVerificationState.nevigateToOTPScreen) {
 
             Column(modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.Start) {
 
@@ -199,15 +171,14 @@ fun PhoneVerificationScreen(
 
         } else {
 
-         /*  LaunchedEffect(key1 = true){
+           LaunchedEffect(key1 = true){
                phoneVerificationViewModel.createUserWithPhone(
                    phoneVerificationState.phone,
                    context
                ).collect{
                    when(it){
                        is ResultState.Success->{
-                           Toast.makeText(context, it.msg, Toast.LENGTH_SHORT).show()
-                           Log.d("TAG", "PhoneVerificationScreen: Success ${it}")
+                           Log.d("TAG", "PhoneVerificationScreen: Success ${it.data}")
                        }
                        is ResultState.Failure->{
                            Log.d("TAG", "PhoneVerificationScreen: Failure ${it.msg}")
@@ -217,7 +188,7 @@ fun PhoneVerificationScreen(
                        }
                    }
                }
-           }*/
+           }
 
             Column(modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.Start) {
 

@@ -69,7 +69,6 @@ class PhoneVerificationViewModel @Inject constructor(
        when(otpVerificationUiEvent){
            // Update phone
            is OTPVerificationUiEvent.OTPChanged -> {
-               Log.d("TAG", "onUiEvent: ${otpVerificationUiEvent.inputValue}")
                phoneVerificationState.value = phoneVerificationState.value.copy(
                    otp = otpVerificationUiEvent.inputValue,
                    errorState = phoneVerificationState.value.errorState.copy(
@@ -86,6 +85,7 @@ class PhoneVerificationViewModel @Inject constructor(
                val inputsValidated = validateOTPInputs()
                Log.d("TAG", "onUiEvent OTP: $inputsValidated")
                if (inputsValidated) {
+                   Log.d("TAG", "onUiEvent OTP: validated")
                    viewmodelSignInWithCred(otp = phoneVerificationState.value.otp)
                }
            }

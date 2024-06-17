@@ -88,7 +88,7 @@ fun IssueComponent(issueList: List<String>, onIssueChange: (String) -> Unit) {
     val selectedIndex = remember { mutableIntStateOf(-1) }
 
     FlowRow {
-        issueList.forEachIndexed { index,issue ->
+        issueList.forEachIndexed { index, issue ->
             FilterChip(
                 modifier = Modifier.padding(horizontal = 1.dp),
                 onClick = {

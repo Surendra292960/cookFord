@@ -65,9 +65,12 @@ class FirebaseAuthRepositoryImpl @Inject constructor(private val firebaseAuth:Fi
            val credential = PhoneAuthProvider.getCredential(omVerificationCode,otp)
            firebaseAuth.signInWithCredential(credential)
                .addOnCompleteListener {
-                   Log.d("TAG", "signWithCredential: ${it.isSuccessful}")
-                   if(it.isSuccessful)
+                   if(it.isSuccessful){
+                       Log.d("TAG", "signWithCredential: ${it.isSuccessful}")
                        trySend(ResultState.Success(otp = otp, data = "otp verified"))
+                   }else{
+                       Log.d("TAG", "signWithCredential: ${it.isSuccessful}")
+                   }
                }.addOnFailureListener {
                    trySend(ResultState.Failure(it))
                }
@@ -75,7 +78,7 @@ class FirebaseAuthRepositoryImpl @Inject constructor(private val firebaseAuth:Fi
                close()
            }
        }catch (e:Exception){
-           e.printStackTrace()
+           Log.d("TAG", "signWithCredential: ${e.message}")
        }
     }
 }
