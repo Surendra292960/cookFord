@@ -1,5 +1,7 @@
 package com.example.cook_ford.presentation.route
+import android.os.Build
 import android.util.Log
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavController
@@ -12,6 +14,7 @@ import com.example.cook_ford.data.remote.profile_response.ProfileResponse
 import com.example.cook_ford.presentation.screens.un_authenticated.main_screen_component.SplashScreen
 import com.example.cook_ford.presentation.screens.authenticated.accounts.account_screen_component.AccountScreen
 import com.example.cook_ford.presentation.screens.authenticated.accounts.add_cook_screen_component.AddCookProfileScreen
+import com.example.cook_ford.presentation.screens.authenticated.accounts.call_credit_screen_component.CallCreditScreen
 import com.example.cook_ford.presentation.screens.authenticated.accounts.cook_preferences.CookPreferencesScreen
 import com.example.cook_ford.presentation.screens.authenticated.accounts.post_job_screen_component.PostJobScreen
 import com.example.cook_ford.presentation.screens.authenticated.accounts.update_profile_screen_component.EditProfileScreen
@@ -32,6 +35,7 @@ import com.google.gson.Gson
  * Login, registration, forgot password screens nav graph builder
  * (Unauthenticated user)
  */
+@RequiresApi(Build.VERSION_CODES.TIRAMISU)
 fun NavGraphBuilder.unauthenticatedGraph(navController: NavController) {
 
     navigation(
@@ -151,6 +155,13 @@ fun HomeNavGraph(navController: NavHostController) {
         composable(NavigationRoutes.HomeNavigation.Profile.route) {
             AccountScreen (
                 navController = navController,
+                onNavigateToCallCreditScreen = {
+                    navController.navigate(route = NavigationRoutes.AccountNavigation.CallCredit.route){
+                       /* popUpTo(route = NavigationRoutes.Authenticated.NavigationRoute.route) {
+                            inclusive = true
+                        }*/
+                    }
+                },
                 onNavigateToAddCookScreen = {
                     navController.navigate(route = NavigationRoutes.AccountNavigation.AddCookProfile.route){
                        /* popUpTo(route = NavigationRoutes.Authenticated.NavigationRoute.route) {
@@ -246,6 +257,7 @@ fun NavGraphBuilder.detailNavGraph(navController: NavHostController) {
                     )
                 }
         }
+
         accountNavGraph(navController = navController)
     }
 }
@@ -319,6 +331,23 @@ fun NavGraphBuilder.accountNavGraph(navController: NavHostController) {
                         profileResponse = profileResponse,
                         onNavigateToAuthenticatedRoute = {
                             navController.navigate(route = NavigationRoutes.AccountNavigation.CookPreferences.route) {
+                                /* popUpTo(route = NavigationRoutes.Unauthenticated.NavigationRoute.route) {
+                             inclusive = true
+                         }*/
+                            }
+                        },
+                    )
+                }
+        }
+        composable(route = NavigationRoutes.AccountNavigation.CallCredit.route) {
+            navController.previousBackStackEntry?.savedStateHandle?.get<String>("profileResponse")
+                .let { Gson().fromJson(it, ProfileResponse::class.java) }.let { profileResponse ->
+                    Log.d("TAG", "detailNavGraph review data: ${Gson().toJson(profileResponse)}")
+                    CallCreditScreen(
+                        onNavigateBack = { navController.navigateUp() },
+                        profileResponse = profileResponse,
+                        onNavigateToAuthenticatedRoute = {
+                            navController.navigate(route = NavigationRoutes.AccountNavigation.CallCredit.route) {
                                 /* popUpTo(route = NavigationRoutes.Unauthenticated.NavigationRoute.route) {
                              inclusive = true
                          }*/

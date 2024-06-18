@@ -13,6 +13,7 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -22,6 +23,7 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.cook_ford.presentation.component.widgets.bottom_nav.BottomNavigationBar
 import com.example.cook_ford.presentation.component.widgets.topbar_nav.NavTopBar
@@ -35,13 +37,9 @@ import com.example.cook_ford.utils.AppConstants
 fun UserDashBoard(
     navController: NavHostController = rememberNavController(),
     onNavigateToAuthenticatedRoute: () -> Unit) {
-    val scroll = rememberScrollState(0)
-    val isCollapsed = remember { false }
-    //val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
     val topBarVisibilityState = remember { mutableStateOf(true) }
     val appBarTitle = remember { mutableStateOf(AppConstants.EMPTY_STRING) }
-
 
     LaunchedEffect(key1 = Unit) {
         onNavigateToAuthenticatedRoute.invoke()

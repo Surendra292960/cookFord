@@ -90,6 +90,7 @@ import com.google.gson.Gson
 fun AccountScreen(
     navController: NavHostController,
     onNavigateToEditProfile: () -> Unit,
+    onNavigateToCallCreditScreen: () -> Unit,
     onNavigateToAddCookScreen: () -> Unit,
     onNavigateToPostJobScreen: () -> Unit,
     onNavigateToContactUsScreen: () -> Unit,
@@ -114,7 +115,12 @@ fun AccountScreen(
                 onNavigateToEditProfile.invoke()
             })
             HorizontalDivider(modifier = Modifier, color = Color.LightGray)
-            CallCreditButtons()
+            CallCreditButtons(
+                onNavigateToCallCreditScreen = {
+                navController.currentBackStackEntry?.savedStateHandle?.apply { set("profileResponse", Gson().toJson(accountState.profileResponse)) }
+                onNavigateToCallCreditScreen.invoke()
+                }
+            )
 
             AccountProfileContent(
                 textColor = Orange,
@@ -354,19 +360,17 @@ fun AccountScreen(
 }
 
 @Composable
-fun CallCreditButtons() {
+fun CallCreditButtons(onNavigateToCallCreditScreen: () -> Unit) {
     Row(modifier = Modifier
         .fillMaxWidth()
         .padding(start = 10.dp, end = 10.dp),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.SpaceBetween
-    ) {
+        horizontalArrangement = Arrangement.SpaceBetween) {
 
         Column(modifier = Modifier) {
             Row(
                 horizontalArrangement = Arrangement.Start,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
+                verticalAlignment = Alignment.CenterVertically) {
                 Icon(
                     Icons.Filled.ExposureZero,
                     contentDescription = null,
@@ -387,7 +391,7 @@ fun CallCreditButtons() {
         Column(modifier = Modifier) {
             ExtendedFloatingActionButton(
                 backgroundColor = LightGreen,
-                onClick = { },
+                onClick = { onNavigateToCallCreditScreen.invoke() },
                 icon = { Icon(Icons.Filled.Cookie, contentDescription = "") },
                 text = {
                     Text(
@@ -807,6 +811,7 @@ fun BottomSheet(
 fun PreviewAccountScreen() {
     AccountScreen(
         navController = rememberNavController(),
+        onNavigateToCallCreditScreen = {},
         onNavigateToEditProfile = {},
         onNavigateToAddCookScreen = {},
         onNavigateToPostJobScreen = {},

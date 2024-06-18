@@ -10,26 +10,31 @@ object NavTitle {
     const val ONBOARD = "onboard"
     const val SIGN_IN = "login"
     const val SIGN_UP = "registration"
+
     //Authenticated
     const val AUTHENTICATED = "authenticated"
     const val DASHBOARD = "Dashboard"
     const val USERS = "Users"
     const val NO_INTERNET = "NoInternet"
+
     //Bottom Nav
     const val BOTTOM_NAVIGATION = "bottom_navigation"
     const val HOME = "Home"
     const val SEARCH = "Search"
     const val LIST = "List"
     const val PROFILE = "Profile"
+
     //Details
     const val DETAILS_NAV = "Details"
     const val DETAILS = "ProfileDetail"
     const val REVIEW = "Review"
     const val REPORT = "Report"
     const val ADD_NOTE = "AddNote"
-    //Details
+
+    //Account
     const val ACCOUNT_NAVIGATION = "Account"
     const val PROFILE_ACCOUNT = "ProfileAccount"
+    const val CALL_CREDIT = "CallCredit"
     const val EDIT_PROFILE = "EditProfile"
     const val ADD_COOK_PROFILE = "AddCookProfile"
     const val POST_JOB = "PostJob"

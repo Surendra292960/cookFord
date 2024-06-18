@@ -1,7 +1,12 @@
 package com.example.cook_ford.presentation.screens.authenticated.accounts.call_credit_screen_component
 
+import android.util.Log
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.interaction.collectIsDraggedAsState
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -9,7 +14,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Card
@@ -20,11 +29,18 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
@@ -34,10 +50,18 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
+import coil.compose.rememberAsyncImagePainter
+import coil.request.ImageRequest
 import com.example.cook_ford.data.remote.profile_response.ProfileResponse
 import com.example.cook_ford.presentation.theme.AppTheme
 import com.example.cook_ford.presentation.theme.FontName
+import com.google.accompanist.pager.ExperimentalPagerApi
+import com.google.accompanist.pager.HorizontalPager
+import com.google.accompanist.pager.PagerState
+import kotlinx.coroutines.delay
 
+@OptIn(ExperimentalPagerApi::class)
 @Composable
 fun CallCreditScreen(
     onNavigateBack: () -> Unit,
@@ -49,7 +73,7 @@ fun CallCreditScreen(
         .padding(top = 30.dp, start = 10.dp, end = 10.dp)
         .background(Color.White)
         .verticalScroll(rememberScrollState()),
-        horizontalAlignment = Alignment.Start) {
+        horizontalAlignment = Alignment.CenterHorizontally) {
 
         Row(horizontalArrangement = Arrangement.spacedBy(10.dp,
             Alignment.CenterHorizontally),
@@ -126,13 +150,10 @@ fun CallCreditScreen(
 
         Spacer(modifier = Modifier.height(10.dp))
 
-       ElevatedCard(modifier = Modifier.padding(bottom = 10.dp),
-           colors = CardDefaults.cardColors(Color.White),
-           elevation = CardDefaults.elevatedCardElevation(AppTheme.dimens.paddingTooSmall),
-           shape = RoundedCornerShape(10.dp), onClick = { /*TODO*/ }) {
+        ElevatedCard(modifier = Modifier.padding(bottom = 10.dp), colors = CardDefaults.cardColors(Color.White), elevation = CardDefaults.elevatedCardElevation(AppTheme.dimens.paddingSmall), shape = RoundedCornerShape(10.dp), onClick = { /*TODO*/ }) {
            Row(horizontalArrangement = Arrangement.SpaceBetween,
                verticalAlignment = Alignment.CenterVertically,
-               modifier = Modifier.fillMaxSize().padding(10.dp)){
+               modifier = Modifier.fillMaxSize().padding(20.dp)){
 
                Column (horizontalAlignment = Alignment.Start){
                    Text(
@@ -188,10 +209,12 @@ fun CallCreditScreen(
            }
        }
 
-        ElevatedCard(modifier = Modifier.padding(bottom = 10.dp), colors = CardDefaults.cardColors(Color.Green), elevation = CardDefaults.elevatedCardElevation(AppTheme.dimens.paddingTooSmall), shape = RoundedCornerShape(10.dp), onClick = { /*TODO*/ }) {
+        Spacer(modifier = Modifier.height(10.dp))
+
+        ElevatedCard(modifier = Modifier.padding(bottom = 10.dp), colors = CardDefaults.cardColors(Color.Green), elevation = CardDefaults.elevatedCardElevation(AppTheme.dimens.paddingSmall), shape = RoundedCornerShape(10.dp), onClick = { /*TODO*/ }) {
             Row(horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.fillMaxSize().padding(10.dp)){
+                modifier = Modifier.fillMaxSize().padding(20.dp)){
 
                 Column (horizontalAlignment = Alignment.Start){
                     Text(
@@ -249,13 +272,8 @@ fun CallCreditScreen(
 
         Spacer(modifier = Modifier.height(10.dp))
 
-        ElevatedCard(modifier = Modifier.padding(bottom = 10.dp),
-            colors = CardDefaults.cardColors(Color.White),
-            elevation = CardDefaults.elevatedCardElevation(AppTheme.dimens.paddingTooSmall),
-            shape = RoundedCornerShape(10.dp), onClick = { /*TODO*/ }) {
-            Row(horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.fillMaxSize().padding(10.dp)){
+        ElevatedCard(modifier = Modifier.padding(bottom = 10.dp), colors = CardDefaults.cardColors(Color.White),elevation = CardDefaults.elevatedCardElevation(AppTheme.dimens.paddingSmall), shape = RoundedCornerShape(10.dp), onClick = { /*TODO*/ }) {
+            Row(horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically, modifier = Modifier.fillMaxSize().padding(20.dp)){
 
                 Column (horizontalAlignment = Alignment.Start){
                     Text(
@@ -306,6 +324,58 @@ fun CallCreditScreen(
                         fontWeight = FontWeight.Normal,
                         color = Color.Red,
                         textAlign = TextAlign.End
+                    )
+                }
+            }
+        }
+
+        Spacer(modifier = Modifier.height(20.dp))
+
+        Text(
+            text = "How it works?",
+            style = MaterialTheme.typography.subtitle2,
+            fontFamily = FontName,
+            fontSize = 20.sp,
+            fontWeight = FontWeight.Bold,
+            color = Color.DarkGray,
+        )
+
+        Spacer(modifier = Modifier.height(20.dp))
+
+        HowItWorks(modifier = Modifier.padding(bottom = 20.dp))
+
+    }
+}
+
+
+
+//@ExperimentalFoundationApi
+@Composable
+fun HowItWorks( modifier: Modifier = Modifier) {
+    //Log.d("TAG", "CuisineImages topCuisineUrls : $topCuisineUrls")
+    val listState = rememberLazyListState()
+
+    Column(modifier = modifier
+        .fillMaxWidth()
+        .padding(start = 10.dp, end = 10.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center) {
+
+        LazyRow(state = listState, modifier = modifier.scale(1.01f)) {
+            items(5) { index->
+                Card(modifier = Modifier
+                    .width(300.dp)
+                    .height(150.dp)
+                    .padding(horizontal = 5.dp),
+                    elevation = AppTheme.dimens.paddingSmall) {
+                    Text(
+                        text = "How it works?",
+                        style = MaterialTheme.typography.subtitle2,
+                        fontFamily = FontName,
+                        fontSize = 14.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = Color.DarkGray,
+                        textAlign = TextAlign.Center
                     )
                 }
             }
