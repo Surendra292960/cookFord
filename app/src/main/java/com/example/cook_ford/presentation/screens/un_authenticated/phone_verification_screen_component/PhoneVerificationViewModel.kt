@@ -28,10 +28,6 @@ class PhoneVerificationViewModel @Inject constructor(
     private val firebaseAuthRepo: FirebaseAuthRepository,
     private val authRepository: AuthRepositoryImpl): ViewModel() {
 
-    private val REQ_ONE_TAP = 2  // Can be any integer unique to the Activity
-    private var showOneTapUI = true
-
-
     var phoneVerificationState = mutableStateOf(PhoneVerificationState())
 
     private val _viewState = MutableStateFlow(MainViewState())
@@ -39,57 +35,57 @@ class PhoneVerificationViewModel @Inject constructor(
 
     fun onUiEvent(phoneVerificationUiEvent: PhoneVerificationUiEvent) {
 
-       when(phoneVerificationUiEvent){
-           // Update phone
-           is PhoneVerificationUiEvent.PhoneChanged -> {
-               Log.d("TAG", "onUiEvent: ${phoneVerificationUiEvent.inputValue}")
-               phoneVerificationState.value = phoneVerificationState.value.copy(
-                   phone = phoneVerificationUiEvent.inputValue,
-                   errorState = phoneVerificationState.value.errorState.copy(
-                       phoneErrorState = if (phoneVerificationUiEvent.inputValue.trim().isNotEmpty())
-                           ErrorState()
-                       else
-                           phoneEmptyErrorState
-                   )
-               )
-           }
+        when(phoneVerificationUiEvent){
+            // Update phone
+            is PhoneVerificationUiEvent.PhoneChanged -> {
+                Log.d("TAG", "onUiEvent: ${phoneVerificationUiEvent.inputValue}")
+                phoneVerificationState.value = phoneVerificationState.value.copy(
+                    phone = phoneVerificationUiEvent.inputValue,
+                    errorState = phoneVerificationState.value.errorState.copy(
+                        phoneErrorState = if (phoneVerificationUiEvent.inputValue.trim().isNotEmpty())
+                            ErrorState()
+                        else
+                            phoneEmptyErrorState
+                    )
+                )
+            }
 
-           // Submit Phone'
-           is PhoneVerificationUiEvent.Submit -> {
-               val inputsValidated = validateInputs()
-               Log.d("TAG", "onUiEvent: $inputsValidated")
-               if (inputsValidated) {
-                   phoneVerificationState.value = phoneVerificationState.value.copy(nevigateToOTPScreen = true)
-               }
-           }
-       }
+            // Submit Phone'
+            is PhoneVerificationUiEvent.Submit -> {
+                val inputsValidated = validateInputs()
+                Log.d("TAG", "onUiEvent: $inputsValidated")
+                if (inputsValidated) {
+                    phoneVerificationState.value = phoneVerificationState.value.copy(nevigateToOTPScreen = true)
+                }
+            }
+        }
     }
     fun onOTPUiEvent(otpVerificationUiEvent: OTPVerificationUiEvent) {
 
-       when(otpVerificationUiEvent){
-           // Update phone
-           is OTPVerificationUiEvent.OTPChanged -> {
-               phoneVerificationState.value = phoneVerificationState.value.copy(
-                   otp = otpVerificationUiEvent.inputValue,
-                   errorState = phoneVerificationState.value.errorState.copy(
-                       otpErrorState = if (otpVerificationUiEvent.inputValue.trim().isNotEmpty())
-                           ErrorState()
-                       else
-                           otpEmptyErrorState
-                   )
-               )
-           }
+        when(otpVerificationUiEvent){
+            // Update phone
+            is OTPVerificationUiEvent.OTPChanged -> {
+                phoneVerificationState.value = phoneVerificationState.value.copy(
+                    otp = otpVerificationUiEvent.inputValue,
+                    errorState = phoneVerificationState.value.errorState.copy(
+                        otpErrorState = if (otpVerificationUiEvent.inputValue.trim().isNotEmpty())
+                            ErrorState()
+                        else
+                            otpEmptyErrorState
+                    )
+                )
+            }
 
-           // Submit OTP'
-           is OTPVerificationUiEvent.Submit -> {
-               val inputsValidated = validateOTPInputs()
-               Log.d("TAG", "onUiEvent OTP: $inputsValidated")
-               if (inputsValidated) {
-                   Log.d("TAG", "onUiEvent OTP: validated")
-                   viewmodelSignInWithCred(otp = phoneVerificationState.value.otp)
-               }
-           }
-       }
+            // Submit OTP'
+            is OTPVerificationUiEvent.Submit -> {
+                val inputsValidated = validateOTPInputs()
+                Log.d("TAG", "onUiEvent OTP: $inputsValidated")
+                if (inputsValidated) {
+                    Log.d("TAG", "onUiEvent OTP: validated")
+                    viewmodelSignInWithCred(otp = phoneVerificationState.value.otp)
+                }
+            }
+        }
     }
 
     private fun viewmodelSignInWithCred(otp: String) {
@@ -98,7 +94,7 @@ class PhoneVerificationViewModel @Inject constructor(
                 when(it){
                     is ResultState.Success->{
                         Log.d("TAG", "viewmodelSignInWithCred Success: $it")
-                      phoneVerificationState.value = phoneVerificationState.value.copy(nevigateToSignIn = true)
+                        phoneVerificationState.value = phoneVerificationState.value.copy(nevigateToSignIn = true)
                     }
                     is ResultState.Failure->{
                         Log.d("TAG", "viewmodelSignInWithCred Failure: $it")
@@ -166,12 +162,6 @@ class PhoneVerificationViewModel @Inject constructor(
 
     fun createUserWithPhone(mobile:String, activity: Activity) = firebaseAuthRepo.createUserWithPhone(mobile, activity)
 
-    fun signInWithCredential(code:String) = firebaseAuthRepo.signWithCredential(code)
+    private fun signInWithCredential(code:String) = firebaseAuthRepo.signWithCredential(code)
 
-
-    /* fun onUiEvent(phoneVerificationUiEvent: PhoneVerificationUiEvent.SendOtp) {
-         phoneVerificationState.value = phoneVerificationState.value.copy(
-             isOtpSent = true
-         )
-     }*/
 }

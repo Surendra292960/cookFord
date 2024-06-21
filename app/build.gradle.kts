@@ -67,6 +67,7 @@ dependencies {
     implementation(libs.androidx.ui)
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
+    implementation(libs.androidx.ui.util)
     implementation(libs.androidx.coroutines.android)
     implementation(libs.androidx.coroutines.test)
     implementation(libs.androidx.material3.android)

@@ -1,65 +1,77 @@
 package com.example.cook_ford.presentation.screens.authenticated.accounts.call_credit_screen_component
 
-import android.util.Log
+import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.LocalOverscrollConfiguration
 import androidx.compose.foundation.background
-import androidx.compose.foundation.interaction.collectIsDraggedAsState
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.pager.PageSize.Fill.calculateMainAxisPageSize
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material.icons.filled.VerifiedUser
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Divider
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import coil.compose.AsyncImage
-import coil.compose.rememberAsyncImagePainter
-import coil.request.ImageRequest
+import androidx.compose.ui.util.lerp
+import com.example.cook_ford.R
 import com.example.cook_ford.data.remote.profile_response.ProfileResponse
 import com.example.cook_ford.presentation.theme.AppTheme
 import com.example.cook_ford.presentation.theme.FontName
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.PagerState
+import com.google.accompanist.pager.rememberPagerState
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlin.math.absoluteValue
+
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
@@ -70,14 +82,16 @@ fun CallCreditScreen(
 
     Column( modifier = Modifier
         .fillMaxSize()
-        .padding(top = 30.dp, start = 10.dp, end = 10.dp)
         .background(Color.White)
         .verticalScroll(rememberScrollState()),
         horizontalAlignment = Alignment.CenterHorizontally) {
 
+        Spacer(modifier = Modifier.height(30.dp))
+
         Row(horizontalArrangement = Arrangement.spacedBy(10.dp,
             Alignment.CenterHorizontally),
-            verticalAlignment = Alignment.CenterVertically,){
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier .padding(start = 10.dp, end = 10.dp)){
             Icon(Icons.Filled.VerifiedUser, contentDescription = null, tint = Color.Green)
             Text(
                 text = "Exclusive Support for 15 days!",
@@ -96,7 +110,8 @@ fun CallCreditScreen(
             fontSize = 15.sp,
             fontWeight = FontWeight.Normal,
             color = Color.Gray,
-            textAlign = TextAlign.Center
+            textAlign = TextAlign.Center,
+            modifier = Modifier .padding(start = 10.dp, end = 10.dp)
         )
 
         Spacer(modifier = Modifier.height(10.dp))
@@ -122,7 +137,7 @@ fun CallCreditScreen(
                     append("for the mentioned time.")
                 }
             },
-            modifier = Modifier
+            modifier = Modifier.padding(start = 10.dp, end = 10.dp)
                 .align(Alignment.CenterHorizontally),
             fontWeight = FontWeight.Normal,
             fontSize = 15.sp,
@@ -131,7 +146,7 @@ fun CallCreditScreen(
 
         Spacer(modifier = Modifier.height(20.dp))
 
-        Row(modifier = Modifier.fillMaxWidth(),
+        Row(modifier = Modifier.fillMaxWidth().padding(start = 10.dp, end = 10.dp),
             verticalAlignment = Alignment.CenterVertically) {
 
             HorizontalDivider(modifier = Modifier.weight(1f))
@@ -150,10 +165,12 @@ fun CallCreditScreen(
 
         Spacer(modifier = Modifier.height(10.dp))
 
-        ElevatedCard(modifier = Modifier.padding(bottom = 10.dp), colors = CardDefaults.cardColors(Color.White), elevation = CardDefaults.elevatedCardElevation(AppTheme.dimens.paddingSmall), shape = RoundedCornerShape(10.dp), onClick = { /*TODO*/ }) {
+        ElevatedCard(modifier = Modifier.padding(bottom = 10.dp, start = 10.dp, end = 10.dp), colors = CardDefaults.cardColors(Color.White), elevation = CardDefaults.elevatedCardElevation(AppTheme.dimens.paddingSmall), shape = RoundedCornerShape(10.dp), onClick = { /*TODO*/ }) {
            Row(horizontalArrangement = Arrangement.SpaceBetween,
                verticalAlignment = Alignment.CenterVertically,
-               modifier = Modifier.fillMaxSize().padding(20.dp)){
+               modifier = Modifier
+                   .fillMaxSize()
+                   .padding(20.dp)){
 
                Column (horizontalAlignment = Alignment.Start){
                    Text(
@@ -211,10 +228,12 @@ fun CallCreditScreen(
 
         Spacer(modifier = Modifier.height(10.dp))
 
-        ElevatedCard(modifier = Modifier.padding(bottom = 10.dp), colors = CardDefaults.cardColors(Color.Green), elevation = CardDefaults.elevatedCardElevation(AppTheme.dimens.paddingSmall), shape = RoundedCornerShape(10.dp), onClick = { /*TODO*/ }) {
+        ElevatedCard(modifier = Modifier.padding(bottom = 10.dp, start = 10.dp, end = 10.dp), colors = CardDefaults.cardColors(Color.Green), elevation = CardDefaults.elevatedCardElevation(AppTheme.dimens.paddingSmall), shape = RoundedCornerShape(10.dp), onClick = { /*TODO*/ }) {
             Row(horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.fillMaxSize().padding(20.dp)){
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(20.dp)){
 
                 Column (horizontalAlignment = Alignment.Start){
                     Text(
@@ -272,8 +291,10 @@ fun CallCreditScreen(
 
         Spacer(modifier = Modifier.height(10.dp))
 
-        ElevatedCard(modifier = Modifier.padding(bottom = 10.dp), colors = CardDefaults.cardColors(Color.White),elevation = CardDefaults.elevatedCardElevation(AppTheme.dimens.paddingSmall), shape = RoundedCornerShape(10.dp), onClick = { /*TODO*/ }) {
-            Row(horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically, modifier = Modifier.fillMaxSize().padding(20.dp)){
+        ElevatedCard(modifier = Modifier.padding(bottom = 10.dp, start = 10.dp, end = 10.dp), colors = CardDefaults.cardColors(Color.White),elevation = CardDefaults.elevatedCardElevation(AppTheme.dimens.paddingSmall), shape = RoundedCornerShape(10.dp), onClick = { /*TODO*/ }) {
+            Row(horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically, modifier = Modifier
+                .fillMaxSize()
+                .padding(20.dp)){
 
                 Column (horizontalAlignment = Alignment.Start){
                     Text(
@@ -344,9 +365,32 @@ fun CallCreditScreen(
 
         HowItWorks(modifier = Modifier.padding(bottom = 20.dp))
 
+        Spacer(modifier = Modifier.height(20.dp))
+
+        CollapsableLazyColumn(
+            sections = listOf(
+                CollapsableSection(
+                    title = "What are call credits?",
+                    details = "That will defeat the whole purpose of LazyColumn. The lazy part just won't work when you use it"
+                ),
+                CollapsableSection(
+                    title = "How can I claim the call credit refund?",
+                    details = "like that. You could just go with normal Column and it would make no difference at all in terms of"
+                ),
+                CollapsableSection(
+                    title = "How to get the background verification done for the cook?",
+                    details = "performance. Especially with 10 items, with such number the LazyColumn is huge overkill. Bonus for your case - Column supports wrapContentHeight()."
+                ),
+            ),
+        )
+
+        Spacer(modifier = Modifier.height(40.dp))
+
+        ContentView()
+
+        Spacer(modifier = Modifier.height(20.dp))
     }
 }
-
 
 
 //@ExperimentalFoundationApi
@@ -356,8 +400,7 @@ fun HowItWorks( modifier: Modifier = Modifier) {
     val listState = rememberLazyListState()
 
     Column(modifier = modifier
-        .fillMaxWidth()
-        .padding(start = 10.dp, end = 10.dp),
+        .fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center) {
 
@@ -384,6 +427,188 @@ fun HowItWorks( modifier: Modifier = Modifier) {
 }
 
 
+@OptIn(ExperimentalFoundationApi::class, ExperimentalPagerApi::class)
+@Composable
+fun ContentView() {
+
+    val list = listOf(R.drawable.fstep_one, R.drawable.male_chef, R.drawable.female_chef, R.drawable.ic_chef_round,R.drawable.fstep_three,)
+
+    //val pagerState = rememberPagerState(initialPage = list.size)
+    val pagerState: PagerState = rememberPagerState(initialPage = list.size)
+
+    Text(
+        text = "Customer Reviews",
+        fontWeight = FontWeight.Bold,
+        fontSize = 18.sp,
+    )
+
+    Spacer(modifier = Modifier.height(20.dp))
+
+    Box(modifier = Modifier.fillMaxSize().background(Color.White), contentAlignment = Alignment.Center) {
+
+        CompositionLocalProvider(LocalOverscrollConfiguration provides null) {
+            HorizontalPager(
+                modifier = Modifier.fillMaxWidth().height(200.dp),
+                count = Int.MAX_VALUE,
+                itemSpacing = 15.dp,
+                contentPadding = PaddingValues(horizontal = 10.dp),
+                state = pagerState) { index ->
+
+                list.getOrNull(index % (list.size))?.let { item ->
+                    //BannerItem(image = item, pagerState = pagerState)
+                    Card(
+                       modifier =  Modifier
+                            .fillMaxSize()
+                           /* .graphicsLayer {
+                                // Calculate the absolute offset for the current page from the
+                                // scroll position. We use the absolute value which allows us to mirror
+                                // any effects for both directions
+                                val pageOffset = (
+                                        (pagerState.currentPage - index) + pagerState.pageOffset
+                                        ).absoluteValue
+
+                                // We animate the alpha, between 50% and 100%
+                                alpha = lerp(
+                                    start = 0.5f,
+                                    stop = 1f,
+                                    fraction = 1f - pageOffset.coerceIn(0f, 1f)
+                                )
+                            },*/
+                           .graphicsLayer {
+                               val pageOffset = (
+                                       (pagerState.currentPage - index) + pagerState.currentPageOffset
+                                       ).absoluteValue
+                           translationX = pageOffset * size.width
+                           alpha = 1- pageOffset.absoluteValue
+                       },
+                        shape = RoundedCornerShape(16.dp),
+                    ){
+
+                        Image(
+                            painter = painterResource(id = item),
+                            contentScale = ContentScale.Crop,
+                            contentDescription = "Banner Image",
+                            modifier = Modifier.size(200.dp).align(Alignment.Center).background(Color.Black).padding(10.dp)
+                        )
+                    }
+                }
+            }
+        }
+    }
+
+    LaunchedEffect(key1 = pagerState.currentPage) {
+        launch {
+            delay(3000)
+            with(pagerState) {
+                val target = if (currentPage < pageCount - 1) currentPage + 1 else 0
+
+                tween<Float>(
+                    durationMillis = 500,
+                    easing = FastOutSlowInEasing
+                )
+                animateScrollToPage(page = target )
+            }
+        }
+    }
+}
+
+
+@OptIn(ExperimentalPagerApi::class)
+@Composable
+fun BannerItem(image: Int, pagerState:PagerState, page: Int = pagerState.currentPage) {
+
+    Box(modifier = Modifier
+            .size(200.dp)
+            .clip(RoundedCornerShape(16.dp))
+            .background(Color.Black)
+        .graphicsLayer {
+            // Calculate the absolute offset for the current page from the
+            // scroll position. We use the absolute value which allows us to mirror
+            // any effects for both directions
+            val pageOffset = (
+                    (pagerState.currentPage - page) + pagerState.pageOffset
+                    ).absoluteValue
+
+            // We animate the alpha, between 50% and 100%
+            alpha = lerp(
+                start = 0.5f,
+                stop = 1f,
+                fraction = 1f - pageOffset.coerceIn(0f, 1f)
+            )
+        },
+        contentAlignment = Alignment.Center) {
+
+        Image(
+            painter = painterResource(id = image),
+            contentScale = ContentScale.Crop,
+            contentDescription = "Banner Image",
+            modifier = Modifier.fillMaxSize().align(Alignment.Center)
+        )
+    }
+}
+
+
+@Composable
+fun CollapsableLazyColumn(sections: List<CollapsableSection>, modifier: Modifier = Modifier) {
+
+    val collapsedState = remember(sections) { sections.map { true }.toMutableStateList() }
+
+    Text(
+        text = "FAQs",
+        fontWeight = FontWeight.Bold,
+        fontSize = 18.sp,
+        )
+
+    Spacer(modifier = Modifier.height(10.dp))
+
+    Column( modifier = Modifier.padding(start = 20.dp, end = 20.dp)) {
+        sections.forEachIndexed { i, dataItem ->
+            val collapsed = collapsedState[i]
+
+            Row(verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween,
+                modifier = Modifier.padding( vertical = 10.dp)
+                    .clickable {
+                        collapsedState[i] = !collapsed
+                    }) {
+
+                Text(
+                    dataItem.title,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 16.sp,
+                    modifier = Modifier.weight(1f)
+                )
+
+                Icon(
+                    Icons.Default.run {
+                        if (collapsed)
+                            KeyboardArrowDown
+                        else
+                            KeyboardArrowUp
+                    },
+                    contentDescription = "",
+                    tint = Color.LightGray,
+                )
+            }
+
+            if (!collapsed) {
+                Row {
+                    Text(text = dataItem.details,
+                        fontSize = 15.sp,
+                        color = Color.DarkGray,
+                        textAlign = TextAlign.Start,
+                    )
+                }
+            }
+        }
+    }
+}
+data class CollapsableSection(val title: String, val details: String)
+
+const val MaterialIconDimension = 24f
+@OptIn(ExperimentalPagerApi::class)
+val PagerState.pageOffset: Float
+    get() = this.currentPage + this.currentPageOffset
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun PreviewScreen(){

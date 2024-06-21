@@ -24,6 +24,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -41,9 +42,11 @@ import com.example.cook_ford.presentation.component.widgets.DefaultBackArrow
 import com.example.cook_ford.presentation.component.widgets.snack_bar.MainViewState
 import com.example.cook_ford.presentation.screens.un_authenticated.main_screen_component.MainActivity
 import com.example.cook_ford.presentation.screens.un_authenticated.phone_verification_screen_component.state.OTPVerificationUiEvent
+import com.example.cook_ford.presentation.screens.un_authenticated.phone_verification_screen_component.state.PhoneVerificationState
 import com.example.cook_ford.presentation.screens.un_authenticated.phone_verification_screen_component.state.PhoneVerificationUiEvent
 import com.example.cook_ford.presentation.screens.un_authenticated.phone_verification_screen_component.state.ResultState
 import com.google.android.gms.auth.api.phone.SmsRetriever
+import com.google.gson.Gson
 
 
 @RequiresApi(Build.VERSION_CODES.TIRAMISU)
@@ -54,7 +57,7 @@ fun PreviewScreen(){
         onNavigateBack = {}, onNavigateToAuthenticatedRoute = {})
 }
 
-@RequiresApi(Build.VERSION_CODES.TIRAMISU)
+//@RequiresApi(Build.VERSION_CODES.TIRAMISU)
 @Composable
 fun PhoneVerificationScreen(
     navController: NavController,
@@ -62,22 +65,18 @@ fun PhoneVerificationScreen(
     onNavigateToAuthenticatedRoute: () -> Unit) {
 
     val phoneVerificationViewModel:PhoneVerificationViewModel = hiltViewModel()
-    val phoneVerificationState by remember { phoneVerificationViewModel.phoneVerificationState }
+    var phoneVerificationState by remember { phoneVerificationViewModel.phoneVerificationState }
     val snackBarHostState = remember { SnackbarHostState() }
     val viewState: MainViewState by phoneVerificationViewModel.viewState.collectAsState()
     val context = LocalContext.current as MainActivity
 
-    LaunchedEffect(key1 = true) {
-        if (phoneVerificationState.nevigateToSignIn){
+    Log.d("TAG", "PhoneVerificationScreen: Data ${Gson().toJson(phoneVerificationState)}")
+    if (phoneVerificationState.nevigateToSignIn){
+        LaunchedEffect(key1 = true) {
             Log.d("TAG", "PhoneVerificationScreen: nevigateToSignIn ${phoneVerificationState.nevigateToSignIn}")
             onNavigateToAuthenticatedRoute.invoke()
+            phoneVerificationState = PhoneVerificationState()
         }
-    }
-
-
-    if (phoneVerificationState.phone.isNotEmpty()){
-        val code = SmsRetriever.getClient(context).startSmsUserConsent(phoneVerificationState.phone)
-        Log.d("TAG", "PhoneVerificationScreen Code : $code")
     }
 
     Column(modifier = Modifier
@@ -86,10 +85,7 @@ fun PhoneVerificationScreen(
         .verticalScroll(rememberScrollState()),
         horizontalAlignment = Alignment.Start) {
 
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 20.dp),
+        Row(modifier = Modifier.fillMaxWidth().padding(top = 20.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween) {
             Box(modifier = Modifier.weight(0.5f)) {
@@ -113,8 +109,7 @@ fun PhoneVerificationScreen(
 
                 Spacer(modifier = Modifier.height(10.dp))
 
-                Image(
-                    modifier = Modifier
+                Image(modifier = Modifier
                         .wrapContentWidth()
                         .height(350.dp)
                         .align(Alignment.CenterHorizontally),
@@ -134,8 +129,7 @@ fun PhoneVerificationScreen(
 
                 Spacer(modifier = Modifier.height(10.dp))
 
-                Text(
-                    text = "Enter your phone number in order to send you your OTP security code.",
+                Text(text = "Enter your phone number in order to send you your OTP security code.",
                     fontSize = 14.sp,
                     fontWeight = FontWeight.Normal,
                     color = Color.Gray,
@@ -241,8 +235,8 @@ fun PhoneVerificationScreen(
                     },
 
                     onSubmit = {
-                        onNavigateToAuthenticatedRoute.invoke()
-                        // phoneVerificationViewModel.onOTPUiEvent(otpVerificationUiEvent = OTPVerificationUiEvent.Submit)
+                        //onNavigateToAuthenticatedRoute.invoke()
+                        phoneVerificationViewModel.onOTPUiEvent(otpVerificationUiEvent = OTPVerificationUiEvent.Submit)
                     },
                 )
                 Spacer(modifier = Modifier.height(20.dp))
