@@ -19,10 +19,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.pager.PageSize.Fill.calculateMainAxisPageSize
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -33,7 +31,6 @@ import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material.icons.filled.VerifiedUser
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Divider
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -67,6 +64,7 @@ import com.example.cook_ford.presentation.theme.FontName
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.PagerState
+import com.google.accompanist.pager.calculateCurrentOffsetForPage
 import com.google.accompanist.pager.rememberPagerState
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -433,7 +431,6 @@ fun ContentView() {
 
     val list = listOf(R.drawable.fstep_one, R.drawable.male_chef, R.drawable.female_chef, R.drawable.ic_chef_round,R.drawable.fstep_three,)
 
-    //val pagerState = rememberPagerState(initialPage = list.size)
     val pagerState: PagerState = rememberPagerState(initialPage = list.size)
 
     Text(
@@ -444,54 +441,45 @@ fun ContentView() {
 
     Spacer(modifier = Modifier.height(20.dp))
 
-    Box(modifier = Modifier.fillMaxSize().background(Color.White), contentAlignment = Alignment.Center) {
+    HorizontalPager(
+        modifier = Modifier.fillMaxWidth(),
+        count = Int.MAX_VALUE,
+        itemSpacing = 15.dp,
+        contentPadding = PaddingValues(horizontal = 10.dp),
+        state = pagerState) { index ->
 
-        CompositionLocalProvider(LocalOverscrollConfiguration provides null) {
-            HorizontalPager(
-                modifier = Modifier.fillMaxWidth().height(200.dp),
-                count = Int.MAX_VALUE,
-                itemSpacing = 15.dp,
-                contentPadding = PaddingValues(horizontal = 10.dp),
-                state = pagerState) { index ->
+        list.getOrNull(index % (list.size))?.let { item ->
+            Card(
+                modifier =  Modifier
+                    .background(Color.Gray)
+                    .graphicsLayer {
+                        val pageOffset = calculateCurrentOffsetForPage(item).absoluteValue
+                        lerp(
+                            start = 0.85f,
+                            stop = 1f,
+                            fraction = 1f - pageOffset.coerceIn(0f, 1f)
+                        ).also { scale ->
+                            scaleX = scale
+                            scaleY = scale
 
-                list.getOrNull(index % (list.size))?.let { item ->
-                    //BannerItem(image = item, pagerState = pagerState)
-                    Card(
-                       modifier =  Modifier
-                            .fillMaxSize()
-                           /* .graphicsLayer {
-                                // Calculate the absolute offset for the current page from the
-                                // scroll position. We use the absolute value which allows us to mirror
-                                // any effects for both directions
-                                val pageOffset = (
-                                        (pagerState.currentPage - index) + pagerState.pageOffset
-                                        ).absoluteValue
-
-                                // We animate the alpha, between 50% and 100%
-                                alpha = lerp(
-                                    start = 0.5f,
-                                    stop = 1f,
-                                    fraction = 1f - pageOffset.coerceIn(0f, 1f)
-                                )
-                            },*/
-                           .graphicsLayer {
-                               val pageOffset = (
-                                       (pagerState.currentPage - index) + pagerState.currentPageOffset
-                                       ).absoluteValue
-                           translationX = pageOffset * size.width
-                           alpha = 1- pageOffset.absoluteValue
-                       },
-                        shape = RoundedCornerShape(16.dp),
-                    ){
-
-                        Image(
-                            painter = painterResource(id = item),
-                            contentScale = ContentScale.Crop,
-                            contentDescription = "Banner Image",
-                            modifier = Modifier.size(200.dp).align(Alignment.Center).background(Color.Black).padding(10.dp)
+                        }
+                        alpha = lerp(
+                            start = 0.5f,
+                            stop = 1f,
+                            fraction = 1f - pageOffset.coerceIn(0f, 1f)
                         )
+
                     }
-                }
+                    .fillMaxWidth()
+                    .height(200.dp),
+                shape = RoundedCornerShape(10.dp)){
+
+                Image(
+                    painter = painterResource(id = item),
+                    contentDescription = "Image $item",
+                    modifier = Modifier.fillMaxSize(),
+                    contentScale = ContentScale.FillBounds
+                )
             }
         }
     }
