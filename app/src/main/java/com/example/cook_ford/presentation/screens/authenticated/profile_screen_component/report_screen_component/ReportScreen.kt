@@ -80,9 +80,6 @@ fun ReportScreen(
             content = { padding ->
                 Column(modifier = Modifier.fillMaxSize().padding(padding).verticalScroll(rememberScrollState())) {
 
-                    TopBarNavigation(
-                        title = "Cook Report",
-                        onNavigateBack = { onNavigateBack.invoke() })
                     reportState?.profileResponse?.let { ImageWithUserName(it) }
 
                     ReportForm(

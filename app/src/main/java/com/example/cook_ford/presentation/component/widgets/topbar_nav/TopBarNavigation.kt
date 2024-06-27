@@ -29,7 +29,7 @@ import androidx.compose.ui.unit.sp
 import com.example.cook_ford.R
 
 
-@Preview
+@Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun PreviewScreen(){
 	TopBarNavigation(onNavigateBack = {}, title = "Home")

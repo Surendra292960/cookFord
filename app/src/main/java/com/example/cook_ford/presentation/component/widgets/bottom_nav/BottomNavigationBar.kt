@@ -20,11 +20,9 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.cook_ford.presentation.route.NavigationRoutes
-import com.example.cook_ford.utils.AppConstants
 
 /**
  * Composable function that represents the bottom navigation bar of the application.
@@ -35,7 +33,7 @@ import com.example.cook_ford.utils.AppConstants
 fun BottomNavigationBar(
     navController: NavHostController,
     /*title: (String) -> Unit,*/
-    isVisible: (Boolean) -> Unit, ) {
+    topBarVisibility: (Boolean) -> Unit, ) {
     val navItems = listOf(
         NavigationRoutes.HomeNavigation.Home,
         NavigationRoutes.HomeNavigation.Search,
@@ -97,30 +95,30 @@ fun BottomNavigationBar(
     when (navBackStackEntry?.destination?.route) {
         NavigationRoutes.HomeNavigation.Home.route -> {
             bottomNavVisibility = true
-            isVisible.invoke(true)
+            topBarVisibility.invoke(true)
         }
         NavigationRoutes.HomeNavigation.Search.route -> {
             bottomNavVisibility = true
-            isVisible.invoke(true)
+            topBarVisibility.invoke(true)
         }
         NavigationRoutes.HomeNavigation.Profile.route -> {
             bottomNavVisibility = true
-            isVisible.invoke(true)
+            topBarVisibility.invoke(true)
         }
         /**
          * Detail Navigation
          */
         NavigationRoutes.DetailsNavigation.ProfileDetail.route -> {
             bottomNavVisibility = false
-            isVisible.invoke(false)
+            topBarVisibility.invoke(true)
         }
         NavigationRoutes.DetailsNavigation.ProfileReview.route -> {
             bottomNavVisibility = false
-            isVisible(false)
+            topBarVisibility(true)
         }
         NavigationRoutes.DetailsNavigation.ProfileReport.route -> {
             bottomNavVisibility = false
-            isVisible(false)
+            topBarVisibility(true)
         }
 
         /**
@@ -128,19 +126,19 @@ fun BottomNavigationBar(
          */
         NavigationRoutes.AccountNavigation.EditProfile.route  -> {
             bottomNavVisibility = false
-            isVisible(true)
+            topBarVisibility(true)
         }
         NavigationRoutes.AccountNavigation.AddCookProfile.route -> {
             bottomNavVisibility = false
-            isVisible(true)
+            topBarVisibility(true)
         }
         NavigationRoutes.AccountNavigation.PostJob.route -> {
             bottomNavVisibility = false
-            isVisible(true)
+            topBarVisibility(true)
         }
         NavigationRoutes.AccountNavigation.CookPreferences.route -> {
             bottomNavVisibility = false
-            isVisible(true)
+            topBarVisibility(true)
         }
         /*
         DetailScreen.NotificationScreen.route -> {
@@ -149,7 +147,7 @@ fun BottomNavigationBar(
         }*/
         else -> {
             bottomNavVisibility = true
-            isVisible(false)
+            topBarVisibility(false)
         }
     }
 }

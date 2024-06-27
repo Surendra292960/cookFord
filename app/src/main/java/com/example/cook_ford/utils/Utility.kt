@@ -69,16 +69,6 @@ object Utility {
         context.startActivity(Intent.createChooser(intent, "Share Profile"))
     }
 
-    fun getTitleByRoute(route:String): String {
-        return when (route) {
-            AppConstants.HOME -> NavTitle.HOME
-            AppConstants.SEARCH -> NavTitle.SEARCH
-            AppConstants.PROFILE -> NavTitle.PROFILE
-            AppConstants.REVIEW -> NavTitle.REVIEW
-            // other cases
-            else -> NavTitle.HOME
-        }
-    }
 
     @Suppress("DEPRECATION")
     inline fun <reified T : Serializable> Bundle.customGetSerializable(key: String): T? {

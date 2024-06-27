@@ -43,7 +43,7 @@ fun StarRatingBar(
     onRatingChanged: (Float) -> Unit) {
     val userRating = remember { mutableFloatStateOf(rating) }
     val density = LocalDensity.current.density
-    val starSize = (12f * density).dp
+    val starSize = (10f * density).dp
     val starSpacing = (0.5f * density).dp
 
     Row(modifier = Modifier.selectableGroup(),
@@ -72,7 +72,7 @@ fun StarRatingBar(
                 imageVector = icon,
                 contentDescription = null,
                 tint = iconTintColor,
-                modifier = Modifier
+                modifier = Modifier.size(starSize)
                     .selectable(
                         selected = isSelected,
                         onClick = {

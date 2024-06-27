@@ -20,9 +20,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -36,7 +34,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.cook_ford.R
 import com.example.cook_ford.data.remote.profile_response.ProfileResponse
 import com.example.cook_ford.presentation.component.widgets.Progressbar
-import com.example.cook_ford.presentation.component.widgets.StarRatingBar
 import com.example.cook_ford.presentation.component.widgets.snack_bar.MainViewState
 import com.example.cook_ford.presentation.screens.authenticated.profile_screen_component.reviews_screen_component.state.ReviewUiEvent
 
@@ -64,91 +61,12 @@ fun ReviewScreen(
         reviewViewModel.setProfileData(profileResponse)
     }
 
-    var rating1 by remember { mutableFloatStateOf(0.0f) }
-    var rating2 by remember { mutableFloatStateOf(0.0f) }
-    var rating3 by remember { mutableFloatStateOf(0.0f) }
-    var rating4 by remember { mutableFloatStateOf(0.0f) }
-    var rating5 by remember { mutableFloatStateOf(0.0f) }
 
     Column(modifier = Modifier
         .fillMaxSize()
-        .padding(top = 20.dp)
         .verticalScroll(rememberScrollState())) {
 
         reviewState?.profileResponse?.let { ImageWithUserName(it) }
-
-        Row(modifier = Modifier
-            .padding(top = 20.dp, start = 20.dp, end = 20.dp)
-            .fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween) {
-            Text(text = "FoodQuality")
-            StarRatingBar(
-                maxStars = 5,
-                rating = rating1,
-                onRatingChanged = {
-                    rating1 = it
-                }
-            )
-        }
-
-        Row(modifier = Modifier
-            .padding(start = 20.dp, end = 20.dp)
-            .fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween) {
-            Text(text = "Hygiene")
-            StarRatingBar(
-                maxStars = 5,
-                rating = rating2,
-                onRatingChanged = {
-                    rating2 = it
-                }
-            )
-        }
-
-        Row(modifier = Modifier
-            .padding(start = 20.dp, end = 20.dp)
-            .fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween) {
-            Text(text = "Service")
-            StarRatingBar(
-                maxStars = 5,
-                rating = rating3,
-                onRatingChanged = {
-                    rating3 = it
-                }
-            )
-        }
-        Row(modifier = Modifier
-            .padding(start = 20.dp, end = 20.dp)
-            .fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween) {
-            Text(text = "Cleanliness")
-            StarRatingBar(
-                maxStars = 5,
-                rating = rating4,
-                onRatingChanged = {
-                    rating4 = it
-                }
-            )
-        }
-        Row(modifier = Modifier
-            .padding(start = 20.dp, end = 20.dp)
-            .fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween) {
-            Text(text = "Punctuality")
-            StarRatingBar(
-                maxStars = 5,
-                rating = rating5,
-                onRatingChanged = {
-                    rating5 = it
-                }
-            )
-        }
 
         ReviewForm(
             reviewState = reviewState,

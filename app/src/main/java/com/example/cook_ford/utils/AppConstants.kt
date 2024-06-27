@@ -58,4 +58,13 @@ object AppConstants {
     //NoteScreen
     const val NOTE = "Add Note"
     const val NOTE_PLACEHOLDER = "Any important details you want to remember about the cook (Only visible to you)"
+
+     //Account
+     const val ACCOUNT_NAVIGATION = "Account"
+     const val PROFILE_ACCOUNT = "ProfileAccount"
+     const val CALL_CREDIT = "CallCredit"
+     const val EDIT_PROFILE = "Edit Profile"
+     const val ADD_COOK_PROFILE = "AddCookProfile"
+     const val POST_JOB = "PostJob"
+     const val COOK_PREFERENCES = "CookPreferences"
 }

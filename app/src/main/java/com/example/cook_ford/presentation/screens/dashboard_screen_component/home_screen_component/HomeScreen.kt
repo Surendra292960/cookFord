@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
@@ -13,8 +12,6 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -23,12 +20,11 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.cook_ford.presentation.component.widgets.bottom_nav.BottomNavigationBar
+import com.example.cook_ford.presentation.component.widgets.bottom_nav.getTitleByRoute
 import com.example.cook_ford.presentation.component.widgets.topbar_nav.NavTopBar
 import com.example.cook_ford.presentation.route.HomeNavGraph
-import com.example.cook_ford.presentation.route.bottom_nav.NavTitle
 import com.example.cook_ford.presentation.theme.Cook_fordTheme
 import com.example.cook_ford.utils.AppConstants
 
@@ -85,15 +81,7 @@ fun UserDashBoard(
     }
 }
 
-fun getTitleByRoute(route:String): String {
-    return when (route) {
-        AppConstants.HOME -> NavTitle.HOME
-        AppConstants.SEARCH -> NavTitle.SEARCH
-        AppConstants.PROFILE -> NavTitle.PROFILE
-        // other cases
-        else -> NavTitle.HOME
-    }
-}
+
 @Preview(showSystemUi = true, showBackground = true)
 @Composable
 fun Preview() {
