@@ -21,9 +21,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.example.cook_ford.presentation.component.widgets.bottom_nav.BottomNavigationBar
-import com.example.cook_ford.presentation.component.widgets.bottom_nav.getTitleByRoute
-import com.example.cook_ford.presentation.component.widgets.topbar_nav.NavTopBar
+import com.example.cook_ford.presentation.route.bottom_nav.BottomNavigationBar
+import com.example.cook_ford.presentation.route.bottom_nav.getTitleByRoute
+import com.example.cook_ford.presentation.route.topbar_nav.NavTopBar
 import com.example.cook_ford.presentation.route.HomeNavGraph
 import com.example.cook_ford.presentation.theme.Cook_fordTheme
 import com.example.cook_ford.utils.AppConstants

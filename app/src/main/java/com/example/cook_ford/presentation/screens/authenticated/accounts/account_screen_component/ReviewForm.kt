@@ -51,7 +51,7 @@ fun ReviewForm(
             keyboardOptions = KeyboardOption(
                 imeAction = ImeAction.Done,
                 keyboardType = KeyboardType.Text,
-                label = AppConstants.REVIEW,
+                label = AppConstants.LABEL_REVIEW,
                 placeholder = AppConstants.REVIEW_PLACEHOLDER
             ),
             isError = reviewState.errorState.reviewErrorState.hasError,

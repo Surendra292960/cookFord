@@ -1,5 +1,6 @@
 package com.example.cook_ford.presentation.screens.authenticated.accounts.add_cook_screen_component
 import android.util.Log
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -24,6 +25,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.repeatOnLifecycle
 import com.example.cook_ford.data.remote.profile_response.ProfileResponse
+import com.example.cook_ford.presentation.component.rememberImeState
 import com.example.cook_ford.presentation.component.widgets.dialog.CustomDialog
 import com.example.cook_ford.presentation.component.widgets.dialog.ResetWarning
 import com.example.cook_ford.presentation.component.widgets.snack_bar.MainViewState
@@ -45,6 +47,16 @@ fun AddCookProfileScreen(
     val changeProfileState = remember { mutableStateOf("") }
     val viewState: MainViewState by addCookProfileViewModel.viewState.collectAsState()
     val lifecycle = LocalLifecycleOwner.current.lifecycle
+
+
+    val imeState = rememberImeState()
+    val scrollState = rememberScrollState()
+
+    LaunchedEffect(key1 = imeState.value) {
+        if (imeState.value){
+            scrollState.animateScrollTo(scrollState.maxValue, tween(300))
+        }
+    }
 
     if (addCookProfileState.isCookAddedSuccessful) {
 
@@ -68,7 +80,7 @@ fun AddCookProfileScreen(
                 .fillMaxSize()
                 .padding(start = 16.dp, end = 16.dp)
                 .background(Color.White)
-                .verticalScroll(rememberScrollState()),
+                .verticalScroll(scrollState),
             horizontalAlignment = Alignment.CenterHorizontally) {
 
             // EditProfile Inputs Composable

@@ -1,6 +1,7 @@
-package com.example.cook_ford.presentation.component.widgets.bottom_nav
+package com.example.cook_ford.presentation.route.bottom_nav
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.LocalContentColor
@@ -19,9 +20,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
+import com.example.cook_ford.presentation.component.widgets.MediumTitleText
 import com.example.cook_ford.presentation.route.NavigationRoutes
 
 /**
@@ -38,7 +42,7 @@ fun BottomNavigationBar(
         NavigationRoutes.HomeNavigation.Home,
         NavigationRoutes.HomeNavigation.Search,
         // NavigationRoutes.BottomNavigation.List,
-        NavigationRoutes.HomeNavigation.Profile
+        NavigationRoutes.HomeNavigation.Account
     )
     var selectedItem by rememberSaveable { mutableIntStateOf(0) }
 
@@ -62,10 +66,18 @@ fun BottomNavigationBar(
                         Icon(
                             screen.icon,
                             contentDescription = screen.title,
-                            tint = if (navBackStackEntry?.destination?.route == screen.route) MaterialTheme.colors.primary else LocalContentColor.current,
+                            tint = if (navBackStackEntry?.destination?.route == screen.route) MaterialTheme.colors.primary else Color.Gray,
                         )
                     },
-                    label = { Text(screen.title) },
+                    label = {
+                        MediumTitleText(
+                            modifier = Modifier,
+                            text = screen.title,
+                            fontWeight = FontWeight.W700,
+                            textAlign = TextAlign.Center,
+                            textColor = if (navBackStackEntry?.destination?.route == screen.route) MaterialTheme.colors.primary else Color.Gray,
+                        )
+                    },
                     selected = navBackStackEntry?.destination?.route == screen.route,
                     onClick = {
 
@@ -101,12 +113,12 @@ fun BottomNavigationBar(
             bottomNavVisibility = true
             topBarVisibility.invoke(true)
         }
-        NavigationRoutes.HomeNavigation.Profile.route -> {
+        NavigationRoutes.HomeNavigation.Account.route -> {
             bottomNavVisibility = true
             topBarVisibility.invoke(true)
         }
         /**
-         * Detail Navigation
+         * Profile Details Navigation
          */
         NavigationRoutes.DetailsNavigation.ProfileDetail.route -> {
             bottomNavVisibility = false
@@ -137,6 +149,10 @@ fun BottomNavigationBar(
             topBarVisibility(true)
         }
         NavigationRoutes.AccountNavigation.CookPreferences.route -> {
+            bottomNavVisibility = false
+            topBarVisibility(true)
+        }
+        NavigationRoutes.AccountNavigation.CallCredit.route -> {
             bottomNavVisibility = false
             topBarVisibility(true)
         }

@@ -5,7 +5,6 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
-import com.example.cook_ford.presentation.route.bottom_nav.NavTitle
 import java.io.Serializable
 import java.text.ParseException
 import java.text.SimpleDateFormat

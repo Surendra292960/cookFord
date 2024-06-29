@@ -15,12 +15,17 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.cook_ford.R
 import com.example.cook_ford.presentation.component.widgets.KeyboardOption
+import com.example.cook_ford.presentation.component.widgets.MediumTitleText
+import com.example.cook_ford.presentation.component.widgets.OutlinedSubmitButton
 import com.example.cook_ford.presentation.component.widgets.StarRatingBar
 import com.example.cook_ford.presentation.component.widgets.SubmitButton
 import com.example.cook_ford.presentation.component.widgets.Textarea
@@ -48,11 +53,18 @@ fun ReviewForm(
         verticalArrangement = Arrangement.SpaceBetween) {
 
         Row(modifier = Modifier
-            .padding(top = 10.dp, start = 20.dp, end = 20.dp)
+            .padding(top = 10.dp, start = 10.dp, end = 10.dp)
             .fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween) {
-            Text(text = "FoodQuality")
+
+            MediumTitleText(
+                modifier = Modifier,
+                text = "FoodQuality",
+                fontWeight = FontWeight.W500,
+                textAlign = TextAlign.Center,
+                textColor = Color.DarkGray
+            )
             StarRatingBar(
                 maxStars = 5,
                 rating = rating1,
@@ -63,11 +75,18 @@ fun ReviewForm(
         }
 
         Row(modifier = Modifier
-            .padding(start = 20.dp, end = 20.dp)
+            .padding(top = 10.dp, start = 10.dp, end = 10.dp)
             .fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween) {
-            Text(text = "Hygiene")
+
+            MediumTitleText(
+                modifier = Modifier,
+                text = "Hygiene",
+                fontWeight = FontWeight.W500,
+                textAlign = TextAlign.Center,
+                textColor = Color.DarkGray
+            )
             StarRatingBar(
                 maxStars = 5,
                 rating = rating2,
@@ -78,11 +97,18 @@ fun ReviewForm(
         }
 
         Row(modifier = Modifier
-            .padding(start = 20.dp, end = 20.dp)
+            .padding(top = 10.dp, start = 10.dp, end = 10.dp)
             .fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween) {
-            Text(text = "Service")
+
+            MediumTitleText(
+                modifier = Modifier,
+                text = "Service",
+                fontWeight = FontWeight.W500,
+                textAlign = TextAlign.Center,
+                textColor = Color.DarkGray
+            )
             StarRatingBar(
                 maxStars = 5,
                 rating = rating3,
@@ -92,11 +118,18 @@ fun ReviewForm(
             )
         }
         Row(modifier = Modifier
-            .padding(start = 20.dp, end = 20.dp)
+            .padding(top = 10.dp, start = 10.dp, end = 10.dp)
             .fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween) {
-            Text(text = "Cleanliness")
+
+            MediumTitleText(
+                modifier = Modifier,
+                text = "Cleanliness",
+                fontWeight = FontWeight.W500,
+                textAlign = TextAlign.Center,
+                textColor = Color.DarkGray
+            )
             StarRatingBar(
                 maxStars = 5,
                 rating = rating4,
@@ -106,11 +139,18 @@ fun ReviewForm(
             )
         }
         Row(modifier = Modifier
-            .padding(start = 20.dp, end = 20.dp)
+            .padding(top = 10.dp, start = 10.dp, end = 10.dp)
             .fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween) {
-            Text(text = "Punctuality")
+
+            MediumTitleText(
+                modifier = Modifier,
+                text = "Punctuality",
+                fontWeight = FontWeight.W500,
+                textAlign = TextAlign.Center,
+                textColor = Color.DarkGray
+            )
             StarRatingBar(
                 maxStars = 5,
                 rating = rating5,
@@ -131,7 +171,7 @@ fun ReviewForm(
             keyboardOptions = KeyboardOption(
                 imeAction = ImeAction.Done,
                 keyboardType = KeyboardType.Text,
-                label = AppConstants.REVIEW,
+                label = AppConstants.LABEL_REVIEW,
                 placeholder = AppConstants.REVIEW_PLACEHOLDER
             ),
             isError = reviewState.errorState.reviewErrorState.hasError,
@@ -142,13 +182,15 @@ fun ReviewForm(
 
         Spacer(modifier = Modifier.height(10.dp))
 
-        // SignIn Submit Button
-        SubmitButton(
-            modifier = Modifier.padding(top = AppTheme.dimens.paddingLarge),
+
+        OutlinedSubmitButton(
+            modifier = Modifier.padding(all = 10.dp),
+            textColor = Color.Gray,
             text = stringResource(id = R.string.submit_button_text),
             isLoading = viewState.isLoading,
             onClick = onSubmit
         )
+        Spacer(modifier = Modifier.height(10.dp))
     }
 }
 

@@ -1,6 +1,5 @@
 package com.example.cook_ford.presentation.screens.authenticated.profile_screen_component.report_screen_component
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
@@ -20,13 +19,17 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.wear.compose.material.Icon
 import com.example.cook_ford.R
 import com.example.cook_ford.presentation.component.widgets.KeyboardOption
+import com.example.cook_ford.presentation.component.widgets.MediumTitleText
+import com.example.cook_ford.presentation.component.widgets.OutlinedSubmitButton
 import com.example.cook_ford.presentation.component.widgets.SubmitButton
 import com.example.cook_ford.presentation.component.widgets.Textarea
 import com.example.cook_ford.presentation.component.widgets.snack_bar.MainViewState
@@ -62,7 +65,7 @@ fun ReportForm(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(200.dp),
-                keyboardOptions = KeyboardOption(imeAction = ImeAction.Done, keyboardType = KeyboardType.Text,label = AppConstants.REPORT, placeholder = AppConstants.REPORT_PLACEHOLDER),
+                keyboardOptions = KeyboardOption(imeAction = ImeAction.Done, keyboardType = KeyboardType.Text,label = AppConstants.LABEL_REPORT, placeholder = AppConstants.REPORT_PLACEHOLDER),
                 isError = reportState.errorState.reportErrorState.hasError,
                 errorText = stringResource(id = reportState.errorState.reportErrorState.errorMessageStringResource),
                 maxChar = 800
@@ -70,13 +73,16 @@ fun ReportForm(
 
             Spacer(modifier = Modifier.height(10.dp))
 
-            // SignIn Submit Button
-            SubmitButton(
-                modifier = Modifier.padding(top = AppTheme.dimens.paddingLarge),
-                text = stringResource(id = R.string.submit_button_text),
-                isLoading = viewState.isLoading,
-                onClick = onSubmit
-            )
+
+        OutlinedSubmitButton(
+            modifier = Modifier.padding(all = 10.dp),
+            textColor = Color.Gray,
+            text = stringResource(id = R.string.submit_button_text),
+            isLoading = viewState.isLoading,
+            onClick = onSubmit
+        )
+
+            Spacer(modifier = Modifier.height(10.dp))
         }
 }
 
@@ -96,7 +102,13 @@ fun IssueComponent(issueList: List<String>, onIssueChange: (String) -> Unit) {
                     onIssueChange(issueList[selectedIndex.intValue])
                 },
                 label = {
-                    Text(issue)
+                    MediumTitleText(
+                        modifier = Modifier,
+                        text = issue,
+                        fontWeight = FontWeight.W500,
+                        textAlign = TextAlign.Center,
+                        textColor = Color.DarkGray
+                    )
                 },
                 colors = if (selectedIndex.intValue == index) {
                     /**

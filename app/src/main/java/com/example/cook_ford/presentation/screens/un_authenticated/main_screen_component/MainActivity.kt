@@ -1,9 +1,11 @@
 package com.example.cook_ford.presentation.screens.un_authenticated.main_screen_component
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.animation.OvershootInterpolator
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.annotation.RequiresApi
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
@@ -24,6 +26,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -40,8 +43,11 @@ import kotlinx.coroutines.delay
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+      //  this.window.statusBarColor = ContextCompat.getColor(this,R.color.white)
+
         setContent {
             Surface(color = Color.White, modifier = Modifier.fillMaxSize()) {
                 MainAppNavHost()
@@ -104,6 +110,7 @@ fun SplashScreen(navController: NavController) {
 }
 
 
+@RequiresApi(Build.VERSION_CODES.TIRAMISU)
 @Composable
 fun MainAppNavHost(
     modifier: Modifier = Modifier,

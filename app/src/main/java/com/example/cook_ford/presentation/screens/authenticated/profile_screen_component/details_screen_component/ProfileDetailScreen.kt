@@ -50,7 +50,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -81,16 +80,16 @@ import com.example.cook_ford.R
 import com.example.cook_ford.data.remote.profile_response.ProfileResponse
 import com.example.cook_ford.data.remote.profile_response.TimeSlots
 import com.example.cook_ford.presentation.component.widgets.Child
+import com.example.cook_ford.presentation.component.widgets.MediumTitleText
 import com.example.cook_ford.presentation.component.widgets.Progressbar
 import com.example.cook_ford.presentation.component.widgets.RatingStar
-import com.example.cook_ford.presentation.component.widgets.StarRatingBar
-import com.example.cook_ford.presentation.screens.un_authenticated.main_screen_component.MainActivity
 import com.example.cook_ford.presentation.screens.authenticated.profile_screen_component.details_screen_component.model.ProfileCardView
 import com.example.cook_ford.presentation.screens.authenticated.profile_screen_component.details_screen_component.state.note_satate.NoteUiEvent
+import com.example.cook_ford.presentation.screens.un_authenticated.main_screen_component.MainActivity
 import com.example.cook_ford.presentation.theme.AppTheme
 import com.example.cook_ford.presentation.theme.Cook_fordTheme
-import com.example.cook_ford.presentation.theme.OrangeYellow1
 import com.example.cook_ford.presentation.theme.FontName
+import com.example.cook_ford.presentation.theme.OrangeYellow1
 import com.example.cook_ford.utils.Utility.shareProfile
 import com.google.gson.Gson
 
@@ -142,15 +141,20 @@ fun ProfileDetailScreen(
 						}
 						Spacer(modifier = Modifier.height(10.dp))
 
-						Column(modifier = Modifier.padding(start = 10.dp, end = 10.dp).fillMaxWidth(),verticalArrangement = Arrangement.spacedBy(5.dp), horizontalAlignment = Alignment.Start) {
+						Column(modifier = Modifier
+							.padding(start = 10.dp, end = 10.dp)
+							.fillMaxWidth(),verticalArrangement = Arrangement.spacedBy(5.dp), horizontalAlignment = Alignment.Start) {
 
 							profileState?.profileResponse!![index]?.profile?.feedback_rating?.forEach { rating->
-								Text(
+
+								MediumTitleText(
+									modifier = Modifier
+										.padding(top = AppTheme.dimens.paddingSmall,
+											bottom = AppTheme.dimens.paddingSmall),
 									text = "[ Ratings ]",
-									style = MaterialTheme.typography.subtitle2,
-									fontWeight = FontWeight.Bold,
-									fontSize = 15.sp,
-									color = Color.DarkGray,
+									textAlign = TextAlign.Start,
+									textColor = Color.DarkGray,
+									fontWeight = FontWeight.W700
 								)
 
 								Ratings(text = "FoodQuality", feedbackRating = rating?.food_quality?.toFloat())
@@ -163,47 +167,64 @@ fun ProfileDetailScreen(
 							Spacer(modifier = Modifier.height(10.dp))
 
 							profileState?.profileResponse!![index]?.profile?.headline?.let {
-								Text(
+
+								MediumTitleText(
+									modifier = Modifier
+										.padding(top = AppTheme.dimens.paddingSmall),
 									text = "[ Headlines ]",
-									style = MaterialTheme.typography.subtitle2,
-									fontWeight = FontWeight.Bold,
-									fontSize = 15.sp,
-									color = Color.DarkGray,
+									textAlign = TextAlign.Start,
+									textColor = Color.DarkGray,
+									fontWeight = FontWeight.W700
 								)
-								Text(
+
+								MediumTitleText(
+									modifier = Modifier
+										.padding(bottom = AppTheme.dimens.paddingSmall),
 									text = it,
-									style = MaterialTheme.typography.subtitle2,
-									color = Color.Gray,
+									textAlign = TextAlign.Start,
+									textColor = Color.Gray,
+									fontWeight = FontWeight.W400
 								)
 							}
 
 							profileState?.profileResponse!![index]?.profile?.bio?.let {
-								Text(
+
+								MediumTitleText(
+									modifier = Modifier
+										.padding(top = AppTheme.dimens.paddingSmall),
 									text = "[ Bio Data ]",
-									style = MaterialTheme.typography.subtitle2,
-									fontWeight = FontWeight.Bold,
-									fontSize = 15.sp,
-									color = Color.DarkGray
+									textAlign = TextAlign.Start,
+									textColor = Color.DarkGray,
+									fontWeight = FontWeight.W700
 								)
-								Text(
+
+								MediumTitleText(
+									modifier = Modifier
+										.padding(bottom = AppTheme.dimens.paddingSmall),
 									text = it,
-									style = MaterialTheme.typography.subtitle2,
-									color = Color.Gray
+									textAlign = TextAlign.Start,
+									textColor = Color.Gray,
+									fontWeight = FontWeight.W400
 								)
 							}
 
 							profileState?.profileResponse!![index]?.profile?.about?.let {
-								Text(
+								MediumTitleText(
+									modifier = Modifier
+										.padding(top = AppTheme.dimens.paddingSmall),
 									text = "[ Bio ]",
-									style = MaterialTheme.typography.subtitle2,
-									fontWeight = FontWeight.Bold,
-									fontSize = 15.sp,
-									color = Color.DarkGray
+									textAlign = TextAlign.Start,
+									textColor = Color.DarkGray,
+									fontWeight = FontWeight.W700
 								)
-								Text(
+
+								MediumTitleText(
+									modifier = Modifier
+										.padding(bottom = AppTheme.dimens.paddingSmall),
 									text = it,
-									style = MaterialTheme.typography.subtitle2,
-									color = Color.Gray
+									textAlign = TextAlign.Start,
+									textColor = Color.Gray,
+									fontWeight = FontWeight.W400
 								)
 							}
 						}
@@ -295,10 +316,12 @@ fun Stats(profile: ProfileResponse, followers: String, following: String) {
 	val otherCount = 3
 	Column(modifier = Modifier.fillMaxWidth()) {
 		profile?.username?.let {
+
 			Text(
 				text = it,
 				style = MaterialTheme.typography.h5,
 				color = Color.DarkGray,
+				fontWeight = FontWeight.W500,
 				modifier = Modifier.align(Alignment.CenterHorizontally))
 		}
 
@@ -422,8 +445,12 @@ fun Stats(profile: ProfileResponse, followers: String, following: String) {
 				onClick = {},
 				modifier = Modifier.weight(0.4f)
 			) {
-				Text(
-					"Follow"
+				MediumTitleText(
+					modifier = Modifier,
+					text = "Follow",
+					fontWeight = FontWeight.W900,
+					textAlign = TextAlign.Center,
+					textColor = Color.White
 				)
 			}
 			Spacer(modifier = Modifier.width(10.dp))
@@ -436,8 +463,12 @@ fun Stats(profile: ProfileResponse, followers: String, following: String) {
 				onClick = {},
 				modifier = Modifier.weight(0.4f)
 			) {
-				Text(
-					"Message"
+				MediumTitleText(
+					modifier = Modifier,
+					text = "Message",
+					fontWeight = FontWeight.W500,
+					textAlign = TextAlign.Center,
+					textColor = Color.White
 				)
 			}
 			Spacer(modifier = Modifier.width(10.dp))
@@ -500,7 +531,7 @@ fun SocialMediaIcons(
 	icon5Painter: Painter = painterResource(id = R.drawable.ic_report),
 	iconBackgroundColor: Color = Color.DarkGray,
 	iconTintColor: Color = Color.White,
-	contentPadding: Dp = 16.dp
+	contentPadding: Dp = AppTheme.dimens.paddingSmall
 ) {
 	var jetCaptureView: MutableState<ProfileCardView>? = null
 	val context = LocalContext.current as MainActivity
@@ -509,68 +540,120 @@ fun SocialMediaIcons(
 		.fillMaxWidth()
 		.wrapContentHeight()
 		.padding(contentPadding),
-		horizontalArrangement = Arrangement.SpaceEvenly
-	) {
-		IconButton(
-			onClick = { onClickIcon1() },
-			modifier = Modifier
-				.clip(CircleShape)
-				.background(iconBackgroundColor),
-		) {
-			Icon(
-				painter = icon1Painter,
-				contentDescription = null,
-				tint = iconTintColor,
+		verticalAlignment = Alignment.CenterVertically,
+		horizontalArrangement = Arrangement.SpaceEvenly) {
+		Column(horizontalAlignment = Alignment.CenterHorizontally) {
+			IconButton(
+				onClick = { onClickIcon1() },
+				modifier = Modifier
+					.clip(CircleShape)
+					.background(iconBackgroundColor),
+			) {
+				Icon(
+					painter = icon1Painter,
+					contentDescription = null,
+					tint = iconTintColor,
+				)
+			}
+			MediumTitleText(
+				modifier = Modifier.padding(top = 5.dp),
+				text = "Call",
+				fontWeight = FontWeight.W400,
+				textAlign = TextAlign.Center,
+				textColor = Color.Gray
 			)
 		}
-		IconButton(
-			onClick = { onClickIcon2() },
-			modifier = Modifier
-				.clip(CircleShape)
-				.background(iconBackgroundColor)
-		) {
-			Icon(
-				painter = icon2Painter,
-				contentDescription = null,
-				tint = iconTintColor
-			)
-		}
-		IconButton(
-			onClick = {  shareProfile(context)
-				//jetCaptureView?.value?.capture(jetCaptureView?.value as ProfileCardView, jetCaptureView)
-			},
-			modifier = Modifier
-				.clip(CircleShape)
-				.background(iconBackgroundColor)
-		) {
-			Icon(
-				painter = icon3Painter,
-				contentDescription = null,
-				tint = iconTintColor
-			)
-		}
-		IconButton(
-			onClick = { onClickIcon4() },
-			modifier = Modifier
-				.clip(CircleShape)
-				.background(iconBackgroundColor)) {
-			Icon(
-				painter = icon4Painter,
-				contentDescription = null,
-				tint = iconTintColor
-			)
-		}
-		IconButton(
-			onClick = { onClickIcon5() },
-			modifier = Modifier
-				.clip(CircleShape)
-				.background(iconBackgroundColor)) {
-			Icon(
-				painter = icon5Painter,
-				contentDescription = null,
-				tint = iconTintColor
-			)
 
+		Column(horizontalAlignment = Alignment.CenterHorizontally) {
+			IconButton(
+				onClick = { onClickIcon2() },
+				modifier = Modifier
+					.clip(CircleShape)
+					.background(iconBackgroundColor)
+			) {
+				Icon(
+					painter = icon2Painter,
+					contentDescription = null,
+					tint = iconTintColor
+				)
+			}
+			MediumTitleText(
+				modifier = Modifier.padding(top = 5.dp),
+				text = "Review",
+				fontWeight = FontWeight.W400,
+				textAlign = TextAlign.Center,
+				textColor = Color.Gray
+			)
+		}
+
+		Column(horizontalAlignment = Alignment.CenterHorizontally) {
+			IconButton(
+				onClick = {
+					shareProfile(context)
+					//jetCaptureView?.value?.capture(jetCaptureView?.value as ProfileCardView, jetCaptureView)
+				},
+				modifier = Modifier
+					.clip(CircleShape)
+					.background(iconBackgroundColor)
+			) {
+				Icon(
+					painter = icon3Painter,
+					contentDescription = null,
+					tint = iconTintColor
+				)
+			}
+			MediumTitleText(
+				modifier = Modifier.padding(top = 5.dp),
+				text = "Share",
+				fontWeight = FontWeight.W400,
+				textAlign = TextAlign.Center,
+				textColor = Color.Gray
+			)
+		}
+
+		Column(horizontalAlignment = Alignment.CenterHorizontally) {
+			IconButton(
+				onClick = { onClickIcon4() },
+				modifier = Modifier
+					.clip(CircleShape)
+					.background(iconBackgroundColor)
+			) {
+				Icon(
+					painter = icon4Painter,
+					contentDescription = null,
+					tint = iconTintColor
+				)
+			}
+
+			MediumTitleText(
+				modifier = Modifier.padding(top = 5.dp),
+				text = "Note",
+				fontWeight = FontWeight.W400,
+				textAlign = TextAlign.Center,
+				textColor = Color.Gray
+			)
+		}
+
+		Column(horizontalAlignment = Alignment.CenterHorizontally) {
+			IconButton(
+				onClick = { onClickIcon5() },
+				modifier = Modifier
+					.clip(CircleShape)
+					.background(iconBackgroundColor)
+			) {
+				Icon(
+					painter = icon5Painter,
+					contentDescription = null,
+					tint = iconTintColor
+				)
+			}
+			MediumTitleText(
+				modifier = Modifier.padding(top = 5.dp),
+				text = "Report",
+				fontWeight = FontWeight.W400,
+				textAlign = TextAlign.Center,
+				textColor = Color.Gray
+			)
 			//ProfileUI(jetCaptureView)
 		}
 	}
@@ -580,7 +663,7 @@ fun SocialMediaIcons(
 fun ExperienceCard(profile: ProfileResponse, timeSlots: List<TimeSlots>) {
 	Column(modifier = Modifier
 		.fillMaxWidth()
-		.padding(10.dp), verticalArrangement = Arrangement.SpaceEvenly) {
+		.padding(all = AppTheme.dimens.paddingSmall), verticalArrangement = Arrangement.SpaceEvenly) {
 
 		Card(shape = RoundedCornerShape(5.dp)) {
 			Row(modifier = Modifier
@@ -641,81 +724,92 @@ fun ExperienceCard(profile: ProfileResponse, timeSlots: List<TimeSlots>) {
 
 		//Cuisines
 		profile?.profile?.cuisine?.let {
-			Text(
+
+			MediumTitleText(
 				modifier = Modifier.padding(top = AppTheme.dimens.paddingSmall),
 				text = "Cuisines",
-				style = MaterialTheme.typography.subtitle2,
-				color = Color.DarkGray
+				textAlign = TextAlign.Start,
+				textColor = Color.DarkGray,
+				fontWeight = FontWeight.W700
 			)
-			Text(
+
+			MediumTitleText(
 				modifier = Modifier.padding(
 					top = AppTheme.dimens.paddingSmall,
-					bottom = AppTheme.dimens.paddingSmall
-				),
+					bottom = AppTheme.dimens.paddingSmall),
 				text = it,
-				style = MaterialTheme.typography.subtitle2,
-				color = Color.Gray
+				textAlign = TextAlign.Start,
+				textColor = Color.Gray,
+				fontWeight = FontWeight.W400
 			)
 		}
 
 		//Languages
 		profile?.profile?.language?.let {
-			Text(
+
+			MediumTitleText(
 				modifier = Modifier.padding(top = AppTheme.dimens.paddingSmall),
 				text = "Languages",
-				style = MaterialTheme.typography.subtitle2,
-				color = Color.DarkGray
+				textAlign = TextAlign.Start,
+				textColor = Color.DarkGray,
+				fontWeight = FontWeight.W700
 			)
 
-			Text(
+			MediumTitleText(
 				modifier = Modifier.padding(
 					top = AppTheme.dimens.paddingSmall,
-					bottom = AppTheme.dimens.paddingSmall
-				),
+					bottom = AppTheme.dimens.paddingSmall),
 				text = it,
-				style = MaterialTheme.typography.subtitle2,
-				color = Color.Gray
+				textAlign = TextAlign.Start,
+				textColor = Color.Gray,
+				fontWeight = FontWeight.W400
 			)
 		}
 
 		//Daily Visit
 		profile?.profile?.no_of_visit?.let {
-			Text(
+
+			MediumTitleText(
 				modifier = Modifier.padding(top = AppTheme.dimens.paddingSmall),
 				text = "Visit",
-				style = MaterialTheme.typography.subtitle2,
-				color = Color.DarkGray
+				textAlign = TextAlign.Start,
+				textColor = Color.DarkGray,
+				fontWeight = FontWeight.W700
 			)
-			Text(
+
+			MediumTitleText(
 				modifier = Modifier.padding(
 					top = AppTheme.dimens.paddingSmall,
-					bottom = AppTheme.dimens.paddingSmall
-				),
+					bottom = AppTheme.dimens.paddingSmall),
 				text = "Available for ".plus(it).plus(" visit daily."),
-				style = MaterialTheme.typography.subtitle2,
-				color = Color.Gray
+				textAlign = TextAlign.Start,
+				textColor = Color.Gray,
+				fontWeight = FontWeight.W400
 			)
 		}
 
 		//Available Time Slots
 		if (timeSlots.isNotEmpty()) {
-			Text(
+			MediumTitleText(
 				modifier = Modifier.padding(top = AppTheme.dimens.paddingSmall),
 				text = "Available Part-Time Time Slots",
-				style = MaterialTheme.typography.subtitle2,
-				color = Color.DarkGray
+				textAlign = TextAlign.Start,
+				textColor = Color.DarkGray,
+				fontWeight = FontWeight.W700
 			)
-
 			TimeSlotsComponent(timeSlots = timeSlots)
 		}
 
 		//Expectation
-		Text(
-			modifier = Modifier.padding(top = AppTheme.dimens.paddingSmall),
+		MediumTitleText(
+			modifier = Modifier.padding(top = AppTheme.dimens.paddingSmall,
+				bottom = AppTheme.dimens.paddingSmall),
 			text = "Expectation",
-			style = MaterialTheme.typography.subtitle2,
-			color = Color.DarkGray
+			textAlign = TextAlign.Start,
+			textColor = Color.DarkGray,
+			fontWeight = FontWeight.W700
 		)
+
 		Card(modifier = Modifier
 			.fillMaxWidth()
 			.wrapContentHeight(),
@@ -728,12 +822,13 @@ fun ExperienceCard(profile: ProfileResponse, timeSlots: List<TimeSlots>) {
 					.padding(10.dp),
 					horizontalAlignment = Alignment.CenterHorizontally,
 					verticalArrangement = Arrangement.SpaceBetween) {
-					androidx.compose.material3.Text(
-						modifier = Modifier.padding(top = AppTheme.dimens.paddingSmall),
+					MediumTitleText(
+						modifier = Modifier.padding(top = AppTheme.dimens.paddingSmall,
+							bottom = AppTheme.dimens.paddingSmall),
 						text = "Charges can go up or down based on the requirements.",
-						style = MaterialTheme.typography.subtitle2,
-						color = Color.DarkGray,
-						textAlign = TextAlign.Center
+						textAlign = TextAlign.Center,
+						textColor = Color.DarkGray,
+						fontWeight = FontWeight.W400
 					)
 				}
 			}
@@ -742,25 +837,33 @@ fun ExperienceCard(profile: ProfileResponse, timeSlots: List<TimeSlots>) {
 
 		Row (modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceEvenly){
 			profile?.profile?.no_of_visit?.let {
-				Text(
+				MediumTitleText(
 					modifier = Modifier
 						.weight(0.6f)
-						.padding(top = AppTheme.dimens.paddingSmall),
+						.padding(
+							top = AppTheme.dimens.paddingSmall,
+							bottom = AppTheme.dimens.paddingSmall
+						),
 					text = ("Part time (Daily meals for ").plus(it).plus(" visit)"),
-					style = MaterialTheme.typography.subtitle2,
-					color = Color.Gray
+					textAlign = TextAlign.Start,
+					textColor = Color.Gray,
+					fontWeight = FontWeight.W400
 				)
 			}
 
 			profile?.profile?.parttimeprice?.let { price->
 				if (price!=0){
-					Text(
+					MediumTitleText(
 						modifier = Modifier
 							.weight(0.3f)
-							.padding(top = AppTheme.dimens.paddingSmall),
+							.padding(
+								top = AppTheme.dimens.paddingSmall,
+								bottom = AppTheme.dimens.paddingSmall
+							),
 						text = ("Rs. ").plus(price).plus("/month"),
-						style = MaterialTheme.typography.subtitle2,
-						color = Color.DarkGray
+						textAlign = TextAlign.End,
+						textColor = Color.DarkGray,
+						fontWeight = FontWeight.W700
 					)
 				}
 			}
@@ -774,12 +877,18 @@ fun TimeSlotsComponent(timeSlots: List<TimeSlots>) {
 	FlowRow {
 		timeSlots.forEach { timeSlots ->
 			timeSlots.slots?.let {
-				Log.d("TAG", "TimeSlotsComponent profileState: $it")
 				FilterChip(
 					modifier = Modifier.padding(horizontal = 2.dp),
 					onClick = { },
 					label = {
-						timeSlots.slots?.let { Text(it) }
+						timeSlots.slots?.let { time->
+							MediumTitleText(
+							modifier = Modifier,
+							text = time,
+							fontWeight = FontWeight.W400,
+							textAlign = TextAlign.Center,
+							textColor = Color.DarkGray
+						) }
 					},
 					selected = true,
 				)
@@ -792,24 +901,25 @@ fun TimeSlotsComponent(timeSlots: List<TimeSlots>) {
 @ExperimentalFoundationApi
 @Composable
 fun CuisineImages(topCuisineUrls: Array<out String>, modifier: Modifier = Modifier) {
-	//Log.d("TAG", "CuisineImages topCuisineUrls : $topCuisineUrls")
 	val listState = rememberLazyListState()
 	if (topCuisineUrls.isNotEmpty()){
 		Column(modifier = modifier
 			.fillMaxWidth()
 			.padding(start = 10.dp, end = 10.dp),
 			verticalArrangement = Arrangement.SpaceBetween) {
-			Text(
-				textAlign = TextAlign.Start,
-				text = "Best Dishes",
-				style = MaterialTheme.typography.subtitle2,
-				color = Color.DarkGray
-			)
 
+			MediumTitleText(
+				modifier = Modifier
+					.padding(top = AppTheme.dimens.paddingSmall,
+						bottom = AppTheme.dimens.paddingSmall),
+				text = "Best Dishes",
+				textAlign = TextAlign.Start,
+				textColor = Color.DarkGray,
+				fontWeight = FontWeight.W700
+			)
 
 			LazyRow(state = listState, modifier = modifier.scale(1.01f)) {
 				items(topCuisineUrls.size) { index->
-					Log.d("TAG", "CuisineImages: ${topCuisineUrls[index]}")
 					Card(modifier = Modifier
 						.width(300.dp)
 						.height(150.dp)
@@ -844,18 +954,20 @@ private fun ProfileUI(jetCaptureView: MutableState<ProfileCardView>?) {
 
 @Composable
 fun Ratings(text: String, feedbackRating: Float?) {
-	var rating by remember { mutableFloatStateOf(0.0f) }
 
 	Row(modifier = Modifier
 		.fillMaxWidth(),
 		verticalAlignment = Alignment.CenterVertically,
 		horizontalArrangement = Arrangement.SpaceBetween) {
-		Text(
+
+		MediumTitleText(
+			modifier = Modifier,
 			text = text,
-			modifier = Modifier.padding(top = AppTheme.dimens.paddingSmall),
-			style = MaterialTheme.typography.subtitle2,
-			color = Color.DarkGray
+			textAlign = TextAlign.Start,
+			textColor = Color.DarkGray,
+			fontWeight = FontWeight.W700
 		)
+
 		if (feedbackRating != null) {
 			RatingStar(
 				rating = feedbackRating,
@@ -872,16 +984,19 @@ fun FooterStatus() {
 	Row(modifier = Modifier
 		.background(Color.LightGray)
 		.padding(bottom = 20.dp)) {
-		Text(
-			modifier = Modifier.padding(8.dp),
+
+		MediumTitleText(
+			modifier = Modifier
+				.padding(all = AppTheme.dimens.paddingSmall),
 			text = "All the cooks on Cook Ford are independent and manage their own profile." +
 					"We are helping them to find work without commission to the Agencies/Broker." +
 					"\n" +
 					"\n" +
 					"Please report any inaccuracy in the profile to Cook Ford or if you know the " +
 					"cook, help them to update or create their profile.",
-			style = MaterialTheme.typography.subtitle2,
-			color = Color.DarkGray
+			textAlign = TextAlign.Start,
+			textColor = Color.DarkGray,
+			fontWeight = FontWeight.W500
 		)
 	}
 }
@@ -1052,7 +1167,7 @@ fun AddNote() {
 
 		NoteForm(
 			noteState = noteState,
-			//viewState = false,
+			viewState = false,
 			modifier = Modifier
 				.fillMaxWidth()
 				.padding(start = 10.dp, end = 10.dp),

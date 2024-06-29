@@ -1,4 +1,4 @@
-package com.example.cook_ford.presentation.component.widgets.topbar_nav
+package com.example.cook_ford.presentation.route.topbar_nav
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.ScrollState
@@ -26,8 +26,6 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -40,9 +38,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.cook_ford.R
+import com.example.cook_ford.presentation.theme.FontName
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -126,7 +123,12 @@ fun NavTopBar(
   if (isVisible) {
     TopAppBar(
       title = {
-        Text(text = title)
+        Text(
+          text = title,
+          color = Color.DarkGray,
+          fontSize = 20.sp,
+          fontFamily = FontName,
+          fontWeight = FontWeight.W600)
       },
       actions = { actions() },
       navigationIcon = {
@@ -137,7 +139,7 @@ fun NavTopBar(
           )
         }
       },
-      modifier = modifier
+      modifier = modifier.background(Color.White)
     )
   } /*else {
     TopAppBar(

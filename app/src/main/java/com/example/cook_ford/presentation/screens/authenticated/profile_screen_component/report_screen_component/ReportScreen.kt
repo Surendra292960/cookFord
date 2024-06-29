@@ -1,6 +1,7 @@
 package com.example.cook_ford.presentation.screens.authenticated.profile_screen_component.report_screen_component
 
 import android.util.Log
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -40,9 +41,10 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.repeatOnLifecycle
 import com.example.cook_ford.R
 import com.example.cook_ford.data.remote.profile_response.ProfileResponse
+import com.example.cook_ford.presentation.component.rememberImeState
 import com.example.cook_ford.presentation.component.widgets.Progressbar
 import com.example.cook_ford.presentation.component.widgets.snack_bar.MainViewState
-import com.example.cook_ford.presentation.component.widgets.topbar_nav.TopBarNavigation
+import com.example.cook_ford.presentation.route.topbar_nav.TopBarNavigation
 import com.example.cook_ford.presentation.screens.authenticated.profile_screen_component.report_screen_component.state.ReportUiEvent
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -68,6 +70,17 @@ fun ReportScreen(
     val snackBarHostState = remember { SnackbarHostState() }
     val lifecycle = LocalLifecycleOwner.current.lifecycle
 
+
+    val imeState = rememberImeState()
+    val scrollState = rememberScrollState()
+
+    LaunchedEffect(key1 = imeState.value) {
+        if (imeState.value){
+            scrollState.animateScrollTo(scrollState.maxValue, tween(300))
+        }
+    }
+
+
     Progressbar(reportState.isLoading)
     LaunchedEffect(key1 = true) {
         reportViewModel.setProfileData(profileResponse)
@@ -75,42 +88,37 @@ fun ReportScreen(
 
     if (reportState.isSuccessful) {
         Log.d("TAG", "Data isSuccessful : ${reportState.isSuccessful}")
-        Scaffold(
-            snackbarHost = { SnackbarHost(hostState = snackBarHostState) },
-            content = { padding ->
-                Column(modifier = Modifier.fillMaxSize().padding(padding).verticalScroll(rememberScrollState())) {
+        Column(modifier = Modifier.fillMaxSize().verticalScroll(scrollState)) {
 
-                    reportState?.profileResponse?.let { ImageWithUserName(it) }
+            reportState?.profileResponse?.let { ImageWithUserName(it) }
 
-                    ReportForm(
-                        reportState = reportState,
-                        viewState = viewState,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(start = 10.dp, end = 10.dp),
-                        onIssueChange = { inputString ->
-                            Log.d("TAG", "ReportScreen: ${inputString}")
-                            reportViewModel.onUiEvent(
-                                reportUiEvent = ReportUiEvent.IssueChanged(
-                                    inputString
-                                )
-                            )
-                        },
-                        onReportChange = { inputString ->
-                            reportViewModel.onUiEvent(
-                                reportUiEvent = ReportUiEvent.ReportChanged(
-                                    inputString
-                                )
-                            )
-                        },
-                        onSubmit = {
-                            reportViewModel.onUiEvent(reportUiEvent = ReportUiEvent.Submit)
-                        }
+            ReportForm(
+                reportState = reportState,
+                viewState = viewState,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 10.dp, end = 10.dp),
+                onIssueChange = { inputString ->
+                    Log.d("TAG", "ReportScreen: ${inputString}")
+                    reportViewModel.onUiEvent(
+                        reportUiEvent = ReportUiEvent.IssueChanged(
+                            inputString
+                        )
                     )
-                    ShowSnackbar(lifecycle, snackBarHostState)
+                },
+                onReportChange = { inputString ->
+                    reportViewModel.onUiEvent(
+                        reportUiEvent = ReportUiEvent.ReportChanged(
+                            inputString
+                        )
+                    )
+                },
+                onSubmit = {
+                    reportViewModel.onUiEvent(reportUiEvent = ReportUiEvent.Submit)
                 }
-            }
-        )
+            )
+            ShowSnackbar(lifecycle, snackBarHostState)
+        }
     }
 }
 

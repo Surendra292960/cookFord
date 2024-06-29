@@ -152,7 +152,7 @@ fun HomeNavGraph(navController: NavHostController) {
 
         composable(NavigationRoutes.HomeNavigation.Search.route) {  }
 
-        composable(NavigationRoutes.HomeNavigation.Profile.route) {
+        composable(NavigationRoutes.HomeNavigation.Account.route) {
             AccountScreen (
                 navController = navController,
                 onNavigateToCallCreditScreen = {

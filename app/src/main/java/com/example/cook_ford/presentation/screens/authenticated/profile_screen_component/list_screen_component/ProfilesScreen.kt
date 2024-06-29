@@ -43,6 +43,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -51,6 +52,7 @@ import androidx.navigation.NavHostController
 import com.example.cook_ford.R
 import com.example.cook_ford.data.remote.profile_response.ProfileResponse
 import com.example.cook_ford.presentation.component.widgets.Child
+import com.example.cook_ford.presentation.component.widgets.MediumTitleText
 import com.example.cook_ford.presentation.component.widgets.Progressbar
 import com.example.cook_ford.presentation.screens.authenticated.profile_screen_component.list_screen_component.state.ProfileState
 import com.example.cook_ford.presentation.theme.AppTheme
@@ -94,7 +96,7 @@ fun ProfilesScreen(
                     UsersProfileList(
                         profileState = profileState,
                         index = index,
-                        onItemClick = { profileId ->
+                        onItemClick = {
                             navController.currentBackStackEntry?.savedStateHandle?.apply { set("profileResponse", Gson().toJson(profileState.profile!![index])) }
                             onNavigateToProfileDetails.invoke()
                         }
@@ -172,10 +174,13 @@ fun UsersProfileList(index: Int, onItemClick: (String) -> Unit, profileState: Pr
                                         .align(Alignment.CenterVertically)
                                         .padding(horizontal = 3.dp),
                                 )
-                                Text(text = it.toString(),
-                                    style = MaterialTheme.typography.subtitle2,
-                                    textAlign = TextAlign.Center,
-                                    color = Color.DarkGray
+                                MediumTitleText(
+                                    modifier = Modifier
+                                        .padding(start = 5.dp, end = 5.dp),
+                                    text = it.toString(),
+                                    textAlign = TextAlign.Start,
+                                    textColor = Color.Gray,
+                                    fontWeight = FontWeight.W500
                                 )
                             }
                         }
@@ -191,12 +196,13 @@ fun UsersProfileList(index: Int, onItemClick: (String) -> Unit, profileState: Pr
                         profileState?.profile?.get(index)?.username?.let {
 
                             Row(verticalAlignment = Alignment.CenterVertically) {
-                                Text(
+
+                                MediumTitleText(
+                                    modifier = Modifier,
                                     text = it,
-                                    //fontWeight = FontWeight.Bold,
-                                    style = MaterialTheme.typography.subtitle2,
-                                    modifier = Modifier.align(Alignment.CenterVertically),
-                                    color = Color.DarkGray
+                                    textAlign = TextAlign.Start,
+                                    textColor = Color.DarkGray,
+                                    fontWeight = FontWeight.W500
                                 )
                                 Spacer(modifier = Modifier.width(7.dp))
                                 Icon(imageVector = Icons.Filled.Verified, tint = Color.Green, contentDescription = "",modifier = Modifier.size(20.dp))
@@ -204,21 +210,25 @@ fun UsersProfileList(index: Int, onItemClick: (String) -> Unit, profileState: Pr
                         }
                         Spacer(modifier = Modifier.height(8.dp))
                         profileState.profile?.get(index)?.profile?.cuisine?.let {
-                            Text(
-                                text = it,
-                                style = MaterialTheme.typography.subtitle2,
+                            MediumTitleText(
                                 modifier = Modifier
                                     .background(OrangeYellow1)
                                     .padding(start = 5.dp, end = 5.dp),
-                                color = Color.DarkGray
+                                text = it,
+                                textAlign = TextAlign.Start,
+                                textColor = Color.DarkGray,
+                                fontWeight = FontWeight.W500
                             )
                         }
 
                         Spacer(modifier = Modifier.height(8.dp))
                         profileState.profile?.get(index)?.profile?.cuisine?.let {
-                            Text(
+                            MediumTitleText(
+                                modifier = Modifier,
                                 text = it,
-                                color = Color.Gray
+                                textAlign = TextAlign.Start,
+                                textColor = Color.Gray,
+                                fontWeight = FontWeight.W500
                             )
                         }
 
@@ -234,42 +244,40 @@ fun UsersProfileList(index: Int, onItemClick: (String) -> Unit, profileState: Pr
 
 @Composable
 fun BottomMenuText(profileRes: ProfileResponse) {
-    Log.d("TAG", "BottomMenuText: ${profileRes.profile}")
     profileRes?.profile?.let {
-        //if (profileRes.usertype == "provider"){
-            HorizontalDivider(color = Color.LightGray, thickness = 1.dp)
+        HorizontalDivider(color = Color.LightGray, thickness = 1.dp)
 
-            Row(modifier = Modifier
+        Row(
+            modifier = Modifier
                 .fillMaxWidth()
                 .padding(AppTheme.dimens.paddingTooSmall)) {
 
-                // Experience
-                profileRes?.profile?.experience?.let {
-                    Child(
-                        modifier = Modifier.weight(1f),
-                        title = "Experience",
-                        text = it.toString()
-                    )
-                }
+            // Experience
+            profileRes?.profile?.experience?.let {
+                Child(
+                    modifier = Modifier.weight(1f),
+                    title = "Experience",
+                    text = it.toString()
+                )
+            }
 
-                // Language
-                profileRes?.profile?.language?.let {
-                    Child(
-                        modifier = Modifier.weight(1f),
-                        title = "Language",
-                        text = it
-                    )
-                }
+            // Language
+            profileRes?.profile?.language?.let {
+                Child(
+                    modifier = Modifier.weight(1f),
+                    title = "Language",
+                    text = it
+                )
+            }
 
-                // From
-               profileRes?.location?.type?.let {
-                   Child(
-                       modifier = Modifier.weight(1f),
-                       title = "From",
-                       text = it.toString()
-                   )
-               }
-           // }
+            // From
+            profileRes?.location?.type?.let {
+                Child(
+                    modifier = Modifier.weight(1f),
+                    title = "From",
+                    text = it.toString()
+                )
+            }
         }
     }
 }

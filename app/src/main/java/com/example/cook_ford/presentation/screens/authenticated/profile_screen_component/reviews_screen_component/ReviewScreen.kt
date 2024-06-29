@@ -1,5 +1,6 @@
 package com.example.cook_ford.presentation.screens.authenticated.profile_screen_component.reviews_screen_component
 
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -8,6 +9,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
@@ -33,6 +35,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.cook_ford.R
 import com.example.cook_ford.data.remote.profile_response.ProfileResponse
+import com.example.cook_ford.presentation.component.rememberImeState
 import com.example.cook_ford.presentation.component.widgets.Progressbar
 import com.example.cook_ford.presentation.component.widgets.snack_bar.MainViewState
 import com.example.cook_ford.presentation.screens.authenticated.profile_screen_component.reviews_screen_component.state.ReviewUiEvent
@@ -56,6 +59,16 @@ fun ReviewScreen(
     val viewState:MainViewState by reviewViewModel.viewState.collectAsState()
 
     val reviewState by remember { reviewViewModel.reviewState }
+
+    val imeState = rememberImeState()
+    val scrollState = rememberScrollState()
+
+    LaunchedEffect(key1 = imeState.value) {
+        if (imeState.value){
+            scrollState.animateScrollTo(scrollState.maxValue, tween(300))
+        }
+    }
+
     Progressbar(reviewState.isLoading)
     LaunchedEffect(key1 = true) {
         reviewViewModel.setProfileData(profileResponse)
@@ -64,7 +77,7 @@ fun ReviewScreen(
 
     Column(modifier = Modifier
         .fillMaxSize()
-        .verticalScroll(rememberScrollState())) {
+        .verticalScroll(scrollState)) {
 
         reviewState?.profileResponse?.let { ImageWithUserName(it) }
 
@@ -73,6 +86,7 @@ fun ReviewScreen(
             viewState = viewState,
             modifier = Modifier
                 .fillMaxWidth()
+                .imePadding()
                 .padding(start = 10.dp, end = 10.dp),
             onReviewChange = { inputString ->
                 reviewViewModel.onUiEvent(

@@ -1,4 +1,4 @@
-package com.example.cook_ford.presentation.route.bottom_nav
+package com.example.cook_ford.presentation.route.bottom_nav.utils
 
 object NavTitle {
 
@@ -18,26 +18,20 @@ object NavTitle {
     const val NO_INTERNET = "NoInternet"
 
     //Bottom Nav
-    const val BOTTOM_NAVIGATION = "bottom_navigation"
     const val HOME = "Home"
     const val SEARCH = "Search"
-    const val LIST = "List"
-    const val PROFILE = "Profile"
+    const val ACCOUNT = "Account"
 
-    //Details
-    const val DETAILS_NAV = "Details"
-    const val DETAILS = "ProfileDetail"
+    //Profile Details
+    const val PROFILE_DETAILS = "Profile Details"
     const val REVIEW = "Review"
     const val REPORT = "Report"
-    const val ADD_NOTE = "AddNote"
 
     //Account
-    const val ACCOUNT_NAVIGATION = "Account"
-    const val PROFILE_ACCOUNT = "ProfileAccount"
-    const val CALL_CREDIT = "CallCredit"
-    const val EDIT_PROFILE = "Edit Profile"
-    const val ADD_COOK_PROFILE = "AddCookProfile"
-    const val POST_JOB = "PostJob"
-    const val COOK_PREFERENCES = "CookPreferences"
+    const val CALL_CREDIT = "Call Credit"
+    const val UPDATE_PROFILE = "Update Profile"
+    const val ADD_COOK_PROFILE = "Add Cook Profile"
+    const val POST_JOB = "Post Job"
+    const val COOK_PREFERENCES = "Cook Preferences"
 }
 

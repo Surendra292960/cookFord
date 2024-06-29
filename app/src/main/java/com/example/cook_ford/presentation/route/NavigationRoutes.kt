@@ -5,54 +5,52 @@ import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.ui.graphics.vector.ImageVector
-import com.example.cook_ford.presentation.route.bottom_nav.NavPath
-import com.example.cook_ford.presentation.route.bottom_nav.NavTitle
+import com.example.cook_ford.presentation.route.bottom_nav.utils.NavPath
+import com.example.cook_ford.presentation.route.bottom_nav.utils.NavTitle
 
 sealed class NavigationRoutes {
 
     // Unauthenticated Routes
     sealed class Unauthenticated(val route: String) : NavigationRoutes() {
-        data object NavigationRoute : Unauthenticated(route = NavTitle.UNAUTHENTICATED)
-        data object Splash : Unauthenticated(route = NavTitle.SPLASH)
-        data object Landing : Unauthenticated(route = NavTitle.LANDING)
-        data object PhoneVerification : Unauthenticated(route = NavTitle.PHONE_VERIFICATION)
-        data object OnBoard : Unauthenticated(route = NavTitle.ONBOARD)
-        data object SignIn : Unauthenticated(route = NavTitle.SIGN_IN)
-        data object SignUp : Unauthenticated(route = NavTitle.SIGN_UP)
+        data object NavigationRoute : Unauthenticated(route = NavPath.UNAUTHENTICATED.toString())
+        data object Splash : Unauthenticated(route = NavPath.SPLASH.toString())
+        data object Landing : Unauthenticated(route = NavPath.LANDING.toString())
+        data object PhoneVerification : Unauthenticated(route = NavPath.PHONE_VERIFICATION.toString())
+        data object OnBoard : Unauthenticated(route = NavPath.ONBOARD.toString())
+        data object SignIn : Unauthenticated(route = NavPath.SIGN_IN.toString())
+        data object SignUp : Unauthenticated(route = NavPath.SIGN_UP.toString())
     }
 
     // Authenticated Routes
     sealed class Authenticated(val route: String) : NavigationRoutes() {
-        data object NavigationRoute : Authenticated(route = NavTitle.AUTHENTICATED)
-        data object Dashboard : Authenticated(route = NavTitle.DASHBOARD)
-        data object Users : Authenticated(route = NavTitle.USERS)
-        data object NoInternet : Authenticated(route = NavTitle.NO_INTERNET)
+        data object NavigationRoute : Authenticated(route = NavPath.AUTHENTICATED.toString())
+        data object Dashboard : Authenticated(route = NavPath.DASHBOARD.toString())
+        data object Users : Authenticated(route = NavPath.USERS.toString())
+        data object NoInternet : Authenticated(route = NavPath.NO_INTERNET.toString())
     }
 
     //BottomNavigation Routes
     sealed class HomeNavigation(val route: String, val title: String, val icon: ImageVector): NavigationRoutes(){
-        data object NavigationRoute : HomeNavigation(route = NavTitle.BOTTOM_NAVIGATION, title = NavTitle.HOME, icon = Icons.Default.Home)
+        data object NavigationRoute : HomeNavigation(route = NavPath.BOTTOM_NAVIGATION.toString(), title = NavTitle.HOME, icon = Icons.Default.Home)
         data object Home : HomeNavigation(route = NavPath.HOME.toString(), title = NavTitle.HOME, icon = Icons.Default.Home)
         data object Search : HomeNavigation(route = NavPath.SEARCH.toString(), title = NavTitle.SEARCH, icon = Icons.Default.Search)
-       // data object List : BottomNavigation(route = NavPath.LIST.toString(), title = NavTitle.LIST, icon = Icons.Default.List)
-        data object Profile : HomeNavigation(route = NavPath.PROFILE.toString(), title = NavTitle.PROFILE, icon = Icons.Default.Person)
+        data object Account : HomeNavigation(route = NavPath.ACCOUNT.toString(), title = NavTitle.ACCOUNT, icon = Icons.Default.Person)
     }
 
     sealed class DetailsNavigation(val route: String) : NavigationRoutes() {
-        data object NavigationRoute : DetailsNavigation(route = NavTitle.DETAILS_NAV)
-        data object ProfileDetail : DetailsNavigation(route = NavTitle.DETAILS)
-        data object ProfileReview : DetailsNavigation(route = NavTitle.REVIEW)
-        data object ProfileReport : DetailsNavigation(route = NavTitle.REPORT)
+        data object NavigationRoute : DetailsNavigation(route = NavPath.DETAILS_NAV.toString())
+        data object ProfileDetail : DetailsNavigation(route = NavPath.PROFILE_DETAILS.toString())
+        data object ProfileReview : DetailsNavigation(route = NavPath.REVIEW.toString())
+        data object ProfileReport : DetailsNavigation(route = NavPath.REPORT.toString())
 
     }
 
     sealed class AccountNavigation(val route: String) : NavigationRoutes() {
-        data object NavigationRoute : AccountNavigation(route = NavTitle.ACCOUNT_NAVIGATION)
-        data object Account : AccountNavigation(route = NavTitle.PROFILE_ACCOUNT)
-        data object CallCredit : DetailsNavigation(route = NavTitle.CALL_CREDIT)
-        data object EditProfile : AccountNavigation(route = NavTitle.EDIT_PROFILE)
-        data object AddCookProfile : AccountNavigation(route = NavTitle.ADD_COOK_PROFILE)
-        data object PostJob : AccountNavigation(route = NavTitle.POST_JOB)
-        data object CookPreferences : AccountNavigation(route = NavTitle.COOK_PREFERENCES)
+        data object NavigationRoute : AccountNavigation(route = NavPath.ACCOUNT_NAVIGATION.toString())
+        data object CallCredit : DetailsNavigation(route = NavPath.CALL_CREDIT.toString())
+        data object EditProfile : AccountNavigation(route = NavPath.UPDATE_PROFILE.toString())
+        data object AddCookProfile : AccountNavigation(route = NavPath.ADD_COOK_PROFILE.toString())
+        data object PostJob : AccountNavigation(route = NavPath.POST_JOB.toString())
+        data object CookPreferences : AccountNavigation(route = NavPath.COOK_PREFERENCES.toString())
     }
 }
