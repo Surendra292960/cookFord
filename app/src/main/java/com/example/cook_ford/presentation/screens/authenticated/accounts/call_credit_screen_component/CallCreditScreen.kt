@@ -409,7 +409,7 @@ fun CallCreditScreen(
         
         HorizontalDivider()
         Spacer(modifier = Modifier.height(10.dp))
-        Row (modifier = Modifier,
+        Row (modifier = Modifier.background(Color.White),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween){
             
