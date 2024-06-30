@@ -183,7 +183,7 @@ fun AddCookProfileForm(
         StatusCard()
         Spacer(modifier = Modifier.height(20.dp))
 
-        // EditProfile Submit Button
+        // Submit Button
         OutlinedSubmitButton(
             modifier = Modifier.padding(all = 10.dp),
             textColor = Color.Gray,

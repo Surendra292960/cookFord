@@ -539,7 +539,7 @@ fun OutlinedSubmitButton(
         border = BorderStroke(1.dp, color = textColor),
         onClick = onClick) {
         if (isLoading) {
-            Progressbar(isLoading)
+            Progressbar(showProgressbar = isLoading)
         } else {
             Text(text = text, style = MaterialTheme.typography.titleMedium, color = textColor)
         }

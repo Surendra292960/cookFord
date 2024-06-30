@@ -94,6 +94,7 @@ class ReportViewModel  @Inject constructor(
 
         // Issue empty
         if (issue.isEmpty()) {
+            Log.d("TAG", "validateInputs: issue isEmpty")
             viewModelScope.launch {
                 _onProcessSuccess.emit("Please select issue")
                 _reportState.value = _reportState.value.copy(
@@ -106,6 +107,7 @@ class ReportViewModel  @Inject constructor(
         }
         // Review empty
         if (report.isEmpty()) {
+            Log.d("TAG", "validateInputs: report isEmpty")
             _reportState.value = _reportState.value.copy(
                 errorState = ReportErrorState(
                     reportErrorState = reportEmptyErrorState

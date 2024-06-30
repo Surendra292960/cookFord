@@ -28,7 +28,7 @@ object NavTitle {
     const val REPORT = "Report"
 
     //Account
-    const val CALL_CREDIT = "Call Credit"
+    const val CALL_CREDIT = "Your desire cook is just \n a call away"
     const val UPDATE_PROFILE = "Update Profile"
     const val ADD_COOK_PROFILE = "Add Cook Profile"
     const val POST_JOB = "Post Job"

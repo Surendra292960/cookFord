@@ -123,12 +123,16 @@ fun NavTopBar(
   if (isVisible) {
     TopAppBar(
       title = {
-        Text(
-          text = title,
-          color = Color.DarkGray,
-          fontSize = 20.sp,
-          fontFamily = FontName,
-          fontWeight = FontWeight.W600)
+       Row (horizontalArrangement = Arrangement.Start,
+         verticalAlignment = Alignment.CenterVertically,
+         modifier = modifier.fillMaxWidth()){
+         Text(
+           text = title,
+           color = Color.DarkGray,
+           fontSize = 20.sp,
+           fontFamily = FontName,
+           fontWeight = FontWeight.W600)
+       }
       },
       actions = { actions() },
       navigationIcon = {

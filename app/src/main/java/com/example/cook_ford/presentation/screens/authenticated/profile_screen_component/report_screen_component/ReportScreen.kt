@@ -4,10 +4,12 @@ import android.util.Log
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -16,6 +18,7 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.Button
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material3.Scaffold
@@ -107,6 +110,7 @@ fun ReportScreen(
                     )
                 },
                 onReportChange = { inputString ->
+                    Log.d("TAG", "ReportScreen: ${inputString}")
                     reportViewModel.onUiEvent(
                         reportUiEvent = ReportUiEvent.ReportChanged(
                             inputString
@@ -142,8 +146,9 @@ fun ImageWithUserName(profileRes: ProfileResponse) {
                     .size(80.dp)
                     .wrapContentHeight()
                     .clip(CircleShape)
+                    .border(1.dp, Color.LightGray, CircleShape)
                     .background(Color.White)) {
-                    Image(painter = painterResource(id = R.drawable.ic_chef_round),
+                    Image(painter = painterResource(id = R.drawable.male_chef),
                         contentDescription = null,
                         contentScale = ContentScale.Crop,
                         modifier = Modifier.size(80.dp)

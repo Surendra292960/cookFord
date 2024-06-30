@@ -3,6 +3,7 @@ package com.example.cook_ford.presentation.screens.authenticated.profile_screen_
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -121,8 +122,9 @@ fun ImageWithUserName(profileRes: ProfileResponse) {
                     .size(80.dp)
                     .wrapContentHeight()
                     .clip(CircleShape)
+                    .border(1.dp, Color.LightGray, CircleShape)
                     .background(Color.White)) {
-                    Image(painter = painterResource(id = R.drawable.ic_chef_round),
+                    Image(painter = painterResource(id = R.drawable.male_chef),
                         contentDescription = null,
                         contentScale = ContentScale.Crop,
                         modifier = Modifier.size(80.dp)

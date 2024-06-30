@@ -429,18 +429,7 @@ fun AccountProfileImage(accountState:AccountState, onNavigateToEditProfile: () -
                         .align(Alignment.Center),
                     shape = CircleShape,
                     elevation = 2.dp,
-                    border = BorderStroke(1.dp, Color.LightGray)
-                ) {
-                    /* if (changeProfileState.value == "Female") {
-                         Image(
-                             painter = painterResource(id = R.drawable.female_chef),
-                             contentDescription = "Profile Photo",
-                             modifier = Modifier,
-                             contentScale = ContentScale.Crop,
-                         )
-                     }else*/{
-
-                }
+                    border = BorderStroke(1.dp, Color.LightGray)) {
 
                     Image(
                         painter = painterResource(id = R.drawable.male_chef),
