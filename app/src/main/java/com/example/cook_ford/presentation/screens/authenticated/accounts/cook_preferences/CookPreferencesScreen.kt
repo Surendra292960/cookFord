@@ -8,16 +8,20 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Button
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Slider
 import androidx.compose.material3.SliderDefaults
@@ -31,14 +35,17 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.cook_ford.R
 import com.example.cook_ford.data.remote.profile_response.ProfileResponse
+import com.example.cook_ford.presentation.component.widgets.OutlinedSubmitButton
 import com.example.cook_ford.presentation.component.widgets.SegmentedControl
-import com.example.cook_ford.presentation.screens.authenticated.profile_screen_component.report_screen_component.IssueComponent
+import com.example.cook_ford.presentation.screens.authenticated.profile_screen_component.report_screen_component.SingleSelectionComponent
 import com.example.cook_ford.presentation.theme.FontName
 import com.google.gson.Gson
 
@@ -60,92 +67,144 @@ fun CookPreferencesScreen(
     profileResponse: ProfileResponse?=null,
     onNavigateToAuthenticatedRoute: () -> Unit){
 
-    Column( modifier = Modifier
-        .fillMaxSize()
-        .padding(start = 20.dp, end = 20.dp)
-        .verticalScroll(rememberScrollState()),
-        //verticalArrangement = Arrangement.SpaceEvenly,
-        horizontalAlignment = Alignment.Start) {
+    Column(
+        Modifier.fillMaxHeight(),
+        verticalArrangement = Arrangement.SpaceBetween) {
 
-        Spacer(modifier = Modifier.height(20.dp))
-        
-        Text(modifier = Modifier.align(Alignment.Start), text = "Cook Type", fontFamily = FontName, fontWeight = FontWeight.Bold)
-        JobTypeSection(
-            jobType = jobType, jobTypeLast = jobTypeLast, onChange = {  },
-            isError = false,
-            errorText = "Error",
-        )
+        Column( modifier = Modifier
+            .fillMaxSize()
+            .padding(start = 20.dp, end = 20.dp)
+            .verticalScroll(rememberScrollState())
+            .weight(1f, false), verticalArrangement = Arrangement.SpaceEvenly, horizontalAlignment = Alignment.Start) {
 
-        Spacer(modifier = Modifier.height(20.dp))
+            //Cook Types
+            Spacer(modifier = Modifier.height(20.dp))
+            Text(modifier = Modifier.align(Alignment.Start), text = "Cook Type", fontFamily = FontName, fontWeight = FontWeight.Bold)
+            JobTypeSection(
+                jobType = jobType, jobTypeLast = jobTypeLast, onChange = {  },
+                isError = false,
+                errorText = "Error",
+            )
 
-        Text(modifier = Modifier.align(Alignment.Start), text = "Number of visit per day", fontFamily = FontName, fontWeight = FontWeight.Bold)
-        SegmentedControl(
-            items = visits,
-            defaultSelectedItemIndex = 0) {
-            Log.e("CustomToggle", "Selected item : ${genders[it]}")
+            //Number of visit
+            Spacer(modifier = Modifier.height(20.dp))
+            Text(modifier = Modifier.align(Alignment.Start), text = "Number of visit per day", fontFamily = FontName, fontWeight = FontWeight.Bold)
+            SegmentedControl(
+                items = visits,
+                defaultSelectedItemIndex = 0) {
+                Log.e("CustomToggle", "Selected item : ${genders[it]}")
+            }
+
+            //Gender
+            Spacer(modifier = Modifier.height(20.dp))
+            Text(modifier = Modifier.align(Alignment.Start), text = "Gender", fontFamily = FontName, fontWeight = FontWeight.Bold)
+            SegmentedControl(
+                items = genders,
+                defaultSelectedItemIndex = 0) {
+                Log.e("CustomToggle", "Selected item : ${genders[it]}")
+            }
+
+            //Time Shift
+            Spacer(modifier = Modifier.height(20.dp))
+            Text(text = "Who is available for (any of the selected)", fontFamily = FontName, fontWeight = FontWeight.Bold)
+            Spacer(modifier = Modifier.height(5.dp))
+            HorizontalDivider(modifier = Modifier.height(1.dp))
+            Spacer(modifier = Modifier.height(5.dp))
+            Row (horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically){
+                Text(modifier = Modifier, text = "Morning", fontFamily = FontName, fontWeight = FontWeight.Bold)
+                Spacer(modifier = Modifier.width(10.dp))
+                SingleSelectionComponent(
+                    modifier = Modifier,
+                    issueList = morning,
+                    onIssueChange = {}
+                )
+            }
+
+            HorizontalDivider(modifier = Modifier.height(1.dp))
+            Spacer(modifier = Modifier.height(10.dp))
+            Row (horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically) {
+                Text(
+                    modifier = Modifier,
+                    text = "Afternoon",
+                    fontFamily = FontName,
+                    fontWeight = FontWeight.Bold
+                )
+                Spacer(modifier = Modifier.width(10.dp))
+                SingleSelectionComponent(
+                    modifier = Modifier,
+                    issueList = afternoon,
+                    onIssueChange = {}
+                )
+            }
+
+            HorizontalDivider(modifier = Modifier.height(1.dp))
+            Row (horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically) {
+                Text(
+                    modifier = Modifier,
+                    text = "Evening",
+                    fontFamily = FontName,
+                    fontWeight = FontWeight.Bold
+                )
+                Spacer(modifier = Modifier.width(10.dp))
+                SingleSelectionComponent(
+                    modifier = Modifier,
+                    issueList = evening,
+                    onIssueChange = {}
+                )
+            }
+
+
+            //Cuisine
+            Spacer(modifier = Modifier.height(20.dp))
+            Text(text = "Who can prepare (any of the selected)", fontFamily = FontName, fontWeight = FontWeight.Bold)
+            Spacer(modifier = Modifier.height(5.dp))
+            HorizontalDivider(modifier = Modifier.height(1.dp))
+            SingleSelectionComponent(
+                modifier = Modifier,
+                issueList = cuisine,
+                onIssueChange = {}
+            )
+
+            //Languages
+            Spacer(modifier = Modifier.height(15.dp))
+            Text(text = "Who can speak (any of the selected)", fontFamily = FontName, fontWeight = FontWeight.Bold)
+            Spacer(modifier = Modifier.height(5.dp))
+            HorizontalDivider(modifier = Modifier.height(1.dp))
+            Spacer(modifier = Modifier.height(10.dp))
+            SingleSelectionComponent(
+                modifier = Modifier,
+                issueList = languages,
+                onIssueChange = {}
+            )
+
+            Spacer(modifier = Modifier.height(20.dp))
+            Text(text = "Who is Experienced between", fontFamily = FontName, fontWeight = FontWeight.Bold)
+            Spacer(modifier = Modifier.height(5.dp))
+            HorizontalDivider(modifier = Modifier.height(1.dp))
+            Spacer(modifier = Modifier.height(10.dp))
+            SliderAdvancedExample(selectedExperience = {
+                Log.d("TAG","Slider Data : ${it.toInt()}")
+            })
+
+            Spacer(modifier = Modifier.height(20.dp))
         }
 
-        Spacer(modifier = Modifier.height(20.dp))
+        HorizontalDivider(modifier = Modifier.height(1.dp))
+        Row (modifier = Modifier.background(Color.White),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween){
 
-        Text(modifier = Modifier.align(Alignment.Start), text = "Gender", fontFamily = FontName, fontWeight = FontWeight.Bold)
-        SegmentedControl(
-            items = genders,
-            defaultSelectedItemIndex = 0) {
-            Log.e("CustomToggle", "Selected item : ${genders[it]}")
+            OutlinedSubmitButton(
+                modifier = Modifier.padding(all = 10.dp),
+                textColor = Color.Gray,
+                text = stringResource(id = R.string.submit_button_text),
+                isLoading = false,
+                onClick = { /*onSubmit*/ }
+            )
         }
-    //Time Shift
-        Spacer(modifier = Modifier.height(20.dp))
-        Text(text = "Who is available for (any of the selected)", fontFamily = FontName, fontWeight = FontWeight.Bold)
-        Spacer(modifier = Modifier.height(5.dp))
-        Text(modifier = Modifier.align(Alignment.Start), text = "Morning", fontFamily = FontName, fontWeight = FontWeight.Bold)
-        Spacer(modifier = Modifier.height(10.dp))
-        IssueComponent(
-            issueList = morning,
-            onIssueChange = {}
-        )
-
-        Spacer(modifier = Modifier.height(10.dp))
-        Text(modifier = Modifier.align(Alignment.Start), text = "Afternoon", fontFamily = FontName, fontWeight = FontWeight.Bold)
-        Spacer(modifier = Modifier.height(10.dp))
-        IssueComponent(
-            issueList = afternoon,
-            onIssueChange = {}
-        )
-
-        Text(modifier = Modifier.align(Alignment.Start), text = "Evening", fontFamily = FontName, fontWeight = FontWeight.Bold)
-        Spacer(modifier = Modifier.height(10.dp))
-        IssueComponent(
-            issueList = evening,
-            onIssueChange = {}
-        )
-
-        //Cuisine
-        Spacer(modifier = Modifier.height(20.dp))
-        Text(text = "Who can prepare (any of the selected)", fontFamily = FontName, fontWeight = FontWeight.Bold)
-        Spacer(modifier = Modifier.height(10.dp))
-        IssueComponent(
-            issueList = cuisine,
-            onIssueChange = {}
-        )
-
-        //Languages
-        Spacer(modifier = Modifier.height(20.dp))
-        Text(text = "Who can speak (any of the selected)", fontFamily = FontName, fontWeight = FontWeight.Bold)
-        Spacer(modifier = Modifier.height(10.dp))
-        IssueComponent(
-            issueList = languages,
-            onIssueChange = {}
-        )
-
-        Spacer(modifier = Modifier.height(20.dp))
-
-        Text(text = "Who is Experienced between", fontFamily = FontName, fontWeight = FontWeight.Bold)
-        Spacer(modifier = Modifier.height(10.dp))
-        SliderAdvancedExample(selectedExperience = {
-            Log.d("TAG","Slider Data : ${it.toInt()}")
-        })
-
-        Spacer(modifier = Modifier.height(20.dp))
     }
 }
 

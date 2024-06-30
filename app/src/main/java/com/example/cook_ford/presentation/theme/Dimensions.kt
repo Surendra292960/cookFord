@@ -11,6 +11,7 @@ interface Dimensions {
     val paddingLarge: Dp
     val paddingExtraLarge: Dp
     val normalButtonHeight: Dp
+    val mediumButtonHeight: Dp
     val smallButtonHeight: Dp
     val minButtonWidth: Dp
     val maxButtonWidth: Dp
@@ -32,6 +33,8 @@ val normalDimensions: Dimensions = object : Dimensions {
         get() = 32.dp
     override val normalButtonHeight: Dp
         get() = 56.dp
+    override val mediumButtonHeight: Dp
+        get() = 48.dp
     override val smallButtonHeight: Dp
         get() = 40.dp
     override val minButtonWidth: Dp

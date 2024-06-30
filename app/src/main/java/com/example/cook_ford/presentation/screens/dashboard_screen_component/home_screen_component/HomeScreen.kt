@@ -1,6 +1,7 @@
 package com.example.cook_ford.presentation.screens.dashboard_screen_component.home_screen_component
 
 import android.util.Log
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -16,6 +17,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -50,7 +52,7 @@ fun UserDashBoard(
 
     Scaffold(modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
-            Surface(shadowElevation = 3.dp) {
+            Surface(shadowElevation = 3.dp, modifier = Modifier.background(Color.White)) {
                 NavTopBar(
                     modifier = Modifier,
                     onNavigateBack = {navController.navigateUp()},
@@ -67,13 +69,12 @@ fun UserDashBoard(
                    /* title = {title->appBarTitle.value = title}*/){ isVisible ->
                     topBarVisibilityState.value = isVisible
                 }
-            } }) { padding ->
+            }
+        }
+    ) { padding ->
 
         // Creating a Column Layout
-        Column(
-            Modifier
-                .fillMaxSize()
-                .padding(padding),
+        Column(Modifier.fillMaxSize().padding(padding),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center) {
             HomeNavGraph(navController = navController)

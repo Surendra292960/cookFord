@@ -123,9 +123,9 @@ fun NavTopBar(
   if (isVisible) {
     TopAppBar(
       title = {
-       Row (horizontalArrangement = Arrangement.Start,
-         verticalAlignment = Alignment.CenterVertically,
-         modifier = modifier.fillMaxWidth()){
+       Row (modifier = modifier.fillMaxWidth(),
+         horizontalArrangement = Arrangement.Start,
+         verticalAlignment = Alignment.CenterVertically){
          Text(
            text = title,
            color = Color.DarkGray,

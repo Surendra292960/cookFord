@@ -11,6 +11,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -28,7 +29,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Button
 import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.icons.Icons
@@ -54,9 +54,11 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -65,8 +67,7 @@ import androidx.compose.ui.util.lerp
 import com.example.cook_ford.R
 import com.example.cook_ford.data.remote.profile_response.ProfileResponse
 import com.example.cook_ford.presentation.component.widgets.MediumTitleText
-import com.example.cook_ford.presentation.component.widgets.OutlinedSubmitButton
-import com.example.cook_ford.presentation.screens.authenticated.profile_screen_component.list_screen_component.state.ProfileState
+import com.example.cook_ford.presentation.component.widgets.OutlinedSmallSubmitButton
 import com.example.cook_ford.presentation.theme.AppTheme
 import com.example.cook_ford.presentation.theme.FontName
 import com.google.accompanist.pager.ExperimentalPagerApi
@@ -211,12 +212,12 @@ fun CallCreditScreen(
                     Column(horizontalAlignment = Alignment.End) {
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Text(
-                                text = "Rs. 1499 ",
-                                style = MaterialTheme.typography.subtitle2,
+                                text = "Rs. 1499  ",
                                 fontFamily = FontName,
                                 fontSize = 14.sp,
-                                fontWeight = FontWeight.Normal,
+                                fontWeight = FontWeight.W900,
                                 color = Color.Gray,
+                                style = TextStyle(textDecoration = TextDecoration.LineThrough)
                             )
 
                             Text(
@@ -274,11 +275,11 @@ fun CallCreditScreen(
                     Column(horizontalAlignment = Alignment.End) {
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Text(
-                                text = "Rs. 1049 ",
-                                style = MaterialTheme.typography.subtitle2,
+                                text = "Rs. 1049  ",
+                                style = TextStyle(textDecoration = TextDecoration.LineThrough),
                                 fontFamily = FontName,
                                 fontSize = 14.sp,
-                                fontWeight = FontWeight.Normal,
+                                fontWeight = FontWeight.W900,
                                 color = Color.White,
                             )
 
@@ -335,12 +336,12 @@ fun CallCreditScreen(
                     Column(horizontalAlignment = Alignment.End) {
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Text(
-                                text = "Rs. 749 ",
-                                style = MaterialTheme.typography.subtitle2,
+                                text = "Rs. 749  ",
                                 fontFamily = FontName,
                                 fontSize = 14.sp,
-                                fontWeight = FontWeight.Normal,
+                                fontWeight = FontWeight.W900,
                                 color = Color.Gray,
+                                style = TextStyle(textDecoration = TextDecoration.LineThrough)
                             )
 
                             Text(
@@ -406,33 +407,41 @@ fun CallCreditScreen(
 
             Spacer(modifier = Modifier.height(20.dp))
         }
-        
-        HorizontalDivider()
-        Spacer(modifier = Modifier.height(10.dp))
-        Row (modifier = Modifier.background(Color.White),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween){
-            
-            OutlinedSubmitButton(
-                modifier = Modifier
-                    .padding(horizontal = 5.dp)
-                    .weight(1f),
-                textColor = Color.Gray,
-                text = stringResource(id = R.string.submit_button_text),
-                isLoading = false,
-                onClick = { /*onSubmit*/ }
-            )
-            
-            OutlinedSubmitButton(
-                modifier = Modifier
-                    .padding(horizontal = 5.dp)
-                    .weight(1f),
-                textColor = Color.Gray,
-                text = stringResource(id = R.string.submit_button_text),
-                isLoading = false,
-                onClick = { /*onSubmit*/ }
-            )
+
+        Column(modifier = Modifier
+            .background(Color.White)){
+            HorizontalDivider(modifier = Modifier.height(1.dp))
+            Spacer(modifier = Modifier.height(10.dp))
+
+            Row (modifier = Modifier
+                .background(Color.White)
+                .padding(start = 20.dp, end = 20.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically){
+
+                Text(
+                    modifier = Modifier
+                        .weight(0.3f),
+                    text = "Cancel",
+                    style = MaterialTheme.typography.subtitle2,
+                    fontFamily = FontName,
+                    fontSize = 17.sp,
+                    textAlign = TextAlign.Center,
+                    fontWeight = FontWeight.W600,
+                    color = Color.Gray
+                )
+                Spacer(modifier = Modifier.width(50.dp))
+                OutlinedSmallSubmitButton(
+                    modifier = Modifier
+                        .weight(0.7f),
+                    textColor = Color.Gray,
+                    text = stringResource(id = R.string.submit_button_text),
+                    isLoading = false,
+                    onClick = { /*onSubmit*/ }
+                )
+            }
         }
+
         Spacer(modifier = Modifier.height(10.dp))
     }
 }
@@ -461,7 +470,7 @@ fun HowItWorks( modifier: Modifier = Modifier) {
                         style = MaterialTheme.typography.subtitle2,
                         fontFamily = FontName,
                         fontSize = 14.sp,
-                        fontWeight = FontWeight.Bold,
+                        fontWeight = FontWeight.W600,
                         color = Color.DarkGray,
                         textAlign = TextAlign.Center
                     )
@@ -592,7 +601,7 @@ fun ContentView() {
 
         list.getOrNull(index % (list.size))?.let { item ->
             Card(
-                border = BorderStroke(2.dp,Color.Gray),
+                border = BorderStroke(1.dp,Color.Gray),
                 modifier = Modifier
                     .graphicsLayer {
                         val pageOffset = calculateCurrentOffsetForPage(item).absoluteValue
@@ -710,14 +719,6 @@ fun UsersProfileList() {
                         .padding(horizontal = 10.dp),
                     verticalArrangement = Arrangement.SpaceAround,
                     horizontalAlignment = Alignment.Start) {
-
-                    MediumTitleText(
-                        modifier = Modifier,
-                        text = "UserName",
-                        textAlign = TextAlign.Start,
-                        textColor = Color.DarkGray,
-                        fontWeight = FontWeight.W500
-                    )
 
                     MediumTitleText(
                         modifier = Modifier,

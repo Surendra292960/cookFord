@@ -545,6 +545,26 @@ fun OutlinedSubmitButton(
         }
     }
 }
+@Composable
+fun OutlinedSmallSubmitButton(
+    modifier: Modifier = Modifier,
+    textColor: Color,
+    text: String,
+    isLoading: Boolean,
+    onClick: () -> Unit) {
+    OutlinedButton(modifier = modifier
+        .height(AppTheme.dimens.mediumButtonHeight)
+        .fillMaxWidth(),
+        enabled = !isLoading,
+        border = BorderStroke(1.dp, color = textColor),
+        onClick = onClick) {
+        if (isLoading) {
+            Progressbar(showProgressbar = isLoading)
+        } else {
+            Text(text = text, style = MaterialTheme.typography.titleMedium, color = textColor)
+        }
+    }
+}
 
 
 @Composable

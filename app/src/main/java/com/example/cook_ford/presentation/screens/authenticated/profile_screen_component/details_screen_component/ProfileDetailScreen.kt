@@ -41,6 +41,7 @@ import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilterChip
+import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -878,7 +879,8 @@ fun TimeSlotsComponent(timeSlots: List<TimeSlots>) {
 		timeSlots.forEach { timeSlots ->
 			timeSlots.slots?.let {
 				FilterChip(
-					modifier = Modifier.padding(horizontal = 2.dp),
+					shape = RoundedCornerShape(1.dp),
+					modifier = Modifier.padding(horizontal = 2.dp).background(Color.White),
 					onClick = { },
 					label = {
 						timeSlots.slots?.let { time->
@@ -891,6 +893,7 @@ fun TimeSlotsComponent(timeSlots: List<TimeSlots>) {
 						) }
 					},
 					selected = true,
+					colors = FilterChipDefaults.filterChipColors(selectedContainerColor = Color.LightGray)
 				)
 			}
 		}

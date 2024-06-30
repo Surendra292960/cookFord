@@ -1,4 +1,4 @@
-package com.example.cook_ford.presentation.screens.onboard_screen_component
+package com.example.cook_ford.presentation.screens.un_authenticated.onboard_screen_component
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.spring

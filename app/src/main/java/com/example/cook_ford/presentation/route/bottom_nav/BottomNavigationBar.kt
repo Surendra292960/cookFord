@@ -53,7 +53,6 @@ fun BottomNavigationBar(
         BottomNavigation(
             backgroundColor = Color.White,
             modifier = Modifier
-                .background(color = Color.White)
                 .shadow(
                     shape = RoundedCornerShape(topStart = 15.dp, topEnd = 15.dp),
                     elevation = 12.dp,

@@ -1,4 +1,4 @@
-package com.example.cook_ford.presentation.screens.onboard_screen_component
+package com.example.cook_ford.presentation.screens.un_authenticated.onboard_screen_component
 import com.example.cook_ford.R
 
 class OnBoardingItems(val image: Int, val title: Int, val desc: Int) {

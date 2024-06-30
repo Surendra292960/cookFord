@@ -1,5 +1,6 @@
 package com.example.cook_ford.presentation.screens.authenticated.profile_screen_component.report_screen_component
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
@@ -7,10 +8,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.material.Text
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Done
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.runtime.Composable
@@ -25,16 +23,13 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.wear.compose.material.Icon
 import com.example.cook_ford.R
 import com.example.cook_ford.presentation.component.widgets.KeyboardOption
 import com.example.cook_ford.presentation.component.widgets.MediumTitleText
 import com.example.cook_ford.presentation.component.widgets.OutlinedSubmitButton
-import com.example.cook_ford.presentation.component.widgets.SubmitButton
 import com.example.cook_ford.presentation.component.widgets.Textarea
 import com.example.cook_ford.presentation.component.widgets.snack_bar.MainViewState
 import com.example.cook_ford.presentation.screens.authenticated.profile_screen_component.report_screen_component.state.ReportState
-import com.example.cook_ford.presentation.theme.AppTheme
 import com.example.cook_ford.utils.AppConstants
 
 @Composable
@@ -52,7 +47,8 @@ fun ReportForm(
 
             Spacer(modifier = Modifier.height(10.dp))
 
-            IssueComponent(
+            SingleSelectionComponent(
+                modifier = Modifier,
                 issueList = reportViewModel.issueList,
                 onIssueChange = onIssueChange
             )
@@ -90,13 +86,14 @@ fun ReportForm(
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-fun IssueComponent(issueList: List<String>, onIssueChange: (String) -> Unit) {
+fun SingleSelectionComponent(modifier: Modifier, issueList: List<String>, onIssueChange: (String) -> Unit) {
     val selectedIndex = remember { mutableIntStateOf(-1) }
 
-    FlowRow {
+    FlowRow(modifier = modifier.padding(2.dp)) {
         issueList.forEachIndexed { index, issue ->
             FilterChip(
-                modifier = Modifier.padding(horizontal = 1.dp),
+                shape = RoundedCornerShape(1.dp),
+                modifier = Modifier.padding(horizontal = 1.dp).background(Color.White),
                 onClick = {
                     selectedIndex.intValue = index
                     onIssueChange(issueList[selectedIndex.intValue])
@@ -119,9 +116,9 @@ fun IssueComponent(issueList: List<String>, onIssueChange: (String) -> Unit) {
                     /**
                      * not selected colors
                      */
-                    FilterChipDefaults.filterChipColors(disabledContainerColor = Color.Transparent,)
+                    FilterChipDefaults.filterChipColors(disabledContainerColor = Color.Transparent)
                 },
-                selected = selectedIndex.intValue == index,
+                selected = selectedIndex.intValue == index,/*
                 leadingIcon = if (selectedIndex.intValue == index) {
                     {
                         Icon(
@@ -132,7 +129,7 @@ fun IssueComponent(issueList: List<String>, onIssueChange: (String) -> Unit) {
                     }
                 } else {
                     null
-                },
+                },*/
             )
         }
     }
