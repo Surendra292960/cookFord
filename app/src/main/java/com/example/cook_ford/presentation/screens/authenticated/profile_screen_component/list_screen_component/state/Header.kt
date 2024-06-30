@@ -18,7 +18,7 @@ import com.example.cook_ford.R
 fun Header() {
     Column {
         Image(
-            painter = painterResource(id = R.drawable.slide_1),
+            painter = painterResource(id = R.drawable.chef_cooking),
             contentDescription = null,
             contentScale = ContentScale.FillHeight,
             modifier = Modifier

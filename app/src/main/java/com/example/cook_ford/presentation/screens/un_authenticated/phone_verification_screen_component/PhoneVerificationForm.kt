@@ -27,6 +27,7 @@ import com.example.cook_ford.presentation.component.widgets.DefaultIcons
 import com.example.cook_ford.presentation.component.widgets.InputTextField
 import com.example.cook_ford.presentation.component.widgets.KeyboardOption
 import com.example.cook_ford.presentation.component.widgets.OutlinedInputTextField
+import com.example.cook_ford.presentation.component.widgets.OutlinedSmallSubmitButton
 import com.example.cook_ford.presentation.component.widgets.SubmitButton
 import com.example.cook_ford.presentation.component.widgets.snack_bar.MainViewState
 import com.example.cook_ford.presentation.screens.un_authenticated.phone_verification_screen_component.state.PhoneVerificationState
@@ -62,10 +63,11 @@ fun PhoneVerificationForm(
 
         Spacer(modifier = Modifier.height(10.dp))
 
-        // SignIn Submit Button
-        SubmitButton(
+        // Verify Phone Submit Button
+        OutlinedSmallSubmitButton(
             modifier = Modifier.padding(top = AppTheme.dimens.paddingLarge),
-            text = stringResource(id = R.string.verify_button_text),
+            text = stringResource(id = R.string.submit_button_text),
+            textColor = Color.Gray,
             isLoading = viewState.isLoading,
             onClick = onSubmit
         )

@@ -28,6 +28,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.cook_ford.R
 import com.example.cook_ford.presentation.component.widgets.OtpInputField
+import com.example.cook_ford.presentation.component.widgets.OutlinedSmallSubmitButton
 import com.example.cook_ford.presentation.component.widgets.SubmitButton
 import com.example.cook_ford.presentation.component.widgets.snack_bar.MainViewState
 import com.example.cook_ford.presentation.screens.un_authenticated.phone_verification_screen_component.state.PhoneVerificationState
@@ -69,10 +70,11 @@ fun OTPVerificationForm(
 
         Spacer(modifier = Modifier.height(10.dp))
 
-        // SignIn Submit Button
-        SubmitButton(
+        // Verify OTP Submit Button
+        OutlinedSmallSubmitButton(
             modifier = Modifier.padding(top = AppTheme.dimens.paddingLarge),
             text = stringResource(id = R.string.verify_button_text),
+            textColor = Color.Gray,
             isLoading = viewState.isLoading,
             onClick = onSubmit
         )

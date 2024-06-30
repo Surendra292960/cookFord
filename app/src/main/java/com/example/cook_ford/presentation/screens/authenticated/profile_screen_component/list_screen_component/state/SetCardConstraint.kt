@@ -46,7 +46,7 @@ fun SetCardConstraint() {
 
     ConstraintLayout(constraintSet, modifier = Modifier.fillMaxWidth()) {
         Image(
-            painter = painterResource(id = R.drawable.slide_1),
+            painter = painterResource(id = R.drawable.male_chef),
             contentDescription = "Logo",
             modifier = Modifier.layoutId("image")
         )

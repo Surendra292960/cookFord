@@ -16,6 +16,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -25,6 +26,8 @@ import com.example.cook_ford.R
 import com.example.cook_ford.presentation.component.widgets.DefaultIcons
 import com.example.cook_ford.presentation.component.widgets.OutlinedInputTextField
 import com.example.cook_ford.presentation.component.widgets.KeyboardOption
+import com.example.cook_ford.presentation.component.widgets.OutlinedSmallSubmitButton
+import com.example.cook_ford.presentation.component.widgets.OutlinedSubmitButton
 import com.example.cook_ford.presentation.component.widgets.SubmitButton
 import com.example.cook_ford.presentation.component.widgets.TrailingIcon
 import com.example.cook_ford.presentation.component.widgets.snack_bar.MainViewState
@@ -99,12 +102,11 @@ fun SignInForm(
             style = MaterialTheme.typography.bodyMedium
         )
 
-        Spacer(modifier = Modifier.height(10.dp))
-
         // SignIn Submit Button
-        SubmitButton(
+        OutlinedSubmitButton(
             modifier = Modifier.padding(top = AppTheme.dimens.paddingLarge),
             text = stringResource(id = R.string.sign_in_button_text),
+            textColor = Color.Gray,
             isLoading = viewState.isLoading,
             onClick = onSubmit
         )

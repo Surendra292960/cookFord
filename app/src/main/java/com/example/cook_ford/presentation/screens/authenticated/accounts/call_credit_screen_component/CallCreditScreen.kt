@@ -575,11 +575,11 @@ fun CollapsableLazyColumn(sections: List<CollapsableSection>, modifier: Modifier
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class, ExperimentalPagerApi::class)
+@OptIn(ExperimentalPagerApi::class)
 @Composable
 fun ContentView() {
 
-    val list = listOf(R.drawable.fstep_one, R.drawable.male_chef, R.drawable.female_chef, R.drawable.ic_chef_round,R.drawable.fstep_three,)
+    val list = listOf(R.drawable.female_chef, R.drawable.male_chef, R.drawable.female_chef, R.drawable.spin_wheel,R.drawable.female_chef,)
 
     val pagerState: PagerState = rememberPagerState(initialPage = list.size)
 

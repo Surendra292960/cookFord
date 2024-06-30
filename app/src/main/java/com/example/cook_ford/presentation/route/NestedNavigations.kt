@@ -11,7 +11,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.example.cook_ford.data.remote.profile_response.ProfileResponse
-import com.example.cook_ford.presentation.screens.un_authenticated.main_screen_component.SplashScreen
 import com.example.cook_ford.presentation.screens.authenticated.accounts.account_screen_component.AccountScreen
 import com.example.cook_ford.presentation.screens.authenticated.accounts.add_cook_screen_component.AddCookProfileScreen
 import com.example.cook_ford.presentation.screens.authenticated.accounts.call_credit_screen_component.CallCreditScreen
@@ -23,8 +22,9 @@ import com.example.cook_ford.presentation.screens.authenticated.profile_screen_c
 import com.example.cook_ford.presentation.screens.authenticated.profile_screen_component.report_screen_component.ReportScreen
 import com.example.cook_ford.presentation.screens.authenticated.profile_screen_component.reviews_screen_component.ReviewScreen
 import com.example.cook_ford.presentation.screens.dashboard_screen_component.home_screen_component.UserDashBoard
-import com.example.cook_ford.presentation.screens.un_authenticated.onboard_screen_component.OnBoardingScreen
 import com.example.cook_ford.presentation.screens.un_authenticated.landind_screen_component.LandingScreen
+import com.example.cook_ford.presentation.screens.un_authenticated.main_screen_component.SplashScreen
+import com.example.cook_ford.presentation.screens.un_authenticated.onboard_screen_component.OnBoardingScreen
 import com.example.cook_ford.presentation.screens.un_authenticated.phone_verification_screen_component.PhoneVerificationScreen
 import com.example.cook_ford.presentation.screens.un_authenticated.sign_in_screen_component.SignInScreen
 import com.example.cook_ford.presentation.screens.un_authenticated.sign_up_screen_component.SignUpScreen
@@ -47,6 +47,15 @@ fun NavGraphBuilder.unauthenticatedGraph(navController: NavController) {
             SplashScreen(navController = navController)
         }
 
+        // Onboard
+        composable(route = NavigationRoutes.Unauthenticated.OnboardScreen.route) {
+            OnBoardingScreen(navController = navController,
+                onNavigateToAuthenticatedRoute = {
+                    navController.navigate(route = NavigationRoutes.Unauthenticated.Landing.route)
+                }
+            )
+        }
+
         // Landing
         composable(route = NavigationRoutes.Unauthenticated.Landing.route) {
             LandingScreen(navController = navController,
@@ -67,15 +76,16 @@ fun NavGraphBuilder.unauthenticatedGraph(navController: NavController) {
         }
 
         //OnBoard
-        composable(route = NavigationRoutes.Unauthenticated.OnBoard.route) {
+      /*  composable(route = NavigationRoutes.Unauthenticated.OnBoard.route) {
             OnBoardingScreen(
                 //navController
             )
-        }
+        }*/
 
         // SignIn
         composable(route = NavigationRoutes.Unauthenticated.SignIn.route) {
             SignInScreen(
+                navController = navController,
                 onNavigateToRegistration = { navController.navigate(route = NavigationRoutes.Unauthenticated.SignUp.route) },
                 onNavigateToForgotPassword = {},
                 onNavigateToAuthenticatedRoute = {
@@ -91,7 +101,7 @@ fun NavGraphBuilder.unauthenticatedGraph(navController: NavController) {
         // SignUp
         composable(route = NavigationRoutes.Unauthenticated.SignUp.route) {
             SignUpScreen(
-                onNavigateBack = { navController.navigateUp() },
+                navController = navController,
                 onNavigateToAuthenticatedRoute = {
                     navController.navigate(route = NavigationRoutes.Unauthenticated.SignIn.route) {
                         popUpTo(route = NavigationRoutes.Unauthenticated.NavigationRoute.route) {

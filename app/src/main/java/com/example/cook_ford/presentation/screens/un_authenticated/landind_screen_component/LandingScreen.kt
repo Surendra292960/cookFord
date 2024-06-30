@@ -29,7 +29,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.cook_ford.R
-import com.example.cook_ford.presentation.component.widgets.SubmitButton
+import com.example.cook_ford.presentation.component.widgets.OutlinedSmallSubmitButton
 import com.example.cook_ford.presentation.theme.FontName
 
 
@@ -42,16 +42,15 @@ fun PreviewScreen(){
 @Composable
 fun LandingScreen(navController: NavController, onNavigateToAuthenticatedRoute:()-> Unit) {
 
-    Column(modifier = Modifier.padding(start = 30.dp, end = 30.dp).fillMaxSize().verticalScroll(rememberScrollState()),
-        horizontalAlignment = Alignment.CenterHorizontally) {
+    Column(modifier = Modifier.padding(start = 30.dp, end = 30.dp).fillMaxSize().verticalScroll(rememberScrollState()), horizontalAlignment = Alignment.CenterHorizontally) {
 
-        Spacer(modifier = Modifier.height(40.dp))
+        Spacer(modifier = Modifier.height(80.dp))
 
         Text(text = "Cook Ford",
             fontFamily = FontName,
             fontWeight = FontWeight.Bold,
             color = Color.DarkGray,
-            fontSize = 35.sp,
+            fontSize = 30.sp,
             modifier = Modifier.align(Alignment.CenterHorizontally)
         )
 
@@ -86,8 +85,9 @@ fun LandingScreen(navController: NavController, onNavigateToAuthenticatedRoute:(
 
         Spacer(modifier = Modifier.height(10.dp))
 
-        SubmitButton(
+        OutlinedSmallSubmitButton(
             modifier = Modifier.padding(top = 10.dp, bottom = 10.dp),
+            textColor = Color.Gray,
             text = stringResource(id = R.string.sign_in_with_phone_button_text),
             isLoading = false,
             onClick = { onNavigateToAuthenticatedRoute.invoke() }
@@ -108,8 +108,9 @@ fun LandingScreen(navController: NavController, onNavigateToAuthenticatedRoute:(
             HorizontalDivider(modifier = Modifier.weight(1f))
         }
 
-        SubmitButton(
+        OutlinedSmallSubmitButton(
             modifier = Modifier.padding(top = 10.dp, bottom = 10.dp),
+            textColor = Color.Gray,
             text = stringResource(id = R.string.sign_in_as_a_cook_button_text),
             isLoading = false,
             onClick = { /*onSubmit*/ }

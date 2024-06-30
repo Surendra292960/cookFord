@@ -4,7 +4,9 @@ import android.app.Activity
 import android.util.Log
 import com.example.cook_ford.domain.repository.FirebaseAuthRepository
 import com.example.cook_ford.presentation.screens.un_authenticated.phone_verification_screen_component.state.ResultState
+import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.FirebaseException
+import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.auth.PhoneAuthOptions
@@ -14,6 +16,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
+
 
 class FirebaseAuthRepositoryImpl @Inject constructor(private val firebaseAuth:FirebaseAuth) :
     FirebaseAuthRepository {
@@ -60,25 +63,25 @@ class FirebaseAuthRepositoryImpl @Inject constructor(private val firebaseAuth:Fi
     }
 
     override fun signWithCredential(otp: String): Flow<ResultState<String>>  = callbackFlow{
-       try {
-           trySend(ResultState.Loading(isLoading = true))
-           val credential = PhoneAuthProvider.getCredential(omVerificationCode,otp)
-           firebaseAuth.signInWithCredential(credential)
-               .addOnCompleteListener {
-                   if(it.isSuccessful){
-                       Log.d("TAG", "signWithCredential: ${it.isSuccessful}")
-                       trySend(ResultState.Success(otp = otp, data = "otp verified"))
-                   }else{
-                       Log.d("TAG", "signWithCredential: ${it.isSuccessful}")
-                   }
-               }.addOnFailureListener {
-                   trySend(ResultState.Failure(it))
-               }
-           awaitClose {
-               close()
-           }
-       }catch (e:Exception){
-           Log.d("TAG", "signWithCredential: ${e.message}")
-       }
+        try {
+            trySend(ResultState.Loading(isLoading = true))
+            val credential = PhoneAuthProvider.getCredential(omVerificationCode,otp)
+            firebaseAuth.signInWithCredential(credential)
+                .addOnCompleteListener {
+                    if(it.isSuccessful){
+                        Log.d("TAG", "signWithCredential: ${it.isSuccessful}")
+                        trySend(ResultState.Success(otp = otp, data = "otp verified"))
+                    }else{
+                        Log.d("TAG", "signWithCredential: ${it.isSuccessful}")
+                    }
+                }.addOnFailureListener {
+                    trySend(ResultState.Failure(it))
+                }
+            awaitClose {
+                close()
+            }
+        }catch (e:Exception){
+            Log.d("TAG", "signWithCredential: ${e.message}")
+        }
     }
 }

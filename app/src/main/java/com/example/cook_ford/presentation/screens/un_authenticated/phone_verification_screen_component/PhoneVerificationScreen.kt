@@ -1,10 +1,8 @@
 package com.example.cook_ford.presentation.screens.un_authenticated.phone_verification_screen_component
 import android.os.Build
 import android.util.Log
-import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -31,6 +29,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -45,7 +44,7 @@ import com.example.cook_ford.presentation.screens.un_authenticated.phone_verific
 import com.example.cook_ford.presentation.screens.un_authenticated.phone_verification_screen_component.state.PhoneVerificationState
 import com.example.cook_ford.presentation.screens.un_authenticated.phone_verification_screen_component.state.PhoneVerificationUiEvent
 import com.example.cook_ford.presentation.screens.un_authenticated.phone_verification_screen_component.state.ResultState
-import com.google.android.gms.auth.api.phone.SmsRetriever
+import com.example.cook_ford.presentation.theme.FontName
 import com.google.gson.Gson
 
 
@@ -107,7 +106,17 @@ fun PhoneVerificationScreen(
 
             Column(modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.Start) {
 
-                Spacer(modifier = Modifier.height(10.dp))
+                Spacer(modifier = Modifier.height(40.dp))
+
+                Text(
+                    text = "Verify Phone",
+                    fontFamily = FontName,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.DarkGray,
+                    fontSize = 30.sp,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.align(Alignment.CenterHorizontally)
+                )
 
                 Image(modifier = Modifier
                         .wrapContentWidth()
@@ -121,8 +130,9 @@ fun PhoneVerificationScreen(
 
                 Text(
                     text = "Add Your Phone Number",
-                    fontSize = 26.sp,
-                    fontWeight = FontWeight.Bold,
+                    fontSize = 20.sp,
+                    letterSpacing = 1.sp,
+                    fontWeight = FontWeight.W900,
                     color = Color.DarkGray,
                     modifier = Modifier.align(Alignment.Start)
                 )
@@ -133,7 +143,7 @@ fun PhoneVerificationScreen(
                     fontSize = 14.sp,
                     fontWeight = FontWeight.Normal,
                     color = Color.Gray,
-                    modifier = Modifier.align(Alignment.Start)
+                    modifier = Modifier.align(Alignment.CenterHorizontally)
                 )
 
                 Spacer(modifier = Modifier.height(20.dp))
@@ -158,7 +168,6 @@ fun PhoneVerificationScreen(
                         },
                     )
                 }
-
 
                 Spacer(modifier = Modifier.height(20.dp))
             }
@@ -186,6 +195,18 @@ fun PhoneVerificationScreen(
 
             Column(modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.Start) {
 
+                Spacer(modifier = Modifier.height(40.dp))
+
+                Text(
+                    text = "Verify OTP",
+                    fontFamily = FontName,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.DarkGray,
+                    fontSize = 30.sp,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.align(Alignment.CenterHorizontally)
+                )
+
                 Image(
                     modifier = Modifier
                         .wrapContentWidth()
@@ -197,8 +218,9 @@ fun PhoneVerificationScreen(
 
                 Text(
                     text = "Enter the Verification Code",
-                    fontSize = 26.sp,
-                    fontWeight = FontWeight.Bold,
+                    fontSize = 20.sp,
+                    letterSpacing = 1.sp,
+                    fontWeight = FontWeight.W900,
                     color = Color.DarkGray,
                     modifier = Modifier.align(Alignment.Start)
                 )
@@ -206,7 +228,7 @@ fun PhoneVerificationScreen(
                 Spacer(modifier = Modifier.height(10.dp))
 
                 Text(
-                    text = "Enter the 4 digit code that we have sent to (+91 8801737-***)",
+                    text = "Enter the 4 digit code that we have sent to ${phoneVerificationState.phone}",
                     fontSize = 14.sp,
                     fontWeight = FontWeight.Normal,
                     color = Color.Gray,
@@ -215,13 +237,6 @@ fun PhoneVerificationScreen(
 
                 Spacer(modifier = Modifier.height(20.dp))
 
-
-               /* Row(modifier = Modifier.fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceBetween) {
-
-
-                }*/
                 OTPVerificationForm(
                     phoneVerificationState = phoneVerificationState,
                     viewState = viewState,
@@ -244,64 +259,5 @@ fun PhoneVerificationScreen(
         }
     }
 }
-
-/*
-
-@RequiresApi(Build.VERSION_CODES.TIRAMISU)
-@Composable
-fun OtpReceiverEffect(
-    context: Context,
-    onOtpReceived: (String) -> Unit
-) {
-    val otpReceiver = remember { OTPReceiver() }
-
-    *//**
-     * This function should not be used to listen for Lifecycle.Event.ON_DESTROY because Compose
-     * stops recomposing after receiving a Lifecycle.Event.ON_STOP and will never be aware of an
-     * ON_DESTROY to launch onEvent.
-     *
-     * This function should also not be used to launch tasks in response to callback events by way
-     * of storing callback data as a Lifecycle.State in a MutableState. Instead, see currentStateAsState
-     * to obtain a State that may be used to launch jobs in response to state changes.
-     *//*
-    LifecycleResumeEffect(key1 = Unit) {
-        // add ON_RESUME effect here
-        Log.e("OTPReceiverEffect", "SMS retrieval has been started.")
-        startSMSRetrieverClient(context)
-        otpReceiver.init(object : OTPReceiver.OTPReceiveListener {
-            override fun onOTPReceived(otp: String?) {
-                Log.e("OTPReceiverEffect ", "OTP Received: $otp")
-                otp?.let { onOtpReceived(it) }
-                try {
-                    Log.e("OTPReceiverEffect ", "Unregistering receiver")
-                    context.unregisterReceiver(otpReceiver)
-                } catch (e: IllegalArgumentException) {
-                    Log.e("OTPReceiverEffect ", "Error in registering receiver: ${e.message}}")
-                }
-            }
-
-            override fun onOTPTimeOut() {
-                Log.e("OTPReceiverEffect ", "Timeout")
-            }
-        })
-        try {
-            Log.e("OTPReceiverEffect ", "Lifecycle.Event.ON_RESUME")
-            Log.e("OTPReceiverEffect ", "Registering receiver")
-            context.registerReceiver(otpReceiver, IntentFilter(SmsRetriever.SMS_RETRIEVED_ACTION), Context.RECEIVER_EXPORTED)
-        } catch (e: IllegalArgumentException) {
-            Log.e("OTPReceiverEffect ", "Error in registering receiver: ${e.message}}")
-        }
-        onPauseOrDispose {
-            // add clean up for work kicked off in the ON_RESUME effect here
-            try {
-                Log.e("OTPReceiverEffect ", "Lifecycle.Event.ON_PAUSE")
-                Log.e("OTPReceiverEffect ", "Unregistering receiver")
-                context.unregisterReceiver(otpReceiver)
-            } catch (e: IllegalArgumentException) {
-                Log.e("OTPReceiverEffect ", "Error in unregistering receiver: ${e.message}}")
-            }
-        }
-    }
-}*/
 
 
