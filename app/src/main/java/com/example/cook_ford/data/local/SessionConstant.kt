@@ -5,4 +5,5 @@ object SessionConstant {
     const val AUTH_ID = "AUTH_ID"
     const val USER_ID = "USER_ID"
     const val USER_TYPE = "USER_TYPE"
+    const val PHONE_NUMBER = "PHONE_NUMBER"
 }

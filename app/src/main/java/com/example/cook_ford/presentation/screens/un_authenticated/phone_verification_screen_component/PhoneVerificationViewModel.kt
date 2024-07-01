@@ -4,6 +4,8 @@ import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.cook_ford.data.local.SessionConstant
+import com.example.cook_ford.data.local.UserSession
 import com.example.cook_ford.data.repository.AuthRepositoryImpl
 import com.example.cook_ford.domain.repository.FirebaseAuthRepository
 import com.example.cook_ford.presentation.component.widgets.snack_bar.MainViewState
@@ -26,6 +28,7 @@ import javax.inject.Inject
 @HiltViewModel
 class PhoneVerificationViewModel @Inject constructor(
     private val firebaseAuthRepo: FirebaseAuthRepository,
+    private val userSession: UserSession,
     private val authRepository: AuthRepositoryImpl): ViewModel() {
 
     var phoneVerificationState = mutableStateOf(PhoneVerificationState())
@@ -55,6 +58,7 @@ class PhoneVerificationViewModel @Inject constructor(
                 val inputsValidated = validateInputs()
                 Log.d("TAG", "onUiEvent: $inputsValidated")
                 if (inputsValidated) {
+                    userSession.put(SessionConstant.PHONE_NUMBER, phoneVerificationState.value.phone)
                     phoneVerificationState.value = phoneVerificationState.value.copy(nevigateToOTPScreen = true)
                 }
             }

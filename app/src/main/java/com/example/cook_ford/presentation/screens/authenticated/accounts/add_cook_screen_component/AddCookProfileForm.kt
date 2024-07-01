@@ -38,6 +38,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.cook_ford.R
 import com.example.cook_ford.presentation.component.widgets.DefaultIcons
@@ -49,8 +50,8 @@ import com.example.cook_ford.presentation.component.widgets.ProfileImage
 import com.example.cook_ford.presentation.component.widgets.SegmentedControl
 import com.example.cook_ford.presentation.component.widgets.snack_bar.MainViewState
 import com.example.cook_ford.presentation.screens.authenticated.accounts.add_cook_screen_component.state.AddCookProfileState
-import com.example.cook_ford.utils.AppConstants
 import com.example.cook_ford.presentation.theme.FontName
+import com.example.cook_ford.utils.AppConstants
 import com.google.gson.Gson
 
 @Composable
@@ -119,7 +120,7 @@ fun AddCookProfileForm(
             isError = addCookProfileState.errorState.usernameErrorState.hasError,
             errorText = stringResource(id = addCookProfileState.errorState.usernameErrorState.errorMessageStringResource),
             maxChar = 30,
-            texColor = Color.Gray
+            textColor = Color.Gray
             /*submit = { TODO() }*/
         )
         Spacer(modifier = Modifier.height(10.dp))
@@ -138,7 +139,7 @@ fun AddCookProfileForm(
             isError = addCookProfileState.errorState.phoneErrorState.hasError,
             errorText = stringResource(id = addCookProfileState.errorState.phoneErrorState.errorMessageStringResource),
             maxChar = 12,
-            texColor = Color.Gray
+            textColor = Color.Gray
             /*submit = { TODO() }*/
         )
         Spacer(modifier = Modifier.height(10.dp))
@@ -157,7 +158,7 @@ fun AddCookProfileForm(
             isError = addCookProfileState.errorState.alternatePhoneErrorState.hasError,
             errorText = stringResource(id = addCookProfileState.errorState.alternatePhoneErrorState.errorMessageStringResource),
             maxChar = 12,
-            texColor = Color.Gray
+            textColor = Color.Gray
             /*submit = { TODO() }*/
         )
         Spacer(modifier = Modifier.height(10.dp))
@@ -169,7 +170,7 @@ fun AddCookProfileForm(
                 .padding(start = 10.dp, end = 10.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically) {
-            Text(text = "Gender", fontFamily = FontName, fontWeight = FontWeight.Bold)
+            Text(text = "Gender", fontFamily = FontName, color = Color.Gray, fontWeight = FontWeight.W700, fontSize = 16.sp)
             SegmentedControl(
                 items = genders,
                 defaultSelectedItemIndex = 0,) {

@@ -1,5 +1,8 @@
 package com.example.cook_ford.presentation.screens.un_authenticated.sign_up_screen_component
+import android.util.Log
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -9,27 +12,34 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.filled.Phone
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.cook_ford.R
 import com.example.cook_ford.presentation.theme.AppTheme
 import com.example.cook_ford.presentation.screens.un_authenticated.sign_up_screen_component.state.SignUpState
 import com.example.cook_ford.presentation.component.widgets.DefaultIcons
+import com.example.cook_ford.presentation.component.widgets.InputTextField
 import com.example.cook_ford.presentation.component.widgets.OutlinedInputTextField
 import com.example.cook_ford.presentation.component.widgets.KeyboardOption
 import com.example.cook_ford.presentation.component.widgets.OutlinedSubmitButton
-import com.example.cook_ford.presentation.component.widgets.SubmitButton
+import com.example.cook_ford.presentation.component.widgets.SegmentedControl
 import com.example.cook_ford.presentation.component.widgets.TrailingIcon
 import com.example.cook_ford.presentation.component.widgets.snack_bar.MainViewState
+import com.example.cook_ford.presentation.theme.FontName
 import com.example.cook_ford.utils.AppConstants
+
+val genders = listOf("Male", "Female")
 
 @Composable
 fun SignUpForm(
@@ -37,16 +47,16 @@ fun SignUpForm(
     viewState: MainViewState,
     onUserNameChange: (String) -> Unit,
     onEmailChange: (String) -> Unit,
-    onPhoneChange: (String) -> Unit,
     onPasswordChange: (String) -> Unit,
     onConfirmPasswordChange: (String) -> Unit,
+    onGenderChange: (String) -> Unit,
     onSubmit: () -> Unit){
 
     Column(modifier = Modifier.fillMaxSize()) {
 
         Spacer(modifier = Modifier.height(10.dp))
 
-        OutlinedInputTextField(
+        InputTextField(
             value = signUpState.username,
             onChange = onUserNameChange,
             modifier = Modifier.fillMaxWidth(),
@@ -54,12 +64,13 @@ fun SignUpForm(
             DefaultIcons(leadingIcon = Icons.Default.Person),
             isError = signUpState.errorState.usernameErrorState.hasError,
             errorText = stringResource(id = signUpState.errorState.usernameErrorState.errorMessageStringResource),
-            maxChar = 30
+            maxChar = 30,
+            textColor = Color.Gray
             /*submit = { TODO() }*/)
 
         Spacer(modifier = Modifier.height(10.dp))
 
-        OutlinedInputTextField(
+        InputTextField(
             value = signUpState.email,
             onChange = onEmailChange,
             modifier = Modifier.fillMaxWidth(),
@@ -67,25 +78,13 @@ fun SignUpForm(
             DefaultIcons(leadingIcon = Icons.Default.Email),
             isError = signUpState.errorState.emailErrorState.hasError,
             errorText = stringResource(id = signUpState.errorState.emailErrorState.errorMessageStringResource),
-            maxChar = 30
+            maxChar = 30,
+            textColor = Color.Gray
             /*submit = { TODO() }*/)
 
         Spacer(modifier = Modifier.height(10.dp))
 
-        OutlinedInputTextField(
-            value = signUpState.phone,
-            onChange = onPhoneChange,
-            modifier = Modifier.fillMaxWidth(),
-            keyboardOptions = KeyboardOption(imeAction = ImeAction.Next, keyboardType = KeyboardType.Phone,label = AppConstants.PHONE, placeholder = AppConstants.PHONE_PLACEHOLDER),
-            DefaultIcons(leadingIcon = Icons.Default.Phone),
-            isError = signUpState.errorState.phoneErrorState.hasError,
-            errorText = stringResource(id = signUpState.errorState.phoneErrorState.errorMessageStringResource),
-            maxChar = 12
-            /*submit = { TODO() }*/)
-
-        Spacer(modifier = Modifier.height(10.dp))
-
-        OutlinedInputTextField(
+        InputTextField(
             value = signUpState.password,
             onChange = onPasswordChange,
             modifier = Modifier.fillMaxWidth(),
@@ -93,13 +92,14 @@ fun SignUpForm(
             DefaultIcons(leadingIcon = Icons.Default.Lock, trailingIcon = TrailingIcon(Icons.Default.VisibilityOff, Icons.Default.Visibility)),
             isError = signUpState.errorState.passwordErrorState.hasError,
             errorText = stringResource(id = signUpState.errorState.passwordErrorState.errorMessageStringResource),
-            maxChar = 25
+            maxChar = 25,
+            textColor = Color.Gray
             /*submit = { TODO() },*/
         )
 
         Spacer(modifier = Modifier.height(10.dp))
 
-        OutlinedInputTextField(
+        InputTextField(
             value = signUpState.confirmPassword,
             onChange = onConfirmPasswordChange,
             modifier = Modifier.fillMaxWidth(),
@@ -107,9 +107,27 @@ fun SignUpForm(
             DefaultIcons(leadingIcon = Icons.Default.Lock, trailingIcon = TrailingIcon(Icons.Default.VisibilityOff, Icons.Default.Visibility)),
             isError = signUpState.errorState.confirmPasswordErrorState.hasError,
             errorText = stringResource(id = signUpState.errorState.confirmPasswordErrorState.errorMessageStringResource),
-            maxChar = 25
+            maxChar = 25,
+            textColor = Color.Gray
             /*submit = { TODO() },*/
         )
+
+        Spacer(modifier = Modifier.height(10.dp))
+
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(start = 10.dp, end = 10.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically) {
+            Text(text = "Gender", fontFamily = FontName, color = Color.Gray, fontWeight = FontWeight.W700, fontSize = 16.sp)
+            SegmentedControl(
+                items = genders,
+                defaultSelectedItemIndex = 0,) {
+                onGenderChange.invoke(genders[it])
+                Log.e("CustomToggle", "Selected item : ${genders[it]}")
+            }
+        }
 
         Spacer(modifier = Modifier.height(10.dp))
 

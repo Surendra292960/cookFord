@@ -202,7 +202,7 @@ fun InputTextField(
     isError: Boolean = false,
     errorText: String = "",
     maxChar: Int = 0,
-    texColor:Color
+    textColor:Color
     /*submit: () -> Unit*/) {
 
     var isPasswordVisible by remember { mutableStateOf(false) }
@@ -247,8 +247,8 @@ fun InputTextField(
         textStyle = TextStyle(
             fontSize = 17.sp,
             fontFamily = FontName,
-            fontWeight = FontWeight.Bold,
-            color = texColor
+            fontWeight = FontWeight.W600,
+            color = textColor
         ),
         keyboardActions = KeyboardActions {
             if (keyboardOptions.imeAction == ImeAction.Done) {
@@ -259,10 +259,10 @@ fun InputTextField(
         },
         placeholder = { Text(keyboardOptions.placeholder,fontFamily = FontName,
             fontSize = 16.sp,
-            fontWeight = FontWeight.Bold, color = Color.LightGray) },
+            fontWeight = FontWeight.W600, color = Color.LightGray) },
         label = { Text(keyboardOptions.label,fontFamily = FontName,
             fontSize = 14.sp,
-            fontWeight = FontWeight.Normal, color = Color.Gray) },
+            fontWeight = FontWeight.W600, color = Color.Gray) },
         singleLine = true,
         maxLines = 1,
         visualTransformation = if (keyboardOptions.keyboardType ==KeyboardType.Password){

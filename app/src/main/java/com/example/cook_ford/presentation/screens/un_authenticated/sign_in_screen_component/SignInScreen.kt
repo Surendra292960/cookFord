@@ -105,23 +105,18 @@ fun SignInScreen(
             }
         }
     } else {
-
         // Full Screen Content
-        Column(modifier = Modifier.fillMaxSize().verticalScroll(scrollState)
-            .fillMaxSize().navigationBarsPadding()
-            .imePadding(),
-            horizontalAlignment = Alignment.CenterHorizontally) {
+        Column(modifier = Modifier.fillMaxSize().navigationBarsPadding().imePadding()) {
 
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(12.dp)) {
+            Box(modifier = Modifier.fillMaxWidth().padding(12.dp)) {
                 // Back button
-                IconButton( onClick = { navController.navigateUp() }, modifier = Modifier.align(Alignment.CenterStart)) {
-                    Icon(imageVector = Icons.Outlined.ArrowBackIosNew, contentDescription = null, modifier =
-                    Modifier
-                        .shadow(0.dp)
-                        .clip(CircleShape))
+                IconButton( onClick = { navController.navigateUp() },
+                    modifier = Modifier.align(Alignment.CenterStart)) {
+                    Icon(imageVector = Icons.Outlined.ArrowBackIosNew,
+                        contentDescription = null,
+                        modifier = Modifier
+                            .shadow(0.dp)
+                            .clip(CircleShape))
                 }
 
                 Text(text = stringResource(id = R.string.sign_in_heading_text),
@@ -153,163 +148,156 @@ fun SignInScreen(
                 }
             }
 
-            Spacer(modifier = Modifier.height(10.dp))
+            Column(modifier = Modifier.verticalScroll(scrollState).fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
 
-            // Image
-            Box(
-                contentAlignment = Alignment.Center,
-                modifier = Modifier.fillMaxSize()
-            ) {
-                // Change the logo
-                Image(
-                    painter = painterResource(id = R.drawable.cook_ford_rounded_logo),
-                    contentDescription = "Logo",
-                    //modifier = Modifier.scale(3f))
-                    modifier = Modifier
-                        .height(100.dp)
-                        .width(100.dp)
-                )
-            }
+                Spacer(modifier = Modifier.height(10.dp))
 
-            Spacer(modifier = Modifier.height(10.dp))
-
-            Text(
-                text = "Welcome Back",
-                fontSize = 26.sp,
-                color = Color.DarkGray,
-                fontWeight = FontWeight.Bold
-            )
-
-            Spacer(modifier = Modifier.height(5.dp))
-
-            Text(
-                fontSize = 17.sp,
-                text = "Sign in with your email or password\nor continue with social media.",
-                color = Color.DarkGray,
-                fontWeight = FontWeight.W400,
-                textAlign = TextAlign.Center
-            )
-            Spacer(modifier = Modifier.height(20.dp))
-
-            Column(modifier = Modifier.padding(horizontal = AppTheme.dimens.paddingLarge).padding(bottom = AppTheme.dimens.paddingExtraLarge)) {
-
-                // SignIn Inputs Composable
-                SignInForm(
-                    signInState = signInState,
-                    viewState = viewState,
-                    onEmailChange = { inputString ->
-                        signInViewModel.onUiEvent(
-                            signInUiEvent = SignInUiEvent.EmailChanged(
-                                inputString
-                            )
-                        )
-                    },
-                    onPasswordChange = { inputString ->
-                        signInViewModel.onUiEvent(
-                            signInUiEvent = SignInUiEvent.PasswordChanged(
-                                inputString
-                            )
-                        )
-                    },
-                    onSubmit = {
-                        signInViewModel.onUiEvent(signInUiEvent = SignInUiEvent.Submit)
-                    },
-                    onForgotPasswordClick = onNavigateToForgotPassword
-                )
-            }
-
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(bottom = 50.dp),
-                verticalArrangement = Arrangement.Bottom
-            ) {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(
-                        space = 10.dp,
-                        alignment = Alignment.CenterHorizontally
+                // Image
+                Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxSize()) {
+                    // Change the logo
+                    Image(
+                        painter = painterResource(id = R.drawable.cook_ford_rounded_logo),
+                        contentDescription = "Logo",
+                        //modifier = Modifier.scale(3f))
+                        modifier = Modifier
+                            .height(100.dp)
+                            .width(100.dp)
                     )
-                ) {
-                    Box(
-                        modifier = Modifier
-                            .size(50.dp)
-                            .background(
-                                Color.White,
-                                shape = CircleShape
-                            )
-                            .shadow(elevation = 1.dp, shape = CircleShape),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Image(
-                            painter = painterResource(id = R.drawable.google_icon),
-                            contentDescription = "Google Login Icon"
-                        )
-                    }
-                    Box(
-                        modifier = Modifier
-                            .size(50.dp)
-                            .background(
-                                Color.White,
-                                shape = CircleShape
-                            )
-                            .shadow(elevation = 1.dp, shape = CircleShape)
-                            .clickable {
-
-                            },
-                        contentAlignment = Alignment.Center,
-                    ) {
-                        Image(
-                            painter = painterResource(id = R.drawable.twitter_icon),
-                            contentDescription = "Twitter Login Icon"
-                        )
-                    }
-                    Box(
-                        modifier = Modifier
-                            .size(50.dp)
-                            .background(
-                                Color.White,
-                                shape = CircleShape
-                            )
-                            .shadow(elevation = 1.dp, shape = CircleShape)
-                            .clickable {
-
-                            },
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Image(
-                            painter = painterResource(id = R.drawable.facebook_icon),
-                            contentDescription = "Facebook Login Icon"
-                        )
-                    }
-
                 }
-                // Register Section
-                Row(
-                    modifier = Modifier.padding(AppTheme.dimens.paddingNormal),
-                    horizontalArrangement = Arrangement.Center,
-                    verticalAlignment = Alignment.CenterVertically) {
-                   
-                    // Don't have an account?
-                    Text(
-                        buildAnnotatedString {
-                            withStyle(style = SpanStyle(color = Color.DarkGray)) {
-                                append(stringResource(id = R.string.do_not_have_account))
-                            }
-                            withStyle(style = SpanStyle(color = Color.Green)) {
-                                append(stringResource(id = R.string.sign_up_heading_text))
-                            }
+
+                Spacer(modifier = Modifier.height(10.dp))
+
+                Text(
+                    text = "Welcome Back",
+                    fontSize = 26.sp,
+                    color = Color.DarkGray,
+                    fontWeight = FontWeight.Bold
+                )
+
+                Spacer(modifier = Modifier.height(5.dp))
+
+                Text(
+                    fontSize = 17.sp,
+                    text = "Sign in with your email or password\nor continue with social media.",
+                    color = Color.DarkGray,
+                    fontWeight = FontWeight.W400,
+                    textAlign = TextAlign.Center
+                )
+                Spacer(modifier = Modifier.height(20.dp))
+
+                Column(modifier = Modifier
+                    .padding(horizontal = AppTheme.dimens.paddingLarge)
+                    .padding(bottom = AppTheme.dimens.paddingExtraLarge),
+                    horizontalAlignment = Alignment.CenterHorizontally) {
+
+                    // SignIn Inputs Composable
+                    SignInForm(
+                        signInState = signInState,
+                        viewState = viewState,
+                        onEmailChange = { inputString ->
+                            signInViewModel.onUiEvent(
+                                signInUiEvent = SignInUiEvent.EmailChanged(
+                                    inputString
+                                )
+                            )
                         },
-                        modifier = Modifier
-                            .padding(start = AppTheme.dimens.paddingExtraSmall)
-                            .clickable {
-                                onNavigateToRegistration.invoke()
-                            }
-                        )
+                        onPasswordChange = { inputString ->
+                            signInViewModel.onUiEvent(
+                                signInUiEvent = SignInUiEvent.PasswordChanged(
+                                    inputString
+                                )
+                            )
+                        },
+                        onSubmit = {
+                            signInViewModel.onUiEvent(signInUiEvent = SignInUiEvent.Submit)
+                        },
+                        onForgotPasswordClick = onNavigateToForgotPassword
+                    )
                 }
-            }
 
-            ShowSnackbar(signInViewModel, lifecycle, snackBarHostState)
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(bottom = 50.dp),
+                    verticalArrangement = Arrangement.Bottom,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(
+                            space = 10.dp,
+                            alignment = Alignment.CenterHorizontally
+                        )) {
+                        Box(modifier = Modifier
+                            .size(50.dp)
+                            .background(
+                                Color.LightGray,
+                                shape = CircleShape
+                            ),
+                            contentAlignment = Alignment.Center) {
+                            Image(
+                                painter = painterResource(id = R.drawable.google_icon),
+                                contentDescription = "Google Login Icon"
+                            )
+                        }
+                        Box(modifier = Modifier
+                            .size(50.dp)
+                            .background(
+                                Color.LightGray,
+                                shape = CircleShape
+                            )
+                            .clickable {
+
+                            },
+                            contentAlignment = Alignment.Center) {
+                            Image(
+                                painter = painterResource(id = R.drawable.twitter_icon),
+                                contentDescription = "Twitter Login Icon"
+                            )
+                        }
+                        Box(modifier = Modifier
+                            .size(50.dp)
+                            .background(
+                                Color.LightGray,
+                                shape = CircleShape
+                            )
+                            .clickable {
+
+                            },
+                            contentAlignment = Alignment.Center) {
+                            Image(
+                                painter = painterResource(id = R.drawable.facebook_icon),
+                                contentDescription = "Facebook Login Icon"
+                            )
+                        }
+                    }
+
+                    Spacer(modifier = Modifier.height(10.dp))
+
+                    // Register Section
+                    Row(modifier = Modifier.padding(AppTheme.dimens.paddingNormal)) {
+
+                        // Don't have an account?
+                        Text(
+                            buildAnnotatedString {
+                                withStyle(style = SpanStyle(color = Color.DarkGray)) {
+                                    append(stringResource(id = R.string.do_not_have_account))
+                                }
+                                withStyle(style = SpanStyle(color = Color.Green)) {
+                                    append(stringResource(id = R.string.sign_up_heading_text))
+                                }
+                            },
+                            modifier = Modifier
+                                .padding(start = AppTheme.dimens.paddingExtraSmall)
+                                .clickable {
+                                    onNavigateToRegistration.invoke()
+                                }
+                        )
+                    }
+                }
+
+                ShowSnackbar(signInViewModel, lifecycle, snackBarHostState)
+            }
         }
     }
 }

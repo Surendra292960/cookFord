@@ -48,15 +48,19 @@ fun NavGraphBuilder.unauthenticatedGraph(navController: NavController) {
         }
 
         // Onboard
-        composable(route = NavigationRoutes.Unauthenticated.OnboardScreen.route) {
+        composable(route = NavigationRoutes.Unauthenticated.Onboard.route) {
             OnBoardingScreen(navController = navController,
                 onNavigateToAuthenticatedRoute = {
-                    navController.navigate(route = NavigationRoutes.Unauthenticated.Landing.route)
+                    navController.navigate(route = NavigationRoutes.Unauthenticated.Landing.route){
+                        popUpTo(route = NavigationRoutes.Unauthenticated.Onboard.route) {
+                            inclusive = true
+                        }
+                    }
                 }
             )
         }
 
-        // Landing
+        //Landing
         composable(route = NavigationRoutes.Unauthenticated.Landing.route) {
             LandingScreen(navController = navController,
                 onNavigateToAuthenticatedRoute = {
@@ -74,13 +78,6 @@ fun NavGraphBuilder.unauthenticatedGraph(navController: NavController) {
                 }
             )
         }
-
-        //OnBoard
-      /*  composable(route = NavigationRoutes.Unauthenticated.OnBoard.route) {
-            OnBoardingScreen(
-                //navController
-            )
-        }*/
 
         // SignIn
         composable(route = NavigationRoutes.Unauthenticated.SignIn.route) {

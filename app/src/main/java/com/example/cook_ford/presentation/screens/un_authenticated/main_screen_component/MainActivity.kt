@@ -26,7 +26,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.core.content.ContextCompat
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -87,7 +86,7 @@ fun SplashScreen(navController: NavController) {
             }
         }else{
             Log.d("TAG", "SplashScreen else: ${userSession.check(ACCESS_TOKEN)}")
-            navController.navigate(route = NavigationRoutes.Unauthenticated.OnboardScreen.route){
+            navController.navigate(route = NavigationRoutes.Unauthenticated.Onboard.route){
                 popUpTo(NavigationRoutes.Unauthenticated.Splash.route){
                     inclusive = true
                 }

@@ -8,12 +8,14 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.example.cook_ford.R
 import com.example.cook_ford.presentation.component.widgets.KeyboardOption
+import com.example.cook_ford.presentation.component.widgets.OutlinedSubmitButton
 import com.example.cook_ford.presentation.component.widgets.StarRatingBar
 import com.example.cook_ford.presentation.component.widgets.SubmitButton
 import com.example.cook_ford.presentation.component.widgets.Textarea
@@ -60,12 +62,11 @@ fun ReviewForm(
             /*submit = { TODO() }*/
         )
 
-        Spacer(modifier = Modifier.height(40.dp))
-
         // Submit Button
-        SubmitButton(
+        OutlinedSubmitButton(
             modifier = Modifier.padding(top = AppTheme.dimens.paddingLarge),
             text = stringResource(id = R.string.save_button_text),
+            textColor = Color.Gray,
             isLoading = false,
             onClick = onSubmit
         )

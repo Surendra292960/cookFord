@@ -24,6 +24,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.cook_ford.R
 import com.example.cook_ford.presentation.component.widgets.DefaultIcons
+import com.example.cook_ford.presentation.component.widgets.InputTextField
 import com.example.cook_ford.presentation.component.widgets.OutlinedInputTextField
 import com.example.cook_ford.presentation.component.widgets.KeyboardOption
 import com.example.cook_ford.presentation.component.widgets.OutlinedSmallSubmitButton
@@ -49,7 +50,7 @@ fun SignInForm(
 
         Spacer(modifier = Modifier.height(10.dp))
 
-        OutlinedInputTextField(
+        InputTextField(
             value = signInState.email,
             onChange = onEmailChange,
             modifier = Modifier.fillMaxWidth(),
@@ -62,11 +63,12 @@ fun SignInForm(
             DefaultIcons(leadingIcon = Icons.Default.Email),
             isError = signInState.errorState.emailErrorState.hasError,
             errorText = stringResource(id = signInState.errorState.emailErrorState.errorMessageStringResource),
-            maxChar = 30
+            maxChar = 30,
+            textColor = Color.Gray
             /*submit = { TODO() }*/
         )
         Spacer(modifier = Modifier.height(10.dp))
-        OutlinedInputTextField(
+        InputTextField(
             value = signInState.password,
             onChange = onPasswordChange,
             modifier = Modifier.fillMaxWidth(),
@@ -82,7 +84,8 @@ fun SignInForm(
             ),
             isError = signInState.errorState.passwordErrorState.hasError,
             errorText = stringResource(id = signInState.errorState.passwordErrorState.errorMessageStringResource),
-            maxChar = 25
+            maxChar = 25,
+            textColor = Color.Gray
             /*submit = { TODO() },*/
         )
 

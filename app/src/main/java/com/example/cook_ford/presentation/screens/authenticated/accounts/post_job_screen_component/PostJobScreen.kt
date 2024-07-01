@@ -183,7 +183,7 @@ fun PostJobScreen(
                     isError = false,
                     errorText = "",
                     maxChar = 5,
-                    texColor = Color.Gray
+                    textColor = Color.Gray
                     /*submit = { TODO() }*/
                 )
                 Spacer(modifier = Modifier.width(20.dp))
@@ -201,7 +201,7 @@ fun PostJobScreen(
                     isError = false,
                     errorText = "",
                     maxChar = 5,
-                    texColor = Color.Gray
+                    textColor = Color.Gray
                     /*submit = { TODO() }*/
                 )
             }
@@ -214,7 +214,7 @@ fun PostJobScreen(
                 isLeadingIcon = true,
                 isTrailingIcon = false,
                 title = "Allow cooks to call you",
-                subtitle = "Matched cooks will be able to call you on\n +919899199199",
+                subtitle = "Matched cooks will be able to call you on\n +91".plus(postJobViewModel.phoneNumber),
                 tintColor = MaterialTheme.colors.primary,
                 trailingIconSize = 17.dp,
                 leadingIconSize = 30.dp,

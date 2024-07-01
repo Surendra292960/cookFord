@@ -8,9 +8,9 @@ import com.example.cook_ford.utils.AppConstants.EMPTY_STRING
 data class SignUpState(
     val username: String = EMPTY_STRING,
     val email: String = EMPTY_STRING,
-    val phone: String = EMPTY_STRING,
     val password: String = EMPTY_STRING,
     val confirmPassword: String = EMPTY_STRING,
+    val gender: String = EMPTY_STRING,
     val errorState: SignUpErrorState = SignUpErrorState(),
     val isSignUpSuccessful: Boolean = false
 )
@@ -22,7 +22,7 @@ data class SignUpState(
 data class SignUpErrorState(
     val usernameErrorState: ErrorState = ErrorState(),
     val emailErrorState: ErrorState = ErrorState(),
-    val phoneErrorState: ErrorState = ErrorState(),
     val passwordErrorState: ErrorState = ErrorState(),
-    val confirmPasswordErrorState: ErrorState = ErrorState()
+    val confirmPasswordErrorState: ErrorState = ErrorState(),
+    val genderErrorState: ErrorState = ErrorState()
 )

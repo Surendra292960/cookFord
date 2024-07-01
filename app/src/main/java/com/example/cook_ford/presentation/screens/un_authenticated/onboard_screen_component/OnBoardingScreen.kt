@@ -247,39 +247,6 @@ fun OnBoardingItem(items: OnBoardingItems) {
         Spacer(modifier = Modifier.height(20.dp))
     }
 
-   /* Column(
-
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center,
-        modifier = Modifier.fillMaxSize()) {
-        Image(
-            painter = painterResource(id = items.image),
-            contentDescription = "Image1",
-            modifier = Modifier.padding(start = 10.dp, end = 10.dp))
-
-        Spacer(modifier = Modifier.height(10.dp))
-
-        Text(
-            text = stringResource(id = items.title),
-            style = MaterialTheme.typography.headlineMedium,
-           // fontSize = 24.sp,
-            color = MaterialTheme.colorScheme.onBackground,
-            fontWeight = FontWeight.Bold,
-            textAlign = TextAlign.Center,
-            letterSpacing = 1.sp,
-        )
-        Spacer(modifier = Modifier.height(8.dp))
-
-        Text(
-            text = stringResource(id = items.desc),
-            style = MaterialTheme.typography.bodyLarge,
-            color = MaterialTheme.colorScheme.onBackground,
-            fontWeight = FontWeight.Light,
-            textAlign = TextAlign.Center,
-            modifier = Modifier.padding(10.dp),
-            letterSpacing = 1.sp,
-        )
-    }*/
 }
 
 @Preview(showBackground = true)

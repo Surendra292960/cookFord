@@ -43,6 +43,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.cook_ford.R
 import com.example.cook_ford.data.remote.profile_response.ProfileResponse
+import com.example.cook_ford.presentation.component.widgets.OutlinedSmallSubmitButton
 import com.example.cook_ford.presentation.component.widgets.OutlinedSubmitButton
 import com.example.cook_ford.presentation.component.widgets.SegmentedControl
 import com.example.cook_ford.presentation.screens.authenticated.profile_screen_component.report_screen_component.SingleSelectionComponent
@@ -197,10 +198,10 @@ fun CookPreferencesScreen(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween){
 
-            OutlinedSubmitButton(
+            OutlinedSmallSubmitButton(
                 modifier = Modifier.padding(all = 10.dp),
                 textColor = Color.Gray,
-                text = stringResource(id = R.string.submit_button_text),
+                text = stringResource(id = R.string.appy_button_text),
                 isLoading = false,
                 onClick = { /*onSubmit*/ }
             )
