@@ -3,9 +3,10 @@ import androidx.lifecycle.ViewModel
 import com.example.cook_ford.data.local.SessionConstant
 import com.example.cook_ford.data.local.UserSession
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
 @HiltViewModel
-class PostJobViewModel constructor(private val userSession: UserSession) : ViewModel() {
+class PostJobViewModel @Inject constructor(private val userSession: UserSession) : ViewModel() {
 
     val phoneNumber = userSession.getString(SessionConstant.PHONE_NUMBER)
 
