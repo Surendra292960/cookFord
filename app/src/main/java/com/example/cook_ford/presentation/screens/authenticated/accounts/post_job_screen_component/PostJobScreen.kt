@@ -57,12 +57,11 @@ fun PostJobScreen(
     onNavigateBack: () -> Unit,
     profileResponse: ProfileResponse?=null,
     onNavigateToAuthenticatedRoute: () -> Unit,
-    onNavigateToCookPreferences: (String) -> Unit,){
+    onNavigateToCookPreferences: (String) -> Unit){
 
     val postJobViewModel:PostJobViewModel = hiltViewModel()
     val changeProfileState = remember { mutableStateOf("Male") }
     val postJobState = remember { mutableStateOf(false) }
-
 
     Column(
         modifier = Modifier

@@ -8,8 +8,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -40,8 +38,6 @@ import androidx.compose.material.icons.filled.ExposureZero
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FilterChip
-import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -80,6 +76,7 @@ import coil.compose.rememberAsyncImagePainter
 import com.example.cook_ford.R
 import com.example.cook_ford.data.remote.profile_response.ProfileResponse
 import com.example.cook_ford.data.remote.profile_response.TimeSlots
+import com.example.cook_ford.presentation.component.TimeSlotsComponent
 import com.example.cook_ford.presentation.component.widgets.Child
 import com.example.cook_ford.presentation.component.widgets.MediumTitleText
 import com.example.cook_ford.presentation.component.widgets.Progressbar
@@ -867,34 +864,6 @@ fun ExperienceCard(profile: ProfileResponse, timeSlots: List<TimeSlots>) {
 						fontWeight = FontWeight.W700
 					)
 				}
-			}
-		}
-	}
-}
-
-@OptIn(ExperimentalLayoutApi::class)
-@Composable
-fun TimeSlotsComponent(timeSlots: List<TimeSlots>) {
-	FlowRow {
-		timeSlots.forEach { timeSlots ->
-			timeSlots.slots?.let {
-				FilterChip(
-					shape = RoundedCornerShape(1.dp),
-					modifier = Modifier.padding(horizontal = 2.dp).background(Color.White),
-					onClick = { },
-					label = {
-						timeSlots.slots?.let { time->
-							MediumTitleText(
-							modifier = Modifier,
-							text = time,
-							fontWeight = FontWeight.W400,
-							textAlign = TextAlign.Center,
-							textColor = Color.DarkGray
-						) }
-					},
-					selected = true,
-					colors = FilterChipDefaults.filterChipColors(selectedContainerColor = Color.LightGray)
-				)
 			}
 		}
 	}

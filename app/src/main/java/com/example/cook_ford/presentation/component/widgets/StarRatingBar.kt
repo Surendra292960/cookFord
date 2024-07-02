@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.selection.selectable
@@ -30,7 +29,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
-import androidx.wear.compose.material.MaterialTheme
 import com.example.cook_ford.presentation.theme.DeepGreen
 import com.example.cook_ford.presentation.theme.LightGreen
 import com.example.cook_ford.presentation.theme.LightGreen1
@@ -113,7 +111,7 @@ fun RatingStar(rating: Float = 5f, maxRating: Int = 5, onStarClick: (Int) -> Uni
                 Icon(
                     imageVector = Icons.Default.Star,
                     contentDescription = null,
-                    tint = Color.Gray,
+                    tint = Color.LightGray,
                     modifier = Modifier.size(30.dp)
                         .clickable(!isIndicator) {
                             onStarClick(i)

@@ -79,7 +79,7 @@ fun DropDownMenu(
                 fontWeight = FontWeight.Bold,
                 color = textColor
             ),
-            label = {Text("Select City",fontFamily = FontName, fontWeight = FontWeight.Normal, color = textColor)},
+            label = {Text("Select City",fontFamily = FontName, fontWeight = FontWeight.W400, color = textColor)},
 
             trailingIcon = {
                 Icon(icon,"contentDescription",
@@ -105,7 +105,7 @@ fun DropDownMenu(
                         onChange(label)// label
                         mExpanded = false
                     }) {
-                    Text(text = label, fontSize = 14.sp, fontFamily = FontName, fontWeight = FontWeight.SemiBold, color = textColor)
+                    Text(text = label, fontFamily = FontName, fontWeight = FontWeight.W400, color = textColor)
                 }
             }
         }

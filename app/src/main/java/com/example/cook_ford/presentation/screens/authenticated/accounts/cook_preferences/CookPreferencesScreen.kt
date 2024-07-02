@@ -20,7 +20,6 @@ import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Button
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Slider
@@ -36,24 +35,27 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.cook_ford.R
 import com.example.cook_ford.data.remote.profile_response.ProfileResponse
 import com.example.cook_ford.presentation.component.widgets.OutlinedSmallSubmitButton
-import com.example.cook_ford.presentation.component.widgets.OutlinedSubmitButton
 import com.example.cook_ford.presentation.component.widgets.SegmentedControl
-import com.example.cook_ford.presentation.screens.authenticated.profile_screen_component.report_screen_component.SingleSelectionComponent
-import com.example.cook_ford.presentation.theme.FontName
+import com.example.cook_ford.presentation.component.widgets.SingleSelectionComponent
+import com.example.cook_ford.presentation.component.widgets.TitleText
 import com.google.gson.Gson
 
 
 val jobType = listOf("Part time\n(Daily/Occasional meals)", "Full day\n(Domestic)", "Live in\n(Domestic)", "Catering\n(Parties & Events)")
 val jobTypeLast = listOf("Restaurant chef\n(Commercial)")
-val genders = listOf("Male", "Female", "Any")
+val genders = listOf("Male", "Female")
 val visits = listOf("One Visit", "Two Visit", "Three Visit")
 val mCities = listOf("Delhi", "Mumbai", "Chennai", "Kolkata", "Hyderabad", "Bengaluru", "Pune")
 val morning = listOf("5am-6am", "6am-7am", "7am-8am", "8am-9am", "9am-10am", "10am-11am", "11am-12am")
@@ -80,7 +82,13 @@ fun CookPreferencesScreen(
 
             //Cook Types
             Spacer(modifier = Modifier.height(20.dp))
-            Text(modifier = Modifier.align(Alignment.Start), text = "Cook Type", fontFamily = FontName, fontWeight = FontWeight.Bold)
+            TitleText(
+                modifier = Modifier,
+                text = "Cook Type",
+                fontWeight = FontWeight.W900,
+                textAlign = TextAlign.Center,
+                textColor = Color.Gray
+            )
             JobTypeSection(
                 jobType = jobType, jobTypeLast = jobTypeLast, onChange = {  },
                 isError = false,
@@ -89,7 +97,13 @@ fun CookPreferencesScreen(
 
             //Number of visit
             Spacer(modifier = Modifier.height(20.dp))
-            Text(modifier = Modifier.align(Alignment.Start), text = "Number of visit per day", fontFamily = FontName, fontWeight = FontWeight.Bold)
+            TitleText(
+                modifier = Modifier,
+                text = "Number of visit per day",
+                fontWeight = FontWeight.W900,
+                textAlign = TextAlign.Center,
+                textColor = Color.Gray
+            )
             SegmentedControl(
                 items = visits,
                 defaultSelectedItemIndex = 0) {
@@ -98,7 +112,13 @@ fun CookPreferencesScreen(
 
             //Gender
             Spacer(modifier = Modifier.height(20.dp))
-            Text(modifier = Modifier.align(Alignment.Start), text = "Gender", fontFamily = FontName, fontWeight = FontWeight.Bold)
+            TitleText(
+                modifier = Modifier,
+                text = "Gender",
+                fontWeight = FontWeight.W900,
+                textAlign = TextAlign.Center,
+                textColor = Color.Gray
+            )
             SegmentedControl(
                 items = genders,
                 defaultSelectedItemIndex = 0) {
@@ -107,32 +127,47 @@ fun CookPreferencesScreen(
 
             //Time Shift
             Spacer(modifier = Modifier.height(20.dp))
-            Text(text = "Who is available for (any of the selected)", fontFamily = FontName, fontWeight = FontWeight.Bold)
-            Spacer(modifier = Modifier.height(5.dp))
-            HorizontalDivider(modifier = Modifier.height(1.dp))
-            Spacer(modifier = Modifier.height(5.dp))
+            Text(
+                buildAnnotatedString {
+                   withStyle(style = SpanStyle(color = Color.Gray, fontWeight = FontWeight.W900)) {
+                       append("Who is available for")
+                   }
+                   withStyle(style = SpanStyle(color = Color.Gray, fontSize = 14.sp, fontWeight = FontWeight.W400)) {
+                       append(" (any of the selected)")
+                   }
+               },
+                modifier = Modifier
+            )
+
             Row (horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically){
-                Text(modifier = Modifier, text = "Morning", fontFamily = FontName, fontWeight = FontWeight.Bold)
-                Spacer(modifier = Modifier.width(10.dp))
+                TitleText(
+                    modifier = Modifier,
+                    text = "Morning     ",
+                    fontWeight = FontWeight.W900,
+                    textAlign = TextAlign.Center,
+                    textColor = Color.Gray
+                )
+               // Spacer(modifier = Modifier.width(10.dp))
                 SingleSelectionComponent(
                     modifier = Modifier,
                     issueList = morning,
-                    onIssueChange = {}
+                    onIssueChange = {
+                        Log.d("TAG", "CookPreferencesScreen: $it")
+                    }
                 )
             }
 
-            HorizontalDivider(modifier = Modifier.height(1.dp))
-            Spacer(modifier = Modifier.height(10.dp))
             Row (horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically) {
-                Text(
+                TitleText(
                     modifier = Modifier,
-                    text = "Afternoon",
-                    fontFamily = FontName,
-                    fontWeight = FontWeight.Bold
+                    text = "Afternoon   ",
+                    fontWeight = FontWeight.W900,
+                    textAlign = TextAlign.Center,
+                    textColor = Color.Gray
                 )
-                Spacer(modifier = Modifier.width(10.dp))
+                //Spacer(modifier = Modifier.width(10.dp))
                 SingleSelectionComponent(
                     modifier = Modifier,
                     issueList = afternoon,
@@ -140,16 +175,16 @@ fun CookPreferencesScreen(
                 )
             }
 
-            HorizontalDivider(modifier = Modifier.height(1.dp))
             Row (horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically) {
-                Text(
+                TitleText(
                     modifier = Modifier,
-                    text = "Evening",
-                    fontFamily = FontName,
-                    fontWeight = FontWeight.Bold
+                    text = "Evening      ",
+                    fontWeight = FontWeight.W900,
+                    textAlign = TextAlign.Center,
+                    textColor = Color.Gray
                 )
-                Spacer(modifier = Modifier.width(10.dp))
+               // Spacer(modifier = Modifier.width(10.dp))
                 SingleSelectionComponent(
                     modifier = Modifier,
                     issueList = evening,
@@ -157,12 +192,21 @@ fun CookPreferencesScreen(
                 )
             }
 
-
             //Cuisine
-            Spacer(modifier = Modifier.height(20.dp))
-            Text(text = "Who can prepare (any of the selected)", fontFamily = FontName, fontWeight = FontWeight.Bold)
-            Spacer(modifier = Modifier.height(5.dp))
-            HorizontalDivider(modifier = Modifier.height(1.dp))
+            Spacer(modifier = Modifier.height(10.dp))
+
+            Text(
+                buildAnnotatedString {
+                    withStyle(style = SpanStyle(color = Color.Gray, fontWeight = FontWeight.W900)) {
+                        append("Who can prepare")
+                    }
+                    withStyle(style = SpanStyle(color = Color.Gray, fontSize = 14.sp, fontWeight = FontWeight.W400)) {
+                        append(" (any of the selected)")
+                    }
+                },
+                modifier = Modifier
+            )
+
             SingleSelectionComponent(
                 modifier = Modifier,
                 issueList = cuisine,
@@ -170,11 +214,20 @@ fun CookPreferencesScreen(
             )
 
             //Languages
-            Spacer(modifier = Modifier.height(15.dp))
-            Text(text = "Who can speak (any of the selected)", fontFamily = FontName, fontWeight = FontWeight.Bold)
-            Spacer(modifier = Modifier.height(5.dp))
-            HorizontalDivider(modifier = Modifier.height(1.dp))
             Spacer(modifier = Modifier.height(10.dp))
+
+            Text(
+                buildAnnotatedString {
+                    withStyle(style = SpanStyle(color = Color.Gray, fontWeight = FontWeight.W900)) {
+                        append("Who can speak")
+                    }
+                    withStyle(style = SpanStyle(color = Color.Gray, fontSize = 14.sp, fontWeight = FontWeight.W400)) {
+                        append(" (any of the selected)")
+                    }
+                },
+                modifier = Modifier
+            )
+
             SingleSelectionComponent(
                 modifier = Modifier,
                 issueList = languages,
@@ -182,9 +235,14 @@ fun CookPreferencesScreen(
             )
 
             Spacer(modifier = Modifier.height(20.dp))
-            Text(text = "Who is Experienced between", fontFamily = FontName, fontWeight = FontWeight.Bold)
-            Spacer(modifier = Modifier.height(5.dp))
-            HorizontalDivider(modifier = Modifier.height(1.dp))
+            TitleText(
+                modifier = Modifier,
+                text = "Who is Experienced between",
+                fontWeight = FontWeight.W900,
+                textAlign = TextAlign.Center,
+                textColor = Color.Gray
+            )
+
             Spacer(modifier = Modifier.height(10.dp))
             SliderAdvancedExample(selectedExperience = {
                 Log.d("TAG","Slider Data : ${it.toInt()}")
@@ -215,7 +273,13 @@ fun SliderAdvancedExample(selectedExperience:(Float)->Unit) {
     Row(modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.spacedBy(10.dp, Alignment.Start),
         verticalAlignment = Alignment.CenterVertically) {
-        Text(text = "0 yr", fontFamily = FontName, fontWeight = FontWeight.Bold)
+        TitleText(
+            modifier = Modifier,
+            text = "0 yr",
+            fontWeight = FontWeight.W900,
+            textAlign = TextAlign.Center,
+            textColor = Color.Gray
+        )
         Slider(
             modifier = Modifier.weight(1f),
             value = sliderPosition,
@@ -230,7 +294,13 @@ fun SliderAdvancedExample(selectedExperience:(Float)->Unit) {
             steps = 50,
             valueRange = 0f..50f
         )
-        Text(text = sliderPosition.toInt().toString().plus(" Yr"), fontFamily = FontName, fontWeight = FontWeight.Bold)
+        TitleText(
+            modifier = Modifier,
+            text = sliderPosition.toInt().toString().plus(" Yr"),
+            fontWeight = FontWeight.W900,
+            textAlign = TextAlign.Center,
+            textColor = Color.Gray
+        )
     }
 }
 

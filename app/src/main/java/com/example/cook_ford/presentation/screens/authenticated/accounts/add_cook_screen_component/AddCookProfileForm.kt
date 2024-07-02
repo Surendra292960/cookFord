@@ -93,7 +93,7 @@ fun AddCookProfileForm(
         Row(modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically) {
-            Text(text = "Select cook`s city", fontFamily = FontName, fontWeight = FontWeight.Bold)
+            Text(text = "Select cook`s city", fontFamily = FontName, color = Color.Gray, fontWeight = FontWeight.W700, fontSize = 16.sp)
 
             DropDownMenu(
                 value = addCookProfileState.city,

@@ -1,6 +1,4 @@
 package com.example.cook_ford.presentation.screens.authenticated.accounts.account_screen_component
-
-
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth

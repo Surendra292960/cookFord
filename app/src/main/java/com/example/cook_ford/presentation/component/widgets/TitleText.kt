@@ -1,6 +1,5 @@
 package com.example.cook_ford.presentation.component.widgets
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -14,11 +13,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.cook_ford.presentation.theme.AppTheme
-import com.example.cook_ford.presentation.theme.OrangeYellow1
 
+/*
 @Composable
 fun TitleText(
     modifier: Modifier = Modifier,
@@ -31,6 +29,25 @@ fun TitleText(
         textAlign = textAlign,
         style = MaterialTheme.typography.headlineLarge,
         color = MaterialTheme.colorScheme.secondary
+    )
+}*/
+
+@Composable
+fun TitleText(
+    modifier: Modifier = Modifier,
+    text: String,
+    textColor: Color,
+    fontWeight:FontWeight,
+    textAlign: TextAlign = TextAlign.Start) {
+    Text(
+        modifier = modifier,
+        text = text,
+        letterSpacing = 0.5.sp,
+        style = MaterialTheme.typography.bodyMedium,
+        textAlign = textAlign,
+        fontWeight = fontWeight,
+        fontSize = 15.sp,
+        color = textColor
     )
 }
 
