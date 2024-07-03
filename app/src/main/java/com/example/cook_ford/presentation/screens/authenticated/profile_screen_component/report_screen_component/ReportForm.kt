@@ -16,7 +16,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.cook_ford.R
 import com.example.cook_ford.presentation.component.widgets.KeyboardOption
 import com.example.cook_ford.presentation.component.widgets.OutlinedSubmitButton
-import com.example.cook_ford.presentation.component.widgets.SingleSelectionComponent
+import com.example.cook_ford.presentation.component.SingleSelectionComponent
 import com.example.cook_ford.presentation.component.widgets.Textarea
 import com.example.cook_ford.presentation.component.widgets.snack_bar.MainViewState
 import com.example.cook_ford.presentation.screens.authenticated.profile_screen_component.report_screen_component.state.ReportState

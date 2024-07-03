@@ -1,3 +1,118 @@
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.material.Text
+import androidx.compose.material3.Button
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import coil.compose.rememberAsyncImagePainter
+import com.example.cook_ford.R
+import com.example.cook_ford.presentation.component.Header
+import com.example.cook_ford.presentation.component.InformationCard
+import com.example.cook_ford.presentation.component.ProfileAvatar
+
+@Composable
+fun ProfileScreen(
+
+) {
+   // val state by viewModel.state.collectAsState()
+    ProfileContent(
+      //  state = state,
+        onChangeFirstName = {},
+        onChangeLastName = {},
+        onChangeLocation = {},
+        onChangeEmail = {},
+        onChangePhone = {},
+        onSaveUserInfo = {}
+    )
+}
+
+@Composable
+private fun ProfileContent(
+   // state: ProfileUiState,
+    onChangeFirstName: (String) -> Unit,
+    onChangeLastName: (String) -> Unit,
+    onChangeLocation: (String) -> Unit,
+    onChangeEmail: (String) -> Unit,
+    onChangePhone: (String) -> Unit,
+    onSaveUserInfo: () -> Unit,
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(horizontal = 16.dp, vertical = 32.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Header(
+            title = stringResource(R.string.appy_button_text),
+            subtitle = stringResource(R.string.appy_button_text)
+        )
+        Spacer(modifier = Modifier.height(32.dp))
+
+        ProfileAvatar(
+            painter = rememberAsyncImagePainter(model = "state.profilePictureLin"),
+            size = 100
+        )
+
+        Spacer(modifier = Modifier.height(24.dp))
+
+        Row(modifier = Modifier.fillMaxWidth()) {
+            Box(modifier = Modifier.weight(1F)) {
+                InformationCard(
+                    title = stringResource(R.string.onbaord_title3 ),
+                    information = "state.firstName",
+                    onTextChange = onChangeFirstName
+                )
+            }
+            Spacer(modifier = Modifier.width(10.dp))
+
+            Box(modifier = Modifier.weight(1F)) {
+                InformationCard(
+                    title = stringResource(R.string.onbaord_title1),
+                    information = "state.lastName",
+                    onTextChange = onChangeLastName
+                )
+            }
+        }
+        InformationCard(
+            title = stringResource(R.string.appy_button_text),
+            information = "location",
+            onTextChange = onChangeLocation
+        )
+        InformationCard(
+            title = stringResource(R.string.onbaord_title2),
+            information = "state.email",
+            onTextChange = onChangeEmail
+        )
+        InformationCard(
+            title = stringResource(R.string.submit_button_text),
+            information = "state.phone",
+            onTextChange = onChangePhone
+        )
+
+        Spacer(modifier = Modifier.weight(1F))
+        Button(onClick = onSaveUserInfo) {
+            Text(text = stringResource(R.string.sign_in_button_text))
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun PreviewProfileScreen() {
+    ProfileScreen()
+}
+
 /*
 package com.example.cook_ford.presentation.component
 

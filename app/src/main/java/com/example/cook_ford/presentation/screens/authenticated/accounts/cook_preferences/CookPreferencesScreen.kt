@@ -14,7 +14,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -28,6 +27,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -37,6 +37,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
@@ -46,16 +47,18 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.cook_ford.R
 import com.example.cook_ford.data.remote.profile_response.ProfileResponse
+import com.example.cook_ford.presentation.component.CookTypeSingleSection
+import com.example.cook_ford.presentation.component.MultiSelectionComponent
 import com.example.cook_ford.presentation.component.widgets.OutlinedSmallSubmitButton
 import com.example.cook_ford.presentation.component.widgets.SegmentedControl
-import com.example.cook_ford.presentation.component.widgets.SingleSelectionComponent
 import com.example.cook_ford.presentation.component.widgets.TitleText
 import com.google.gson.Gson
 
 
-val jobType = listOf("Part time\n(Daily/Occasional meals)", "Full day\n(Domestic)", "Live in\n(Domestic)", "Catering\n(Parties & Events)")
+val jobType = listOf("Part time\n(Daily/Occasional meals)", "Full day\n(Domestic)", "Live in Cook\n(Domestic)", "Professional Chef\n(Hotel & Restaurant)", "Catering Chef\n(Parties & Events)")
 val jobTypeLast = listOf("Restaurant chef\n(Commercial)")
 val genders = listOf("Male", "Female")
+val relocate = listOf("Yes", "No")
 val visits = listOf("One Visit", "Two Visit", "Three Visit")
 val mCities = listOf("Delhi", "Mumbai", "Chennai", "Kolkata", "Hyderabad", "Bengaluru", "Pune")
 val morning = listOf("5am-6am", "6am-7am", "7am-8am", "8am-9am", "9am-10am", "10am-11am", "11am-12am")
@@ -69,6 +72,8 @@ fun CookPreferencesScreen(
     onNavigateBack: () -> Unit,
     profileResponse: ProfileResponse?=null,
     onNavigateToAuthenticatedRoute: () -> Unit){
+
+    var cookType by remember { mutableIntStateOf(0) }
 
     Column(
         Modifier.fillMaxHeight(),
@@ -89,25 +94,49 @@ fun CookPreferencesScreen(
                 textAlign = TextAlign.Center,
                 textColor = Color.Gray
             )
-            JobTypeSection(
-                jobType = jobType, jobTypeLast = jobTypeLast, onChange = {  },
+            CookTypeSingleSection(
+                cookType = jobType,
+                onIndexChange = {
+                    cookType = it
+                    Log.d("TAG", "CookPreferencesScreen Index : $it")
+                },
+                onChange = { },
                 isError = false,
                 errorText = "Error",
             )
 
             //Number of visit
-            Spacer(modifier = Modifier.height(20.dp))
-            TitleText(
-                modifier = Modifier,
-                text = "Number of visit per day",
-                fontWeight = FontWeight.W900,
-                textAlign = TextAlign.Center,
-                textColor = Color.Gray
-            )
-            SegmentedControl(
-                items = visits,
-                defaultSelectedItemIndex = 0) {
-                Log.e("CustomToggle", "Selected item : ${genders[it]}")
+           if (cookType == 0){
+               Spacer(modifier = Modifier.height(20.dp))
+               TitleText(
+                   modifier = Modifier,
+                   text = "Number of visit per day",
+                   fontWeight = FontWeight.W900,
+                   textAlign = TextAlign.Center,
+                   textColor = Color.Gray
+               )
+               SegmentedControl(
+                   items = visits,
+                   defaultSelectedItemIndex = 0) {
+                   Log.e("CustomToggle", "Selected item : ${genders[it]}")
+               }
+           }
+
+            //Relocate Chef
+            if (cookType == 3){
+                Spacer(modifier = Modifier.height(20.dp))
+                TitleText(
+                    modifier = Modifier,
+                    text = "Show chefs ready to relocate?",
+                    fontWeight = FontWeight.W900,
+                    textAlign = TextAlign.Center,
+                    textColor = Color.Gray
+                )
+                SegmentedControl(
+                    items = relocate,
+                    defaultSelectedItemIndex = 0) {
+                    Log.e("CustomToggle", "Selected item : ${genders[it]}")
+                }
             }
 
             //Gender
@@ -126,70 +155,77 @@ fun CookPreferencesScreen(
             }
 
             //Time Shift
-            Spacer(modifier = Modifier.height(20.dp))
-            Text(
-                buildAnnotatedString {
-                   withStyle(style = SpanStyle(color = Color.Gray, fontWeight = FontWeight.W900)) {
-                       append("Who is available for")
-                   }
-                   withStyle(style = SpanStyle(color = Color.Gray, fontSize = 14.sp, fontWeight = FontWeight.W400)) {
-                       append(" (any of the selected)")
-                   }
-               },
-                modifier = Modifier
-            )
+            if (cookType==0 || cookType==4){
 
-            Row (horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically){
-                TitleText(
-                    modifier = Modifier,
-                    text = "Morning     ",
-                    fontWeight = FontWeight.W900,
-                    textAlign = TextAlign.Center,
-                    textColor = Color.Gray
+                Spacer(modifier = Modifier.height(20.dp))
+                Text(
+                    buildAnnotatedString {
+                        withStyle(style = SpanStyle(color = Color.Gray, fontWeight = FontWeight.W900)) {
+                            append("Who is available for")
+                        }
+                        withStyle(style = SpanStyle(color = Color.Gray, fontSize = 13.sp, fontWeight = FontWeight.W400, fontStyle = FontStyle.Italic)) {
+                            append(" (any of the selected)")
+                        }
+                    },
+                    modifier = Modifier
                 )
-               // Spacer(modifier = Modifier.width(10.dp))
-                SingleSelectionComponent(
-                    modifier = Modifier,
-                    issueList = morning,
-                    onIssueChange = {
-                        Log.d("TAG", "CookPreferencesScreen: $it")
-                    }
-                )
-            }
 
-            Row (horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically) {
-                TitleText(
-                    modifier = Modifier,
-                    text = "Afternoon   ",
-                    fontWeight = FontWeight.W900,
-                    textAlign = TextAlign.Center,
-                    textColor = Color.Gray
-                )
-                //Spacer(modifier = Modifier.width(10.dp))
-                SingleSelectionComponent(
-                    modifier = Modifier,
-                    issueList = afternoon,
-                    onIssueChange = {}
-                )
-            }
+                Row (horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically){
+                    TitleText(
+                        modifier = Modifier,
+                        text = "Morning     ",
+                        fontWeight = FontWeight.W900,
+                        textAlign = TextAlign.Center,
+                        textColor = Color.Gray
+                    )
+                    // Spacer(modifier = Modifier.width(10.dp))
+                    MultiSelectionComponent(
+                        modifier = Modifier,
+                        itemList = morning,
+                        onSelectionChanged = {
+                            Log.d("TAG", "CookPreferencesScreen: $it")
+                        }
+                    )
+                }
 
-            Row (horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically) {
-                TitleText(
-                    modifier = Modifier,
-                    text = "Evening      ",
-                    fontWeight = FontWeight.W900,
-                    textAlign = TextAlign.Center,
-                    textColor = Color.Gray
-                )
-               // Spacer(modifier = Modifier.width(10.dp))
-                SingleSelectionComponent(
-                    modifier = Modifier,
-                    issueList = evening,
-                    onIssueChange = {}
-                )
+                Row (horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically) {
+                    TitleText(
+                        modifier = Modifier,
+                        text = "Afternoon   ",
+                        fontWeight = FontWeight.W900,
+                        textAlign = TextAlign.Center,
+                        textColor = Color.Gray
+                    )
+                    //Spacer(modifier = Modifier.width(10.dp))
+                    MultiSelectionComponent(
+                        modifier = Modifier,
+                        itemList = afternoon,
+                        onSelectionChanged = {
+                            Log.d("TAG", "CookPreferencesScreen: $it")
+                        }
+                    )
+                }
+
+                Row (horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically) {
+                    TitleText(
+                        modifier = Modifier,
+                        text = "Evening      ",
+                        fontWeight = FontWeight.W900,
+                        textAlign = TextAlign.Center,
+                        textColor = Color.Gray
+                    )
+                    // Spacer(modifier = Modifier.width(10.dp))
+                    MultiSelectionComponent(
+                        modifier = Modifier,
+                        itemList = evening,
+                        onSelectionChanged = {
+                            Log.d("TAG", "CookPreferencesScreen: $it")
+                        }
+                    )
+                }
             }
 
             //Cuisine
@@ -200,17 +236,19 @@ fun CookPreferencesScreen(
                     withStyle(style = SpanStyle(color = Color.Gray, fontWeight = FontWeight.W900)) {
                         append("Who can prepare")
                     }
-                    withStyle(style = SpanStyle(color = Color.Gray, fontSize = 14.sp, fontWeight = FontWeight.W400)) {
+                    withStyle(style = SpanStyle(color = Color.Gray, fontSize = 13.sp, fontWeight = FontWeight.W400, fontStyle = FontStyle.Italic)) {
                         append(" (any of the selected)")
                     }
                 },
                 modifier = Modifier
             )
 
-            SingleSelectionComponent(
+            MultiSelectionComponent(
                 modifier = Modifier,
-                issueList = cuisine,
-                onIssueChange = {}
+                itemList = cuisine,
+                onSelectionChanged = {
+                    Log.d("TAG", "CookPreferencesScreen: $it")
+                }
             )
 
             //Languages
@@ -221,17 +259,19 @@ fun CookPreferencesScreen(
                     withStyle(style = SpanStyle(color = Color.Gray, fontWeight = FontWeight.W900)) {
                         append("Who can speak")
                     }
-                    withStyle(style = SpanStyle(color = Color.Gray, fontSize = 14.sp, fontWeight = FontWeight.W400)) {
+                    withStyle(style = SpanStyle(color = Color.Gray, fontSize = 13.sp, fontWeight = FontWeight.W400, fontStyle = FontStyle.Italic)) {
                         append(" (any of the selected)")
                     }
                 },
                 modifier = Modifier
             )
 
-            SingleSelectionComponent(
+            MultiSelectionComponent(
                 modifier = Modifier,
-                issueList = languages,
-                onIssueChange = {}
+                itemList = languages,
+                onSelectionChanged = {
+                    Log.d("TAG", "CookPreferencesScreen: $it")
+                }
             )
 
             Spacer(modifier = Modifier.height(20.dp))
@@ -305,9 +345,9 @@ fun SliderAdvancedExample(selectedExperience:(Float)->Unit) {
 }
 
 @Composable
-fun JobTypeSection(
-    jobType: List<String>,
-    jobTypeLast: List<String>,
+fun CookTypeSection(
+    cookType: List<String>,
+    cookTypeLast: List<String>,
     onChange: (MutableSet<String>) -> Unit,
     isError: Boolean,
     errorText: String) {
@@ -321,18 +361,18 @@ fun JobTypeSection(
             .height(160.dp),
         verticalArrangement = Arrangement.spacedBy(4.dp),
         horizontalArrangement = Arrangement.spacedBy(4.dp)) {
-        items(jobType.size) { index ->
-            JobTypeItem(
-                label = jobType[index],
+        items(cookType.size) { index ->
+            CookTypeItem(
+                label = cookType[index],
                 selected = index == 0,
                 enabled = index == 0,
                 onChange = onChange,
             )
         }
 
-        items(jobTypeLast.size, span = { GridItemSpan(columnsCount) }) { index->
-            JobTypeItem(
-                label =jobTypeLast[index],
+        items(cookTypeLast.size, span = { GridItemSpan(columnsCount) }) { index->
+            CookTypeItem(
+                label =cookTypeLast[index],
                 selected = false,
                 enabled =false,
                 onChange = onChange,
@@ -346,14 +386,14 @@ fun JobTypeSection(
 }
 
 @Composable
-fun JobTypeItem(
+fun CookTypeItem(
     label: String,
     selected: Boolean,
     enabled: Boolean,
     onChange: (MutableSet<String>) -> Unit) {
     val cookPreferencesViewModel:CookPreferencesViewModel = hiltViewModel()
     val isSelected = remember { mutableStateOf(selected) }
-    Log.d("TAG", "JobTypeItem: ${Gson().toJson(cookPreferencesViewModel.selectedItem)}")
+    Log.d("TAG", "CookTypeItem: ${Gson().toJson(cookPreferencesViewModel.selectedItem)}")
     if(isSelected.value) cookPreferencesViewModel.selectedItem.add(label)
     onChange(cookPreferencesViewModel.selectedItem)
     Box(modifier = Modifier
@@ -364,14 +404,14 @@ fun JobTypeItem(
         .clickable {
             if (!isSelected.value) {
                 isSelected.value = true
-                Log.d("TAG", "JobTypeItem: if ")
+                Log.d("TAG", "CookTypeItem: if ")
                 cookPreferencesViewModel.selectedItem.add(label)
                 onChange(cookPreferencesViewModel.selectedItem)
             } else {
                 isSelected.value = false
                 cookPreferencesViewModel.selectedItem.removeIf { it == label }
                 onChange(cookPreferencesViewModel.selectedItem)
-                Log.d("TAG", "JobTypeItem: else ")
+                Log.d("TAG", "CookTypeItem: else ")
             }
 
         }) {
