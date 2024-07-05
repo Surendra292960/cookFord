@@ -9,6 +9,7 @@ enum class NavPath {
      ONBOARD,
      SIGN_IN,
      SIGN_UP,
+     PROFILE,
 
     //Authenticated
      AUTHENTICATED,

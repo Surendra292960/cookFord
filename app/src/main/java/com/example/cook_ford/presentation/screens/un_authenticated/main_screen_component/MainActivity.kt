@@ -86,7 +86,7 @@ fun SplashScreen(navController: NavController) {
             }
         }else{
             Log.d("TAG", "SplashScreen else: ${userSession.check(ACCESS_TOKEN)}")
-            navController.navigate(route = NavigationRoutes.Unauthenticated.Onboard.route){
+            navController.navigate(route = NavigationRoutes.Unauthenticated.ProfileScreen.route){
                 popUpTo(NavigationRoutes.Unauthenticated.Splash.route){
                     inclusive = true
                 }

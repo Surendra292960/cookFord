@@ -1,4 +1,5 @@
 package com.example.cook_ford.presentation.route
+import ProfileScreen
 import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
@@ -45,6 +46,10 @@ fun NavGraphBuilder.unauthenticatedGraph(navController: NavController) {
         // Splash
         composable(route = NavigationRoutes.Unauthenticated.Splash.route) {
             SplashScreen(navController = navController)
+        }
+        // Splash
+        composable(route = NavigationRoutes.Unauthenticated.Splash.route) {
+            ProfileScreen()
         }
 
         // Onboard
