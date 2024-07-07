@@ -1,6 +1,7 @@
 package com.example.cook_ford.presentation.component.widgets
 import android.util.Log
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -17,6 +18,8 @@ import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ExposureZero
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Checkbox
@@ -50,11 +53,13 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
 import com.example.cook_ford.presentation.theme.AppTheme
 import com.example.cook_ford.presentation.theme.FontName
+import com.example.cook_ford.presentation.theme.OrangeYellow1
 
 /*
 @Composable
@@ -545,22 +550,47 @@ fun OutlinedSubmitButton(
         }
     }
 }
+
+data class ButtonIcons(val leadingIcon: ImageVector?=null, val trailingIcon: ImageVector?=null, val tintColor: Color, val leadingIconSize: Dp)
+
 @Composable
 fun OutlinedSmallSubmitButton(
     modifier: Modifier = Modifier,
     textColor: Color,
     text: String,
     isLoading: Boolean,
+    backgroundColor:Color = Color.Transparent,
+    icon: ButtonIcons? = null,
     onClick: () -> Unit) {
     OutlinedButton(modifier = modifier
         .height(AppTheme.dimens.mediumButtonHeight)
         .fillMaxWidth(),
+        colors = ButtonDefaults.outlinedButtonColors(
+            containerColor = backgroundColor,
+            contentColor = textColor
+        ),
         enabled = !isLoading,
-        border = BorderStroke(1.dp, color = textColor),
+        border = BorderStroke(1.dp, color = Color.Gray),
         onClick = onClick) {
         if (isLoading) {
             Progressbar(showProgressbar = isLoading)
         } else {
+            when {
+                icon?.leadingIcon != null -> {
+                    Icon(
+                        icon.leadingIcon,
+                        contentDescription = "",
+                        tint = icon.tintColor,
+                        modifier = Modifier.size(icon.leadingIconSize)
+                    )
+                }
+                icon?.trailingIcon != null -> {
+                    Icon(icon.trailingIcon,
+                        contentDescription = "",
+                        tint = icon.tintColor
+                    )
+                }
+            }
             Text(text = text, style = MaterialTheme.typography.titleMedium, color = textColor)
         }
     }

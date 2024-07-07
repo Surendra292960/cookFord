@@ -46,7 +46,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
       //  this.window.statusBarColor = ContextCompat.getColor(this,R.color.white)
-
+        Log.d("TAG", "SplashScreen onCreate : ")
         setContent {
             Surface(color = Color.White, modifier = Modifier.fillMaxSize()) {
                 MainAppNavHost()
@@ -75,6 +75,7 @@ fun SplashScreen(navController: NavController) {
                 }))
         // Customize the delay time
         delay(2000L)
+        Log.d("TAG", "SplashScreen Data : ")
       /*  if (userSession.check(ACCESS_TOKEN)){
             navController.navigate(route = NavigationRoutes.Unauthenticated.OnBoard.route)
         }else*/ if (userSession.check(ACCESS_TOKEN)){
@@ -86,7 +87,7 @@ fun SplashScreen(navController: NavController) {
             }
         }else{
             Log.d("TAG", "SplashScreen else: ${userSession.check(ACCESS_TOKEN)}")
-            navController.navigate(route = NavigationRoutes.Unauthenticated.ProfileScreen.route){
+            navController.navigate(route = NavigationRoutes.Unauthenticated.Onboard.route){
                 popUpTo(NavigationRoutes.Unauthenticated.Splash.route){
                     inclusive = true
                 }

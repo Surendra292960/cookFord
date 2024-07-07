@@ -11,7 +11,7 @@ import com.example.cook_ford.presentation.component.widgets.snack_bar.MainViewSt
 import com.example.cook_ford.presentation.screens.authenticated.accounts.add_cook_screen_component.state.cook_profileImageEmptyErrorState
 import com.example.cook_ford.presentation.screens.authenticated.accounts.update_profile_screen_component.state.EditProfileErrorState
 import com.example.cook_ford.presentation.screens.authenticated.accounts.update_profile_screen_component.state.EditProfileState
-import com.example.cook_ford.presentation.screens.authenticated.accounts.update_profile_screen_component.state.EditProfileUiEvent
+import com.example.cook_ford.presentation.screens.authenticated.accounts.update_profile_screen_component.state.UpdateProfileUiEvent
 import com.example.cook_ford.presentation.screens.un_authenticated.sign_in_screen_component.state.ErrorState
 import com.example.cook_ford.presentation.screens.un_authenticated.sign_in_screen_component.state.passwordEmptyErrorState
 import com.example.cook_ford.presentation.screens.un_authenticated.sign_up_screen_component.state.emailEmptyErrorState
@@ -28,7 +28,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
 
 @HiltViewModel
-class EditProfileViewModel @Inject constructor(
+class UpdateProfileViewModel @Inject constructor(
     private val userSession: UserSession
 ) : ViewModel() {
     private val _editProfileState = mutableStateOf(EditProfileState())
@@ -57,13 +57,13 @@ class EditProfileViewModel @Inject constructor(
     }
 
     /**
-     * Function called on any login event [EditProfileUiEvent]
+     * Function called on any login event [UpdateProfileUiEvent]
      */
-    fun onUiEvent(editProfileUiEvent: EditProfileUiEvent) {
+    fun onUiEvent(editProfileUiEvent: UpdateProfileUiEvent) {
         when (editProfileUiEvent) {
 
             // Profile Image changed
-            is EditProfileUiEvent.ProfileImageChanged -> {
+            is UpdateProfileUiEvent.ProfileImageChanged -> {
                 _editProfileState.value = _editProfileState.value.copy(
                     profileImage = editProfileUiEvent.inputValue,
                     errorState = _editProfileState.value.errorState.copy(
@@ -76,7 +76,7 @@ class EditProfileViewModel @Inject constructor(
             }
 
             // UserName changed
-            is EditProfileUiEvent.UserNameChanged -> {
+            is UpdateProfileUiEvent.UserNameChanged -> {
                 Log.d("TAG", "onUiEvent: ${editProfileUiEvent.inputValue}")
                 _editProfileState.value = _editProfileState.value.copy(
                     username = editProfileUiEvent.inputValue,
@@ -89,7 +89,7 @@ class EditProfileViewModel @Inject constructor(
                 )
             }
             // Email changed
-            is EditProfileUiEvent.EmailChanged -> {
+            is UpdateProfileUiEvent.EmailChanged -> {
                 _editProfileState.value = _editProfileState.value.copy(email = editProfileUiEvent.inputValue)
                 Log.d("TAG", "onUiEvent: ${editProfileState.value.email}")
 
@@ -105,7 +105,7 @@ class EditProfileViewModel @Inject constructor(
             }
 
             //Mobile changed
-            is EditProfileUiEvent.PhoneChanged -> {
+            is UpdateProfileUiEvent.PhoneChanged -> {
                 Log.d("TAG", "onUiEvent: ${editProfileUiEvent.inputValue}")
                 _editProfileState.value = _editProfileState.value.copy(
                     phone = editProfileUiEvent.inputValue,
@@ -119,7 +119,7 @@ class EditProfileViewModel @Inject constructor(
             }
 
             //GenderChange changed
-            is EditProfileUiEvent.GenderChange -> {
+            is UpdateProfileUiEvent.GenderChange -> {
                 _editProfileState.value = _editProfileState.value.copy(
                     gender = editProfileUiEvent.inputValue,
                     errorState = _editProfileState.value.errorState.copy(
@@ -132,7 +132,7 @@ class EditProfileViewModel @Inject constructor(
             }
 
             // Submit
-            is EditProfileUiEvent.Submit -> {
+            is UpdateProfileUiEvent.Submit -> {
                 val inputsValidated = validateInputs()
                 //Log.d("TAG", "onUiEvent: $inputsValidated")
                // Log.d("TAG", "onUiEvent: ${_editProfileState.value}")

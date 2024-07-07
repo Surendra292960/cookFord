@@ -32,7 +32,7 @@ import com.example.cook_ford.presentation.component.widgets.dialog.CustomDialog
 import com.example.cook_ford.presentation.component.widgets.dialog.ResetWarning
 import com.example.cook_ford.presentation.component.widgets.snack_bar.MainViewState
 import com.example.cook_ford.presentation.screens.authenticated.accounts.update_profile_screen_component.state.EditProfileState
-import com.example.cook_ford.presentation.screens.authenticated.accounts.update_profile_screen_component.state.EditProfileUiEvent
+import com.example.cook_ford.presentation.screens.authenticated.accounts.update_profile_screen_component.state.UpdateProfileUiEvent
 import com.example.cook_ford.utils.AppConstants
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -43,7 +43,7 @@ fun EditProfileScreen(
     profileResponse: ProfileResponse?=null,
     onNavigateToSignOut: () -> Unit,
     onNavigateToAuthenticatedRoute: () -> Unit) {
-    val editProfileViewModel: EditProfileViewModel = hiltViewModel()
+    val editProfileViewModel: UpdateProfileViewModel = hiltViewModel()
     val editProfileState by remember { editProfileViewModel.editProfileState }
     val showDialogState: Boolean by editProfileViewModel.showDialog.collectAsState()
     val snackBarHostState = remember { SnackbarHostState() }
@@ -115,7 +115,7 @@ fun EditProfileScreen(
 fun ProfileForm(
     changeProfileState: MutableState<String>,
     editProfileState: EditProfileState,
-    editProfileViewModel: EditProfileViewModel,
+    editProfileViewModel: UpdateProfileViewModel,
     viewState: MainViewState,
     onNavigateToSignOut: () -> Unit,
     changeProfileImageState: (String) -> Unit) {
@@ -130,7 +130,7 @@ fun ProfileForm(
         onProfileImageChange = { inputString ->
             Log.d("TAG", "EditProfileForm: $inputString")
             editProfileViewModel.onUiEvent(
-                editProfileUiEvent = EditProfileUiEvent.ProfileImageChanged(
+                editProfileUiEvent = UpdateProfileUiEvent.ProfileImageChanged(
                     inputString
                 )
             )
@@ -139,21 +139,21 @@ fun ProfileForm(
         onUserNameChange = { inputString ->
             Log.d("TAG", "EditProfileForm: $inputString")
             editProfileViewModel.onUiEvent(
-                editProfileUiEvent = EditProfileUiEvent.UserNameChanged(
+                editProfileUiEvent = UpdateProfileUiEvent.UserNameChanged(
                     inputString
                 )
             )
         },
         onEmailChange = { inputString ->
             editProfileViewModel.onUiEvent(
-                editProfileUiEvent = EditProfileUiEvent.EmailChanged(
+                editProfileUiEvent = UpdateProfileUiEvent.EmailChanged(
                     inputString
                 )
             )
         },
         onPhoneChange = { inputString ->
             editProfileViewModel.onUiEvent(
-                editProfileUiEvent = EditProfileUiEvent.PhoneChanged(
+                editProfileUiEvent = UpdateProfileUiEvent.PhoneChanged(
                     inputString
                 )
             )
@@ -161,20 +161,20 @@ fun ProfileForm(
         onGenderChange = { inputString ->
             changeProfileImageState(inputString)
             editProfileViewModel.onUiEvent(
-                editProfileUiEvent = EditProfileUiEvent.GenderChange(
+                editProfileUiEvent = UpdateProfileUiEvent.GenderChange(
                     inputString
                 )
             )
         },
         onSubmit = {
-            editProfileViewModel.onUiEvent(editProfileUiEvent = EditProfileUiEvent.Submit)
+            editProfileViewModel.onUiEvent(editProfileUiEvent = UpdateProfileUiEvent.Submit)
         },
         onSignOutClick = onNavigateToSignOut
     )
 }
 
 @Composable
-fun ShowSnackbar(editProfileViewModel: EditProfileViewModel, lifecycle: Lifecycle, snackBarHostState: SnackbarHostState) {
+fun ShowSnackbar(editProfileViewModel: UpdateProfileViewModel, lifecycle: Lifecycle, snackBarHostState: SnackbarHostState) {
     LaunchedEffect(key1 = Unit) {
         lifecycle.repeatOnLifecycle(state = Lifecycle.State.STARTED) {
             launch {
@@ -190,7 +190,7 @@ fun ShowSnackbar(editProfileViewModel: EditProfileViewModel, lifecycle: Lifecycl
 @Composable
 fun ShowCustomDialog(
     title: String,
-    editProfileViewModel: EditProfileViewModel,
+    editProfileViewModel: UpdateProfileViewModel,
     showDialogState: Boolean) {
 
     val isDismiss = remember { mutableStateOf(true) }

@@ -1,5 +1,5 @@
 package com.example.cook_ford.presentation.route
-import ProfileScreen
+import AccountsScreen
 import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
@@ -12,7 +12,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.example.cook_ford.data.remote.profile_response.ProfileResponse
-import com.example.cook_ford.presentation.screens.authenticated.accounts.account_screen_component.AccountScreen
 import com.example.cook_ford.presentation.screens.authenticated.accounts.add_cook_screen_component.AddCookProfileScreen
 import com.example.cook_ford.presentation.screens.authenticated.accounts.call_credit_screen_component.CallCreditScreen
 import com.example.cook_ford.presentation.screens.authenticated.accounts.cook_preferences.CookPreferencesScreen
@@ -47,10 +46,45 @@ fun NavGraphBuilder.unauthenticatedGraph(navController: NavController) {
         composable(route = NavigationRoutes.Unauthenticated.Splash.route) {
             SplashScreen(navController = navController)
         }
-        // Splash
-        composable(route = NavigationRoutes.Unauthenticated.Splash.route) {
-            ProfileScreen()
-        }
+        // Testing
+        /*composable(route = NavigationRoutes.Unauthenticated.Splash.route) {
+           *//* AccountsScreen(
+                //navController = NavHostController,
+                onNavigateToCallCreditScreen = {
+
+                },
+                onNavigateToEditProfile = {
+
+                },
+                onNavigateToAddCookScreen = {
+
+                },
+                onNavigateToPostJobScreen = {
+
+                },
+                onNavigateToContactUsScreen = {
+
+                },
+                onNavigateToReviewUsScreen = {
+
+                },
+                onNavigateToTellCommunity = {
+
+                },
+                onNavigateToSignInAsCookScreen = {
+
+                },
+                onNavigateToTermsOfUseScreen = {
+
+                },
+                onNavigateToPrivacyPolicyScreen = {
+
+                },
+                onNavigateToLicenseScreen = {
+
+                }
+            )*//*
+        }*/
 
         // Onboard
         composable(route = NavigationRoutes.Unauthenticated.Onboard.route) {
@@ -165,20 +199,72 @@ fun HomeNavGraph(navController: NavHostController) {
         composable(NavigationRoutes.HomeNavigation.Search.route) {  }
 
         composable(NavigationRoutes.HomeNavigation.Account.route) {
-            AccountScreen (
+            AccountsScreen(
                 navController = navController,
                 onNavigateToCallCreditScreen = {
                     navController.navigate(route = NavigationRoutes.AccountNavigation.CallCredit.route){
-                       /* popUpTo(route = NavigationRoutes.Authenticated.NavigationRoute.route) {
-                            inclusive = true
-                        }*/
+                         popUpTo(route = NavigationRoutes.Authenticated.NavigationRoute.route) {
+                             inclusive = true
+                         }
+                    }
+                },
+                onNavigateToEditProfile = {
+                    navController.navigate(route = NavigationRoutes.AccountNavigation.EditProfile.route){
+                         popUpTo(route = NavigationRoutes.Authenticated.NavigationRoute.route) {
+                             inclusive = true
+                         }
                     }
                 },
                 onNavigateToAddCookScreen = {
                     navController.navigate(route = NavigationRoutes.AccountNavigation.AddCookProfile.route){
-                       /* popUpTo(route = NavigationRoutes.Authenticated.NavigationRoute.route) {
+                         popUpTo(route = NavigationRoutes.Authenticated.NavigationRoute.route) {
+                             inclusive = true
+                         }
+                    }
+                },
+                onNavigateToPostJobScreen = {
+                    navController.navigate(route = NavigationRoutes.AccountNavigation.PostJob.route){
+                         popUpTo(route = NavigationRoutes.Authenticated.NavigationRoute.route) {
+                             inclusive = true
+                         }
+                    }
+                },
+                onNavigateToContactUsScreen = {
+
+                },
+                onNavigateToReviewUsScreen = {
+
+                },
+                onNavigateToTellCommunity = {
+
+                },
+                onNavigateToSignInAsCookScreen = {
+
+                },
+                onNavigateToTermsOfUseScreen = {
+
+                },
+                onNavigateToPrivacyPolicyScreen = {
+
+                },
+                onNavigateToLicenseScreen = {
+
+                }
+            )/*
+            AccountScreen (
+                navController = navController,
+                onNavigateToCallCreditScreen = {
+                    navController.navigate(route = NavigationRoutes.AccountNavigation.CallCredit.route){
+                        popUpTo(route = NavigationRoutes.Authenticated.NavigationRoute.route) {
                             inclusive = true
-                        }*/
+                        }
+                    }
+                },
+                onNavigateToAddCookScreen = {
+                    navController.navigate(route = NavigationRoutes.AccountNavigation.AddCookProfile.route){
+                        popUpTo(route = NavigationRoutes.Authenticated.NavigationRoute.route) {
+                            inclusive = true
+                        }
                     }
                 },
                 onNavigateToPostJobScreen={
@@ -197,7 +283,7 @@ fun HomeNavGraph(navController: NavHostController) {
                         }
                     }
                 }
-            )
+            )*/
         }
         detailNavGraph(navController = navController)
     }
