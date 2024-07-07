@@ -250,40 +250,7 @@ fun HomeNavGraph(navController: NavHostController) {
                 onNavigateToLicenseScreen = {
 
                 }
-            )/*
-            AccountScreen (
-                navController = navController,
-                onNavigateToCallCreditScreen = {
-                    navController.navigate(route = NavigationRoutes.AccountNavigation.CallCredit.route){
-                        popUpTo(route = NavigationRoutes.Authenticated.NavigationRoute.route) {
-                            inclusive = true
-                        }
-                    }
-                },
-                onNavigateToAddCookScreen = {
-                    navController.navigate(route = NavigationRoutes.AccountNavigation.AddCookProfile.route){
-                        popUpTo(route = NavigationRoutes.Authenticated.NavigationRoute.route) {
-                            inclusive = true
-                        }
-                    }
-                },
-                onNavigateToPostJobScreen={
-                    navController.navigate(route = NavigationRoutes.AccountNavigation.PostJob.route) {
-                        popUpTo(route = NavigationRoutes.Authenticated.NavigationRoute.route) {
-                            inclusive = true
-                        }
-                    }
-                },
-                onNavigateToContactUsScreen={},
-                onNavigateToReviewUsScreen={},
-                onNavigateToEditProfile = {
-                    navController.navigate(route = NavigationRoutes.AccountNavigation.EditProfile.route) {
-                        popUpTo(route = NavigationRoutes.Authenticated.NavigationRoute.route) {
-                            inclusive = true
-                        }
-                    }
-                }
-            )*/
+            )
         }
         detailNavGraph(navController = navController)
     }
@@ -307,6 +274,7 @@ fun NavGraphBuilder.detailNavGraph(navController: NavHostController) {
                         profileResponse = profileResponse,
                         onNavigateToReViewScreen = { navController.navigate(route = NavigationRoutes.DetailsNavigation.ProfileReview.route) },
                         onNavigateToReportScreen = { navController.navigate(route = NavigationRoutes.DetailsNavigation.ProfileReport.route) },
+                        onNavigateToCallCreditScreen = { navController.navigate(route = NavigationRoutes.AccountNavigation.CallCredit.route) },
                         onNavigateToAuthenticatedHomeRoute = {
                             navController.navigate(route = NavigationRoutes.DetailsNavigation.ProfileDetail.route) {
                              /* popUpTo(route = NavigationRoutes.HomeNavigation.NavigationRoute.route) {

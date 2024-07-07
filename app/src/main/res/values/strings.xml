@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">cook_ford</string>
     <string name="empty_string" />
+    <string name="mime_type" >*/*</string>
 
     <string name="navigate_back">Navigate to the previous screen</string>
 

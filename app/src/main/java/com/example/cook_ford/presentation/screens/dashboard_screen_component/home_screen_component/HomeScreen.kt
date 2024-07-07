@@ -52,7 +52,7 @@ fun UserDashBoard(
 
     Scaffold(modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
-            Surface(shadowElevation = 3.dp, modifier = Modifier.background(Color.White)) {
+            Surface(shadowElevation = 1.dp, modifier = Modifier.background(Color.White)) {
                 NavTopBar(
                     modifier = Modifier,
                     onNavigateBack = {navController.navigateUp()},

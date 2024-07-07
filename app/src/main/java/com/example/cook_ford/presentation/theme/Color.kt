@@ -16,6 +16,7 @@ val Orange = Color(0xFFE22209)
 val LightGreen = Color(0xFF3EC25F)
 val LightGreen1 = Color(0xFF059C2A)
 val DeepGreen = Color(0xFF036D1C)
+val LightGray = Color(0xFFECF0EE)
 
 val TextWhite = Color(0xffeeeeee)
 val ButtonGreen = Color(0xFF43A047)

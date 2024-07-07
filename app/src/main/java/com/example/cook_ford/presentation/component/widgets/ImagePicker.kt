@@ -49,7 +49,7 @@ fun ProfileImage(changeProfileState: MutableState<String>, onChange: (String) ->
 
     Box(modifier = Modifier
         .fillMaxWidth()
-        .height(130.dp)
+        .height(120.dp)
         .padding(top = 16.dp), contentAlignment = Alignment.TopCenter) {
 
         Card(

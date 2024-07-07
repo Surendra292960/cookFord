@@ -1,5 +1,6 @@
 package com.example.cook_ford.presentation.screens.authenticated.accounts.post_job_screen_component
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -51,6 +52,8 @@ import com.example.cook_ford.presentation.component.widgets.KeyboardOption
 import com.example.cook_ford.presentation.component.widgets.ProfileImage
 import com.example.cook_ford.presentation.component.widgets.SubmitButtonAutoSize
 import com.example.cook_ford.presentation.theme.FontName
+import com.example.cook_ford.presentation.theme.LightGray
+import com.example.cook_ford.presentation.theme.LightGreen
 
 @Composable
 fun PostJobScreen(
@@ -289,7 +292,7 @@ fun AccountProfileContent(
     Box(modifier = Modifier
         .fillMaxWidth()
         .padding(start = 20.dp, end = 20.dp)) {
-        Row(modifier = Modifier
+        Row(modifier = Modifier.background(LightGray)
                 .wrapContentSize()
                 .clickable { onNavigateToCookPreferences.invoke("qeqwdcwf") },
             verticalAlignment = Alignment.CenterVertically,

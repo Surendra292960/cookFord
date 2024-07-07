@@ -77,8 +77,10 @@ import com.example.cook_ford.R
 import com.example.cook_ford.data.remote.profile_response.ProfileResponse
 import com.example.cook_ford.data.remote.profile_response.TimeSlots
 import com.example.cook_ford.presentation.component.TimeSlotsComponent
+import com.example.cook_ford.presentation.component.widgets.ButtonIcons
 import com.example.cook_ford.presentation.component.widgets.Child
 import com.example.cook_ford.presentation.component.widgets.MediumTitleText
+import com.example.cook_ford.presentation.component.widgets.OutlinedSmallSubmitButton
 import com.example.cook_ford.presentation.component.widgets.Progressbar
 import com.example.cook_ford.presentation.component.widgets.RatingStar
 import com.example.cook_ford.presentation.screens.authenticated.profile_screen_component.details_screen_component.model.ProfileCardView
@@ -86,6 +88,7 @@ import com.example.cook_ford.presentation.screens.authenticated.profile_screen_c
 import com.example.cook_ford.presentation.screens.un_authenticated.main_screen_component.MainActivity
 import com.example.cook_ford.presentation.theme.AppTheme
 import com.example.cook_ford.presentation.theme.Cook_fordTheme
+import com.example.cook_ford.presentation.theme.DeepGreen
 import com.example.cook_ford.presentation.theme.FontName
 import com.example.cook_ford.presentation.theme.OrangeYellow1
 import com.example.cook_ford.utils.Utility.shareProfile
@@ -100,6 +103,7 @@ fun ProfileDetailScreen(
 	profileResponse:ProfileResponse,
 	onNavigateToReViewScreen: () -> Unit,
 	onNavigateToReportScreen: () -> Unit,
+	onNavigateToCallCreditScreen: () -> Unit,
 	onNavigateToAuthenticatedHomeRoute: () -> Unit) {
 
 	val profileDetailsViewModel: ProfileDetailsViewModel = hiltViewModel()
@@ -130,7 +134,12 @@ fun ProfileDetailScreen(
 							onNavigateToReportScreen = {
 								navController.currentBackStackEntry?.savedStateHandle?.apply { set("profileResponse", Gson().toJson(profileState.profileResponse!![index])) }
 								onNavigateToReportScreen.invoke()
-							})
+							},
+							onNavigateToCallCreditScreen = {
+								navController.currentBackStackEntry?.savedStateHandle?.apply { set("profileResponse", Gson().toJson(profileState.profileResponse!![index])) }
+								onNavigateToCallCreditScreen.invoke()
+							},
+							)
 						HorizontalDivider(modifier = Modifier.background(Color.LightGray))
 						Spacer(modifier = Modifier.height(10.dp))
 						ExperienceCard(profileState?.profileResponse!![index], timeSlots = profileDetailsViewModel.getTimeSlots())
@@ -478,17 +487,18 @@ fun Stats(profile: ProfileResponse, followers: String, following: String) {
 fun ProviderSocialMediaIconsCard(
 	profileDetailsViewModel: ProfileDetailsViewModel,
 	onNavigateToReViewScreen: () -> Unit,
+	onNavigateToCallCreditScreen: () -> Unit,
 	onNavigateToReportScreen: () -> Unit
 ) {
 	var showCallBottomSheet by remember { mutableStateOf(false) }
 	var showNoteBottomSheet by remember { mutableStateOf(false) }
 	if (showCallBottomSheet) {
-		BottomSheet("Call") {
+		BottomSheet("Call", onNavigateToCallCreditScreen=onNavigateToCallCreditScreen) {
 			showCallBottomSheet = false
 		}
 	}
 	if (showNoteBottomSheet) {
-		BottomSheet("Note") {
+		BottomSheet("Note", onNavigateToCallCreditScreen={}) {
 			showNoteBottomSheet = false
 		}
 	}
@@ -976,7 +986,7 @@ fun FooterStatus() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun BottomSheet(sheetType:String, onDismiss: () -> Unit) {
+fun BottomSheet(sheetType:String, onNavigateToCallCreditScreen: () -> Unit,  onDismiss: () -> Unit) {
 	val modalBottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
 
 	ModalBottomSheet(
@@ -984,7 +994,7 @@ fun BottomSheet(sheetType:String, onDismiss: () -> Unit) {
 		sheetState = modalBottomSheetState,
 		dragHandle = null) {
 		if (sheetType == "Call"){
-			ByCallCreditSheet()
+			ByCallCreditSheet(onNavigateToCallCreditScreen=onNavigateToCallCreditScreen)
 
 		}else{
 			AddNote()
@@ -993,7 +1003,7 @@ fun BottomSheet(sheetType:String, onDismiss: () -> Unit) {
 }
 
 @Composable
-fun ByCallCreditSheet(){
+fun ByCallCreditSheet(onNavigateToCallCreditScreen: () -> Unit){
 	Column(modifier = Modifier
 		.fillMaxWidth()
 		.padding(all = 20.dp)
@@ -1077,51 +1087,44 @@ fun ByCallCreditSheet(){
 		}
 
 		Spacer(modifier = Modifier.height(60.dp))
-
-		Row(modifier = Modifier.fillMaxWidth(),
-			horizontalArrangement = Arrangement.spacedBy(10.dp, Alignment.Start),
-			verticalAlignment = Alignment.CenterVertically) {
-
-			TextButton(
-				colors = ButtonDefaults
-					.textButtonColors(
-						backgroundColor = OrangeYellow1,
-						contentColor = Color.White
-					),
-				onClick = {},
-				modifier = Modifier.weight(0.4f)) {
-				Icon(
-					Icons.Filled.ExposureZero,
-					contentDescription = null,
-					tint = Color.DarkGray,
-					modifier = Modifier.size(30.dp)
-				)
-				Text(
-					modifier = Modifier,
-					text = "Call credit available"
-				)
-			}
-
-			TextButton(
-				colors = ButtonDefaults
-					.textButtonColors(
-						backgroundColor = Color.DarkGray,
-						contentColor = Color.White
-					),
-				onClick = {},
-				modifier = Modifier.weight(0.4f)) {
-				Icon(
-					Icons.Filled.ExposureZero,
-					contentDescription = null,
-					tint = Color.White,
-					modifier = Modifier.size(30.dp)
-				)
-				Text(
-					text = "Call credit available",
-				)
-			}
-		}
 	}
+	Row(modifier = Modifier.fillMaxWidth().padding(AppTheme.dimens.paddingSmall), horizontalArrangement = Arrangement.SpaceEvenly) {
+		OutlinedSmallSubmitButton(
+			modifier = Modifier
+				.padding(top = AppTheme.dimens.paddingLarge)
+				.weight(1f),
+			text = "Call Credit",
+			textColor = Color.White,
+			isLoading = false,
+			backgroundColor = Color.LightGray,
+			icon = ButtonIcons(leadingIcon = Icons.Default.ExposureZero, tintColor = DeepGreen, leadingIconSize = 30.dp),
+			onClick = { /*onSubmit*/ }
+		)
+
+		Spacer(modifier = Modifier.width(20.dp))
+
+		OutlinedSmallSubmitButton(
+			modifier = Modifier
+				.padding(top = AppTheme.dimens.paddingLarge)
+				.weight(1f),
+			text = "Buy Call Credit",
+			textColor = Color.White,
+			isLoading = false,
+			backgroundColor = OrangeYellow1,
+			onClick =
+				onNavigateToCallCreditScreen
+				/*navController.currentBackStackEntry?.savedStateHandle?.apply {
+                    set(
+                        "profileResponse",
+                        Gson().toJson(accountState.profileResponse)
+                    )
+                }
+                onNavigateToCallCreditScreen.invoke()*/
+
+		)
+
+	}
+	Spacer(modifier = Modifier.width(20.dp))
 }
 
 
@@ -1167,7 +1170,8 @@ fun ProfilePreview() {
 			profileResponse = ProfileResponse(),
 			onNavigateToReViewScreen = {},
 			onNavigateToReportScreen = {},
-			onNavigateToAuthenticatedHomeRoute = {})
+			onNavigateToAuthenticatedHomeRoute = {},
+			onNavigateToCallCreditScreen = {})
 	}
 }
 

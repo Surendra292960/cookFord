@@ -570,7 +570,7 @@ fun OutlinedSmallSubmitButton(
             contentColor = textColor
         ),
         enabled = !isLoading,
-        border = BorderStroke(1.dp, color = Color.Gray),
+        border = BorderStroke(0.dp, color = Color.Gray),
         onClick = onClick) {
         if (isLoading) {
             Progressbar(showProgressbar = isLoading)

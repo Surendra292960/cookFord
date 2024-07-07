@@ -66,9 +66,11 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.util.lerp
 import com.example.cook_ford.R
 import com.example.cook_ford.data.remote.profile_response.ProfileResponse
+import com.example.cook_ford.presentation.component.widgets.DefaultBackArrow
 import com.example.cook_ford.presentation.component.widgets.MediumTitleText
 import com.example.cook_ford.presentation.component.widgets.OutlinedSmallSubmitButton
 import com.example.cook_ford.presentation.theme.AppTheme
+import com.example.cook_ford.presentation.theme.DeepGreen
 import com.example.cook_ford.presentation.theme.FontName
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
@@ -87,10 +89,29 @@ fun CallCreditScreen(
     profileResponse: ProfileResponse? = null,
     onNavigateToAuthenticatedRoute: () -> Unit) {
 
-    Column(
-        Modifier.fillMaxHeight(),
-        verticalArrangement = Arrangement.SpaceBetween
-    ) {
+    Column(modifier = Modifier
+        .fillMaxSize()
+        .verticalScroll(rememberScrollState()),
+        horizontalAlignment = Alignment.Start) {
+
+        Row(modifier = Modifier.fillMaxSize().background(Color.White).padding(top = 20.dp, start = 20.dp, end = 20.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween) {
+            Box(modifier = Modifier.weight(0.3f)) {
+                DefaultBackArrow(onClick = {
+                    onNavigateBack.invoke()
+                })
+            }
+            Box(modifier = Modifier.weight(1.0f).padding(top = 20.dp)) {
+                Text(
+                    text = "Your desire cook is just \n a call away",
+                    color = Color.DarkGray,
+                    fontSize = 22.sp,
+                    fontWeight = FontWeight(500),
+                    textAlign = TextAlign.Center,
+                )
+            }
+        }
 
         Column( modifier = Modifier
             .fillMaxSize()
@@ -98,13 +119,13 @@ fun CallCreditScreen(
             .weight(1f, false)
             .verticalScroll(rememberScrollState()), horizontalAlignment = Alignment.CenterHorizontally) {
 
-            Spacer(modifier = Modifier.height(60.dp))
+            Spacer(modifier = Modifier.height(40.dp))
 
             Row(horizontalArrangement = Arrangement.spacedBy(10.dp,
                 Alignment.CenterHorizontally),
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier .padding(start = 20.dp, end = 20.dp)){
-                Icon(Icons.Filled.VerifiedUser, contentDescription = null, tint = Color.Green)
+                Icon(Icons.Filled.VerifiedUser, contentDescription = null, tint = DeepGreen, modifier = Modifier.size(40.dp))
                 Text(
                     text = "Exclusive Support for 15 days!",
                     style = MaterialTheme.typography.subtitle2,
@@ -121,8 +142,8 @@ fun CallCreditScreen(
                 text = "Experience peace of mind with our hassle-free all credit refund policy!",
                 style = MaterialTheme.typography.subtitle2,
                 fontFamily = FontName,
-                fontSize = 17.sp,
-                fontWeight = FontWeight.W400,
+                fontSize = 16.sp,
+                fontWeight = FontWeight.W600,
                 color = Color.DarkGray,
                 textAlign = TextAlign.Center,
                 modifier = Modifier .padding(start = 20.dp, end = 20.dp)
@@ -135,19 +156,19 @@ fun CallCreditScreen(
                     withStyle(style = SpanStyle(color = Color.DarkGray)) {
                         append("Easy refund when cook is ")
                     }
-                    withStyle(style = SpanStyle(color = Color.Green)) {
+                    withStyle(style = SpanStyle(color = DeepGreen)) {
                         append("not reachable")
                     }
                     withStyle(style = SpanStyle(color = Color.DarkGray)) {
                         append(" or ")
                     }
-                    withStyle(style = SpanStyle(color = Color.Green)) {
+                    withStyle(style = SpanStyle(color = DeepGreen)) {
                         append("unavailable for the selected locality")
                     }
                     withStyle(style = SpanStyle(color = Color.DarkGray)) {
                         append(" or ")
                     }
-                    withStyle(style = SpanStyle(color = Color.Green)) {
+                    withStyle(style = SpanStyle(color = DeepGreen)) {
                         append("for the mentioned time.")
                     }
                 },
@@ -245,7 +266,8 @@ fun CallCreditScreen(
 
             Spacer(modifier = Modifier.height(15.dp))
 
-            ElevatedCard(modifier = Modifier.padding(bottom = 5.dp, start = 10.dp, end = 10.dp), colors = CardDefaults.cardColors(Color.Green), elevation = CardDefaults.elevatedCardElevation(AppTheme.dimens.paddingSmall), shape = RoundedCornerShape(10.dp), onClick = { /*TODO*/ }) {
+            ElevatedCard(modifier = Modifier.padding(bottom = 5.dp, start = 10.dp, end = 10.dp), colors = CardDefaults.cardColors(
+                DeepGreen), elevation = CardDefaults.elevatedCardElevation(AppTheme.dimens.paddingSmall), shape = RoundedCornerShape(10.dp), onClick = { /*TODO*/ }) {
                 Row(horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier

@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -39,6 +40,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.cook_ford.R
+import com.example.cook_ford.presentation.component.widgets.DefaultBackArrow
 import com.example.cook_ford.presentation.theme.FontName
 
 
@@ -134,6 +136,10 @@ fun NavTopBar(
            fontWeight = FontWeight.W600)
        }
       },
+      colors = TopAppBarDefaults.mediumTopAppBarColors(
+        containerColor = Color.White,
+        scrolledContainerColor = Color.White,
+      ),
       actions = { actions() },
       navigationIcon = {
         IconButton(onClick = { onNavigateBack.invoke() }) {
@@ -145,6 +151,24 @@ fun NavTopBar(
       },
       modifier = modifier.background(Color.White)
     )
+
+/*    Row(modifier = Modifier.fillMaxWidth().height(70.dp).padding(start = 10.dp, end = 10.dp).background(Color.White),
+      verticalAlignment = Alignment.CenterVertically,
+      horizontalArrangement = Arrangement.SpaceBetween) {
+      Box(modifier = Modifier.weight(0.6f)) {
+        DefaultBackArrow(onClick = {
+          onNavigateBack.invoke()
+        })
+      }
+      Box(modifier = Modifier.weight(1.0f)) {
+        androidx.compose.material.Text(
+          text = title,
+          color = Color.DarkGray,
+          fontSize = 18.sp,
+          fontWeight = FontWeight(700)
+        )
+      }
+    }*/
   } /*else {
     TopAppBar(
       title = {

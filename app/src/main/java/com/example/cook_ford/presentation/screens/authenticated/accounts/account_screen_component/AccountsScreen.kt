@@ -1,3 +1,8 @@
+import android.R.id.message
+import android.content.ActivityNotFoundException
+import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.os.Build.VERSION.SDK_INT
 import android.util.Log
 import androidx.annotation.DrawableRes
@@ -42,6 +47,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -50,6 +56,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
@@ -73,10 +80,12 @@ import com.example.cook_ford.presentation.screens.authenticated.accounts.account
 import com.example.cook_ford.presentation.theme.AppTheme
 import com.example.cook_ford.presentation.theme.DeepGreen
 import com.example.cook_ford.presentation.theme.FontName
+import com.example.cook_ford.presentation.theme.LightGray
 import com.example.cook_ford.presentation.theme.LightGreen
 import com.example.cook_ford.presentation.theme.LightGreen1
 import com.example.cook_ford.presentation.theme.OrangeYellow1
 import com.google.gson.Gson
+
 
 data class AccountModelData( @DrawableRes val leadingIcon: Int,  @DrawableRes val trailingIcon: Int, val isBorder:Boolean = false, val title: String, val subTitle: String)
 
@@ -152,7 +161,9 @@ fun AccountsScreen(
     if (accountState.isSuccessful) {
         Log.d("TAG", "AccountsScreen Data : ${Gson().toJson(accountState)}")
         Column(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier
+                .background(Color.White)
+                .fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally) {
 
             val profileLazyListState: LazyListState = rememberLazyListState()
@@ -180,23 +191,26 @@ fun AccountsScreen(
             }
 
             ElevatedCard(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier.fillMaxSize(),
                 colors = CardDefaults.cardColors(Color.White),
                 elevation = CardDefaults.elevatedCardElevation(AppTheme.dimens.paddingExtraLarge),
                 shape = RoundedCornerShape(topStart = 28.dp, topEnd = 28.dp)) {
 
-                LazyColumn(modifier = Modifier.fillMaxSize(), state = profileLazyListState, horizontalAlignment = Alignment.CenterHorizontally, contentPadding = PaddingValues(start = 10.dp, end = 10.dp),
+                LazyColumn(modifier = Modifier.fillMaxWidth(), state = profileLazyListState, horizontalAlignment = Alignment.CenterHorizontally, contentPadding = PaddingValues(start = 10.dp, end = 10.dp),
                     content = {
                         item {
-                            Row(modifier = Modifier.fillMaxWidth().padding(AppTheme.dimens.paddingSmall), horizontalArrangement = Arrangement.SpaceEvenly) {
+                            Row(modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(AppTheme.dimens.paddingSmall), horizontalArrangement = Arrangement.SpaceEvenly) {
                                 OutlinedSmallSubmitButton(
                                     modifier = Modifier
                                         .padding(top = AppTheme.dimens.paddingLarge)
                                         .weight(1f),
                                     text = "Call Credit",
-                                    textColor = Color.Gray,
+                                    textColor = Color.White,
                                     isLoading = false,
-                                    icon = ButtonIcons(leadingIcon = Icons.Default.ExposureZero, tintColor = OrangeYellow1, leadingIconSize = 30.dp),
+                                    backgroundColor = Color.LightGray,
+                                    icon = ButtonIcons(leadingIcon = Icons.Default.ExposureZero, tintColor = DeepGreen, leadingIconSize = 30.dp),
                                     onClick = { /*onSubmit*/ }
                                 )
 
@@ -354,15 +368,18 @@ fun AccountItem(
     onNavigateToPrivacyPolicyScreen: () -> Unit,
     onNavigateToLicenseScreen: () -> Unit) {
 
+    val context = LocalContext.current
+
     Column(modifier = Modifier.padding(AppTheme.dimens.paddingSmall),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.SpaceBetween) {
         Box(modifier = Modifier
             .border(
-                if (accountData[index].isBorder) 1.dp else (-1).dp,
+                if (accountData[index].isBorder) (-0).dp else (-1).dp,
                 Color.LightGray,
                 shape = RoundedCornerShape(16.dp)
             )
+            .background(LightGray, shape = RoundedCornerShape(16.dp))
             .padding(all = 10.dp)
             .fillMaxWidth()
             .clickable {
@@ -376,11 +393,19 @@ fun AccountItem(
                     }
 
                     "Tell Your Community" -> {
-                        onNavigateToTellCommunity("Community")
+                        context.shareWithCommunity(
+                            to = "cookford@gmail.com",
+                            subject = ""
+                        )
+                        //onNavigateToTellCommunity("Community")
                     }
 
                     "Contact Us" -> {
-                        onNavigateToContactUsScreen()
+                        context.composeEmail(
+                            addresses = arrayOf("cookford@gmail.com"),
+                            subject = ""
+                        )
+                        //onNavigateToContactUsScreen()
                     }
 
                     "Review Us" -> {
@@ -415,13 +440,14 @@ fun AccountItem(
                 horizontalArrangement = Arrangement.SpaceBetween) {
 
                 Box(modifier = Modifier
-                    .size(30.dp)
+                    .size(40.dp)
                     .background(Color.LightGray, shape = CircleShape)
                     .clickable {},
                     contentAlignment = Alignment.Center) {
                     Image(
                         painter = painterResource(id = accountData[index].leadingIcon),
-                        contentDescription = "Facebook Login Icon"
+                        contentDescription = "Facebook Login Icon",
+                        contentScale = ContentScale.FillBounds,
                     )
                 }
 
@@ -611,7 +637,8 @@ fun BottomSheet(
                             fontWeight = FontWeight.Normal,
                             style = MaterialTheme.typography.subtitle2,
                         )
-                        Text(text = if (reviewState.rating == 0.0f) {
+                        Text(
+                            text = if (reviewState.rating == 0.0f) {
                                 "Not Rated"
                             } else if (reviewState.rating == 1.0f) {
                                 "Not so good"
@@ -700,6 +727,42 @@ fun AnimatedImage() {
             .size(100.dp)
             .fillMaxWidth(),
     )
+}
+
+fun Context.composeEmail(addresses: Array<String>, subject: String) {
+    val intent = Intent(Intent.ACTION_SENDTO)
+    intent.setData(Uri.parse("mailto:")) // only email apps should handle this
+    intent.putExtra(Intent.EXTRA_EMAIL, arrayOf(addresses[0]))
+    intent.putExtra(Intent.EXTRA_SUBJECT, subject)
+    intent.putExtra(Intent.EXTRA_TEXT, "")
+    if (intent.resolveActivity(packageManager) != null) {
+        startActivity(intent)
+    }
+}
+
+fun Context.shareWithCommunity(to: String, subject: String) {
+    try {
+        val email = Intent(Intent.ACTION_SEND)
+        email.putExtra(Intent.EXTRA_EMAIL, arrayOf(to))
+        email.putExtra(Intent.EXTRA_SUBJECT, subject)
+        email.putExtra(Intent.EXTRA_TEXT, message)
+        //need this to prompts email client only
+        email.setType("message/rfc822")
+        this.startActivity(Intent.createChooser(email, "Choose an Email client :"))
+    } catch (e: ActivityNotFoundException) {
+        // TODO: Handle case where no email app is available
+    } catch (t: Throwable) {
+        // TODO: Handle potential other type of exceptions
+    }
+}
+
+fun Context.dial(phone: String) {
+    try {
+        val intent = Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", phone, null))
+        startActivity(intent)
+    } catch (t: Throwable) {
+        // TODO: Handle potential exceptions
+    }
 }
 
 @Preview(showBackground = true)

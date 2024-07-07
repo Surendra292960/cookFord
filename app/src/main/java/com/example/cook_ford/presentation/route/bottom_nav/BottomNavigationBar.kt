@@ -1,14 +1,9 @@
 package com.example.cook_ford.presentation.route.bottom_nav
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.BottomNavigation
-import androidx.compose.material.LocalContentColor
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBarItem
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -27,6 +22,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.cook_ford.presentation.component.widgets.MediumTitleText
 import com.example.cook_ford.presentation.route.NavigationRoutes
+import com.example.cook_ford.presentation.theme.OrangeYellow1
 
 /**
  * Composable function that represents the bottom navigation bar of the application.
@@ -65,7 +61,7 @@ fun BottomNavigationBar(
                         Icon(
                             screen.icon,
                             contentDescription = screen.title,
-                            tint = if (navBackStackEntry?.destination?.route == screen.route) MaterialTheme.colors.primary else Color.Gray,
+                            tint = if (navBackStackEntry?.destination?.route == screen.route) OrangeYellow1 else Color.Gray,
                         )
                     },
                     label = {
@@ -74,7 +70,7 @@ fun BottomNavigationBar(
                             text = screen.title,
                             fontWeight = FontWeight.W700,
                             textAlign = TextAlign.Center,
-                            textColor = if (navBackStackEntry?.destination?.route == screen.route) MaterialTheme.colors.primary else Color.Gray,
+                            textColor = if (navBackStackEntry?.destination?.route == screen.route) OrangeYellow1 else Color.Gray,
                         )
                     },
                     selected = navBackStackEntry?.destination?.route == screen.route,
@@ -153,7 +149,7 @@ fun BottomNavigationBar(
         }
         NavigationRoutes.AccountNavigation.CallCredit.route -> {
             bottomNavVisibility = false
-            topBarVisibility(true)
+            topBarVisibility(false)
         }
         /*
         DetailScreen.NotificationScreen.route -> {
