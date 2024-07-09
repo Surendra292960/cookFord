@@ -11,6 +11,7 @@ object NavConst {
     const val PROFILE_DETAILS = "PROFILE_DETAILS"
     const val REVIEW = "REVIEW"
     const val REPORT = "REPORT"
+    const val MESSAGE = "MESSAGE"
 
     //Account
     const val CALL_CREDIT = "CALL_CREDIT"

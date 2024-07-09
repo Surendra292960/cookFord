@@ -30,6 +30,7 @@ import com.example.cook_ford.presentation.component.widgets.OutlinedSmallSubmitB
 import com.example.cook_ford.presentation.component.widgets.snack_bar.MainViewState
 import com.example.cook_ford.presentation.screens.un_authenticated.phone_verification_screen_component.state.PhoneVerificationState
 import com.example.cook_ford.presentation.theme.AppTheme
+import com.example.cook_ford.presentation.theme.DeepGreen
 import com.example.cook_ford.utils.AppConstants
 
 @Composable
@@ -77,7 +78,7 @@ fun PhoneVerificationForm(
                 withStyle(style = SpanStyle(color = Color.Gray)) {
                     append("I accept the ")
                 }
-                withStyle(style = SpanStyle(color = Color.Green)) {
+                withStyle(style = SpanStyle(color = DeepGreen)) {
                     append("Terms and Conditions")
                 }
             },

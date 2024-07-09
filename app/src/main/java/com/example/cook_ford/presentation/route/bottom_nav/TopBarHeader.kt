@@ -14,6 +14,7 @@ fun getTitleByRoute(route:String): String {
         NavConst.PROFILE_DETAILS -> NavTitle.PROFILE_DETAILS
         NavConst.REVIEW -> NavTitle.REVIEW
         NavConst.REPORT -> NavTitle.REPORT
+        NavConst.MESSAGE -> NavTitle.MESSAGE
         NavConst.UPDATE_PROFILE -> NavTitle.UPDATE_PROFILE
         NavConst.ADD_COOK_PROFILE -> NavTitle.ADD_COOK_PROFILE
         NavConst.CALL_CREDIT -> NavTitle.CALL_CREDIT

@@ -43,6 +43,7 @@ sealed class NavigationRoutes {
         data object ProfileDetail : DetailsNavigation(route = NavPath.PROFILE_DETAILS.toString())
         data object ProfileReview : DetailsNavigation(route = NavPath.REVIEW.toString())
         data object ProfileReport : DetailsNavigation(route = NavPath.REPORT.toString())
+        data object Message : DetailsNavigation(route = NavPath.MESSAGE.toString())
 
     }
 

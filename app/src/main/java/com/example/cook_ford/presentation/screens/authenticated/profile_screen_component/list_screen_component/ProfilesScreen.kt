@@ -57,6 +57,8 @@ import com.example.cook_ford.presentation.component.widgets.MediumTitleText
 import com.example.cook_ford.presentation.component.widgets.Progressbar
 import com.example.cook_ford.presentation.screens.authenticated.profile_screen_component.list_screen_component.state.ProfileState
 import com.example.cook_ford.presentation.theme.AppTheme
+import com.example.cook_ford.presentation.theme.DeepGreen
+import com.example.cook_ford.presentation.theme.LightGreen
 import com.example.cook_ford.presentation.theme.OrangeYellow1
 import com.google.gson.Gson
 
@@ -207,7 +209,7 @@ fun UsersProfileList(index: Int, onItemClick: (String) -> Unit, profileState: Pr
                                     fontWeight = FontWeight.W500
                                 )
                                 Spacer(modifier = Modifier.width(7.dp))
-                                Icon(imageVector = Icons.Filled.Verified, tint = Color.Green, contentDescription = "",modifier = Modifier.size(20.dp))
+                                Icon(imageVector = Icons.Filled.Verified, tint = LightGreen, contentDescription = "",modifier = Modifier.size(20.dp))
                             }
                         }
                         Spacer(modifier = Modifier.height(8.dp))

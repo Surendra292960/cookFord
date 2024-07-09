@@ -127,6 +127,10 @@ fun BottomNavigationBar(
             bottomNavVisibility = false
             topBarVisibility(true)
         }
+        NavigationRoutes.DetailsNavigation.Message.route -> {
+            bottomNavVisibility = false
+            topBarVisibility(true)
+        }
 
         /**
          * Account Navigation

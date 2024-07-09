@@ -42,6 +42,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.cook_ford.R
 import com.example.cook_ford.presentation.component.widgets.DefaultBackArrow
 import com.example.cook_ford.presentation.component.widgets.OutlinedSmallSubmitButton
+import com.example.cook_ford.presentation.theme.DeepGreen
 import com.example.cook_ford.presentation.theme.FontName
 
 
@@ -158,7 +159,7 @@ fun LandingScreen(navController: NavController, onNavigateToAuthenticatedRoute:(
                 withStyle(style = SpanStyle(color = Color.DarkGray)) {
                     append("By signing in you agree to our ")
                 }
-                withStyle(style = SpanStyle(color = Color.Green)) {
+                withStyle(style = SpanStyle(color = DeepGreen)) {
                     append("terms of service and privacy policy")
                 }
             },

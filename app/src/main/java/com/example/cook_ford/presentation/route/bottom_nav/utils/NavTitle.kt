@@ -26,6 +26,7 @@ object NavTitle {
     const val PROFILE_DETAILS = "Profile Details"
     const val REVIEW = "Review"
     const val REPORT = "Report"
+    const val MESSAGE = "Message"
 
     //Account
     const val CALL_CREDIT = "Your desire cook is just \n a call away"

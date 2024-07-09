@@ -33,6 +33,7 @@ import com.example.cook_ford.presentation.component.widgets.dialog.ResetWarning
 import com.example.cook_ford.presentation.component.widgets.snack_bar.MainViewState
 import com.example.cook_ford.presentation.screens.authenticated.accounts.update_profile_screen_component.state.EditProfileState
 import com.example.cook_ford.presentation.screens.authenticated.accounts.update_profile_screen_component.state.UpdateProfileUiEvent
+import com.example.cook_ford.presentation.theme.DeepGreen
 import com.example.cook_ford.utils.AppConstants
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -199,7 +200,7 @@ fun ShowCustomDialog(
         showDialog = showDialogState,
         isAnimate = isDismiss.value,
         onDismissRequest =  editProfileViewModel::onDialogDismiss) {
-        ResetWarning(color= Color.Green, title = title,  onDismissRequest = { })
+        ResetWarning(color= DeepGreen, title = title,  onDismissRequest = { })
     }
 }
 

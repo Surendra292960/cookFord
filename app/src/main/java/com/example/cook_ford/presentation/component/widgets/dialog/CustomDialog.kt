@@ -56,6 +56,7 @@ import androidx.compose.ui.window.DialogWindowProvider
 import com.example.cook_ford.R
 import com.example.cook_ford.presentation.theme.AppTheme
 import com.example.cook_ford.presentation.theme.Cook_fordTheme
+import com.example.cook_ford.presentation.theme.DeepGreen
 import kotlinx.coroutines.delay
 
 @Preview
@@ -66,7 +67,7 @@ fun PreviewScreen() {
             showDialog = true,
             isAnimate = true,
             onDismissRequest = { }) {
-            ResetWarning(color= Color.Green, title = "",  onDismissRequest = { })
+            ResetWarning(color= DeepGreen, title = "",  onDismissRequest = { })
         }
     }
 }

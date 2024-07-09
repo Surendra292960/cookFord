@@ -50,6 +50,7 @@ import com.example.cook_ford.presentation.component.widgets.ProfileImage
 import com.example.cook_ford.presentation.component.widgets.SegmentedControl
 import com.example.cook_ford.presentation.component.widgets.snack_bar.MainViewState
 import com.example.cook_ford.presentation.screens.authenticated.accounts.add_cook_screen_component.state.AddCookProfileState
+import com.example.cook_ford.presentation.theme.DeepGreen
 import com.example.cook_ford.presentation.theme.FontName
 import com.example.cook_ford.utils.AppConstants
 import com.google.gson.Gson
@@ -300,7 +301,7 @@ fun StatusCard() {
             modifier = Modifier
                 .background(Color.LightGray)
                 .padding(all = 10.dp)){
-            Icon(Icons.Filled.VerifiedUser, contentDescription = null, tint = Color.Green)
+            Icon(Icons.Filled.VerifiedUser, contentDescription = null, tint = DeepGreen)
             Text(
                 text = "Before publishing the profile, we will contact the cook for verification and gather additional details during the call.",
                 style = MaterialTheme.typography.subtitle2,

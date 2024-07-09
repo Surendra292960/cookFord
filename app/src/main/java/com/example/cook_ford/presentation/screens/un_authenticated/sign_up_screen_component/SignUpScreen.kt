@@ -57,6 +57,7 @@ import com.example.cook_ford.presentation.screens.authenticated.accounts.add_coo
 import com.example.cook_ford.presentation.screens.un_authenticated.sign_up_screen_component.state.SignUpUiEvent
 import com.example.cook_ford.presentation.theme.AppTheme
 import com.example.cook_ford.presentation.theme.Cook_fordTheme
+import com.example.cook_ford.presentation.theme.DeepGreen
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -267,7 +268,7 @@ fun ShowCustomDialog(
         showDialog = showDialogState,
         isAnimate = isDismiss.value,
         onDismissRequest = signUpViewModel::onDialogDismiss) {
-        ResetWarning(color= Color.Green, title = title,  onDismissRequest = { })
+        ResetWarning(color= DeepGreen, title = title,  onDismissRequest = { })
     }
 }
 

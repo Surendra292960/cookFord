@@ -19,6 +19,7 @@ import androidx.constraintlayout.compose.Dimension
 import androidx.wear.compose.material.Icon
 import com.example.cook_ford.R
 import com.example.cook_ford.presentation.component.widgets.SubTitleText
+import com.example.cook_ford.presentation.theme.DeepGreen
 
 @Preview(showSystemUi = true, showBackground = true)
 @Composable
@@ -50,7 +51,7 @@ fun SetCardConstraint() {
             contentDescription = "Logo",
             modifier = Modifier.layoutId("image")
         )
-        Icon(Icons.Default.Star, contentDescription = "", tint = Color.Green)
+        Icon(Icons.Default.Star, contentDescription = "", tint = DeepGreen)
         SubTitleText(text = "Rating", modifier = Modifier, textAlign = TextAlign.Start)
     }
 }

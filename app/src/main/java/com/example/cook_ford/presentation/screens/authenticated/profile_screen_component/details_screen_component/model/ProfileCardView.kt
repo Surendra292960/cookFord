@@ -26,7 +26,8 @@ class ProfileCardView @JvmOverloads constructor(
             onNavigateToReViewScreen = {},
             onNavigateToReportScreen = {},
             onNavigateToAuthenticatedHomeRoute = {},
-            onNavigateToCallCreditScreen = {})
+            onNavigateToCallCreditScreen = {},
+            onNavigateToMessageScreen = {},)
     }
 
     fun capture(view: ProfileCardView) {

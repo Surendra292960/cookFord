@@ -17,6 +17,7 @@ import com.example.cook_ford.presentation.screens.authenticated.accounts.call_cr
 import com.example.cook_ford.presentation.screens.authenticated.accounts.cook_preferences.CookPreferencesScreen
 import com.example.cook_ford.presentation.screens.authenticated.accounts.post_job_screen_component.PostJobScreen
 import com.example.cook_ford.presentation.screens.authenticated.accounts.update_profile_screen_component.EditProfileScreen
+import com.example.cook_ford.presentation.screens.authenticated.profile_screen_component.chat_screen_component.MessageScreen
 import com.example.cook_ford.presentation.screens.authenticated.profile_screen_component.details_screen_component.ProfileDetailScreen
 import com.example.cook_ford.presentation.screens.authenticated.profile_screen_component.list_screen_component.ProfilesScreen
 import com.example.cook_ford.presentation.screens.authenticated.profile_screen_component.report_screen_component.ReportScreen
@@ -275,6 +276,7 @@ fun NavGraphBuilder.detailNavGraph(navController: NavHostController) {
                         onNavigateToReViewScreen = { navController.navigate(route = NavigationRoutes.DetailsNavigation.ProfileReview.route) },
                         onNavigateToReportScreen = { navController.navigate(route = NavigationRoutes.DetailsNavigation.ProfileReport.route) },
                         onNavigateToCallCreditScreen = { navController.navigate(route = NavigationRoutes.AccountNavigation.CallCredit.route) },
+                        onNavigateToMessageScreen = { navController.navigate(route = NavigationRoutes.DetailsNavigation.Message.route) },
                         onNavigateToAuthenticatedHomeRoute = {
                             navController.navigate(route = NavigationRoutes.DetailsNavigation.ProfileDetail.route) {
                              /* popUpTo(route = NavigationRoutes.HomeNavigation.NavigationRoute.route) {
@@ -315,6 +317,26 @@ fun NavGraphBuilder.detailNavGraph(navController: NavHostController) {
                         profileResponse = profileResponse,
                         onNavigateToAuthenticatedHomeRoute = {
                             navController.navigate(route = NavigationRoutes.DetailsNavigation.ProfileReport.route) {
+                                /*    popUpTo(route = NavigationRoutes.HomeNavigation.NavigationRoute.route) {
+                                inclusive = true
+                                }*/
+                            }
+                        }
+                    )
+                }
+        }
+
+
+        composable(route = NavigationRoutes.DetailsNavigation.Message.route){
+            navController.previousBackStackEntry?.savedStateHandle?.get<String>("profileResponse")
+                .let { Gson().fromJson(it, ProfileResponse::class.java) }.let { profileResponse ->
+                    Log.d("TAG", "detailNavGraph review data: ${Gson().toJson(profileResponse)}")
+                    MessageScreen(
+                        onNavigateBack = { navController.navigateUp() },
+                        profileResponse = profileResponse,
+                        onSendMessage = {},
+                        onNavigateToAuthenticatedHomeRoute = {
+                            navController.navigate(route = NavigationRoutes.DetailsNavigation.Message.route) {
                                 /*    popUpTo(route = NavigationRoutes.HomeNavigation.NavigationRoute.route) {
                                 inclusive = true
                                 }*/

@@ -22,6 +22,7 @@ enum class NavPath {
     PROFILE_DETAILS,
     REVIEW,
     REPORT,
+    MESSAGE,
 
     //Account
     ACCOUNT_NAVIGATION,

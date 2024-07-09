@@ -64,6 +64,7 @@ import com.example.cook_ford.presentation.component.widgets.snack_bar.MainViewSt
 import com.example.cook_ford.presentation.screens.un_authenticated.sign_in_screen_component.state.SignInUiEvent
 import com.example.cook_ford.presentation.theme.AppTheme
 import com.example.cook_ford.presentation.theme.Cook_fordTheme
+import com.example.cook_ford.presentation.theme.DeepGreen
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -283,7 +284,7 @@ fun SignInScreen(
                                 withStyle(style = SpanStyle(color = Color.DarkGray)) {
                                     append(stringResource(id = R.string.do_not_have_account))
                                 }
-                                withStyle(style = SpanStyle(color = Color.Green)) {
+                                withStyle(style = SpanStyle(color = DeepGreen)) {
                                     append(stringResource(id = R.string.sign_up_heading_text))
                                 }
                             },
@@ -328,7 +329,7 @@ fun ShowCustomDialog(
         showDialog = showDialogState,
         isAnimate = isDismiss.value,
         onDismissRequest =  signInViewModel::onDialogDismiss) {
-        ResetWarning(color= Color.Green, title = title,  onDismissRequest = { })
+        ResetWarning(color= DeepGreen, title = title,  onDismissRequest = { })
     }
 }
 

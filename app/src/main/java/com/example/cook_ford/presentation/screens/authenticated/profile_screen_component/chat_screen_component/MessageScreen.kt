@@ -29,18 +29,28 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.cook_ford.R
+import com.example.cook_ford.data.remote.profile_response.ProfileResponse
+
+val messages = listOf(ChatMessage("Hello", false), ChatMessage("Hi", true))
+
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun PreViewScreen() {
-    val list = listOf(ChatMessage("Hello", false), ChatMessage("Hi", true))
-    ChatScreen(list, onSendMessage = {})
+    MessageScreen(
+        onNavigateBack = {},
+        profileResponse = ProfileResponse(),
+        onNavigateToAuthenticatedHomeRoute = {},
+        onSendMessage = {}
+    )
 }
+
 @Composable
-fun ChatScreen(
-    messages: List<ChatMessage>,
-    onSendMessage: (String) -> Unit,
-    modifier: Modifier = Modifier
-) {
+fun MessageScreen(
+    modifier: Modifier = Modifier,
+    onNavigateBack:()->Unit,
+    profileResponse: ProfileResponse?=null,
+    onNavigateToAuthenticatedHomeRoute: () -> Unit,
+    onSendMessage: (String) -> Unit, ) {
     Box(modifier = modifier.fillMaxSize()) {
         Column(
             modifier = Modifier

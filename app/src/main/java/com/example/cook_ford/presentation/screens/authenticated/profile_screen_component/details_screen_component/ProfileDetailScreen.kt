@@ -104,6 +104,7 @@ fun ProfileDetailScreen(
 	onNavigateToReViewScreen: () -> Unit,
 	onNavigateToReportScreen: () -> Unit,
 	onNavigateToCallCreditScreen: () -> Unit,
+	onNavigateToMessageScreen: () -> Unit,
 	onNavigateToAuthenticatedHomeRoute: () -> Unit) {
 
 	val profileDetailsViewModel: ProfileDetailsViewModel = hiltViewModel()
@@ -124,7 +125,10 @@ fun ProfileDetailScreen(
 					Spacer(modifier = Modifier.height(10.dp))
 
 					if (profileState?.profileResponse!![index].userType=="provider") {
-						Stats(profileState.profileResponse!![index], "10.1M", "100")
+						Stats(profileState.profileResponse!![index], "10.1M", "100", clickOnChat = {
+							navController.currentBackStackEntry?.savedStateHandle?.apply { set("profileResponse", Gson().toJson(profileState.profileResponse!![index])) }
+							onNavigateToMessageScreen.invoke()
+						})
 						Spacer(modifier = Modifier.height(10.dp))
 						ProviderSocialMediaIconsCard(profileDetailsViewModel,
 							onNavigateToReViewScreen = {
@@ -158,7 +162,7 @@ fun ProfileDetailScreen(
 									modifier = Modifier
 										.padding(top = AppTheme.dimens.paddingSmall,
 											bottom = AppTheme.dimens.paddingSmall),
-									text = "[ Ratings ]",
+									text = "Ratings",
 									textAlign = TextAlign.Start,
 									textColor = Color.DarkGray,
 									fontWeight = FontWeight.W700
@@ -178,7 +182,7 @@ fun ProfileDetailScreen(
 								MediumTitleText(
 									modifier = Modifier
 										.padding(top = AppTheme.dimens.paddingSmall),
-									text = "[ Headlines ]",
+									text = "Headlines",
 									textAlign = TextAlign.Start,
 									textColor = Color.DarkGray,
 									fontWeight = FontWeight.W700
@@ -199,7 +203,7 @@ fun ProfileDetailScreen(
 								MediumTitleText(
 									modifier = Modifier
 										.padding(top = AppTheme.dimens.paddingSmall),
-									text = "[ Bio Data ]",
+									text = "Bio Data",
 									textAlign = TextAlign.Start,
 									textColor = Color.DarkGray,
 									fontWeight = FontWeight.W700
@@ -219,7 +223,7 @@ fun ProfileDetailScreen(
 								MediumTitleText(
 									modifier = Modifier
 										.padding(top = AppTheme.dimens.paddingSmall),
-									text = "[ Bio ]",
+									text = "Bio",
 									textAlign = TextAlign.Start,
 									textColor = Color.DarkGray,
 									fontWeight = FontWeight.W700
@@ -314,7 +318,7 @@ fun ProfileImage(contentDescription: String?, modifier: Modifier = Modifier, ele
 }
 
 @Composable
-fun Stats(profile: ProfileResponse, followers: String, following: String) {
+fun Stats(profile: ProfileResponse, followers: String, following: String, clickOnChat:()->Unit) {
 	val name_list = listOf(
 		"6",
 		"days ago."
@@ -467,7 +471,7 @@ fun Stats(profile: ProfileResponse, followers: String, following: String) {
 						backgroundColor = Color.DarkGray,
 						contentColor = Color.White
 					),
-				onClick = {},
+				onClick = clickOnChat,
 				modifier = Modifier.weight(0.4f)
 			) {
 				MediumTitleText(
@@ -1006,47 +1010,49 @@ fun BottomSheet(sheetType:String, onNavigateToCallCreditScreen: () -> Unit,  onD
 fun ByCallCreditSheet(onNavigateToCallCreditScreen: () -> Unit){
 	Column(modifier = Modifier
 		.fillMaxWidth()
-		.padding(all = 20.dp)
+		.padding(top = 20.dp)
 		.navigationBarsPadding(),
 		horizontalAlignment = Alignment.CenterHorizontally,
 		verticalArrangement = Arrangement.spacedBy(14.dp, Alignment.CenterVertically)) {
+
+		Spacer(modifier = Modifier.height(10.dp))
 
 		Text(
 			text = "Call before you hire . . .",
 			style = MaterialTheme.typography.subtitle2,
 			color = Color.DarkGray,
-			fontSize = 17.sp,
+			fontSize = 20.sp,
 			fontWeight = FontWeight.Bold,
 			fontFamily = FontName
 		)
 
-		Row(modifier = Modifier.fillMaxWidth(),
+		Row(modifier = Modifier.padding(start = 20.dp, end = 20.dp).fillMaxWidth(),
 			horizontalArrangement = Arrangement.spacedBy(10.dp,
 			Alignment.Start),
 			verticalAlignment = Alignment.CenterVertically){
-			Icon(Icons.Filled.CheckCircle, contentDescription = null, tint = Color.Green)
+			Icon(Icons.Filled.CheckCircle, contentDescription = null, tint = DeepGreen)
 			Text(
 				text = "For reference, tell the cook you their profile on Cook Ford.",
 				style = MaterialTheme.typography.subtitle2,
 				color = Color.DarkGray
 			)
 		}
-		Row(modifier = Modifier.fillMaxWidth(),
+		Row(modifier = Modifier.padding(start = 20.dp, end = 20.dp).fillMaxWidth(),
 			horizontalArrangement = Arrangement.spacedBy(10.dp,
 			Alignment.Start),
 			verticalAlignment = Alignment.CenterVertically){
-			Icon(Icons.Filled.CheckCircle, contentDescription = null, tint = Color.Green)
+			Icon(Icons.Filled.CheckCircle, contentDescription = null, tint = DeepGreen)
 			Text(
 				text = "Discuss the requirements and charges clearly before hiring.",
 				style = MaterialTheme.typography.subtitle2,
 				color = Color.DarkGray
 			)
 		}
-		Row(modifier = Modifier.fillMaxWidth(),
+		Row(modifier = Modifier.padding(start = 20.dp, end = 20.dp).fillMaxWidth(),
 			horizontalArrangement = Arrangement.spacedBy(10.dp,
 			Alignment.Start),
 			verticalAlignment = Alignment.CenterVertically){
-			Icon(Icons.Filled.CheckCircle, contentDescription = null, tint = Color.Green)
+			Icon(Icons.Filled.CheckCircle, contentDescription = null, tint = DeepGreen)
 			Text(
 				text = "Report issue directly from the cook`s profile",
 				style = MaterialTheme.typography.subtitle2,
@@ -1054,7 +1060,7 @@ fun ByCallCreditSheet(onNavigateToCallCreditScreen: () -> Unit){
 			)
 		}
 
-		Card(modifier = Modifier, shape = RoundedCornerShape(5.dp)){
+		Card(modifier = Modifier.padding(start = 20.dp, end = 20.dp), shape = RoundedCornerShape(5.dp)){
 			Row(modifier = Modifier
 				.fillMaxWidth()
 				.background(Color.LightGray)
@@ -1070,7 +1076,7 @@ fun ByCallCreditSheet(onNavigateToCallCreditScreen: () -> Unit){
 			}
 		}
 
-		Card(modifier = Modifier, shape = RoundedCornerShape(5.dp)){
+		Card(modifier = Modifier.padding(start = 20.dp, end = 20.dp), shape = RoundedCornerShape(5.dp)){
 			Row(modifier = Modifier
 				.fillMaxWidth()
 				.background(Color.LightGray)
@@ -1086,33 +1092,32 @@ fun ByCallCreditSheet(onNavigateToCallCreditScreen: () -> Unit){
 			}
 		}
 
-		Spacer(modifier = Modifier.height(60.dp))
-	}
-	Row(modifier = Modifier.fillMaxWidth().padding(AppTheme.dimens.paddingSmall), horizontalArrangement = Arrangement.SpaceEvenly) {
-		OutlinedSmallSubmitButton(
-			modifier = Modifier
-				.padding(top = AppTheme.dimens.paddingLarge)
-				.weight(1f),
-			text = "Call Credit",
-			textColor = Color.White,
-			isLoading = false,
-			backgroundColor = Color.LightGray,
-			icon = ButtonIcons(leadingIcon = Icons.Default.ExposureZero, tintColor = DeepGreen, leadingIconSize = 30.dp),
-			onClick = { /*onSubmit*/ }
-		)
+		Spacer(modifier = Modifier.height(30.dp))
 
-		Spacer(modifier = Modifier.width(20.dp))
+		Row(modifier = Modifier.fillMaxWidth().padding(bottom = 20.dp, start = 10.dp, end = 10.dp), horizontalArrangement = Arrangement.SpaceEvenly) {
+			OutlinedSmallSubmitButton(
+				modifier = Modifier
+					.padding(top = AppTheme.dimens.paddingLarge)
+					.weight(1f),
+				text = "Call Credit",
+				textColor = Color.White,
+				isLoading = false,
+				backgroundColor = Color.LightGray,
+				icon = ButtonIcons(leadingIcon = Icons.Default.ExposureZero, tintColor = DeepGreen, leadingIconSize = 30.dp),
+				onClick = { /*onSubmit*/ }
+			)
 
-		OutlinedSmallSubmitButton(
-			modifier = Modifier
-				.padding(top = AppTheme.dimens.paddingLarge)
-				.weight(1f),
-			text = "Buy Call Credit",
-			textColor = Color.White,
-			isLoading = false,
-			backgroundColor = OrangeYellow1,
-			onClick =
-				onNavigateToCallCreditScreen
+			Spacer(modifier = Modifier.width(20.dp))
+
+			OutlinedSmallSubmitButton(
+				modifier = Modifier
+					.padding(top = AppTheme.dimens.paddingLarge)
+					.weight(1f),
+				text = "Buy Call Credit",
+				textColor = Color.White,
+				isLoading = false,
+				backgroundColor = OrangeYellow1,
+				onClick = onNavigateToCallCreditScreen
 				/*navController.currentBackStackEntry?.savedStateHandle?.apply {
                     set(
                         "profileResponse",
@@ -1121,10 +1126,9 @@ fun ByCallCreditSheet(onNavigateToCallCreditScreen: () -> Unit){
                 }
                 onNavigateToCallCreditScreen.invoke()*/
 
-		)
-
+			)
+		}
 	}
-	Spacer(modifier = Modifier.width(20.dp))
 }
 
 
@@ -1171,7 +1175,8 @@ fun ProfilePreview() {
 			onNavigateToReViewScreen = {},
 			onNavigateToReportScreen = {},
 			onNavigateToAuthenticatedHomeRoute = {},
-			onNavigateToCallCreditScreen = {})
+			onNavigateToCallCreditScreen = {},
+			onNavigateToMessageScreen = {})
 	}
 }
 
