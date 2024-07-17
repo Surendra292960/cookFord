@@ -218,7 +218,7 @@ fun InputTextField(
     val leadingIcon = @Composable {
         Icon(defaultIcons.leadingIcon,
             contentDescription = "",
-            tint = MaterialTheme.colorScheme.primary
+            tint = Color.Gray
         )
     }
 
@@ -228,7 +228,7 @@ fun InputTextField(
                 Icon(
                     visibility,
                     contentDescription = "",
-                    tint = MaterialTheme.colorScheme.primary
+                    tint = Color.Gray
                 )
             }
         }

@@ -81,7 +81,7 @@ fun SmallTitleText(
         text = text,
       //  fontSize = 9.sp,
         style = MaterialTheme.typography.bodySmall,
-        fontFamily = FontFamily.Default,
+        //fontFamily = FontFamily.Default,
         fontWeight = fontWeight,
         textAlign = textAlign,
         color = textColor

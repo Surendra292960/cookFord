@@ -1,6 +1,7 @@
 package com.example.cook_ford.presentation.screens.authenticated.accounts.post_job_screen_component
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -16,15 +17,19 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.CheckBoxOutlineBlank
 import androidx.compose.material.icons.filled.Cookie
 import androidx.compose.material.icons.filled.CurrencyRupee
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.People
+import androidx.compose.material.icons.filled.Update
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -49,8 +54,12 @@ import com.example.cook_ford.data.remote.profile_response.ProfileResponse
 import com.example.cook_ford.presentation.component.widgets.DefaultIcons
 import com.example.cook_ford.presentation.component.widgets.InputTextField
 import com.example.cook_ford.presentation.component.widgets.KeyboardOption
+import com.example.cook_ford.presentation.component.widgets.MediumTitleText
+import com.example.cook_ford.presentation.component.widgets.OutlinedSmallSubmitButton
 import com.example.cook_ford.presentation.component.widgets.ProfileImage
+import com.example.cook_ford.presentation.component.widgets.SmallTitleText
 import com.example.cook_ford.presentation.component.widgets.SubmitButtonAutoSize
+import com.example.cook_ford.presentation.theme.AppTheme
 import com.example.cook_ford.presentation.theme.FontName
 import com.example.cook_ford.presentation.theme.LightGray
 import com.example.cook_ford.presentation.theme.LightGreen
@@ -66,212 +75,261 @@ fun PostJobScreen(
     val changeProfileState = remember { mutableStateOf("Male") }
     val postJobState = remember { mutableStateOf(false) }
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(start = 20.dp, end =  20.dp)
-            .verticalScroll(rememberScrollState()),
-        horizontalAlignment = Alignment.CenterHorizontally) {
+    Column(modifier = Modifier.fillMaxSize()) {
 
-        ProfileImage(changeProfileState, onChange = {})
+        Column(modifier = Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(all=5.dp).weight(1f, false), horizontalAlignment = Alignment.CenterHorizontally) {
 
-        Text(
-            text = "We will notify you when any new cook is\n available for your requirement",
-            style = MaterialTheme.typography.subtitle2,
-            fontSize = 16.sp,
-            textAlign = TextAlign.Center,
-            color = Color.DarkGray,
-            fontFamily = FontName,
-            fontWeight = FontWeight.Medium,
-        )
-
-        if (!postJobState.value) {
-            Spacer(modifier = Modifier.height(10.dp))
+            ProfileImage(changeProfileState, onChange = {})
 
             Text(
-                text = "You have not posted any job",
-                style = MaterialTheme.typography.subtitle2,
-                fontSize = 14.sp,
-                color = Color.Gray,
-                fontFamily = FontName,
-                fontWeight = FontWeight.Medium,
-            )
-
-            Spacer(modifier = Modifier.height(10.dp))
-
-            SubmitButtonAutoSize(
-                modifier = Modifier.padding(3.dp),
-                text = stringResource(id = R.string.post_job_button_text),
-                isLoading = false,
-                onClick = { postJobState.value = true }
-            )
-        }else{
-
-            Spacer(modifier = Modifier.height(30.dp))
-
-            AccountProfileContent(
-                textColor = Color.DarkGray,
-                leadingIcon = Icons.Filled.LocationOn,
-                trailingIcon = Icons.Filled.Edit,
-                isLeadingIcon = true,
-                isTrailingIcon = true,
-                title = "Location",
-                subtitle = "Sector 62, Noida Uttar Pradesh",
-                tintColor = MaterialTheme.colors.primary,
-                trailingIconSize = 17.dp,
-                leadingIconSize = 30.dp,
-                onNavigateToCookPreferences = onNavigateToCookPreferences
-            )
-
-            Spacer(modifier = Modifier.height(20.dp))
-
-            AccountProfileContent(
-                textColor = Color.DarkGray,
-                leadingIcon = Icons.Filled.Cookie,
-                trailingIcon = Icons.Filled.Edit,
-                isLeadingIcon = true,
-                isTrailingIcon = true,
-                title = "Cook Preferences",
-                subtitle = "Languages: [Hindi, English]\nFood Type: [Indian, Chinese]\n" +
-                        "Availability: [8am-9pm]\nGender: Male\nCook type: Part time\nNumber of visits: One Visit\nExperience: 0-2 Years",
-                tintColor = MaterialTheme.colors.primary,
-                trailingIconSize = 17.dp,
-                leadingIconSize = 30.dp,
-                onNavigateToCookPreferences = onNavigateToCookPreferences
-            )
-
-            Spacer(modifier = Modifier.height(20.dp))
-
-            AccountProfileContent(
-                textColor = Color.DarkGray,
-                leadingIcon = Icons.Filled.People,
-                trailingIcon = Icons.Filled.Edit,
-                isLeadingIcon = true,
-                isTrailingIcon = false,
-                title = "Number of Members",
-                subtitle = "",
-                tintColor = MaterialTheme.colors.primary,
-                trailingIconSize = 17.dp,
-                leadingIconSize = 30.dp,
-                onNavigateToCookPreferences = onNavigateToCookPreferences
-            )
-
-            Spacer(modifier = Modifier.height(20.dp))
-
-            Text(
-                text = "Budget Range",
+                text = "We will notify you when any new cook is\n available for your requirement",
                 style = MaterialTheme.typography.subtitle2,
                 fontSize = 16.sp,
+                textAlign = TextAlign.Center,
                 color = Color.DarkGray,
                 fontFamily = FontName,
                 fontWeight = FontWeight.Medium,
             )
 
-            Row(modifier = Modifier.fillMaxWidth().wrapContentHeight(),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween){
+            if (!postJobState.value) {
+                Spacer(modifier = Modifier.height(10.dp))
 
-                InputTextField(
-                    value = "",
-                    onChange = { },
-                    modifier = Modifier.fillMaxWidth().weight(1f),
-                    keyboardOptions = KeyboardOption(
-                        imeAction = ImeAction.Next,
-                        keyboardType = KeyboardType.Number,
-                        label = "Min",
-                        placeholder = ""
-                    ),
-                    DefaultIcons(leadingIcon = Icons.Default.CurrencyRupee),
-                    isError = false,
-                    errorText = "",
-                    maxChar = 5,
-                    textColor = Color.Gray
-                    /*submit = { TODO() }*/
+                Text(
+                    text = "You have not posted any job",
+                    style = MaterialTheme.typography.subtitle2,
+                    fontSize = 14.sp,
+                    color = Color.Gray,
+                    fontFamily = FontName,
+                    fontWeight = FontWeight.Medium,
                 )
-                Spacer(modifier = Modifier.width(20.dp))
-                InputTextField(
-                    value = "",
-                    onChange = {},
-                    modifier = Modifier.fillMaxWidth().weight(1f),
-                    keyboardOptions = KeyboardOption(
-                        imeAction = ImeAction.Next,
-                        keyboardType = KeyboardType.Number,
-                        label = "Max",
-                        placeholder = ""
-                    ),
-                    DefaultIcons(leadingIcon = Icons.Default.CurrencyRupee),
-                    isError = false,
-                    errorText = "",
-                    maxChar = 5,
-                    textColor = Color.Gray
-                    /*submit = { TODO() }*/
+
+                Spacer(modifier = Modifier.height(10.dp))
+
+                SubmitButtonAutoSize(
+                    modifier = Modifier.padding(3.dp),
+                    text = stringResource(id = R.string.post_job_button_text),
+                    isLoading = false,
+                    onClick = { postJobState.value = true }
+                )
+            }else{
+
+                Spacer(modifier = Modifier.height(30.dp))
+
+                AccountProfileContent(
+                    textColor = Color.DarkGray,
+                    leadingIcon = Icons.Filled.LocationOn,
+                    trailingIcon = Icons.Filled.Edit,
+                    isLeadingIcon = true,
+                    isTrailingIcon = true,
+                    title = "Location",
+                    subtitle = "Sector 62, Noida Uttar Pradesh",
+                    tintColor = Color.Gray,
+                    trailingIconSize = 22.dp,
+                    leadingIconSize = 30.dp,
+                    onNavigateToCookPreferences = onNavigateToCookPreferences
+                )
+
+                Spacer(modifier = Modifier.height(20.dp))
+
+                AccountProfileContent(
+                    textColor = Color.DarkGray,
+                    leadingIcon = Icons.Filled.Cookie,
+                    trailingIcon = Icons.Filled.Edit,
+                    isLeadingIcon = true,
+                    isTrailingIcon = true,
+                    title = "Cook Preferences",
+                    subtitle = "Languages: [Hindi, English]\nFood Type: [Indian, Chinese]\n" +
+                            "Availability: [8am-9pm]\nGender: Male\nCook type: Part time\nNumber of visits: One Visit\nExperience: 0-2 Years",
+                    tintColor = Color.Gray,
+                    trailingIconSize = 22.dp,
+                    leadingIconSize = 30.dp,
+                    onNavigateToCookPreferences = onNavigateToCookPreferences
+                )
+
+                Spacer(modifier = Modifier.height(20.dp))
+
+                AccountProfileContent(
+                    textColor = Color.DarkGray,
+                    leadingIcon = Icons.Filled.People,
+                    trailingIcon = Icons.Filled.Edit,
+                    isLeadingIcon = true,
+                    isTrailingIcon = false,
+                    title = "Number of Members",
+                    subtitle = "",
+                    tintColor = Color.Gray,
+                    trailingIconSize = 22.dp,
+                    leadingIconSize = 30.dp,
+                    onNavigateToCookPreferences = {  }
+                )
+
+                Spacer(modifier = Modifier.height(20.dp))
+
+                Text(
+                    text = "Budget Range",
+                    style = MaterialTheme.typography.subtitle2,
+                    fontSize = 16.sp,
+                    color = Color.DarkGray,
+                    fontFamily = FontName,
+                    fontWeight = FontWeight.Medium,
+                )
+
+                Row(modifier = Modifier
+                    .fillMaxWidth()
+                    .wrapContentHeight(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween){
+
+                    InputTextField(
+                        value = "",
+                        onChange = { },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .weight(1f),
+                        keyboardOptions = KeyboardOption(
+                            imeAction = ImeAction.Next,
+                            keyboardType = KeyboardType.Number,
+                            label = "Min",
+                            placeholder = ""
+                        ),
+                        DefaultIcons(leadingIcon = Icons.Default.CurrencyRupee),
+                        isError = false,
+                        errorText = "",
+                        maxChar = 5,
+                        textColor = Color.Gray
+                        /*submit = { TODO() }*/
+                    )
+                    Spacer(modifier = Modifier.width(20.dp))
+                    InputTextField(
+                        value = "",
+                        onChange = {},
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .weight(1f),
+                        keyboardOptions = KeyboardOption(
+                            imeAction = ImeAction.Next,
+                            keyboardType = KeyboardType.Number,
+                            label = "Max",
+                            placeholder = ""
+                        ),
+                        DefaultIcons(leadingIcon = Icons.Default.CurrencyRupee),
+                        isError = false,
+                        errorText = "",
+                        maxChar = 5,
+                        textColor = Color.Gray
+                        /*submit = { TODO() }*/
+                    )
+                }
+                Spacer(modifier = Modifier.height(20.dp))
+
+                AccountProfileContent(
+                    textColor = Color.DarkGray,
+                    leadingIcon = Icons.Filled.People,
+                    trailingIcon = Icons.Filled.CheckBoxOutlineBlank,
+                    isLeadingIcon = true,
+                    isTrailingIcon = false,
+                    title = "Allow cooks to call you",
+                    subtitle = "Matched cooks will be able to call you on\n +91".plus(postJobViewModel.phoneNumber),
+                    tintColor = Color.Gray,
+                    trailingIconSize = 22.dp,
+                    leadingIconSize = 30.dp,
+                    onNavigateToCookPreferences = {  }
+                )
+
+                Spacer(modifier = Modifier.height(20.dp))
+
+                AccountProfileContent(
+                    textColor = Color.DarkGray,
+                    leadingIcon = Icons.Filled.Email,
+                    trailingIcon = Icons.Filled.Edit,
+                    isLeadingIcon = true,
+                    isTrailingIcon = false,
+                    title = "Notification will be sent on",
+                    subtitle = "cookford@gmail.com",
+                    tintColor = Color.Gray,
+                    trailingIconSize = 22.dp,
+                    leadingIconSize = 30.dp,
+                    onNavigateToCookPreferences = {  }
+                )
+
+
+                Spacer(modifier = Modifier.height(20.dp))
+
+                AccountProfileContent(
+                    textColor = Color.DarkGray,
+                    leadingIcon = Icons.Filled.Update,
+                    trailingIcon = Icons.Filled.Edit,
+                    isLeadingIcon = true,
+                    isTrailingIcon = false,
+                    title = "Last updated on",
+                    subtitle = "7 june 2024, 09:00 AM",
+                    tintColor = Color.Gray,
+                    trailingIconSize = 22.dp,
+                    leadingIconSize = 30.dp,
+                    onNavigateToCookPreferences = {  }
                 )
             }
-            Spacer(modifier = Modifier.height(20.dp))
 
-            AccountProfileContent(
-                textColor = Color.DarkGray,
-                leadingIcon = Icons.Filled.People,
-                trailingIcon = Icons.Filled.Edit,
-                isLeadingIcon = true,
-                isTrailingIcon = false,
-                title = "Allow cooks to call you",
-                subtitle = "Matched cooks will be able to call you on\n +91".plus(postJobViewModel.phoneNumber),
-                tintColor = MaterialTheme.colors.primary,
-                trailingIconSize = 17.dp,
-                leadingIconSize = 30.dp,
-                onNavigateToCookPreferences = onNavigateToCookPreferences
-            )
+            if (postJobState.value) {
+                Spacer(modifier = Modifier.height(20.dp))
+                FooterStatus()
+            }
+        }
 
-            Spacer(modifier = Modifier.height(20.dp))
+        if (postJobState.value){
+            Column(modifier = Modifier.background(Color.White)){
+                HorizontalDivider(modifier = Modifier.height(1.dp))
+                Spacer(modifier = Modifier.height(10.dp))
 
-            AccountProfileContent(
-                textColor = Color.DarkGray,
-                leadingIcon = Icons.Filled.Email,
-                trailingIcon = Icons.Filled.Edit,
-                isLeadingIcon = true,
-                isTrailingIcon = false,
-                title = "Notification will be sent on",
-                subtitle = "cookford@gmail.com",
-                tintColor = MaterialTheme.colors.primary,
-                trailingIconSize = 17.dp,
-                leadingIconSize = 30.dp,
-                onNavigateToCookPreferences = onNavigateToCookPreferences
-            )
+                Row (modifier = Modifier
+                    .background(Color.White)
+                    .padding(start = 20.dp, end = 20.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically){
 
-
-            Spacer(modifier = Modifier.height(20.dp))
-
-            AccountProfileContent(
-                textColor = Color.DarkGray,
-                leadingIcon = Icons.Filled.Email,
-                trailingIcon = Icons.Filled.Edit,
-                isLeadingIcon = true,
-                isTrailingIcon = false,
-                title = "Last updated on",
-                subtitle = "7 june 2024, 09:00 AM",
-                tintColor = MaterialTheme.colors.primary,
-                trailingIconSize = 17.dp,
-                leadingIconSize = 30.dp,
-                onNavigateToCookPreferences = onNavigateToCookPreferences
-            )
-
-            Spacer(modifier = Modifier
-                .height(20.dp)
-                .padding(start = 20.dp, end = 20.dp))
-
-            Text(
-                modifier = Modifier.padding(start = 20.dp, end = 20.dp),
-                text = "Job will be auto deleted after 3 months. if not updated.For catering, Job will be auto deleted on the next day of the event.",
-                style = MaterialTheme.typography.subtitle2,
-                fontSize = 14.sp,
-                textAlign = TextAlign.Start,
-                color = Color.DarkGray,
-                fontFamily = FontName,
-                fontWeight = FontWeight.Medium,
-            )
+                    Text(
+                        modifier = Modifier
+                            .weight(0.4f),
+                        text = "Delete Job",
+                        style = MaterialTheme.typography.subtitle2,
+                        fontFamily = FontName,
+                        fontSize = 17.sp,
+                        textAlign = TextAlign.Center,
+                        fontWeight = FontWeight.W600,
+                        color = Color.Red
+                    )
+                    Spacer(modifier = Modifier.width(50.dp))
+                    OutlinedSmallSubmitButton(
+                        modifier = Modifier
+                            .weight(0.6f),
+                        textColor = Color.Gray,
+                        text = "Update Job",
+                        isLoading = false,
+                        onClick = { /*onSubmit*/ }
+                    )
+                }
+                Spacer(modifier = Modifier.height(10.dp))
+            }
         }
     }
+}
+
+@Composable
+fun FooterStatus() {
+   Row(modifier = Modifier
+       .background(Color.Transparent)
+       .padding(all = 15.dp),
+       verticalAlignment = Alignment.CenterVertically,
+       horizontalArrangement = Arrangement.SpaceBetween) {
+       Text(
+           text = "Job will be auto deleted after 3 months. if not updated.For catering, Job will be auto deleted on the next day of the event.",
+           style = MaterialTheme.typography.subtitle2,
+           fontSize = 15.sp,
+           textAlign = TextAlign.Start,
+           color = Color.Gray,
+           fontFamily = FontName,
+           fontWeight = FontWeight.Medium,
+       )
+   }
 }
 
 
@@ -291,10 +349,10 @@ fun AccountProfileContent(
 
     Box(modifier = Modifier
         .fillMaxWidth()
-        .padding(start = 20.dp, end = 20.dp)) {
-        Row(modifier = Modifier.background(LightGray)
-                .wrapContentSize()
-                .clickable { onNavigateToCookPreferences.invoke("qeqwdcwf") },
+        .padding(all = 10.dp)) {
+        Row(modifier = Modifier
+            .wrapContentSize()
+            .clickable { onNavigateToCookPreferences.invoke("qeqwdcwf") },
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween) {
 
@@ -307,27 +365,31 @@ fun AccountProfileContent(
            }
 
             Column(
-                modifier = Modifier.padding(start = 15.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 15.dp),
                 horizontalAlignment = Alignment.Start,
                 verticalArrangement = Arrangement.Center) {
+
                 Text(
                     text = title,
-                    color = textColor,
-                    fontSize = 16.sp,
-                    fontFamily = FontName,
-                    fontWeight = FontWeight.Normal,
                     style = MaterialTheme.typography.subtitle2,
-                    modifier = Modifier.align(Alignment.Start))
-
+                    fontSize = 16.sp,
+                    textAlign = TextAlign.Start,
+                    color = Color.Black,
+                    fontFamily = FontName,
+                    fontWeight = FontWeight.Medium,
+                )
                 if (subtitle.isNotEmpty()) {
+
                     Text(
                         text = subtitle,
-                        color = textColor,
-                        fontSize = 14.sp,
+                        style = MaterialTheme.typography.subtitle2,
+                        fontSize = 16.sp,
+                        textAlign = TextAlign.Start,
+                        color = Color.DarkGray,
                         fontFamily = FontName,
                         fontWeight = FontWeight.Normal,
-                        style = MaterialTheme.typography.subtitle2,
-                        modifier = Modifier.align(Alignment.Start)
                     )
                 }
             }
