@@ -14,6 +14,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.cook_ford.data.remote.profile_response.TimeSlots
 import com.example.cook_ford.presentation.component.widgets.MediumTitleText
+import com.example.cook_ford.presentation.theme.LightGray_2
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
@@ -36,7 +37,7 @@ fun TimeSlotsComponent(timeSlots: List<TimeSlots>) {
 							) }
 					},
 					selected = true,
-					colors = FilterChipDefaults.filterChipColors(selectedContainerColor = Color.LightGray)
+					colors = FilterChipDefaults.filterChipColors(selectedContainerColor = LightGray_2)
 				)
 			}
 		}

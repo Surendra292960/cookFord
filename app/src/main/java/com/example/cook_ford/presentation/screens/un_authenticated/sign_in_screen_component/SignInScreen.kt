@@ -13,11 +13,9 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
@@ -26,6 +24,8 @@ import androidx.compose.material.icons.outlined.ArrowBackIosNew
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -41,7 +41,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
@@ -54,6 +53,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavController
 import com.example.cook_ford.R
@@ -107,198 +107,178 @@ fun SignInScreen(
         }
     } else {
         // Full Screen Content
-        Column(modifier = Modifier.fillMaxSize().navigationBarsPadding().imePadding()) {
+        Scaffold(snackbarHost = { SnackbarHost(hostState = snackBarHostState) }) { paddingValues ->
 
-            Box(modifier = Modifier.fillMaxWidth().padding(12.dp)) {
-                // Back button
-                IconButton( onClick = { navController.navigateUp() },
-                    modifier = Modifier.align(Alignment.CenterStart)) {
-                    Icon(imageVector = Icons.Outlined.ArrowBackIosNew,
-                        contentDescription = null,
-                        modifier = Modifier
-                            .shadow(0.dp)
-                            .clip(CircleShape))
-                }
+            Column(modifier = Modifier.background(Color.White).fillMaxSize().navigationBarsPadding().padding(paddingValues)) {
 
-                Text(text = stringResource(id = R.string.sign_in_heading_text),
-                    style = MaterialTheme.typography.bodyLarge,
-                    color = Color.DarkGray,
-                    textAlign = TextAlign.Center,
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.W600,
-                    modifier = Modifier.align(Alignment.Center))
-
-
-                // Skip Button
-                TextButton(
-                    shape = CircleShape,
-                    onClick = { /*onSkipClick*/ },
-                    modifier = Modifier.align(Alignment.CenterEnd),
-                    contentPadding = PaddingValues(5.dp)
-                ) {
-
-                    /*   Text(text = "Skip",
-                           style = MaterialTheme.typography.bodyLarge,
-                           color = Color.Black,
-                           textAlign = TextAlign.Center,
-                           fontSize = 17.sp,
-                           fontWeight = FontWeight.W600,
-                           modifier = Modifier
-                               .shadow(0.dp)
-                               .clip(CircleShape))*/
-                }
-            }
-
-            Column(modifier = Modifier.verticalScroll(scrollState).fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
-
-                Spacer(modifier = Modifier.height(10.dp))
-
-                // Image
-                Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxSize()) {
-                    // Change the logo
-                    Image(
-                        painter = painterResource(id = R.drawable.cook_ford_rounded_logo),
-                        contentDescription = "Logo",
-                        //modifier = Modifier.scale(3f))
-                        modifier = Modifier
-                            .height(100.dp)
-                            .width(100.dp)
-                    )
-                }
-
-                Spacer(modifier = Modifier.height(10.dp))
-
-                Text(
-                    text = "Welcome Back",
-                    fontSize = 26.sp,
-                    color = Color.DarkGray,
-                    fontWeight = FontWeight.Bold
-                )
-
-                Spacer(modifier = Modifier.height(5.dp))
-
-                Text(
-                    fontSize = 17.sp,
-                    text = "Sign in with your email or password\nor continue with social media.",
-                    color = Color.DarkGray,
-                    fontWeight = FontWeight.W400,
-                    textAlign = TextAlign.Center
-                )
-                Spacer(modifier = Modifier.height(20.dp))
-
-                Column(modifier = Modifier
-                    .padding(horizontal = AppTheme.dimens.paddingLarge)
-                    .padding(bottom = AppTheme.dimens.paddingExtraLarge),
-                    horizontalAlignment = Alignment.CenterHorizontally) {
-
-                    // SignIn Inputs Composable
-                    SignInForm(
-                        signInState = signInState,
-                        viewState = viewState,
-                        onEmailChange = { inputString ->
-                            signInViewModel.onUiEvent(
-                                signInUiEvent = SignInUiEvent.EmailChanged(
-                                    inputString
-                                )
-                            )
-                        },
-                        onPasswordChange = { inputString ->
-                            signInViewModel.onUiEvent(
-                                signInUiEvent = SignInUiEvent.PasswordChanged(
-                                    inputString
-                                )
-                            )
-                        },
-                        onSubmit = {
-                            signInViewModel.onUiEvent(signInUiEvent = SignInUiEvent.Submit)
-                        },
-                        onForgotPasswordClick = onNavigateToForgotPassword
-                    )
-                }
-
-                Column(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(bottom = 50.dp),
-                    verticalArrangement = Arrangement.Bottom,
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.spacedBy(
-                            space = 10.dp,
-                            alignment = Alignment.CenterHorizontally
-                        )) {
-                        Box(modifier = Modifier
-                            .size(50.dp)
-                            .background(
-                                Color.LightGray,
-                                shape = CircleShape
-                            ),
-                            contentAlignment = Alignment.Center) {
-                            Image(
-                                painter = painterResource(id = R.drawable.google_icon),
-                                contentDescription = "Google Login Icon"
-                            )
-                        }
-                        Box(modifier = Modifier
-                            .size(50.dp)
-                            .background(
-                                Color.LightGray,
-                                shape = CircleShape
-                            )
-                            .clickable {
-
-                            },
-                            contentAlignment = Alignment.Center) {
-                            Image(
-                                painter = painterResource(id = R.drawable.twitter_icon),
-                                contentDescription = "Twitter Login Icon"
-                            )
-                        }
-                        Box(modifier = Modifier
-                            .size(50.dp)
-                            .background(
-                                Color.LightGray,
-                                shape = CircleShape
-                            )
-                            .clickable {
-
-                            },
-                            contentAlignment = Alignment.Center) {
-                            Image(
-                                painter = painterResource(id = R.drawable.facebook_icon),
-                                contentDescription = "Facebook Login Icon"
-                            )
-                        }
+                Box(modifier = Modifier.fillMaxWidth().padding(12.dp)) {
+                    // Back button
+                    IconButton( onClick = { navController.navigateUp() },
+                        modifier = Modifier.align(Alignment.CenterStart)) {
+                        Icon(imageVector = Icons.Outlined.ArrowBackIosNew,
+                            contentDescription = null,
+                            modifier = Modifier
+                                .shadow(0.dp)
+                                .clip(CircleShape))
                     }
 
-                    Spacer(modifier = Modifier.height(10.dp))
+                    Text(text = stringResource(id = R.string.sign_in_heading_text),
+                        style = MaterialTheme.typography.bodyLarge,
+                        color = Color.DarkGray,
+                        textAlign = TextAlign.Center,
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.W600,
+                        modifier = Modifier.align(Alignment.Center))
 
-                    // Register Section
-                    Row(modifier = Modifier.padding(AppTheme.dimens.paddingNormal)) {
 
-                        // Don't have an account?
-                        Text(
-                            buildAnnotatedString {
-                                withStyle(style = SpanStyle(color = Color.DarkGray)) {
-                                    append(stringResource(id = R.string.do_not_have_account))
-                                }
-                                withStyle(style = SpanStyle(color = DeepGreen)) {
-                                    append(stringResource(id = R.string.sign_up_heading_text))
-                                }
+                    // Skip Button
+                    TextButton(
+                        shape = CircleShape,
+                        onClick = { /*onSkipClick*/ },
+                        modifier = Modifier.align(Alignment.CenterEnd),
+                        contentPadding = PaddingValues(5.dp)
+                    ) {
+
+                        /*   Text(text = "Skip",
+                               style = MaterialTheme.typography.bodyLarge,
+                               color = Color.Black,
+                               textAlign = TextAlign.Center,
+                               fontSize = 17.sp,
+                               fontWeight = FontWeight.W600,
+                               modifier = Modifier
+                                   .shadow(0.dp)
+                                   .clip(CircleShape))*/
+                    }
+                }
+
+                Column(modifier = Modifier.verticalScroll(scrollState).fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
+
+                    Spacer(modifier = Modifier.height(30.dp))
+
+                    Text(
+                        text = "Welcome Back",
+                        fontSize = 26.sp,
+                        color = Color.DarkGray,
+                        fontWeight = FontWeight.Bold
+                    )
+
+                    Spacer(modifier = Modifier.height(5.dp))
+
+                    Text(
+                        fontSize = 16.sp,
+                        text = "Sign in with your email or password\nor continue with social media.",
+                        color = Color.DarkGray,
+                        fontWeight = FontWeight.W400,
+                        textAlign = TextAlign.Center
+                    )
+                    Spacer(modifier = Modifier.height(20.dp))
+
+                    //SignIn Form
+                    Column(modifier = Modifier.padding(horizontal = AppTheme.dimens.paddingLarge).padding(bottom = AppTheme.dimens.paddingExtraLarge), horizontalAlignment = Alignment.CenterHorizontally) {
+
+                        // SignIn Inputs Composable
+                        SignInForm(
+                            signInState = signInState,
+                            viewState = viewState,
+                            onEmailChange = { inputString ->
+                                signInViewModel.onUiEvent(
+                                    signInUiEvent = SignInUiEvent.EmailChanged(
+                                        inputString
+                                    )
+                                )
                             },
-                            modifier = Modifier
-                                .padding(start = AppTheme.dimens.paddingExtraSmall)
-                                .clickable {
-                                    onNavigateToRegistration.invoke()
-                                }
+                            onPasswordChange = { inputString ->
+                                signInViewModel.onUiEvent(
+                                    signInUiEvent = SignInUiEvent.PasswordChanged(
+                                        inputString
+                                    )
+                                )
+                            },
+                            onSubmit = {
+                                signInViewModel.onUiEvent(signInUiEvent = SignInUiEvent.Submit)
+                            },
+                            onForgotPasswordClick = onNavigateToForgotPassword
                         )
                     }
-                }
 
-                ShowSnackbar(signInViewModel, lifecycle, snackBarHostState)
+                    //SignIn Icon
+                    Column(modifier = Modifier.fillMaxSize().padding(bottom = 50.dp), verticalArrangement = Arrangement.Bottom, horizontalAlignment = Alignment.CenterHorizontally) {
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.spacedBy(
+                                space = 10.dp,
+                                alignment = Alignment.CenterHorizontally
+                            )) {
+                            Box(modifier = Modifier
+                                .size(50.dp)
+                                .background(
+                                    Color.LightGray,
+                                    shape = CircleShape
+                                ),
+                                contentAlignment = Alignment.Center) {
+                                Image(
+                                    painter = painterResource(id = R.drawable.google_icon),
+                                    contentDescription = "Google Login Icon"
+                                )
+                            }
+                            Box(modifier = Modifier
+                                .size(50.dp)
+                                .background(
+                                    Color.LightGray,
+                                    shape = CircleShape
+                                )
+                                .clickable {
+
+                                },
+                                contentAlignment = Alignment.Center) {
+                                Image(
+                                    painter = painterResource(id = R.drawable.twitter_icon),
+                                    contentDescription = "Twitter Login Icon"
+                                )
+                            }
+                            Box(modifier = Modifier
+                                .size(50.dp)
+                                .background(
+                                    Color.LightGray,
+                                    shape = CircleShape
+                                )
+                                .clickable {
+
+                                },
+                                contentAlignment = Alignment.Center) {
+                                Image(
+                                    painter = painterResource(id = R.drawable.facebook_icon),
+                                    contentDescription = "Facebook Login Icon"
+                                )
+                            }
+                        }
+
+                        Spacer(modifier = Modifier.height(10.dp))
+
+                        // Register Section
+                        Row(modifier = Modifier.padding(AppTheme.dimens.paddingNormal)) {
+
+                            // Don't have an account?
+                            Text(
+                                buildAnnotatedString {
+                                    withStyle(style = SpanStyle(color = Color.DarkGray)) {
+                                        append(stringResource(id = R.string.do_not_have_account))
+                                    }
+                                    withStyle(style = SpanStyle(color = DeepGreen)) {
+                                        append(stringResource(id = R.string.sign_up_heading_text))
+                                    }
+                                },
+                                modifier = Modifier
+                                    .padding(start = AppTheme.dimens.paddingExtraSmall)
+                                    .clickable {
+                                        onNavigateToRegistration.invoke()
+                                    }
+                            )
+                        }
+                    }
+                }
             }
+            ShowSnackbar(signInViewModel, lifecycle, snackBarHostState)
         }
     }
 }

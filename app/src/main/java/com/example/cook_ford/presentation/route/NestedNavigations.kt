@@ -91,7 +91,7 @@ fun NavGraphBuilder.unauthenticatedGraph(navController: NavController) {
         composable(route = NavigationRoutes.Unauthenticated.Onboard.route) {
             OnBoardingScreen(navController = navController,
                 onNavigateToAuthenticatedRoute = {
-                    navController.navigate(route = NavigationRoutes.Unauthenticated.Landing.route){
+                    navController.navigate(route = NavigationRoutes.Unauthenticated.SignIn.route){
                         popUpTo(route = NavigationRoutes.Unauthenticated.Onboard.route) {
                             inclusive = true
                         }

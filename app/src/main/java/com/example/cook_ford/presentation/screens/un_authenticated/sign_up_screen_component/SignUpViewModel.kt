@@ -1,5 +1,6 @@
 package com.example.cook_ford.presentation.screens.un_authenticated.sign_up_screen_component
 
+import android.location.Location
 import android.util.Log
 import android.util.Patterns
 import androidx.compose.runtime.mutableStateOf
@@ -25,7 +26,6 @@ import com.example.cook_ford.presentation.screens.un_authenticated.sign_up_scree
 import com.example.cook_ford.presentation.screens.un_authenticated.sign_up_screen_component.state.invalidPasswordErrorState
 import com.example.cook_ford.presentation.screens.un_authenticated.sign_up_screen_component.state.invalidUserNameErrorState
 import com.example.cook_ford.presentation.screens.un_authenticated.sign_up_screen_component.state.passwordMismatchErrorState
-import com.example.cook_ford.presentation.screens.un_authenticated.sign_up_screen_component.state.phoneEmptyErrorState
 import com.example.cook_ford.presentation.screens.un_authenticated.sign_up_screen_component.state.usernameEmptyErrorState
 import com.example.cook_ford.utils.AppConstants
 import com.google.gson.Gson
@@ -54,6 +54,8 @@ class SignUpViewModel @Inject constructor(private val signUpUseCase: SignUpUseCa
     private val _showDialog = MutableStateFlow(true)
     val showDialog: StateFlow<Boolean> = _showDialog.asStateFlow()
 
+    private val _location = MutableStateFlow(Pair(0.0, 0.0))
+
     private val _viewState = MutableStateFlow(MainViewState())
     val viewState = _viewState.asStateFlow()
 
@@ -71,6 +73,11 @@ class SignUpViewModel @Inject constructor(private val signUpUseCase: SignUpUseCa
     fun onDialogDismiss() {
         Log.d("TAG", "onDialogDismiss: ")
         _showDialog.value = false
+    }
+
+    fun setLocation(location: Location) {
+        _location.value = Pair(location.latitude, location.longitude)
+        Log.d("TAG", "Location Data : ${_location.value.first}, ${_location.value.second}")
     }
 
     /**
@@ -162,25 +169,40 @@ class SignUpViewModel @Inject constructor(private val signUpUseCase: SignUpUseCa
                 )
             }
 
-            // Submit Registration event
+            // Submit SignUp event
             is SignUpUiEvent.Submit -> {
                 val inputsValidated = validateInputs()
                 if (inputsValidated) {
                     // TODO Trigger registration in authentication flow
                     Log.d("TAG", "onUiEvent: ${Gson().toJson(signUpState.value)}")
-                    userSession.getString(SessionConstant.PHONE_NUMBER)?.let { phone->
+                    /*userSession.getString(SessionConstant.PHONE_NUMBER)?.let { phone->
                         SignUpRequest(
                             username = signUpState.value.username,
                             email = signUpState.value.email,
                             password = signUpState.value.password,
                             gender = signUpState.value.gender,
-                            phone = phone
+                            phone = phone,
+                            latitude = _location.value.first.toString(),
+                            longitude = _location.value.second.toString()
                         )
                     }?.let { signupRequest->
+                        Log.d("TAG", "onUiEvent Data : ${Gson().toJson(signupRequest)}")
                         makeSigUpRequest(
                             signupRequest
                         )
-                    }
+                    }*/
+
+                    makeSigUpRequest(
+                        SignUpRequest(
+                            username = signUpState.value.username,
+                            email = signUpState.value.email,
+                            password = signUpState.value.password,
+                            gender = signUpState.value.gender,
+                            phone = "8755092960",
+                            latitude = _location.value.first.toString(),
+                            longitude = _location.value.second.toString()
+                        )
+                    )
                 }
             }
         }

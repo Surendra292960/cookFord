@@ -56,7 +56,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
@@ -66,6 +65,7 @@ import coil.decode.ImageDecoderDecoder
 import coil.request.ImageRequest
 import coil.size.Size
 import com.example.cook_ford.R
+import com.example.cook_ford.presentation.component.LocationPermissionScreen
 import com.example.cook_ford.presentation.component.widgets.ButtonIcons
 import com.example.cook_ford.presentation.component.widgets.MediumTitleText
 import com.example.cook_ford.presentation.component.widgets.OutlinedSmallSubmitButton
@@ -81,9 +81,11 @@ import com.example.cook_ford.presentation.theme.AppTheme
 import com.example.cook_ford.presentation.theme.DeepGreen
 import com.example.cook_ford.presentation.theme.FontName
 import com.example.cook_ford.presentation.theme.LightGray
+import com.example.cook_ford.presentation.theme.LightGray_2
 import com.example.cook_ford.presentation.theme.LightGreen
 import com.example.cook_ford.presentation.theme.LightGreen1
 import com.example.cook_ford.presentation.theme.OrangeYellow1
+import com.example.cook_ford.utils.AppConstants
 import com.google.gson.Gson
 
 
@@ -157,198 +159,200 @@ fun AccountsScreen(
     val accountState by remember { accountViewModel.accountState }
     val reviewState by remember { accountViewModel.reviewState }
 
-    Progressbar(showProgressbar = accountState.isLoading)
-    if (accountState.isSuccessful) {
-        Log.d("TAG", "AccountsScreen Data : ${Gson().toJson(accountState)}")
-        Column(
-            modifier = Modifier
-                .background(Color.White)
-                .fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally) {
 
-            val profileLazyListState: LazyListState = rememberLazyListState()
+    Box(modifier = Modifier.background(Color.White).fillMaxSize()) {
+        if (accountState.isSuccessful) {
+            Log.d("TAG", "AccountsScreen Data : ${Gson().toJson(accountState)}")
+            Column(
+                modifier = Modifier
+                    .background(Color.White)
+                    .fillMaxSize(),
+                horizontalAlignment = Alignment.CenterHorizontally) {
 
-            Box(modifier = Modifier,
-                contentAlignment = Alignment.Center) {
-                ProfileImage(changeProfileState, onChange = {})
-                Image(
-                    modifier = Modifier
-                        .padding(AppTheme.dimens.paddingNormal)
-                        .size(30.dp)
-                        .align(Alignment.CenterEnd)
-                        .clickable {
-                            navController.currentBackStackEntry?.savedStateHandle?.apply {
-                                set(
-                                    "profileResponse",
-                                    Gson().toJson(accountState.profileResponse)
-                                )
+                val profileLazyListState: LazyListState = rememberLazyListState()
+
+                Box(modifier = Modifier,
+                    contentAlignment = Alignment.Center) {
+                    ProfileImage(changeProfileState, onChange = {})
+                    Image(
+                        modifier = Modifier
+                            .padding(AppTheme.dimens.paddingNormal)
+                            .size(30.dp)
+                            .align(Alignment.CenterEnd)
+                            .clickable {
+                                navController.currentBackStackEntry?.savedStateHandle?.apply {
+                                    set(
+                                        "profileResponse",
+                                        Gson().toJson(accountState.profileResponse)
+                                    )
+                                }
+                                onNavigateToEditProfile.invoke()
+                            },
+                        painter = painterResource(id = R.drawable.ic_edit_icon),
+                        contentDescription = "Edit Profile"
+                    )
+                }
+
+                ElevatedCard(
+                    modifier = Modifier.fillMaxSize(),
+                    colors = CardDefaults.cardColors(Color.White),
+                    elevation = CardDefaults.elevatedCardElevation(AppTheme.dimens.paddingTooSmall),
+                    shape = RoundedCornerShape(topStart = 28.dp, topEnd = 28.dp)) {
+
+                    LazyColumn(modifier = Modifier.fillMaxWidth(), state = profileLazyListState, horizontalAlignment = Alignment.CenterHorizontally, contentPadding = PaddingValues(start = 10.dp, end = 10.dp),
+                        content = {
+                            item {
+                                Row(modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(AppTheme.dimens.paddingSmall), horizontalArrangement = Arrangement.SpaceEvenly) {
+                                    OutlinedSmallSubmitButton(
+                                        modifier = Modifier
+                                            .padding(top = AppTheme.dimens.paddingLarge)
+                                            .weight(1f),
+                                        text = AppConstants.CALL_CREDIT,
+                                        textColor = Color.White,
+                                        isLoading = false,
+                                        backgroundColor = Color.LightGray,
+                                        icon = ButtonIcons(leadingIcon = Icons.Default.ExposureZero, tintColor = DeepGreen, leadingIconSize = 30.dp),
+                                        onClick = { /*onSubmit*/ }
+                                    )
+
+                                    Spacer(modifier = Modifier.width(20.dp))
+
+                                    OutlinedSmallSubmitButton(
+                                        modifier = Modifier
+                                            .padding(top = AppTheme.dimens.paddingLarge)
+                                            .weight(1f),
+                                        text = AppConstants.BUY_CALL_CREDIT,
+                                        textColor = Color.White,
+                                        isLoading = false,
+                                        backgroundColor = OrangeYellow1,
+                                        onClick = {
+                                            navController.currentBackStackEntry?.savedStateHandle?.apply {
+                                                set(
+                                                    "profileResponse",
+                                                    Gson().toJson(accountState.profileResponse)
+                                                )
+                                            }
+                                            onNavigateToCallCreditScreen.invoke()
+                                        }
+                                    )
+                                    Spacer(modifier = Modifier.width(10.dp))
+                                }
                             }
-                            onNavigateToEditProfile.invoke()
-                        },
-                    painter = painterResource(id = R.drawable.ic_edit_icon),
-                    contentDescription = "Edit Profile"
-                )
-            }
-
-            ElevatedCard(
-                modifier = Modifier.fillMaxSize(),
-                colors = CardDefaults.cardColors(Color.White),
-                elevation = CardDefaults.elevatedCardElevation(AppTheme.dimens.paddingExtraLarge),
-                shape = RoundedCornerShape(topStart = 28.dp, topEnd = 28.dp)) {
-
-                LazyColumn(modifier = Modifier.fillMaxWidth(), state = profileLazyListState, horizontalAlignment = Alignment.CenterHorizontally, contentPadding = PaddingValues(start = 10.dp, end = 10.dp),
-                    content = {
-                        item {
-                            Row(modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(AppTheme.dimens.paddingSmall), horizontalArrangement = Arrangement.SpaceEvenly) {
-                                OutlinedSmallSubmitButton(
-                                    modifier = Modifier
-                                        .padding(top = AppTheme.dimens.paddingLarge)
-                                        .weight(1f),
-                                    text = "Call Credit",
-                                    textColor = Color.White,
-                                    isLoading = false,
-                                    backgroundColor = Color.LightGray,
-                                    icon = ButtonIcons(leadingIcon = Icons.Default.ExposureZero, tintColor = DeepGreen, leadingIconSize = 30.dp),
-                                    onClick = { /*onSubmit*/ }
-                                )
-
-                                Spacer(modifier = Modifier.width(20.dp))
-
-                                OutlinedSmallSubmitButton(
-                                    modifier = Modifier
-                                        .padding(top = AppTheme.dimens.paddingLarge)
-                                        .weight(1f),
-                                    text = "Buy Call Credit",
-                                    textColor = Color.White,
-                                    isLoading = false,
-                                    backgroundColor = OrangeYellow1,
-                                    onClick = {
+                            items(accountData.size) { index ->
+                                AccountItem(
+                                    accountData = accountData,
+                                    index = index,
+                                    onItemClick = {},
+                                    onNavigateToAddCookScreen = {
                                         navController.currentBackStackEntry?.savedStateHandle?.apply {
                                             set(
                                                 "profileResponse",
                                                 Gson().toJson(accountState.profileResponse)
                                             )
                                         }
-                                        onNavigateToCallCreditScreen.invoke()
-                                    }
+                                        onNavigateToAddCookScreen.invoke()
+                                    },
+                                    onNavigateToPostJobScreen = {
+                                        navController.currentBackStackEntry?.savedStateHandle?.apply {
+                                            set(
+                                                "profileResponse",
+                                                Gson().toJson(accountState.profileResponse)
+                                            )
+                                        }
+                                        onNavigateToPostJobScreen.invoke()
+                                    },
+                                    onNavigateToContactUsScreen = {
+                                        navController.currentBackStackEntry?.savedStateHandle?.apply {
+                                            set(
+                                                "profileResponse",
+                                                Gson().toJson(accountState.profileResponse)
+                                            )
+                                        }
+                                        onNavigateToContactUsScreen.invoke()
+                                    },
+                                    onNavigateToReviewUsScreen = {
+                                        navController.currentBackStackEntry?.savedStateHandle?.apply {
+                                            set(
+                                                "profileResponse",
+                                                Gson().toJson(accountState.profileResponse)
+                                            )
+                                        }
+                                        showReviewBottomSheet = true
+                                        onNavigateToReviewUsScreen.invoke()
+                                    },
+                                    onNavigateToTellCommunity = {
+                                        navController.currentBackStackEntry?.savedStateHandle?.apply {
+                                            set(
+                                                "profileResponse",
+                                                Gson().toJson(accountState.profileResponse)
+                                            )
+                                        }
+                                        onNavigateToTellCommunity.invoke(it)
+                                    },
+                                    onNavigateToSignInAsCookScreen = {
+                                        navController.currentBackStackEntry?.savedStateHandle?.apply {
+                                            set(
+                                                "profileResponse",
+                                                Gson().toJson(accountState.profileResponse)
+                                            )
+                                        }
+                                        onNavigateToSignInAsCookScreen.invoke()
+                                    },
+                                    onNavigateToTermsOfUseScreen = {
+                                        navController.currentBackStackEntry?.savedStateHandle?.apply {
+                                            set(
+                                                "profileResponse",
+                                                Gson().toJson(accountState.profileResponse)
+                                            )
+                                        }
+                                        onNavigateToTermsOfUseScreen.invoke()
+                                    },
+                                    onNavigateToPrivacyPolicyScreen = {
+                                        navController.currentBackStackEntry?.savedStateHandle?.apply {
+                                            set(
+                                                "profileResponse",
+                                                Gson().toJson(accountState.profileResponse)
+                                            )
+                                        }
+                                        onNavigateToPrivacyPolicyScreen.invoke()
+                                    },
+                                    onNavigateToLicenseScreen = {
+                                        navController.currentBackStackEntry?.savedStateHandle?.apply {
+                                            set(
+                                                "profileResponse",
+                                                Gson().toJson(accountState.profileResponse)
+                                            )
+                                        }
+                                        onNavigateToLicenseScreen.invoke()
+                                    },
                                 )
-                                Spacer(modifier = Modifier.width(10.dp))
                             }
-                        }
-                        items(accountData.size) { index ->
-                            AccountItem(
-                                accountData = accountData,
-                                index = index,
-                                onItemClick = {
-
-                                },
-                                onNavigateToAddCookScreen = {
-                                    navController.currentBackStackEntry?.savedStateHandle?.apply {
-                                        set(
-                                            "profileResponse",
-                                            Gson().toJson(accountState.profileResponse)
-                                        )
+                            item {
+                                HorizontalDivider(
+                                    modifier = Modifier.padding(top = 5.dp),
+                                    color = LightGray_2
+                                )
+                                FooterStatus()
+                                if (showReviewBottomSheet) {
+                                    BottomSheet(
+                                        AppConstants.REVIEW,
+                                        reviewState = reviewState,
+                                        accountViewModel = accountViewModel
+                                    ) {
+                                        showReviewBottomSheet = false
+                                        accountViewModel.reviewState.value = ReviewState()
+                                        Log.d("TAG", "AccountScreen dismiss : ")
                                     }
-                                    onNavigateToAddCookScreen.invoke()
-                                },
-                                onNavigateToPostJobScreen = {
-                                    navController.currentBackStackEntry?.savedStateHandle?.apply {
-                                        set(
-                                            "profileResponse",
-                                            Gson().toJson(accountState.profileResponse)
-                                        )
-                                    }
-                                    onNavigateToPostJobScreen.invoke()
-                                },
-                                onNavigateToContactUsScreen = {
-                                    navController.currentBackStackEntry?.savedStateHandle?.apply {
-                                        set(
-                                            "profileResponse",
-                                            Gson().toJson(accountState.profileResponse)
-                                        )
-                                    }
-                                    onNavigateToContactUsScreen.invoke()
-                                },
-                                onNavigateToReviewUsScreen = {
-                                    navController.currentBackStackEntry?.savedStateHandle?.apply {
-                                        set(
-                                            "profileResponse",
-                                            Gson().toJson(accountState.profileResponse)
-                                        )
-                                    }
-                                    showReviewBottomSheet = true
-                                    onNavigateToReviewUsScreen.invoke()
-                                },
-                                onNavigateToTellCommunity = {
-                                    navController.currentBackStackEntry?.savedStateHandle?.apply {
-                                        set(
-                                            "profileResponse",
-                                            Gson().toJson(accountState.profileResponse)
-                                        )
-                                    }
-                                    onNavigateToTellCommunity.invoke(it)
-                                },
-                                onNavigateToSignInAsCookScreen = {
-                                    navController.currentBackStackEntry?.savedStateHandle?.apply {
-                                        set(
-                                            "profileResponse",
-                                            Gson().toJson(accountState.profileResponse)
-                                        )
-                                    }
-                                    onNavigateToSignInAsCookScreen.invoke()
-                                },
-                                onNavigateToTermsOfUseScreen = {
-                                    navController.currentBackStackEntry?.savedStateHandle?.apply {
-                                        set(
-                                            "profileResponse",
-                                            Gson().toJson(accountState.profileResponse)
-                                        )
-                                    }
-                                    onNavigateToTermsOfUseScreen.invoke()
-                                },
-                                onNavigateToPrivacyPolicyScreen = {
-                                    navController.currentBackStackEntry?.savedStateHandle?.apply {
-                                        set(
-                                            "profileResponse",
-                                            Gson().toJson(accountState.profileResponse)
-                                        )
-                                    }
-                                    onNavigateToPrivacyPolicyScreen.invoke()
-                                },
-                                onNavigateToLicenseScreen = {
-                                    navController.currentBackStackEntry?.savedStateHandle?.apply {
-                                        set(
-                                            "profileResponse",
-                                            Gson().toJson(accountState.profileResponse)
-                                        )
-                                    }
-                                    onNavigateToLicenseScreen.invoke()
-                                },
-                            )
-                        }
-                        item {
-                            HorizontalDivider(
-                                modifier = Modifier.padding(top = 5.dp),
-                                color = Color.LightGray
-                            )
-                            FooterStatus()
-                            if (showReviewBottomSheet) {
-                                BottomSheet(
-                                    "Review",
-                                    reviewState = reviewState,
-                                    accountViewModel = accountViewModel
-                                ) {
-                                    showReviewBottomSheet = false
-                                    accountViewModel.reviewState.value = ReviewState()
-                                    Log.d("TAG", "AccountScreen dismiss : ")
                                 }
                             }
                         }
-                    }
-                )
+                    )
+                }
             }
+        }else{
+            Progressbar(showProgressbar = accountState.isLoading)
         }
     }
 }
@@ -370,7 +374,59 @@ fun AccountItem(
 
     val context = LocalContext.current
 
-    Column(modifier = Modifier.padding(AppTheme.dimens.paddingSmall),
+    Column(modifier = Modifier
+        .padding(AppTheme.dimens.paddingSmall)
+        .clickable {
+            when (accountData[index].title) {
+                "Post Job" -> {
+                    onNavigateToPostJobScreen()
+                }
+
+                "Add Your Cook" -> {
+                    onNavigateToAddCookScreen()
+                }
+
+                "Tell Your Community" -> {
+                    context.shareWithCommunity(
+                        to = "cookford@gmail.com",
+                        subject = ""
+                    )
+                    //onNavigateToTellCommunity("Community")
+                }
+
+                "Contact Us" -> {
+                    context.composeEmail(
+                        addresses = arrayOf("cookford@gmail.com"),
+                        subject = ""
+                    )
+                    //onNavigateToContactUsScreen()
+                }
+
+                "Review Us" -> {
+                    onNavigateToReviewUsScreen()
+                }
+
+                "Sign In as Cook" -> {
+                    onNavigateToSignInAsCookScreen()
+                }
+
+                "Terms of Use" -> {
+                    onNavigateToTermsOfUseScreen()
+                }
+
+                "Privacy Policy" -> {
+                    onNavigateToPrivacyPolicyScreen()
+                }
+
+                "License" -> {
+                    onNavigateToLicenseScreen()
+                }
+
+                else -> {
+                    onItemClick()
+                }
+            }
+        },
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.SpaceBetween) {
         Box(modifier = Modifier
@@ -382,71 +438,16 @@ fun AccountItem(
             .background(LightGray, shape = RoundedCornerShape(16.dp))
             .padding(all = 10.dp)
             .fillMaxWidth()
-            .clickable {
-                when (accountData[index].title) {
-                    "Post Job" -> {
-                        onNavigateToPostJobScreen()
-                    }
-
-                    "Add Your Cook" -> {
-                        onNavigateToAddCookScreen()
-                    }
-
-                    "Tell Your Community" -> {
-                        context.shareWithCommunity(
-                            to = "cookford@gmail.com",
-                            subject = ""
-                        )
-                        //onNavigateToTellCommunity("Community")
-                    }
-
-                    "Contact Us" -> {
-                        context.composeEmail(
-                            addresses = arrayOf("cookford@gmail.com"),
-                            subject = ""
-                        )
-                        //onNavigateToContactUsScreen()
-                    }
-
-                    "Review Us" -> {
-                        onNavigateToReviewUsScreen()
-                    }
-
-                    "Sign In as Cook" -> {
-                        onNavigateToSignInAsCookScreen()
-                    }
-
-                    "Terms of Use" -> {
-                        onNavigateToTermsOfUseScreen()
-                    }
-
-                    "Privacy Policy" -> {
-                        onNavigateToPrivacyPolicyScreen()
-                    }
-
-                    "License" -> {
-                        onNavigateToLicenseScreen()
-                    }
-
-                    else -> {
-                        onItemClick()
-                    }
-                }
-            }
         ) {
-            Row(modifier = Modifier
-                .wrapContentSize(),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween) {
+            Row(modifier = Modifier.wrapContentSize(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceBetween) {
 
                 Box(modifier = Modifier
                     .size(40.dp)
-                    .background(Color.LightGray, shape = CircleShape)
-                    .clickable {},
+                    .background(Color.LightGray, shape = CircleShape),
                     contentAlignment = Alignment.Center) {
                     Image(
                         painter = painterResource(id = accountData[index].leadingIcon),
-                        contentDescription = "Facebook Login Icon",
+                        contentDescription = "Icon",
                         contentScale = ContentScale.FillBounds,
                     )
                 }
@@ -475,8 +476,7 @@ fun AccountItem(
 
             Box(modifier = Modifier
                 .size(if (accountData[index].title == "Contact Us") 30.dp else 15.dp)
-                .align(Alignment.CenterEnd)
-                .clickable {},
+                .align(Alignment.CenterEnd),
                 contentAlignment = Alignment.Center) {
                 if (accountData[index].isBorder) {
                     Image(

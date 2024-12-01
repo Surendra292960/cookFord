@@ -77,7 +77,6 @@ fun EditProfileForm(
             errorText = stringResource(id = editProfileState.errorState.usernameErrorState.errorMessageStringResource),
             maxChar = 30,
             textColor = Color.Gray
-            /*submit = { TODO() }*/
         )
         Spacer(modifier = Modifier.height(10.dp))
 
@@ -96,7 +95,6 @@ fun EditProfileForm(
             errorText = stringResource(id = editProfileState.errorState.emailErrorState.errorMessageStringResource),
             maxChar = 30,
             textColor = Color.Gray
-            /*submit = { TODO() }*/
         )
 
         Spacer(modifier = Modifier.height(10.dp))
@@ -117,7 +115,6 @@ fun EditProfileForm(
             errorText = stringResource(id = editProfileState.errorState.phoneErrorState.errorMessageStringResource),
             maxChar = 12,
             textColor = Color.Gray
-            /*submit = { TODO() }*/
         )
 
         Spacer(modifier = Modifier.height(10.dp))

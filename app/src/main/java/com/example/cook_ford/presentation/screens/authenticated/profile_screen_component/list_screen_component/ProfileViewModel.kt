@@ -22,11 +22,9 @@ import javax.inject.Inject
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
     private val profileUseCase: ProfileUseCase,
-    private val userSession: UserSession,
-) : ViewModel() {
+    private val userSession: UserSession) : ViewModel() {
 
     var shareProfile by mutableStateOf(ProfileResponse())
-
 
     private val _profileState = mutableStateOf(ProfileState())
     val profileState: State<ProfileState> = _profileState

@@ -1,6 +1,12 @@
 package com.example.cook_ford.presentation.screens.authenticated.profile_screen_component.report_screen_component
 
+import android.content.Context
+import android.os.Build
+import android.util.AttributeSet
 import android.util.Log
+import android.webkit.RenderProcessGoneDetail
+import android.webkit.WebView
+import androidx.annotation.RequiresApi
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -9,7 +15,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -18,11 +23,8 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Button
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -47,7 +49,6 @@ import com.example.cook_ford.data.remote.profile_response.ProfileResponse
 import com.example.cook_ford.presentation.component.rememberImeState
 import com.example.cook_ford.presentation.component.widgets.Progressbar
 import com.example.cook_ford.presentation.component.widgets.snack_bar.MainViewState
-import com.example.cook_ford.presentation.route.topbar_nav.TopBarNavigation
 import com.example.cook_ford.presentation.screens.authenticated.profile_screen_component.report_screen_component.state.ReportUiEvent
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -93,7 +94,7 @@ fun ReportScreen(
         Log.d("TAG", "Data isSuccessful : ${reportState.isSuccessful}")
         Column(modifier = Modifier.fillMaxSize().verticalScroll(scrollState)) {
 
-            reportState?.profileResponse?.let { ImageWithUserName(it) }
+            reportState.profileResponse?.let { ImageWithUserName(it) }
 
             ReportForm(
                 reportState = reportState,
@@ -102,7 +103,7 @@ fun ReportScreen(
                     .fillMaxWidth()
                     .padding(start = 10.dp, end = 10.dp),
                 onIssueChange = { inputString ->
-                    Log.d("TAG", "ReportScreen: ${inputString}")
+                    Log.d("TAG", "ReportScreen: $inputString")
                     reportViewModel.onUiEvent(
                         reportUiEvent = ReportUiEvent.IssueChanged(
                             inputString
@@ -110,7 +111,7 @@ fun ReportScreen(
                     )
                 },
                 onReportChange = { inputString ->
-                    Log.d("TAG", "ReportScreen: ${inputString}")
+                    Log.d("TAG", "ReportScreen: $inputString")
                     reportViewModel.onUiEvent(
                         reportUiEvent = ReportUiEvent.ReportChanged(
                             inputString
@@ -121,6 +122,7 @@ fun ReportScreen(
                     reportViewModel.onUiEvent(reportUiEvent = ReportUiEvent.Submit)
                 }
             )
+
             ShowSnackbar(lifecycle, snackBarHostState)
         }
     }

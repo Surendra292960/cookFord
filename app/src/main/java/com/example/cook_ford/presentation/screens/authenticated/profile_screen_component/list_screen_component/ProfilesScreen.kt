@@ -1,5 +1,4 @@
 package com.example.cook_ford.presentation.screens.authenticated.profile_screen_component.list_screen_component
-
 import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
@@ -25,8 +24,6 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.filled.Verified
@@ -34,6 +31,7 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -52,14 +50,16 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.cook_ford.R
 import com.example.cook_ford.data.remote.profile_response.ProfileResponse
+import com.example.cook_ford.presentation.component.CuisineSlotComponent
 import com.example.cook_ford.presentation.component.widgets.Child
 import com.example.cook_ford.presentation.component.widgets.MediumTitleText
 import com.example.cook_ford.presentation.component.widgets.Progressbar
 import com.example.cook_ford.presentation.screens.authenticated.profile_screen_component.list_screen_component.state.ProfileState
 import com.example.cook_ford.presentation.theme.AppTheme
-import com.example.cook_ford.presentation.theme.DeepGreen
+import com.example.cook_ford.presentation.theme.LightGray_2
 import com.example.cook_ford.presentation.theme.LightGreen
 import com.example.cook_ford.presentation.theme.OrangeYellow1
+import com.example.cook_ford.utils.AppConstants
 import com.google.gson.Gson
 
 @Preview(showSystemUi = true, showBackground = true)
@@ -79,34 +79,40 @@ fun ProfilesScreen(
     val profileViewModel: ProfileViewModel = hiltViewModel()
     val profileState by remember { profileViewModel.profileState }
 
-    Progressbar(profileState.isLoading)
     Log.d("TAG", "ProfileListScreen isLoading: ${profileState.isLoading}")
     LaunchedEffect(Unit) {
         profileViewModel.getProfileRequest()
 
     }
 
-    if (profileState.isSuccessful) {
-        Log.d("TAG", "ProfileListScreen getResponseFromPref: ${profileViewModel.getResponseFromPref()}")
-        LazyColumn(
-            modifier = Modifier.fillMaxSize(),
-            state = profileLazyListState,
-            horizontalAlignment = Alignment.CenterHorizontally,
-            contentPadding = PaddingValues(AppTheme.dimens.paddingSmall,),
-            content = {
-                Log.d("TAG", "ProfileListScreens : ${profileState.profile?.size}")
-                items(profileState.profile!!.size) { index ->
-                    UsersProfileList(
-                        profileState = profileState,
-                        index = index,
-                        onItemClick = {
-                            navController.currentBackStackEntry?.savedStateHandle?.apply { set("profileResponse", Gson().toJson(profileState.profile!![index])) }
-                            onNavigateToProfileDetails.invoke()
+    Box(modifier = Modifier.background(Color.White).fillMaxSize()) {
+        if (profileState.isSuccessful) {
+            Log.d("TAG", "ProfileListScreen getResponseFromPref: ${profileViewModel.getResponseFromPref()}")
+            LazyColumn(
+                modifier = Modifier.fillMaxSize(),
+                state = profileLazyListState,
+                horizontalAlignment = Alignment.CenterHorizontally,
+                contentPadding = PaddingValues(AppTheme.dimens.paddingSmall,),
+                content = {
+                    Log.d("TAG", "ProfileListScreens : ${profileState.profile?.size}")
+                    profileState.profile?.size?.let {
+                        items(it) { index ->
+                            UsersProfileList(
+                                profileState = profileState,
+                                index = index,
+                                onItemClick = {
+                                    navController.currentBackStackEntry?.savedStateHandle?.apply { set("profileResponse", Gson().toJson(profileState.profile!![index])) }
+                                    onNavigateToProfileDetails.invoke()
+                                }
+                            )
                         }
-                    )
+                    }
                 }
-            }
-        )
+            )
+        }
+        else{
+            Progressbar(profileState.isLoading)
+        }
     }
 }
 
@@ -168,8 +174,8 @@ fun UsersProfileList(index: Int, onItemClick: (String) -> Unit, profileState: Pr
                             }
                         }
 
-                        profileState?.profile?.get(index)?.profile?.total_rating?.let {
-                            Row {
+                        profileState.profile?.get(index)?.profile?.total_rating?.let {
+                            Row(modifier = Modifier.padding(vertical = 5.dp)) {
                                 Icon(Icons.Filled.Star,
                                     contentDescription = "",
                                     tint = OrangeYellow1,
@@ -197,9 +203,9 @@ fun UsersProfileList(index: Int, onItemClick: (String) -> Unit, profileState: Pr
                         verticalArrangement = Arrangement.SpaceAround,
                         horizontalAlignment = Alignment.Start) {
 
-                        profileState?.profile?.get(index)?.username?.let {
+                        profileState.profile?.get(index)?.username?.let {
 
-                            Row(verticalAlignment = Alignment.CenterVertically) {
+                            Row(modifier = Modifier.padding(horizontal = 2.dp, vertical = 2.dp)) {
 
                                 MediumTitleText(
                                     modifier = Modifier,
@@ -209,38 +215,20 @@ fun UsersProfileList(index: Int, onItemClick: (String) -> Unit, profileState: Pr
                                     fontWeight = FontWeight.W500
                                 )
                                 Spacer(modifier = Modifier.width(7.dp))
+
                                 Icon(imageVector = Icons.Filled.Verified, tint = LightGreen, contentDescription = "",modifier = Modifier.size(20.dp))
                             }
                         }
-                        Spacer(modifier = Modifier.height(8.dp))
-                        profileState.profile?.get(index)?.profile?.cuisine?.let {
-                            MediumTitleText(
-                                modifier = Modifier
-                                    .background(OrangeYellow1)
-                                    .padding(start = 5.dp, end = 5.dp),
-                                text = it,
-                                textAlign = TextAlign.Start,
-                                textColor = Color.DarkGray,
-                                fontWeight = FontWeight.W500
-                            )
-                        }
 
                         Spacer(modifier = Modifier.height(8.dp))
-                        profileState.profile?.get(index)?.profile?.cuisine?.let {
-                            MediumTitleText(
-                                modifier = Modifier,
-                                text = it,
-                                textAlign = TextAlign.Start,
-                                textColor = Color.Gray,
-                                fontWeight = FontWeight.W500
-                            )
-                        }
 
-                        Spacer(modifier = Modifier.height(16.dp))
+                        profileState.profile?.get(index)?.profile?.cuisine?.let { CuisineSlotComponent(slots = it, borderColor = LightGray_2) }
+
+                        Spacer(modifier = Modifier.height(8.dp))
                     }
                 }
             }
-                profileState?.profile?.get(index)?.let { BottomMenuText(it) }
+            profileState.profile?.get(index)?.let { BottomMenuText(it) }
         }
     }
 }
@@ -248,38 +236,54 @@ fun UsersProfileList(index: Int, onItemClick: (String) -> Unit, profileState: Pr
 
 @Composable
 fun BottomMenuText(profileRes: ProfileResponse) {
-    profileRes?.profile?.let {
+    profileRes.profile?.let {
         HorizontalDivider(color = Color.LightGray, thickness = 1.dp)
 
         Row(
-            modifier = Modifier
+            modifier = Modifier.padding(vertical = 2.dp)
                 .fillMaxWidth()
-                .padding(AppTheme.dimens.paddingTooSmall)) {
+                .padding(AppTheme.dimens.paddingTooSmall)
+        ,  horizontalArrangement = Arrangement.SpaceBetween) {
 
             // Experience
-            profileRes?.profile?.experience?.let {
+            profileRes.profile.experience.let {
                 Child(
                     modifier = Modifier.weight(1f),
-                    title = "Experience",
+                    title = AppConstants.EXPERIENCE,
                     text = it.toString()
                 )
             }
 
             // Language
-            profileRes?.profile?.language?.let {
-                Child(
-                    modifier = Modifier.weight(1f),
-                    title = "Language",
-                    text = it
-                )
+            profileRes.profile.language.let {
+                Column(modifier = Modifier
+                    .padding(bottom = AppTheme.dimens.paddingSmall).weight(1f).fillMaxWidth(),
+                    horizontalAlignment = Alignment.CenterHorizontally) {
+                    MediumTitleText(
+                        modifier = Modifier,
+                        text = AppConstants.LANGUAGE,
+                        fontWeight = FontWeight.W500,
+                        textAlign = TextAlign.Center,
+                        textColor = Color.DarkGray
+                    )
+                    it.forEach {
+                        MediumTitleText(
+                            modifier = Modifier,
+                            text = it,
+                            fontWeight = FontWeight.W500,
+                            textAlign = TextAlign.Center,
+                            textColor = Color.Gray
+                        )
+                    }
+                }
             }
 
             // From
-            profileRes?.location?.type?.let {
+            profileRes.location?.type?.let {
                 Child(
                     modifier = Modifier.weight(1f),
-                    title = "From",
-                    text = it.toString()
+                    title = AppConstants.FROM,
+                    text = it
                 )
             }
         }

@@ -54,5 +54,19 @@ object AppConstants {
     const val LABEL_NOTE = "Add Note"
     const val NOTE_PLACEHOLDER = "Any important details you want to remember about the cook (Only visible to you)"
 
+    const val AFTER_NOON = "Afternoon   "
+    const val EVENING = "Evening      "
+    const val MORNING = "Morning     "
+    const val GENDER = "Gender"
+    const val CHEF_READY_TO_RELOCATE = "Show chefs ready to relocate?"
+    const val NO_OF_VISIT_A_DAY = "Number of visit per day"
+    const val COOK_TYPE = "Cook Type"
+    const val EXPERIENCED_BETWEEN = "Who is Experienced between"
+    const val CALL_CREDIT = "Call Credit"
+    const val BUY_CALL_CREDIT = "Buy Call Credit"
+    const val REVIEW = "Review"
+    const val LANGUAGE = "Language"
+    const val EXPERIENCE = "Experience"
+    const val FROM = "From"
 
 }

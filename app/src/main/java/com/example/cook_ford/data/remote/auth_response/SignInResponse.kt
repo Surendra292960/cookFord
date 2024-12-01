@@ -1,14 +1,10 @@
 package com.example.cook_ford.data.remote.auth_response
 
-import com.google.gson.annotations.SerializedName
+import com.example.cook_ford.utils.AppConstants
 
 data class SignInResponse(
-    @SerializedName("accessToken")
-    val accessToken : String = "",
-    @SerializedName("user_id")
-    val user_id : String = "",
-    @SerializedName("message")
-    val message : String = "",
-    @SerializedName("userType")
-    val userType : String = ""
+    val accessToken : String = AppConstants.EMPTY_STRING,
+    val user_id : String = AppConstants.EMPTY_STRING,
+    val message : String = AppConstants.EMPTY_STRING,
+    val userType : String = AppConstants.EMPTY_STRING
 )

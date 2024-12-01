@@ -1,48 +1,52 @@
 [versions]
-agp = "8.4.0"
+agp = "8.4.2"
 kotlin = "1.9.0"
-coreKtx = "1.10.1"
+coreKtx = "1.15.0"
 junit = "4.13.2"
-junitVersion = "1.1.5"
-espressoCore = "3.5.1"
-lifecycleRuntimeKtx = "2.7.0"
-activityCompose = "1.8.0"
-composeBom = "2023.08.00"
-composeNavigation = "2.8.0-beta02"
-hiltNavigation = "1.0.0"
-compose = "1.7.0-alpha02"
-material3Android = "1.2.1"
+junitVersion = "1.2.1"
+espressoCore = "3.6.1"
+lifecycleRuntimeKtx = "2.8.7"
+activityCompose = "1.9.3"
+composeBom = "2024.11.00"
+composeNavigation = "2.8.4"
+hiltNavigation = "1.2.0"
+compose = "1.7.5"
+material3Android = "1.3.1"
 coroutines = "1.7.3"
-okhttp = "4.10.0"
-retrofit = "2.9.0"
+okhttp = "4.11.0"
+retrofit = "2.11.0"
 moshi = "2.11.0"
 volley = "1.2.1"
-datastore = "1.0.0-alpha04"
+datastore = "1.1.1"
 hiltVersion = "2.49"
 kspVersion = "1.9.0-1.0.13"
-splashscreen = "1.0.0"
-databindingRuntime = "8.4.0"
+splashscreen = "1.0.1"
+databindingRuntime = "8.7.2"
 pager = "0.24.13-rc"
-composeMaterial = "1.3.1"
-cameraCore = "1.3.3"
-constraintlayout = "1.0.0"
-material = "1.6.7"
+composeMaterial = "1.4.0"
+cameraCore = "1.4.0"
+constraintlayout = "1.1.0"
+material = "1.7.5"
 coil = "2.0.0-rc01"
 glide = "1.3.7"
-ktx="1.9.0"
+ktx="1.9.3"
 kotlinPlugin = "1.8.10"
 googleGmsGoogleServices = "4.4.2"
-firebaseMessaging = "24.0.0"
-firebaseInappmessagingDisplay = "21.0.0"
-firebaseCrashlytics = "19.0.1"
-googleFirebaseCrashlytics = "3.0.1"
-firebaseConfig = "22.0.0"
-firebaseVertexai = "16.0.0-beta01"
-firebasePerf = "21.0.1"
+firebaseMessaging = "24.1.0"
+firebaseInappmessagingDisplay = "21.0.1"
+firebaseCrashlytics = "19.2.1"
+googleFirebaseCrashlytics = "3.0.2"
+firebaseConfig = "22.0.1"
+firebaseVertexai = "16.0.2"
+firebasePerf = "21.0.2"
 googleFirebaseFirebasePerf = "1.4.2"
-firebaseAuth = "23.0.0"
-googlePlayAuth = "20.1.0"
-googlePlayAPIAuthPhone = "18.0.1"
+firebaseAuth = "23.1.0"
+#googlePlayAuth = "21.2.0"
+#googlePlayAPIAuthPhone = "18.1.0"
+firebaseStorageKtx = "21.0.1"
+firebaseDatabaseKtx = "21.0.0"
+mapLocation = "21.3.0"
+permission = "0.33.0-alpha"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -106,11 +110,13 @@ firebase-config = { group = "com.google.firebase", name = "firebase-config", ver
 firebase-vertexai = { group = "com.google.firebase", name = "firebase-vertexai", version.ref = "firebaseVertexai" }
 firebase-perf = { group = "com.google.firebase", name = "firebase-perf", version.ref = "firebasePerf" }
 firebase-auth = { group = "com.google.firebase", name = "firebase-auth", version.ref = "firebaseAuth" }
+google-play-services-location = { group = "com.google.android.gms", name = "play-services-location", version.ref = "mapLocation" }
+accompanist-permissions = { group = "com.google.accompanist", name = "accompanist-permissions", version.ref = "permission" }
 
-google-play-services-auth = { group = "com.google.android.gms", name = "play-services-auth", version.ref = "googlePlayAuth" }
-google-play-services-auth-api-phone = { group = "com.google.android.gms", name = "play-services-auth-api-phone", version.ref = "googlePlayAPIAuthPhone" }
-
-
+#google-play-services-auth = { group = "com.google.android.gms", name = "play-services-auth", version.ref = "googlePlayAuth" }
+#google-play-services-auth-api-phone = { group = "com.google.android.gms", name = "play-services-auth-api-phone", version.ref = "googlePlayAPIAuthPhone" }
+firebase-storage-ktx = { group = "com.google.firebase", name = "firebase-storage-ktx", version.ref = "firebaseStorageKtx" }
+firebase-database-ktx = { group = "com.google.firebase", name = "firebase-database-ktx", version.ref = "firebaseDatabaseKtx" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

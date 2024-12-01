@@ -52,6 +52,7 @@ import com.example.cook_ford.presentation.component.MultiSelectionComponent
 import com.example.cook_ford.presentation.component.widgets.OutlinedSmallSubmitButton
 import com.example.cook_ford.presentation.component.widgets.SegmentedControl
 import com.example.cook_ford.presentation.component.widgets.TitleText
+import com.example.cook_ford.utils.AppConstants
 import com.google.gson.Gson
 
 
@@ -76,7 +77,7 @@ fun CookPreferencesScreen(
     var cookType by remember { mutableIntStateOf(0) }
 
     Column(
-        Modifier.fillMaxHeight(),
+        Modifier.background(Color.White).fillMaxHeight(),
         verticalArrangement = Arrangement.SpaceBetween) {
 
         Column( modifier = Modifier
@@ -89,7 +90,7 @@ fun CookPreferencesScreen(
             Spacer(modifier = Modifier.height(20.dp))
             TitleText(
                 modifier = Modifier,
-                text = "Cook Type",
+                text = AppConstants.COOK_TYPE,
                 fontWeight = FontWeight.W900,
                 textAlign = TextAlign.Center,
                 textColor = Color.Gray
@@ -110,7 +111,7 @@ fun CookPreferencesScreen(
                Spacer(modifier = Modifier.height(20.dp))
                TitleText(
                    modifier = Modifier,
-                   text = "Number of visit per day",
+                   text = AppConstants.NO_OF_VISIT_A_DAY,
                    fontWeight = FontWeight.W900,
                    textAlign = TextAlign.Center,
                    textColor = Color.Gray
@@ -127,7 +128,7 @@ fun CookPreferencesScreen(
                 Spacer(modifier = Modifier.height(20.dp))
                 TitleText(
                     modifier = Modifier,
-                    text = "Show chefs ready to relocate?",
+                    text = AppConstants.CHEF_READY_TO_RELOCATE,
                     fontWeight = FontWeight.W900,
                     textAlign = TextAlign.Center,
                     textColor = Color.Gray
@@ -143,7 +144,7 @@ fun CookPreferencesScreen(
             Spacer(modifier = Modifier.height(20.dp))
             TitleText(
                 modifier = Modifier,
-                text = "Gender",
+                text = AppConstants.GENDER,
                 fontWeight = FontWeight.W900,
                 textAlign = TextAlign.Center,
                 textColor = Color.Gray
@@ -174,7 +175,7 @@ fun CookPreferencesScreen(
                     verticalAlignment = Alignment.CenterVertically){
                     TitleText(
                         modifier = Modifier,
-                        text = "Morning     ",
+                        text = AppConstants.MORNING,
                         fontWeight = FontWeight.W900,
                         textAlign = TextAlign.Center,
                         textColor = Color.Gray
@@ -193,7 +194,7 @@ fun CookPreferencesScreen(
                     verticalAlignment = Alignment.CenterVertically) {
                     TitleText(
                         modifier = Modifier,
-                        text = "Afternoon   ",
+                        text = AppConstants.AFTER_NOON,
                         fontWeight = FontWeight.W900,
                         textAlign = TextAlign.Center,
                         textColor = Color.Gray
@@ -212,7 +213,7 @@ fun CookPreferencesScreen(
                     verticalAlignment = Alignment.CenterVertically) {
                     TitleText(
                         modifier = Modifier,
-                        text = "Evening      ",
+                        text = AppConstants.EVENING,
                         fontWeight = FontWeight.W900,
                         textAlign = TextAlign.Center,
                         textColor = Color.Gray
@@ -277,7 +278,7 @@ fun CookPreferencesScreen(
             Spacer(modifier = Modifier.height(20.dp))
             TitleText(
                 modifier = Modifier,
-                text = "Who is Experienced between",
+                text = AppConstants.EXPERIENCED_BETWEEN,
                 fontWeight = FontWeight.W900,
                 textAlign = TextAlign.Center,
                 textColor = Color.Gray

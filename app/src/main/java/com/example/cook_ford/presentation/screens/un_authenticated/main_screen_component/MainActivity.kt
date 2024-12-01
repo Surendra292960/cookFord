@@ -125,12 +125,11 @@ fun MainAppNavHost(
 
         // Authenticated user flow screens
         authenticatedGraph(navController = navController)
-
-
     }
 }
 
 
+@RequiresApi(Build.VERSION_CODES.TIRAMISU)
 @Composable
 fun MainApp() {
     Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
@@ -138,6 +137,7 @@ fun MainApp() {
     }
 }
 
+@RequiresApi(Build.VERSION_CODES.TIRAMISU)
 @Preview(showSystemUi = true, showBackground = true)
 @Composable
 fun Preview(){

@@ -18,6 +18,7 @@ val LightGreen1 = Color(0xFF059C2A)
 val DeepGreen = Color(0xFF036D1C)
 //val LightGray = Color(0xFFECF0EE)
 val LightGray = Color(0xFFF7F8F7)
+val LightGray_2 = Color(0xFFE6E8E6)
 
 val TextWhite = Color(0xffeeeeee)
 val ButtonGreen = Color(0xFF43A047)

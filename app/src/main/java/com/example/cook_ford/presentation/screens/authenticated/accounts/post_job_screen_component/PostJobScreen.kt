@@ -1,7 +1,7 @@
 package com.example.cook_ford.presentation.screens.authenticated.accounts.post_job_screen_component
 
+import android.util.Log
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -17,8 +17,9 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.Checkbox
+import androidx.compose.material.CheckboxDefaults
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CheckBoxOutlineBlank
@@ -31,8 +32,10 @@ import androidx.compose.material.icons.filled.People
 import androidx.compose.material.icons.filled.Update
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -54,15 +57,10 @@ import com.example.cook_ford.data.remote.profile_response.ProfileResponse
 import com.example.cook_ford.presentation.component.widgets.DefaultIcons
 import com.example.cook_ford.presentation.component.widgets.InputTextField
 import com.example.cook_ford.presentation.component.widgets.KeyboardOption
-import com.example.cook_ford.presentation.component.widgets.MediumTitleText
 import com.example.cook_ford.presentation.component.widgets.OutlinedSmallSubmitButton
 import com.example.cook_ford.presentation.component.widgets.ProfileImage
-import com.example.cook_ford.presentation.component.widgets.SmallTitleText
 import com.example.cook_ford.presentation.component.widgets.SubmitButtonAutoSize
-import com.example.cook_ford.presentation.theme.AppTheme
 import com.example.cook_ford.presentation.theme.FontName
-import com.example.cook_ford.presentation.theme.LightGray
-import com.example.cook_ford.presentation.theme.LightGreen
 
 @Composable
 fun PostJobScreen(
@@ -75,9 +73,13 @@ fun PostJobScreen(
     val changeProfileState = remember { mutableStateOf("Male") }
     val postJobState = remember { mutableStateOf(false) }
 
-    Column(modifier = Modifier.fillMaxSize()) {
+    Column(modifier = Modifier.background(Color.White).fillMaxSize()) {
 
-        Column(modifier = Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(all=5.dp).weight(1f, false), horizontalAlignment = Alignment.CenterHorizontally) {
+        Column(modifier = Modifier
+            .fillMaxSize()
+            .verticalScroll(rememberScrollState())
+            .padding(all = 5.dp)
+            .weight(1f, false), horizontalAlignment = Alignment.CenterHorizontally) {
 
             ProfileImage(changeProfileState, onChange = {})
 
@@ -126,7 +128,7 @@ fun PostJobScreen(
                     tintColor = Color.Gray,
                     trailingIconSize = 22.dp,
                     leadingIconSize = 30.dp,
-                    onNavigateToCookPreferences = onNavigateToCookPreferences
+                    onNavigateTo = onNavigateToCookPreferences
                 )
 
                 Spacer(modifier = Modifier.height(20.dp))
@@ -143,7 +145,7 @@ fun PostJobScreen(
                     tintColor = Color.Gray,
                     trailingIconSize = 22.dp,
                     leadingIconSize = 30.dp,
-                    onNavigateToCookPreferences = onNavigateToCookPreferences
+                    onNavigateTo = onNavigateToCookPreferences
                 )
 
                 Spacer(modifier = Modifier.height(20.dp))
@@ -159,7 +161,7 @@ fun PostJobScreen(
                     tintColor = Color.Gray,
                     trailingIconSize = 22.dp,
                     leadingIconSize = 30.dp,
-                    onNavigateToCookPreferences = {  }
+                    onNavigateTo = {  }
                 )
 
                 Spacer(modifier = Modifier.height(20.dp))
@@ -226,13 +228,19 @@ fun PostJobScreen(
                     leadingIcon = Icons.Filled.People,
                     trailingIcon = Icons.Filled.CheckBoxOutlineBlank,
                     isLeadingIcon = true,
-                    isTrailingIcon = false,
+                    isTrailingIcon = true,
                     title = "Allow cooks to call you",
                     subtitle = "Matched cooks will be able to call you on\n +91".plus(postJobViewModel.phoneNumber),
                     tintColor = Color.Gray,
                     trailingIconSize = 22.dp,
                     leadingIconSize = 30.dp,
-                    onNavigateToCookPreferences = {  }
+                    allowToCall = true,
+                    onNavigateTo = {
+
+                    },
+                    onCheckedChange = {
+                        Log.d("TAG", "PostJobScreen ttt : $it")
+                    }
                 )
 
                 Spacer(modifier = Modifier.height(20.dp))
@@ -248,7 +256,7 @@ fun PostJobScreen(
                     tintColor = Color.Gray,
                     trailingIconSize = 22.dp,
                     leadingIconSize = 30.dp,
-                    onNavigateToCookPreferences = {  }
+                    onNavigateTo = {  }
                 )
 
 
@@ -265,7 +273,7 @@ fun PostJobScreen(
                     tintColor = Color.Gray,
                     trailingIconSize = 22.dp,
                     leadingIconSize = 30.dp,
-                    onNavigateToCookPreferences = {  }
+                    onNavigateTo = {  }
                 )
             }
 
@@ -345,14 +353,18 @@ fun AccountProfileContent(
     tintColor: Color,
     trailingIconSize: Dp,
     leadingIconSize: Dp,
-    onNavigateToCookPreferences: (String) -> Unit) {
+    onNavigateTo: (String) -> Unit,
+    onCheckedChange: (Boolean)->Unit = {},
+    allowToCall: Boolean = false) {
+
+    var checked by remember { mutableStateOf(true) }
 
     Box(modifier = Modifier
         .fillMaxWidth()
         .padding(all = 10.dp)) {
         Row(modifier = Modifier
             .wrapContentSize()
-            .clickable { onNavigateToCookPreferences.invoke("qeqwdcwf") },
+            .clickable { onNavigateTo.invoke("qeqwdcwf") },
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween) {
 
@@ -396,14 +408,32 @@ fun AccountProfileContent(
         }
 
         if (isTrailingIcon){
-            Icon(
-                imageVector = trailingIcon,
-                contentDescription = "",
-                tint = tintColor,
-                modifier = Modifier
-                    .size(trailingIconSize)
-                    .align(Alignment.CenterEnd)
-            )
+            if (allowToCall){
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.End,
+                    modifier = Modifier
+                        .size(trailingIconSize)
+                        .align(Alignment.CenterEnd)) {
+                    Checkbox(
+                        colors = CheckboxDefaults.colors(Color.Gray),
+                        checked = checked,
+                        onCheckedChange = {
+                            checked = it
+                            onCheckedChange.invoke(it)
+                        }
+                    )
+                }
+            }else{
+                Icon(
+                    imageVector = trailingIcon,
+                    contentDescription = "",
+                    tint = tintColor,
+                    modifier = Modifier
+                        .size(trailingIconSize)
+                        .align(Alignment.CenterEnd)
+                )
+            }
         }
     }
 }

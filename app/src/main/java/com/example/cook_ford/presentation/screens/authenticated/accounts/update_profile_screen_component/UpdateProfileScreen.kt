@@ -1,4 +1,5 @@
 package com.example.cook_ford.presentation.screens.authenticated.accounts.update_profile_screen_component
+
 import android.util.Log
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
@@ -19,11 +20,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.repeatOnLifecycle
 import com.example.cook_ford.data.remote.profile_response.ProfileResponse
 import com.example.cook_ford.presentation.component.rememberImeState
@@ -41,9 +42,10 @@ import kotlinx.coroutines.launch
 @Composable
 fun EditProfileScreen(
     onNavigateBack: () -> Unit,
-    profileResponse: ProfileResponse?=null,
+    profileResponse: ProfileResponse? = null,
     onNavigateToSignOut: () -> Unit,
-    onNavigateToAuthenticatedRoute: () -> Unit) {
+    onNavigateToAuthenticatedRoute: () -> Unit
+) {
     val editProfileViewModel: UpdateProfileViewModel = hiltViewModel()
     val editProfileState by remember { editProfileViewModel.editProfileState }
     val showDialogState: Boolean by editProfileViewModel.showDialog.collectAsState()
@@ -51,13 +53,11 @@ fun EditProfileScreen(
     val changeProfileState = remember { mutableStateOf(AppConstants.EMPTY_STRING) }
     val viewState: MainViewState by editProfileViewModel.viewState.collectAsState()
     val lifecycle = LocalLifecycleOwner.current.lifecycle
-
-
     val imeState = rememberImeState()
     val scrollState = rememberScrollState()
 
     LaunchedEffect(key1 = imeState.value) {
-        if (imeState.value){
+        if (imeState.value) {
             scrollState.animateScrollTo(scrollState.maxValue, tween(300))
         }
     }
@@ -70,7 +70,6 @@ fun EditProfileScreen(
     }
 
     if (editProfileState.isEditSuccessful) {
-
         ShowCustomDialog("message", editProfileViewModel, showDialogState)
 
         Log.d("TAG", "EditProfileScreen: $showDialogState")
@@ -86,13 +85,15 @@ fun EditProfileScreen(
     } else {
 
         // Full Screen Content
-        Column(modifier = Modifier
-            .fillMaxSize()
-            .padding(start = 16.dp, end = 16.dp)
-            .height(300.dp)
-            .background(Color.White)
-            .verticalScroll(scrollState),
-            horizontalAlignment = Alignment.CenterHorizontally) {
+        Column(
+            modifier = Modifier
+                .background(Color.White)
+                .fillMaxSize()
+                .padding(start = 16.dp, end = 16.dp)
+                .height(300.dp)
+                .verticalScroll(scrollState),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
 
             ProfileForm(
                 changeProfileState = changeProfileState,
@@ -100,16 +101,15 @@ fun EditProfileScreen(
                 editProfileViewModel = editProfileViewModel,
                 viewState = viewState,
                 onNavigateToSignOut = onNavigateToSignOut,
-                changeProfileImageState={
-                changeProfileState.value = it
-                Log.d("TAG", "EditProfileScreen: ${changeProfileState.value}")
-            })
+                changeProfileImageState = {
+                    changeProfileState.value = it
+                    Log.d("TAG", "EditProfileScreen: ${changeProfileState.value}")
+                })
 
             ShowSnackbar(editProfileViewModel, lifecycle, snackBarHostState)
         }
     }
 }
-
 
 
 @Composable
@@ -119,14 +119,14 @@ fun ProfileForm(
     editProfileViewModel: UpdateProfileViewModel,
     viewState: MainViewState,
     onNavigateToSignOut: () -> Unit,
-    changeProfileImageState: (String) -> Unit) {
+    changeProfileImageState: (String) -> Unit
+) {
 
     // EditProfile Inputs Composable
     EditProfileForm(
         changeProfileState = changeProfileState,
         editProfileState = editProfileState,
         viewState = viewState,
-
 
         onProfileImageChange = { inputString ->
             Log.d("TAG", "EditProfileForm: $inputString")
@@ -175,7 +175,11 @@ fun ProfileForm(
 }
 
 @Composable
-fun ShowSnackbar(editProfileViewModel: UpdateProfileViewModel, lifecycle: Lifecycle, snackBarHostState: SnackbarHostState) {
+fun ShowSnackbar(
+    editProfileViewModel: UpdateProfileViewModel,
+    lifecycle: Lifecycle,
+    snackBarHostState: SnackbarHostState
+) {
     LaunchedEffect(key1 = Unit) {
         lifecycle.repeatOnLifecycle(state = Lifecycle.State.STARTED) {
             launch {
@@ -192,15 +196,17 @@ fun ShowSnackbar(editProfileViewModel: UpdateProfileViewModel, lifecycle: Lifecy
 fun ShowCustomDialog(
     title: String,
     editProfileViewModel: UpdateProfileViewModel,
-    showDialogState: Boolean) {
+    showDialogState: Boolean
+) {
 
     val isDismiss = remember { mutableStateOf(true) }
 
     CustomDialog(
         showDialog = showDialogState,
         isAnimate = isDismiss.value,
-        onDismissRequest =  editProfileViewModel::onDialogDismiss) {
-        ResetWarning(color= DeepGreen, title = title,  onDismissRequest = { })
+        onDismissRequest = editProfileViewModel::onDialogDismiss
+    ) {
+        ResetWarning(color = DeepGreen, title = title, onDismissRequest = { })
     }
 }
 
@@ -208,5 +214,8 @@ fun ShowCustomDialog(
 @Preview(showBackground = true)
 @Composable
 fun PreviewProfileScreen() {
-    EditProfileScreen(onNavigateToSignOut = {}, onNavigateToAuthenticatedRoute = {}, onNavigateBack = {})
+    EditProfileScreen(
+        onNavigateToSignOut = {},
+        onNavigateToAuthenticatedRoute = {},
+        onNavigateBack = {})
 }

@@ -89,10 +89,7 @@ fun CallCreditScreen(
     profileResponse: ProfileResponse? = null,
     onNavigateToAuthenticatedRoute: () -> Unit) {
 
-    Column(modifier = Modifier
-        .fillMaxSize()
-        .verticalScroll(rememberScrollState()),
-        horizontalAlignment = Alignment.Start) {
+    Column(modifier = Modifier.fillMaxSize().verticalScroll(rememberScrollState()), horizontalAlignment = Alignment.Start) {
 
         Row(modifier = Modifier.fillMaxSize().background(Color.White).padding(top = 20.dp, start = 20.dp, end = 20.dp),
             verticalAlignment = Alignment.CenterVertically,

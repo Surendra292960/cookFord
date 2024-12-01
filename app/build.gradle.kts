@@ -11,12 +11,12 @@ plugins {
 
 android {
     namespace = "com.example.cook_ford"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.example.cook_ford"
         minSdk = 25
-        targetSdk = 34
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
 
@@ -83,6 +83,8 @@ dependencies {
     implementation(libs.androidx.hilt.android)
     implementation(libs.androidx.hilt.navigation.compose)
     implementation(libs.bundles.firebase)
+    implementation(libs.firebase.storage.ktx)
+    implementation(libs.firebase.database.ktx)
     ksp(libs.androidx.hilt.compiler)
     implementation(libs.androidx.databinding.runtime)
     implementation(libs.androidx.accompanist.pager)
@@ -96,6 +98,8 @@ dependencies {
     implementation(libs.androidx.coil.gif)
     implementation(libs.androidx.activity.ktx)
     implementation(libs.androidx.glide)
+    implementation(libs.google.play.services.location )
+    implementation(libs.accompanist.permissions)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

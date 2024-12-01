@@ -27,6 +27,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Divider
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Scaffold
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.TextButton
@@ -76,6 +77,7 @@ import coil.compose.rememberAsyncImagePainter
 import com.example.cook_ford.R
 import com.example.cook_ford.data.remote.profile_response.ProfileResponse
 import com.example.cook_ford.data.remote.profile_response.TimeSlots
+import com.example.cook_ford.presentation.component.CuisineSlotComponent
 import com.example.cook_ford.presentation.component.TimeSlotsComponent
 import com.example.cook_ford.presentation.component.widgets.ButtonIcons
 import com.example.cook_ford.presentation.component.widgets.Child
@@ -90,6 +92,7 @@ import com.example.cook_ford.presentation.theme.AppTheme
 import com.example.cook_ford.presentation.theme.Cook_fordTheme
 import com.example.cook_ford.presentation.theme.DeepGreen
 import com.example.cook_ford.presentation.theme.FontName
+import com.example.cook_ford.presentation.theme.LightGray_2
 import com.example.cook_ford.presentation.theme.OrangeYellow1
 import com.example.cook_ford.utils.Utility.shareProfile
 import com.google.gson.Gson
@@ -114,17 +117,18 @@ fun ProfileDetailScreen(
 		profileDetailsViewModel.setProfileData(profileResponse)
 	}
 	Log.d("TAG", "ProfileDetailScreen isLoading: ${profileState.isLoading}")
+
 	if (profileState.isSuccessful) {
 		LazyColumn(modifier = Modifier
+			.background(Color.White)
 			.fillMaxSize(),
-		//	horizontalAlignment = Alignment.CenterHorizontally
 		) {
 			profileState.profileResponse?.size?.let { size->
 				items(size){  index->
 					TopBar(onNavigateBack = { onNavigateBack.invoke() })
 					Spacer(modifier = Modifier.height(10.dp))
 
-					if (profileState?.profileResponse!![index].userType=="provider") {
+					if (profileState.profileResponse!![index].userType=="provider") {
 						Stats(profileState.profileResponse!![index], "10.1M", "100", clickOnChat = {
 							navController.currentBackStackEntry?.savedStateHandle?.apply { set("profileResponse", Gson().toJson(profileState.profileResponse!![index])) }
 							onNavigateToMessageScreen.invoke()
@@ -146,8 +150,8 @@ fun ProfileDetailScreen(
 							)
 						HorizontalDivider(modifier = Modifier.background(Color.LightGray))
 						Spacer(modifier = Modifier.height(10.dp))
-						ExperienceCard(profileState?.profileResponse!![index], timeSlots = profileDetailsViewModel.getTimeSlots())
-						profileState.profileResponse!![index].profile?.topCuisineUrls?.let {
+						ExperienceCard(profileState.profileResponse!![index], timeSlots = profileDetailsViewModel.getTimeSlots())
+						profileState.profileResponse?.get(index)?.profile?.topCuisineUrls?.let {
 							CuisineImages(topCuisineUrls = it, modifier = Modifier.padding(top = 10.dp))
 						}
 						Spacer(modifier = Modifier.height(10.dp))
@@ -156,28 +160,27 @@ fun ProfileDetailScreen(
 							.padding(start = 10.dp, end = 10.dp)
 							.fillMaxWidth(),verticalArrangement = Arrangement.spacedBy(5.dp), horizontalAlignment = Alignment.Start) {
 
-							profileState?.profileResponse!![index]?.profile?.feedback_rating?.forEach { rating->
+							profileState.profileResponse!![index].profile?.feedback_rating?.forEach { rating->
 
 								MediumTitleText(
-									modifier = Modifier
-										.padding(top = AppTheme.dimens.paddingSmall,
-											bottom = AppTheme.dimens.paddingSmall),
+									modifier = Modifier.padding(top = AppTheme.dimens.paddingSmall,
+										bottom = AppTheme.dimens.paddingSmall),
 									text = "Ratings",
 									textAlign = TextAlign.Start,
 									textColor = Color.DarkGray,
 									fontWeight = FontWeight.W700
 								)
 
-								Ratings(text = "FoodQuality", feedbackRating = rating?.food_quality?.toFloat())
-								Ratings(text = "Hygiene", feedbackRating = rating?.hygiene?.toFloat())
-								Ratings(text = "Service", feedbackRating = rating?.service?.toFloat())
-								Ratings(text = "Cleanliness", feedbackRating = rating?.cleanliness?.toFloat())
-								Ratings(text = "Punctuality", feedbackRating = rating?.punctuality?.toFloat())
+								Ratings(text = "FoodQuality", feedbackRating = rating.food_quality?.toFloat())
+								Ratings(text = "Hygiene", feedbackRating = rating.hygiene?.toFloat())
+								Ratings(text = "Service", feedbackRating = rating.service?.toFloat())
+								Ratings(text = "Cleanliness", feedbackRating = rating.cleanliness?.toFloat())
+								Ratings(text = "Punctuality", feedbackRating = rating.punctuality?.toFloat())
 							}
 
 							Spacer(modifier = Modifier.height(10.dp))
 
-							profileState?.profileResponse!![index]?.profile?.headline?.let {
+							profileState.profileResponse!![index].profile?.headline?.let {
 
 								MediumTitleText(
 									modifier = Modifier
@@ -198,7 +201,7 @@ fun ProfileDetailScreen(
 								)
 							}
 
-							profileState?.profileResponse!![index]?.profile?.bio?.let {
+							profileState.profileResponse!![index].profile?.bio?.let {
 
 								MediumTitleText(
 									modifier = Modifier
@@ -219,7 +222,7 @@ fun ProfileDetailScreen(
 								)
 							}
 
-							profileState?.profileResponse!![index]?.profile?.about?.let {
+							profileState.profileResponse!![index].profile?.about?.let {
 								MediumTitleText(
 									modifier = Modifier
 										.padding(top = AppTheme.dimens.paddingSmall),
@@ -319,14 +322,12 @@ fun ProfileImage(contentDescription: String?, modifier: Modifier = Modifier, ele
 
 @Composable
 fun Stats(profile: ProfileResponse, followers: String, following: String, clickOnChat:()->Unit) {
-	val name_list = listOf(
+	val nameList = listOf(
 		"6",
 		"days ago."
 	)
-
-	val otherCount = 3
 	Column(modifier = Modifier.fillMaxWidth()) {
-		profile?.username?.let {
+		profile.username?.let {
 
 			Text(
 				text = it,
@@ -344,11 +345,11 @@ fun Stats(profile: ProfileResponse, followers: String, following: String, clickO
 					fontWeight = FontWeight.Bold
 				)
 				append(" Last updated profile ")
-				name_list.forEachIndexed { index, name ->
+				nameList.forEachIndexed { index, name ->
 					pushStyle(boldStyle)
 					append(name)
 					pop()
-					if (index < name_list.size - 1) {
+					if (index < nameList.size - 1) {
 						append(", ")
 					}
 				}
@@ -380,7 +381,7 @@ fun Stats(profile: ProfileResponse, followers: String, following: String, clickO
 							.align(Alignment.CenterVertically)
 							.padding(horizontal = 3.dp),
 					)
-					profile?.profile?.total_rating?.toString()?.let {
+					profile.profile?.total_rating?.toString()?.let {
 						Text(
 							text = it,
 							style = MaterialTheme.typography.subtitle2,
@@ -681,22 +682,22 @@ fun ExperienceCard(profile: ProfileResponse, timeSlots: List<TimeSlots>) {
 			Row(modifier = Modifier
 				.fillMaxWidth()
 				.wrapContentHeight()
-				.background(Color.LightGray)
+				.background(LightGray_2)
 				.padding(5.dp),
 				horizontalArrangement = Arrangement.Center,) {
 				// Experience
 				Child(
 					modifier = Modifier.weight(1f),
 					title = "Experience",
-					text = profile?.profile?.experience.toString().plus(" Yrs")
+					text = profile.profile?.experience.toString().plus(" Yrs")
 				)
 				// Language
 				Child(modifier = Modifier.weight(1f),
 					title = "Cook Type",
-					text = profile?.profile?.food_Type.toString()
+					text = profile.profile?.food_Type.toString()
 				)
 				// From
-				profile?.location?.type?.let {
+				profile.location?.type?.let {
 					Child(modifier = Modifier.weight(1f),
 						title = "From",
 						text = it
@@ -710,11 +711,11 @@ fun ExperienceCard(profile: ProfileResponse, timeSlots: List<TimeSlots>) {
 			Row(modifier = Modifier
 				.fillMaxWidth()
 				.wrapContentHeight()
-				.background(Color.LightGray)
+				.background(LightGray_2)
 				.padding(5.dp),
 				horizontalArrangement = Arrangement.Center) {
 				// Experience
-				profile?.gender?.let {
+				profile.gender?.let {
 					Child(modifier = Modifier.weight(1f),
 						title = "Gender",
 						text = it
@@ -723,7 +724,7 @@ fun ExperienceCard(profile: ProfileResponse, timeSlots: List<TimeSlots>) {
 				// Language
 				Child(modifier = Modifier.weight(1f),
 					title = "Age",
-					text = profile?.profile?.age.toString()
+					text = profile.profile?.age.toString()
 				)
 				// From
 				Child(
@@ -735,7 +736,7 @@ fun ExperienceCard(profile: ProfileResponse, timeSlots: List<TimeSlots>) {
 		}
 
 		//Cuisines
-		profile?.profile?.cuisine?.let {
+		profile.profile?.cuisine?.let {
 
 			MediumTitleText(
 				modifier = Modifier.padding(top = AppTheme.dimens.paddingSmall),
@@ -745,19 +746,11 @@ fun ExperienceCard(profile: ProfileResponse, timeSlots: List<TimeSlots>) {
 				fontWeight = FontWeight.W700
 			)
 
-			MediumTitleText(
-				modifier = Modifier.padding(
-					top = AppTheme.dimens.paddingSmall,
-					bottom = AppTheme.dimens.paddingSmall),
-				text = it,
-				textAlign = TextAlign.Start,
-				textColor = Color.Gray,
-				fontWeight = FontWeight.W400
-			)
+			CuisineSlotComponent(slots = it, textColor = Color.Gray, backgroundColor = Color.Transparent, borderColor = Color.Transparent)
 		}
 
 		//Languages
-		profile?.profile?.language?.let {
+		profile.profile?.language?.let {
 
 			MediumTitleText(
 				modifier = Modifier.padding(top = AppTheme.dimens.paddingSmall),
@@ -767,19 +760,11 @@ fun ExperienceCard(profile: ProfileResponse, timeSlots: List<TimeSlots>) {
 				fontWeight = FontWeight.W700
 			)
 
-			MediumTitleText(
-				modifier = Modifier.padding(
-					top = AppTheme.dimens.paddingSmall,
-					bottom = AppTheme.dimens.paddingSmall),
-				text = it,
-				textAlign = TextAlign.Start,
-				textColor = Color.Gray,
-				fontWeight = FontWeight.W400
-			)
+			CuisineSlotComponent(slots = it, textColor = Color.Gray, backgroundColor = Color.Transparent, borderColor = Color.Transparent)
 		}
 
 		//Daily Visit
-		profile?.profile?.no_of_visit?.let {
+		profile.profile?.no_of_visit?.let {
 
 			MediumTitleText(
 				modifier = Modifier.padding(top = AppTheme.dimens.paddingSmall),
@@ -826,29 +811,25 @@ fun ExperienceCard(profile: ProfileResponse, timeSlots: List<TimeSlots>) {
 			.fillMaxWidth()
 			.wrapContentHeight(),
 			shape = RoundedCornerShape(5.dp)) {
-			Box(modifier = Modifier
-				.fillMaxWidth()
-				.background(Color.LightGray)) {
-				Column(modifier = Modifier
-					.fillMaxWidth()
-					.padding(10.dp),
-					horizontalAlignment = Alignment.CenterHorizontally,
-					verticalArrangement = Arrangement.SpaceBetween) {
-					MediumTitleText(
-						modifier = Modifier.padding(top = AppTheme.dimens.paddingSmall,
-							bottom = AppTheme.dimens.paddingSmall),
-						text = "Charges can go up or down based on the requirements.",
-						textAlign = TextAlign.Center,
-						textColor = Color.DarkGray,
-						fontWeight = FontWeight.W400
-					)
-				}
+			Row (modifier = Modifier
+				.background(LightGray_2)
+				.padding(start = 5.dp, end = 5.dp)
+				.fillMaxWidth(),
+				horizontalArrangement = Arrangement.SpaceEvenly,) {
+				MediumTitleText(
+					modifier = Modifier.padding(top = AppTheme.dimens.paddingSmall,
+						bottom = AppTheme.dimens.paddingSmall),
+					text = "Charges can go up or down based on the requirements.",
+					textAlign = TextAlign.Start,
+					textColor = Color.DarkGray,
+					fontWeight = FontWeight.Normal
+				)
 			}
 		}
 		Spacer(modifier = Modifier.height(16.dp))
 
 		Row (modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceEvenly){
-			profile?.profile?.no_of_visit?.let {
+			profile.profile?.no_of_visit?.let {
 				MediumTitleText(
 					modifier = Modifier
 						.weight(0.6f)
@@ -863,7 +844,7 @@ fun ExperienceCard(profile: ProfileResponse, timeSlots: List<TimeSlots>) {
 				)
 			}
 
-			profile?.profile?.parttimeprice?.let { price->
+			profile.profile?.parttimeprice?.let { price->
 				if (price!=0){
 					MediumTitleText(
 						modifier = Modifier
@@ -886,7 +867,7 @@ fun ExperienceCard(profile: ProfileResponse, timeSlots: List<TimeSlots>) {
 
 @ExperimentalFoundationApi
 @Composable
-fun CuisineImages(topCuisineUrls: Array<out String>, modifier: Modifier = Modifier) {
+fun CuisineImages(topCuisineUrls: List<String>, modifier: Modifier = Modifier) {
 	val listState = rememberLazyListState()
 	if (topCuisineUrls.isNotEmpty()){
 		Column(modifier = modifier
@@ -906,16 +887,20 @@ fun CuisineImages(topCuisineUrls: Array<out String>, modifier: Modifier = Modifi
 
 			LazyRow(state = listState, modifier = modifier.scale(1.01f)) {
 				items(topCuisineUrls.size) { index->
-					Card(modifier = Modifier
-						.width(300.dp)
-						.height(150.dp)
-						.padding(horizontal = 5.dp)) {
-						Image(
-							painter = rememberAsyncImagePainter(topCuisineUrls[index]),
-							contentDescription = "",
-							modifier = Modifier.fillMaxSize(),
-							contentScale = ContentScale.Crop,
-						)
+					topCuisineUrls[index]?.let {
+						Card(
+							modifier = Modifier
+								.width(300.dp)
+								.height(150.dp)
+								.padding(horizontal = 5.dp)
+						) {
+							Image(
+								painter = rememberAsyncImagePainter(topCuisineUrls[index]),
+								contentDescription = "",
+								modifier = Modifier.fillMaxSize(),
+								contentScale = ContentScale.Crop,
+							)
+						}
 					}
 				}
 			}
@@ -968,7 +953,7 @@ fun Ratings(text: String, feedbackRating: Float?) {
 @Composable
 fun FooterStatus() {
 	Row(modifier = Modifier
-		.background(Color.LightGray)
+		.background(LightGray_2)
 		.padding(bottom = 20.dp)) {
 
 		MediumTitleText(
@@ -998,7 +983,7 @@ fun BottomSheet(sheetType:String, onNavigateToCallCreditScreen: () -> Unit,  onD
 		sheetState = modalBottomSheetState,
 		dragHandle = null) {
 		if (sheetType == "Call"){
-			ByCallCreditSheet(onNavigateToCallCreditScreen=onNavigateToCallCreditScreen)
+			ByCallCreditSheet(onNavigateToCallCreditScreen = onNavigateToCallCreditScreen)
 
 		}else{
 			AddNote()
@@ -1026,7 +1011,9 @@ fun ByCallCreditSheet(onNavigateToCallCreditScreen: () -> Unit){
 			fontFamily = FontName
 		)
 
-		Row(modifier = Modifier.padding(start = 20.dp, end = 20.dp).fillMaxWidth(),
+		Row(modifier = Modifier
+			.padding(start = 20.dp, end = 20.dp)
+			.fillMaxWidth(),
 			horizontalArrangement = Arrangement.spacedBy(10.dp,
 			Alignment.Start),
 			verticalAlignment = Alignment.CenterVertically){
@@ -1037,7 +1024,9 @@ fun ByCallCreditSheet(onNavigateToCallCreditScreen: () -> Unit){
 				color = Color.DarkGray
 			)
 		}
-		Row(modifier = Modifier.padding(start = 20.dp, end = 20.dp).fillMaxWidth(),
+		Row(modifier = Modifier
+			.padding(start = 20.dp, end = 20.dp)
+			.fillMaxWidth(),
 			horizontalArrangement = Arrangement.spacedBy(10.dp,
 			Alignment.Start),
 			verticalAlignment = Alignment.CenterVertically){
@@ -1048,7 +1037,9 @@ fun ByCallCreditSheet(onNavigateToCallCreditScreen: () -> Unit){
 				color = Color.DarkGray
 			)
 		}
-		Row(modifier = Modifier.padding(start = 20.dp, end = 20.dp).fillMaxWidth(),
+		Row(modifier = Modifier
+			.padding(start = 20.dp, end = 20.dp)
+			.fillMaxWidth(),
 			horizontalArrangement = Arrangement.spacedBy(10.dp,
 			Alignment.Start),
 			verticalAlignment = Alignment.CenterVertically){
@@ -1094,7 +1085,9 @@ fun ByCallCreditSheet(onNavigateToCallCreditScreen: () -> Unit){
 
 		Spacer(modifier = Modifier.height(30.dp))
 
-		Row(modifier = Modifier.fillMaxWidth().padding(bottom = 20.dp, start = 10.dp, end = 10.dp), horizontalArrangement = Arrangement.SpaceEvenly) {
+		Row(modifier = Modifier
+			.fillMaxWidth()
+			.padding(bottom = 20.dp, start = 10.dp, end = 10.dp), horizontalArrangement = Arrangement.SpaceEvenly) {
 			OutlinedSmallSubmitButton(
 				modifier = Modifier
 					.padding(top = AppTheme.dimens.paddingLarge)

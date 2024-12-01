@@ -1,10 +1,16 @@
 package com.example.cook_ford.utils
 
+import android.Manifest
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.location.Location
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import androidx.core.app.ActivityCompat
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import java.io.Serializable
 import java.text.ParseException
 import java.text.SimpleDateFormat
@@ -73,6 +79,22 @@ object Utility {
     inline fun <reified T : Serializable> Bundle.customGetSerializable(key: String): T? {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) getSerializable(key, T::class.java)
         else getSerializable(key) as? T
+    }
+
+
+    fun getCurrentLocation(
+        fusedLocationClient: FusedLocationProviderClient,
+        onLocationRetrieved: (Location?) -> Unit
+    ) {
+        try {
+            fusedLocationClient.lastLocation.addOnSuccessListener { location ->
+                onLocationRetrieved(location)
+            }.addOnFailureListener {
+                onLocationRetrieved(null)
+            }
+        } catch (e: SecurityException) {
+            onLocationRetrieved(null)
+        }
     }
 }
 

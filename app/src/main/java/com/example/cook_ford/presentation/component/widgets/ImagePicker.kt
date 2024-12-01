@@ -6,6 +6,7 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -13,7 +14,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ElevatedCard
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
@@ -52,16 +54,16 @@ fun ProfileImage(changeProfileState: MutableState<String>, onChange: (String) ->
         .height(120.dp)
         .padding(top = 16.dp), contentAlignment = Alignment.TopCenter) {
 
-        Card(
+        ElevatedCard(
             modifier = Modifier
+                .border(BorderStroke(1.dp, Color.Gray), shape = CircleShape)
                 .size(90.dp)
                 .clip(CircleShape)
                 .clickable {
                     launchPhotoPicker()
                 },
             shape = CircleShape,
-            elevation = 2.dp,
-            border = BorderStroke(1.dp, Color.LightGray)
+            elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
         ) {
             if (changeProfileState.value == "Female") {
                 Log.d("TAG", "ProfileImage : ${changeProfileState.value}")
@@ -69,7 +71,7 @@ fun ProfileImage(changeProfileState: MutableState<String>, onChange: (String) ->
                     model = if (selectedImages != null) selectedImages else R.drawable.female_chef,
                     contentDescription = "Profile Photo",
                     modifier = Modifier.clip(CircleShape),
-                    contentScale = ContentScale.FillBounds
+                    contentScale = ContentScale.Crop
                 )
             }else{
                 Log.d("TAG", "ProfileImage : ${changeProfileState.value}")
@@ -77,7 +79,7 @@ fun ProfileImage(changeProfileState: MutableState<String>, onChange: (String) ->
                     model = if (selectedImages != null) selectedImages else R.drawable.male_chef,
                     contentDescription = "Profile Photo",
                     modifier = Modifier.clip(CircleShape),
-                    contentScale = ContentScale.FillBounds
+                    contentScale = ContentScale.Crop
                 )
             }
         }
