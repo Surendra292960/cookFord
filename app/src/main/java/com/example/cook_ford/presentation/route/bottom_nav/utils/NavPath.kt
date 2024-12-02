@@ -8,7 +8,9 @@ enum class NavPath {
      PHONE_VERIFICATION,
      ONBOARD,
      SIGN_IN,
+    SIGN_IN_AS_COOK,
      SIGN_UP,
+     SIGN_UP_AS_COOK,
      PROFILE,
 
     //Authenticated

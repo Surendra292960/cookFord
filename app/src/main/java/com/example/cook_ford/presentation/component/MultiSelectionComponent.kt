@@ -32,7 +32,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.cook_ford.presentation.screens.authenticated.accounts.cook_preferences.CookPreferencesViewModel
+import com.example.cook_ford.presentation.screens.authenticated_screen_component.accounts_screen_component.cook_preferences_component.CookPreferencesViewModel
 import com.google.gson.Gson
 
 

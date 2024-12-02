@@ -21,7 +21,7 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".presentation.screens.un_authenticated.main_screen_component.MainActivity"
+            android:name=".presentation.screens.un_authenticated_component.main_screen_component.MainActivity"
             android:exported="true"
             android:label="@string/app_name"
             android:windowSoftInputMode="adjustResize"
@@ -45,7 +45,7 @@
         </activity>
 
         <provider
-            android:name=".presentation.screens.authenticated.profile_screen_component.details_screen_component.model.GenericFileProvider"
+            android:name=".presentation.screens.authenticated_screen_component.profile_screen_component.details_screen_component.model.GenericFileProvider"
             android:authorities="${applicationId}.com.vips.jetcapture.provider"
             android:exported="false"
             android:grantUriPermissions="true">

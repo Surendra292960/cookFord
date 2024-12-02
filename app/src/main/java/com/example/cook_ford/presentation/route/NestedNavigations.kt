@@ -12,23 +12,23 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.example.cook_ford.data.remote.profile_response.ProfileResponse
-import com.example.cook_ford.presentation.screens.authenticated.accounts.add_cook_screen_component.AddCookProfileScreen
-import com.example.cook_ford.presentation.screens.authenticated.accounts.call_credit_screen_component.CallCreditScreen
-import com.example.cook_ford.presentation.screens.authenticated.accounts.cook_preferences.CookPreferencesScreen
-import com.example.cook_ford.presentation.screens.authenticated.accounts.post_job_screen_component.PostJobScreen
-import com.example.cook_ford.presentation.screens.authenticated.accounts.update_profile_screen_component.EditProfileScreen
-import com.example.cook_ford.presentation.screens.authenticated.profile_screen_component.chat_screen_component.MessageScreen
-import com.example.cook_ford.presentation.screens.authenticated.profile_screen_component.details_screen_component.ProfileDetailScreen
-import com.example.cook_ford.presentation.screens.authenticated.profile_screen_component.list_screen_component.ProfilesScreen
-import com.example.cook_ford.presentation.screens.authenticated.profile_screen_component.report_screen_component.ReportScreen
-import com.example.cook_ford.presentation.screens.authenticated.profile_screen_component.reviews_screen_component.ReviewScreen
+import com.example.cook_ford.presentation.screens.authenticated_screen_component.accounts_screen_component.add_cook_screen_component.AddCookProfileScreen
+import com.example.cook_ford.presentation.screens.authenticated_screen_component.accounts_screen_component.call_credit_screen_component.CallCreditScreen
+import com.example.cook_ford.presentation.screens.authenticated_screen_component.accounts_screen_component.cook_preferences_component.CookPreferencesScreen
+import com.example.cook_ford.presentation.screens.authenticated_screen_component.accounts_screen_component.post_job_screen_component.PostJobScreen
+import com.example.cook_ford.presentation.screens.authenticated_screen_component.accounts_screen_component.update_profile_screen_component.EditProfileScreen
+import com.example.cook_ford.presentation.screens.authenticated_screen_component.profile_screen_component.chat_screen_component.MessageScreen
+import com.example.cook_ford.presentation.screens.authenticated_screen_component.profile_screen_component.details_screen_component.ProfileDetailScreen
+import com.example.cook_ford.presentation.screens.authenticated_screen_component.profile_screen_component.list_screen_component.ProfilesScreen
+import com.example.cook_ford.presentation.screens.authenticated_screen_component.profile_screen_component.report_screen_component.ReportScreen
+import com.example.cook_ford.presentation.screens.authenticated_screen_component.profile_screen_component.reviews_screen_component.ReviewScreen
 import com.example.cook_ford.presentation.screens.dashboard_screen_component.home_screen_component.UserDashBoard
-import com.example.cook_ford.presentation.screens.un_authenticated.landind_screen_component.LandingScreen
-import com.example.cook_ford.presentation.screens.un_authenticated.main_screen_component.SplashScreen
-import com.example.cook_ford.presentation.screens.un_authenticated.onboard_screen_component.OnBoardingScreen
-import com.example.cook_ford.presentation.screens.un_authenticated.phone_verification_screen_component.PhoneVerificationScreen
-import com.example.cook_ford.presentation.screens.un_authenticated.sign_in_screen_component.SignInScreen
-import com.example.cook_ford.presentation.screens.un_authenticated.sign_up_screen_component.SignUpScreen
+import com.example.cook_ford.presentation.screens.un_authenticated_component.landind_screen_component.LandingScreen
+import com.example.cook_ford.presentation.screens.un_authenticated_component.main_screen_component.SplashScreen
+import com.example.cook_ford.presentation.screens.un_authenticated_component.onboard_screen_component.OnBoardingScreen
+import com.example.cook_ford.presentation.screens.un_authenticated_component.phone_verification_screen_component.PhoneVerificationScreen
+import com.example.cook_ford.presentation.screens.un_authenticated_component.sign_in_screen_component.SignInScreen
+import com.example.cook_ford.presentation.screens.un_authenticated_component.sign_up_screen_user_component.SignUpScreen
 import com.google.gson.Gson
 
 
@@ -91,7 +91,7 @@ fun NavGraphBuilder.unauthenticatedGraph(navController: NavController) {
         composable(route = NavigationRoutes.Unauthenticated.Onboard.route) {
             OnBoardingScreen(navController = navController,
                 onNavigateToAuthenticatedRoute = {
-                    navController.navigate(route = NavigationRoutes.Unauthenticated.SignIn.route){
+                    navController.navigate(route = NavigationRoutes.Unauthenticated.Landing.route){
                         popUpTo(route = NavigationRoutes.Unauthenticated.Onboard.route) {
                             inclusive = true
                         }
@@ -103,8 +103,11 @@ fun NavGraphBuilder.unauthenticatedGraph(navController: NavController) {
         //Landing
         composable(route = NavigationRoutes.Unauthenticated.Landing.route) {
             LandingScreen(navController = navController,
-                onNavigateToAuthenticatedRoute = {
-                    navController.navigate(route = NavigationRoutes.Unauthenticated.PhoneVerification.route)
+                onNavigateToUserSignInRoute = {
+                    navController.navigate(route = NavigationRoutes.Unauthenticated.SignIn.route)
+                },
+                onNavigateToCookSignInRoute = {
+                    navController.navigate(route = NavigationRoutes.Unauthenticated.CookSignIn.route)
                 }
             )
         }
@@ -121,9 +124,10 @@ fun NavGraphBuilder.unauthenticatedGraph(navController: NavController) {
 
         // SignIn
         composable(route = NavigationRoutes.Unauthenticated.SignIn.route) {
+            Log.d("TAG", "unauthenticatedGraph: SignIn ")
             SignInScreen(
                 navController = navController,
-                onNavigateToRegistration = { navController.navigate(route = NavigationRoutes.Unauthenticated.SignUp.route) },
+                onNavigateToSignUp = { navController.navigate(route = NavigationRoutes.Unauthenticated.SignUp.route) },
                 onNavigateToForgotPassword = {},
                 onNavigateToAuthenticatedRoute = {
                     navController.navigate(route = NavigationRoutes.Authenticated.NavigationRoute.route) {
@@ -131,13 +135,46 @@ fun NavGraphBuilder.unauthenticatedGraph(navController: NavController) {
                             inclusive = true
                         }
                     }
-                },
+                }
             )
         }
 
-        // SignUp
+        // SignIn Cook
+        composable(route = NavigationRoutes.Unauthenticated.CookSignIn.route) {
+            Log.d("TAG", "unauthenticatedGraph: CookSignIn ")
+            SignInScreen(
+                navController = navController,
+                onNavigateToSignUp = { navController.navigate(route = NavigationRoutes.Unauthenticated.CookSignUp.route) },
+                onNavigateToForgotPassword = {},
+                onNavigateToAuthenticatedRoute = {
+                    navController.navigate(route = NavigationRoutes.Authenticated.NavigationRoute.route) {
+                        popUpTo(route = NavigationRoutes.Unauthenticated.NavigationRoute.route) {
+                            inclusive = true
+                        }
+                    }
+                }
+            )
+        }
+
+        // SignUp User
         composable(route = NavigationRoutes.Unauthenticated.SignUp.route) {
             SignUpScreen(
+                userType = "User",
+                navController = navController,
+                onNavigateToAuthenticatedRoute = {
+                    navController.navigate(route = NavigationRoutes.Unauthenticated.SignIn.route) {
+                        popUpTo(route = NavigationRoutes.Unauthenticated.NavigationRoute.route) {
+                            inclusive = true
+                        }
+                    }
+                }
+            )
+        }
+
+        // SignUp Cook
+        composable(route = NavigationRoutes.Unauthenticated.CookSignUp.route) {
+            SignUpScreen(
+                userType = "Provider",
                 navController = navController,
                 onNavigateToAuthenticatedRoute = {
                     navController.navigate(route = NavigationRoutes.Unauthenticated.SignIn.route) {

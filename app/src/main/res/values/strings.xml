@@ -43,6 +43,11 @@
     <string name="sign_up_error_msg_password_mismatch">Please enter the same password here as above</string>
     <string name="sign_up_error_msg_gender_not_selected">Gender not selected</string>
 
+    <string name="sign_up_error_msg_empty_address">Please enter your address</string>
+    <string name="sign_up_error_msg_empty_city">Please enter your city</string>
+    <string name="sign_up_error_msg_empty_state">Please enter your state</string>
+    <string name="sign_up_error_msg_empty_zip_code">Please enter your zip code</string>
+
     <!--Dashboard-->
     <string name="dashboard_title_welcome_user">Welcome User</string>
     <string name="try_again_button_text">Try again</string>
@@ -102,6 +107,7 @@ affordable price</string>
     <string name="issue_error_msg_empty">Please select issue</string>
     <string name="sign_in_with_phone_button_text">Sign in with Phone</string>
     <string name="sign_in_as_a_cook_button_text">Sign in as a Cook</string>
+    <string name="sign_in_as_a_user_button_text">Sign in as a User</string>
     <string name="sign_up_error_msg_empty_otp">Please enter otp</string>
     <string name="get_started_button_text">Get Started</string>
     <string name="appy_button_text">Apply</string>

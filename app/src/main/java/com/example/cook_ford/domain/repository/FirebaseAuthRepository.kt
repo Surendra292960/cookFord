@@ -1,7 +1,7 @@
 package com.example.cook_ford.domain.repository
 
 import android.app.Activity
-import com.example.cook_ford.presentation.screens.un_authenticated.phone_verification_screen_component.state.ResultState
+import com.example.cook_ford.presentation.screens.un_authenticated_component.phone_verification_screen_component.state.ResultState
 import kotlinx.coroutines.flow.Flow
 
 

@@ -3,10 +3,8 @@ package com.example.cook_ford.data.repository
 import android.app.Activity
 import android.util.Log
 import com.example.cook_ford.domain.repository.FirebaseAuthRepository
-import com.example.cook_ford.presentation.screens.un_authenticated.phone_verification_screen_component.state.ResultState
-import com.google.android.gms.tasks.OnCompleteListener
+import com.example.cook_ford.presentation.screens.un_authenticated_component.phone_verification_screen_component.state.ResultState
 import com.google.firebase.FirebaseException
-import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.auth.PhoneAuthOptions
