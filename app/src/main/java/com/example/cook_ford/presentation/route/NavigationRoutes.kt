@@ -21,6 +21,7 @@ sealed class NavigationRoutes {
         data object CookSignIn : Unauthenticated(route = NavPath.SIGN_IN_AS_COOK.toString())
         data object SignUp : Unauthenticated(route = NavPath.SIGN_UP.toString())
         data object CookSignUp : Unauthenticated(route = NavPath.SIGN_UP_AS_COOK.toString())
+        data object AddAddress : Unauthenticated(route = NavPath.ADD_ADDRESS.toString())
         data object ProfileScreen : Unauthenticated(route = NavPath.PROFILE.toString())
     }
 

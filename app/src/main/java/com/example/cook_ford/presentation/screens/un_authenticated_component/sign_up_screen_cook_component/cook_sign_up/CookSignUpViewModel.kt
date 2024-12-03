@@ -1,4 +1,4 @@
-package com.example.cook_ford.presentation.screens.un_authenticated_component.sign_up_screen_cook_component
+package com.example.cook_ford.presentation.screens.un_authenticated_component.sign_up_screen_cook_component.cook_sign_up
 
 import android.location.Location
 import android.util.Log
@@ -16,16 +16,16 @@ import com.example.cook_ford.presentation.component.widgets.dialog.DialogState
 import com.example.cook_ford.presentation.component.widgets.snack_bar.MainViewState
 import com.example.cook_ford.presentation.screens.un_authenticated_component.sign_in_screen_component.state.ErrorState
 import com.example.cook_ford.presentation.screens.un_authenticated_component.sign_in_screen_component.state.passwordEmptyErrorState
-import com.example.cook_ford.presentation.screens.un_authenticated_component.sign_up_screen_cook_component.state.CookSignUpErrorState
-import com.example.cook_ford.presentation.screens.un_authenticated_component.sign_up_screen_cook_component.state.CookSignUpState
-import com.example.cook_ford.presentation.screens.un_authenticated_component.sign_up_screen_cook_component.state.CookSignUpUiEvent
-import com.example.cook_ford.presentation.screens.un_authenticated_component.sign_up_screen_cook_component.state.confirmPasswordEmptyErrorState
-import com.example.cook_ford.presentation.screens.un_authenticated_component.sign_up_screen_cook_component.state.emailEmptyErrorState
-import com.example.cook_ford.presentation.screens.un_authenticated_component.sign_up_screen_cook_component.state.genderSelectionErrorState
-import com.example.cook_ford.presentation.screens.un_authenticated_component.sign_up_screen_cook_component.state.invalidPasswordErrorState
-import com.example.cook_ford.presentation.screens.un_authenticated_component.sign_up_screen_cook_component.state.invalidUserNameErrorState
-import com.example.cook_ford.presentation.screens.un_authenticated_component.sign_up_screen_cook_component.state.passwordMismatchErrorState
-import com.example.cook_ford.presentation.screens.un_authenticated_component.sign_up_screen_cook_component.state.usernameEmptyErrorState
+import com.example.cook_ford.presentation.screens.un_authenticated_component.sign_up_screen_cook_component.cook_sign_up.state.CookSignUpErrorState
+import com.example.cook_ford.presentation.screens.un_authenticated_component.sign_up_screen_cook_component.cook_sign_up.state.CookSignUpState
+import com.example.cook_ford.presentation.screens.un_authenticated_component.sign_up_screen_cook_component.cook_sign_up.state.CookUiEvent
+import com.example.cook_ford.presentation.screens.un_authenticated_component.sign_up_screen_cook_component.cook_sign_up.state.confirmPasswordEmptyErrorState
+import com.example.cook_ford.presentation.screens.un_authenticated_component.sign_up_screen_cook_component.cook_sign_up.state.emailEmptyErrorState
+import com.example.cook_ford.presentation.screens.un_authenticated_component.sign_up_screen_cook_component.cook_sign_up.state.genderSelectionErrorState
+import com.example.cook_ford.presentation.screens.un_authenticated_component.sign_up_screen_cook_component.cook_sign_up.state.invalidPasswordErrorState
+import com.example.cook_ford.presentation.screens.un_authenticated_component.sign_up_screen_cook_component.cook_sign_up.state.invalidUserNameErrorState
+import com.example.cook_ford.presentation.screens.un_authenticated_component.sign_up_screen_cook_component.cook_sign_up.state.passwordMismatchErrorState
+import com.example.cook_ford.presentation.screens.un_authenticated_component.sign_up_screen_cook_component.cook_sign_up.state.usernameEmptyErrorState
 import com.example.cook_ford.utils.AppConstants
 import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -79,12 +79,12 @@ class CookSignUpViewModel @Inject constructor(private val signUpUseCase: SignUpU
     }
 
     /**
-     * Function called on any signUp event [CookSignUpUiEvent]
+     * Function called on any signUp event [CookUiEvent]
      */
-    fun onUiEvent(signUpUiEvent: CookSignUpUiEvent) {
+    fun onUiEvent(signUpUiEvent: CookUiEvent) {
         when (signUpUiEvent) {
             // Name id changed event
-            is CookSignUpUiEvent.UserNameChanged -> {
+            is CookUiEvent.UserNameChanged -> {
                 signUpState.value = signUpState.value.copy(
                     username = signUpUiEvent.inputValue,
                     errorState = signUpState.value.errorState.copy(
@@ -99,7 +99,7 @@ class CookSignUpViewModel @Inject constructor(private val signUpUseCase: SignUpU
                 )
             }
             // Email id changed event
-            is CookSignUpUiEvent.EmailChanged -> {
+            is CookUiEvent.EmailChanged -> {
                 signUpState.value = signUpState.value.copy(
                     email = signUpUiEvent.inputValue,
                     errorState = signUpState.value.errorState.copy(
@@ -115,7 +115,7 @@ class CookSignUpViewModel @Inject constructor(private val signUpUseCase: SignUpU
             }
 
             // Password changed event
-            is CookSignUpUiEvent.PasswordChanged -> {
+            is CookUiEvent.PasswordChanged -> {
                 signUpState.value = signUpState.value.copy(
                     password = signUpUiEvent.inputValue,
                     errorState = signUpState.value.errorState.copy(
@@ -131,7 +131,7 @@ class CookSignUpViewModel @Inject constructor(private val signUpUseCase: SignUpU
             }
 
             // Confirm Password changed event
-            is CookSignUpUiEvent.ConfirmPasswordChanged -> {
+            is CookUiEvent.ConfirmPasswordChanged -> {
                 signUpState.value = signUpState.value.copy(
                     confirmPassword = signUpUiEvent.inputValue,
                     errorState = signUpState.value.errorState.copy(
@@ -152,7 +152,7 @@ class CookSignUpViewModel @Inject constructor(private val signUpUseCase: SignUpU
             }
 
             // Email id changed event
-            is CookSignUpUiEvent.GenderChange -> {
+            is CookUiEvent.GenderChange -> {
                 signUpState.value = signUpState.value.copy(
                     gender = signUpUiEvent.inputValue,
                     errorState = signUpState.value.errorState.copy(
@@ -168,7 +168,7 @@ class CookSignUpViewModel @Inject constructor(private val signUpUseCase: SignUpU
             }
 
             // Submit SignUp event
-            is CookSignUpUiEvent.Submit -> {
+            is CookUiEvent.Submit -> {
                 val inputsValidated = validateInputs()
                 if (inputsValidated) {
                     // TODO Trigger registration in authentication flow
@@ -205,10 +205,10 @@ class CookSignUpViewModel @Inject constructor(private val signUpUseCase: SignUpU
                 }
             }
 
-            is CookSignUpUiEvent.AddressChange -> TODO()
-            is CookSignUpUiEvent.CityChange -> TODO()
-            is CookSignUpUiEvent.StateChange -> TODO()
-            is CookSignUpUiEvent.ZipCodeChange -> TODO()
+            is CookUiEvent.AddressChange -> TODO()
+            is CookUiEvent.CityChange -> TODO()
+            is CookUiEvent.StateChange -> TODO()
+            is CookUiEvent.ZipCodeChange -> TODO()
         }
     }
 

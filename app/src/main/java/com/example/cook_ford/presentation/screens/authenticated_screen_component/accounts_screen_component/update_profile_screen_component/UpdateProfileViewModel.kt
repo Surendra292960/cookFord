@@ -5,6 +5,7 @@ import android.util.Patterns
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import com.example.cook_ford.data.local.SessionConstant.USER_TYPE
 import com.example.cook_ford.data.local.UserSession
 import com.example.cook_ford.data.remote.profile_response.ProfileResponse
 import com.example.cook_ford.presentation.component.widgets.snack_bar.MainViewState
@@ -14,11 +15,11 @@ import com.example.cook_ford.presentation.screens.authenticated_screen_component
 import com.example.cook_ford.presentation.screens.authenticated_screen_component.accounts_screen_component.update_profile_screen_component.state.UpdateProfileUiEvent
 import com.example.cook_ford.presentation.screens.un_authenticated_component.sign_in_screen_component.state.ErrorState
 import com.example.cook_ford.presentation.screens.un_authenticated_component.sign_in_screen_component.state.passwordEmptyErrorState
-import com.example.cook_ford.presentation.screens.un_authenticated_component.sign_up_screen_cook_component.state.emailEmptyErrorState
-import com.example.cook_ford.presentation.screens.un_authenticated_component.sign_up_screen_cook_component.state.genderSelectionErrorState
-import com.example.cook_ford.presentation.screens.un_authenticated_component.sign_up_screen_cook_component.state.invalidUserNameErrorState
-import com.example.cook_ford.presentation.screens.un_authenticated_component.sign_up_screen_cook_component.state.phoneEmptyErrorState
-import com.example.cook_ford.presentation.screens.un_authenticated_component.sign_up_screen_cook_component.state.usernameEmptyErrorState
+import com.example.cook_ford.presentation.screens.un_authenticated_component.sign_up_screen_cook_component.cook_sign_up.state.emailEmptyErrorState
+import com.example.cook_ford.presentation.screens.un_authenticated_component.sign_up_screen_cook_component.cook_sign_up.state.genderSelectionErrorState
+import com.example.cook_ford.presentation.screens.un_authenticated_component.sign_up_screen_cook_component.cook_sign_up.state.invalidUserNameErrorState
+import com.example.cook_ford.presentation.screens.un_authenticated_component.sign_up_screen_cook_component.cook_sign_up.state.phoneEmptyErrorState
+import com.example.cook_ford.presentation.screens.un_authenticated_component.sign_up_screen_cook_component.cook_sign_up.state.usernameEmptyErrorState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -226,5 +227,13 @@ class UpdateProfileViewModel @Inject constructor(
             phone = profileResponse?.phone.toString(),
             gender = profileResponse?.gender.toString()
         )
+    }
+
+    fun getUserType():String?{
+        return userSession.getString(USER_TYPE)
+    }
+
+    fun signOut(){
+        return userSession.clear()
     }
 }

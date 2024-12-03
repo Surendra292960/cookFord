@@ -1,4 +1,4 @@
-package com.example.cook_ford.presentation.screens.un_authenticated_component.sign_up_screen_cook_component
+package com.example.cook_ford.presentation.screens.un_authenticated_component.sign_up_screen_cook_component.cook_sign_up
 import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -27,7 +27,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.cook_ford.R
 import com.example.cook_ford.presentation.theme.AppTheme
-import com.example.cook_ford.presentation.screens.un_authenticated_component.sign_up_screen_cook_component.state.CookSignUpState
+import com.example.cook_ford.presentation.screens.un_authenticated_component.sign_up_screen_cook_component.cook_sign_up.state.CookSignUpState
 import com.example.cook_ford.presentation.component.widgets.DefaultIcons
 import com.example.cook_ford.presentation.component.widgets.InputTextField
 import com.example.cook_ford.presentation.component.widgets.KeyboardOption

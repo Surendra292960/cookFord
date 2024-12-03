@@ -69,7 +69,7 @@ val cuisine = listOf("North Indian", "South indian", "Punjabi", "Andhra", "Keral
 val languages = listOf("Hindi", "English", "Kanada", "Odia", "Tamil", "Punjabi", "Telugu", "Telugu", "Malayalam", "Bhojpuri", "Rajasthani", "Gujarati", "Marathi", "Nepali", "Assamese", "Bengali", "Konkani", "Tulu", "Urdu")
 
 @Composable
-fun CookPreferencesScreen(
+fun UserPreferencesScreen(
     onNavigateBack: () -> Unit,
     profileResponse: ProfileResponse?=null,
     onNavigateToAuthenticatedRoute: () -> Unit){
@@ -363,7 +363,7 @@ fun CookTypeSection(
         verticalArrangement = Arrangement.spacedBy(4.dp),
         horizontalArrangement = Arrangement.spacedBy(4.dp)) {
         items(cookType.size) { index ->
-            CookTypeItem(
+            UserTypeItem(
                 label = cookType[index],
                 selected = index == 0,
                 enabled = index == 0,
@@ -372,7 +372,7 @@ fun CookTypeSection(
         }
 
         items(cookTypeLast.size, span = { GridItemSpan(columnsCount) }) { index->
-            CookTypeItem(
+            UserTypeItem(
                 label =cookTypeLast[index],
                 selected = false,
                 enabled =false,
@@ -387,16 +387,16 @@ fun CookTypeSection(
 }
 
 @Composable
-fun CookTypeItem(
+fun UserTypeItem(
     label: String,
     selected: Boolean,
     enabled: Boolean,
     onChange: (MutableSet<String>) -> Unit) {
-    val cookPreferencesViewModel:CookPreferencesViewModel = hiltViewModel()
+    val userPreferencesViewModel:UserPreferencesViewModel = hiltViewModel()
     val isSelected = remember { mutableStateOf(selected) }
-    Log.d("TAG", "CookTypeItem: ${Gson().toJson(cookPreferencesViewModel.selectedItem)}")
-    if(isSelected.value) cookPreferencesViewModel.selectedItem.add(label)
-    onChange(cookPreferencesViewModel.selectedItem)
+    Log.d("TAG", "UserTypeItem: ${Gson().toJson(userPreferencesViewModel.selectedItem)}")
+    if(isSelected.value) userPreferencesViewModel.selectedItem.add(label)
+    onChange(userPreferencesViewModel.selectedItem)
     Box(modifier = Modifier
         .height(50.dp)
         .border(1.dp, Color.Gray)
@@ -405,13 +405,13 @@ fun CookTypeItem(
         .clickable {
             if (!isSelected.value) {
                 isSelected.value = true
-                Log.d("TAG", "CookTypeItem: if ")
-                cookPreferencesViewModel.selectedItem.add(label)
-                onChange(cookPreferencesViewModel.selectedItem)
+                Log.d("TAG", "UserTypeItem: if ")
+                userPreferencesViewModel.selectedItem.add(label)
+                onChange(userPreferencesViewModel.selectedItem)
             } else {
                 isSelected.value = false
-                cookPreferencesViewModel.selectedItem.removeIf { it == label }
-                onChange(cookPreferencesViewModel.selectedItem)
+                userPreferencesViewModel.selectedItem.removeIf { it == label }
+                onChange(userPreferencesViewModel.selectedItem)
                 Log.d("TAG", "CookTypeItem: else ")
             }
 
@@ -431,5 +431,5 @@ fun CookTypeItem(
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun PreviewScreen(){
-    CookPreferencesScreen(onNavigateBack={}, onNavigateToAuthenticatedRoute={})
+    UserPreferencesScreen(onNavigateBack={}, onNavigateToAuthenticatedRoute={})
 }

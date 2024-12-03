@@ -23,6 +23,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.cook_ford.R
 import com.example.cook_ford.presentation.component.widgets.DefaultIcons
 import com.example.cook_ford.presentation.component.widgets.InputTextField
@@ -36,7 +37,7 @@ import com.example.cook_ford.utils.AppConstants
 import com.example.cook_ford.presentation.theme.FontName
 
 @Composable
-fun EditProfileForm(
+fun UpdateProfileForm(
     changeProfileState:MutableState<String>,
     editProfileState: EditProfileState,
     viewState: MainViewState,
@@ -46,8 +47,9 @@ fun EditProfileForm(
     onGenderChange: (String) -> Unit,
     onProfileImageChange: (String) -> Unit,
     onSubmit: () -> Unit,
-    onSignOutClick: () -> Unit){
+    onSignOut: (String) -> Unit){
 
+    val updateProfileViewModel:UpdateProfileViewModel = hiltViewModel()
     val genders = listOf("Male", "Female")
 
     Column(modifier = Modifier.fillMaxWidth(),
@@ -143,6 +145,23 @@ fun EditProfileForm(
             text = stringResource(id = R.string.submit_button_text),
             isLoading = viewState.isLoading,
             onClick = onSubmit
+        )
+
+        // SignOut Button
+        OutlinedSubmitButton(
+            modifier = Modifier.padding(all = 10.dp),
+            textColor = Color.Red,
+            text = stringResource(id = R.string.sign_out_button_text),
+            isLoading = viewState.isLoading,
+            onClick = {
+                if (updateProfileViewModel.getUserType()=="Provider"){
+                    updateProfileViewModel.signOut()
+                    onSignOut.invoke("Provider")
+                }else{
+                    updateProfileViewModel.signOut()
+                    onSignOut.invoke("User")
+                }
+            }
         )
     }
 }

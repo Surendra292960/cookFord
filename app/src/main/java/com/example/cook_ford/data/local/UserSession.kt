@@ -32,8 +32,7 @@ class UserSession (context: Context) {
     }
 
     fun clear() {
-        editor.clear()
-            .apply()
+        editor.clear().apply()
     }
 
 }

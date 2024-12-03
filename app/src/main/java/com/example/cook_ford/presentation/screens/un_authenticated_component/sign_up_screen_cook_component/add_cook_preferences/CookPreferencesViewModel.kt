@@ -1,4 +1,4 @@
-package com.example.cook_ford.presentation.screens.authenticated_screen_component.accounts_screen_component.cook_preferences_component
+package com.example.cook_ford.presentation.screens.un_authenticated_component.sign_up_screen_cook_component.add_cook_preferences
 
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel

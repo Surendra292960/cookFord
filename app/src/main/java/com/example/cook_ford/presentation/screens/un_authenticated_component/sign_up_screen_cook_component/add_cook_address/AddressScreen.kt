@@ -1,4 +1,4 @@
-package com.example.cook_ford.presentation.screens.un_authenticated_component.sign_up_screen_cook_component
+package com.example.cook_ford.presentation.screens.un_authenticated_component.sign_up_screen_cook_component.add_cook_address
 import android.util.Log
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
@@ -37,7 +37,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -46,6 +45,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavController
 import com.example.cook_ford.R
@@ -54,7 +54,7 @@ import com.example.cook_ford.presentation.component.rememberImeState
 import com.example.cook_ford.presentation.component.widgets.dialog.CustomDialog
 import com.example.cook_ford.presentation.component.widgets.dialog.ResetWarning
 import com.example.cook_ford.presentation.component.widgets.snack_bar.MainViewState
-import com.example.cook_ford.presentation.screens.un_authenticated_component.sign_up_screen_cook_component.state.CookSignUpUiEvent
+import com.example.cook_ford.presentation.screens.un_authenticated_component.sign_up_screen_cook_component.add_cook_address.state.AddressUiEvent
 import com.example.cook_ford.presentation.theme.AppTheme
 import com.example.cook_ford.presentation.theme.Cook_fordTheme
 import com.example.cook_ford.presentation.theme.DeepGreen
@@ -65,15 +65,15 @@ import kotlinx.coroutines.launch
 
 
 @Composable
-fun CookSignUpScreen(
+fun AddressScreen(
     navController: NavController,
-    signUpViewModel: CookSignUpViewModel = hiltViewModel(),
+    addressViewModel: AddressViewModel = hiltViewModel(),
     onNavigateToAuthenticatedRoute: () -> Unit) {
-    val signUpState by remember { signUpViewModel.signUpState }
-    val showDialogState: Boolean by signUpViewModel.showDialog.collectAsState()
-    val signUpResponse by signUpViewModel.signUpResponse.collectAsState()
+    val addressState by remember { addressViewModel.addressState }
+    val showDialogState: Boolean by addressViewModel.showDialog.collectAsState()
+    val signUpResponse by addressViewModel.signUpResponse.collectAsState()
     val snackBarHostState = remember { SnackbarHostState() }
-    val viewState: MainViewState by signUpViewModel.viewState.collectAsState()
+    val viewState: MainViewState by addressViewModel.viewState.collectAsState()
     val lifecycle = LocalLifecycleOwner.current.lifecycle
     val mContext = LocalContext.current
     val imeState = rememberImeState()
@@ -87,7 +87,7 @@ fun CookSignUpScreen(
                 isPermissionGranted = true
                 getCurrentLocation(fusedLocationClient) { location ->
                     Log.d("TAG", "SignUpScreen location : $location")
-                    location?.let { signUpViewModel.setLocation(it) }
+                    location?.let { addressViewModel.setLocation(it) }
                 }
             }
         }
@@ -99,9 +99,9 @@ fun CookSignUpScreen(
         }
     }
 
-    if (signUpState.isSignUpSuccessful) {
+    if (addressState.isSignUpSuccessful) {
 
-        ShowCustomDialog(signUpResponse.message, signUpViewModel, showDialogState)
+        ShowCustomDialog(signUpResponse.message, addressViewModel, showDialogState)
 
         Log.d("TAG", "SignInScreen: $showDialogState")
         /**
@@ -136,7 +136,7 @@ fun CookSignUpScreen(
                         }
 
                         Text(
-                            text = stringResource(id = R.string.sign_up_heading_text),
+                            text = stringResource(id = R.string.cook_address_text),
                             style = MaterialTheme.typography.bodyLarge,
                             color = Color.DarkGray,
                             textAlign = TextAlign.Center,
@@ -154,98 +154,58 @@ fun CookSignUpScreen(
                             contentPadding = PaddingValues(5.dp)
                         ) {
 
-                            /*   Text(text = "Skip",
-                               style = MaterialTheme.typography.bodyLarge,
-                               color = Color.Black,
-                               textAlign = TextAlign.Center,
-                               fontSize = 17.sp,
-                               fontWeight = FontWeight.W600,
-                               modifier = Modifier
-                                   .shadow(0.dp)
-                                   .clip(CircleShape))*/
                         }
                     }
 
                     Column(modifier = Modifier.fillMaxSize().verticalScroll(scrollState), horizontalAlignment = Alignment.CenterHorizontally) {
 
-                        /*      Spacer(modifier = Modifier.height(10.dp))
-
-                    // Image
-                    Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxSize()) {
-                        // Change the logo
-                        Image(
-                            painter = painterResource(id = R.drawable.cook_ford_rounded_logo),
-                            contentDescription = "Logo",
-                            //modifier = Modifier.scale(3f))
-                            modifier = Modifier
-                                .height(100.dp)
-                                .width(100.dp)
-                        )
-                    }
-    */
                         Spacer(modifier = Modifier.height(20.dp))
 
                         Text(
-                            text = "Welcome",
+                            text = "Add Your Address Here",
                             fontSize = 26.sp,
                             color = Color.DarkGray,
                             fontWeight = FontWeight.Bold
                         )
 
-                        Spacer(modifier = Modifier.height(5.dp))
-
-                        Text(
-                            fontSize = 16.sp,
-                            text = "Sign Up here to continue",
-                            color = Color.Gray,
-                            fontWeight = FontWeight.W400,
-                            textAlign = TextAlign.Center
-                        )
                         Spacer(modifier = Modifier.height(30.dp))
 
                         //SignUp Form
                         Column(modifier = Modifier.padding(horizontal = AppTheme.dimens.paddingLarge).padding(bottom = AppTheme.dimens.paddingExtraLarge)) {
 
-                            CookSignUpForm(
-                                signUpState = signUpState,
+                            AddressForm(
+                                addressState = addressState,
                                 viewState = viewState,
-                                onUserNameChange = { inputString ->
-                                    signUpViewModel.onUiEvent(
-                                        signUpUiEvent = CookSignUpUiEvent.UserNameChanged(
+                                onAddressChange = { inputString ->
+                                    addressViewModel.onUiEvent(
+                                        addressUiEvent = AddressUiEvent.AddressChange(
                                             inputValue = inputString
                                         )
                                     )
                                 },
-                                onEmailChange = { inputString ->
-                                    signUpViewModel.onUiEvent(
-                                        signUpUiEvent = CookSignUpUiEvent.EmailChanged(
+                                onCityChange = { inputString ->
+                                    addressViewModel.onUiEvent(
+                                        addressUiEvent = AddressUiEvent.CityChange(
                                             inputValue = inputString
                                         )
                                     )
                                 },
-                                onPasswordChange = { inputString ->
-                                    signUpViewModel.onUiEvent(
-                                        signUpUiEvent = CookSignUpUiEvent.PasswordChanged(
+                                onStateChange = { inputString ->
+                                    addressViewModel.onUiEvent(
+                                        addressUiEvent = AddressUiEvent.StateChange(
                                             inputValue = inputString
                                         )
                                     )
                                 },
-                                onConfirmPasswordChange = { inputString ->
-                                    signUpViewModel.onUiEvent(
-                                        signUpUiEvent = CookSignUpUiEvent.ConfirmPasswordChanged(
+                                onZipCodeChange = { inputString ->
+                                    addressViewModel.onUiEvent(
+                                        addressUiEvent = AddressUiEvent.ZipCodeChange(
                                             inputValue = inputString
-                                        )
-                                    )
-                                },
-                                onGenderChange = { inputString ->
-                                    signUpViewModel.onUiEvent(
-                                        signUpUiEvent = CookSignUpUiEvent.GenderChange(
-                                            inputString
                                         )
                                     )
                                 },
                                 onSubmit = {
-                                    signUpViewModel.onUiEvent(signUpUiEvent = CookSignUpUiEvent.Submit)
+                                    addressViewModel.onUiEvent(addressUiEvent = AddressUiEvent.Submit)
                                 }
                             )
                         }
@@ -253,7 +213,7 @@ fun CookSignUpScreen(
                 }
 
                 ShowSnackbar(
-                    signUpViewModel,
+                    addressViewModel,
                     lifecycle,
                     snackBarHostState
                 )
@@ -263,11 +223,11 @@ fun CookSignUpScreen(
 }
 
 @Composable
-fun ShowSnackbar(signUpViewModel: CookSignUpViewModel, lifecycle: Lifecycle, snackBarHostState: SnackbarHostState) {
+fun ShowSnackbar(addressViewModel: AddressViewModel, lifecycle: Lifecycle, snackBarHostState: SnackbarHostState) {
     LaunchedEffect(key1 = Unit) {
         lifecycle.repeatOnLifecycle(state = Lifecycle.State.STARTED) {
             launch {
-                signUpViewModel.onProcessSuccess.collectLatest { message: String ->
+                addressViewModel.onProcessSuccess.collectLatest { message: String ->
                     Log.d("TAG", "SignInForm: Event success")
                     snackBarHostState.showSnackbar(message)
                 }
@@ -279,7 +239,7 @@ fun ShowSnackbar(signUpViewModel: CookSignUpViewModel, lifecycle: Lifecycle, sna
 @Composable
 fun ShowCustomDialog(
     title: String,
-    signUpViewModel: CookSignUpViewModel,
+    signUpViewModel: AddressViewModel,
     showDialogState: Boolean) {
 
     val isDismiss = remember { mutableStateOf(true) }
@@ -296,7 +256,7 @@ fun ShowCustomDialog(
 @Composable
 fun PreviewScreen() {
     Cook_fordTheme {
-        CookSignUpScreen( onNavigateToAuthenticatedRoute = {}, navController = NavController(
+        AddressScreen( onNavigateToAuthenticatedRoute = {}, navController = NavController(
             LocalContext.current)
         )
     }

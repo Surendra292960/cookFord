@@ -34,6 +34,16 @@ object AppConstants {
     const val CONFIRM_PASSWORD = "Confirm Password"
     const val CONFIRM_PASSWORD_PLACEHOLDER = "Confirm Password"
 
+    //Address Const
+    const val ADDRESS = "Address"
+    const val ADDRESS_PLACEHOLDER  = "Enter Address"
+    const val CITY = "City"
+    const val CITY_PLACEHOLDER  = "Enter City"
+    const val STATE = "State"
+    const val STATE_PLACEHOLDER  = "Enter State"
+    const val ZIP_CODE = "Zip Code"
+    const val ZIP_CODE_PLACEHOLDER  = "Enter Zip Code"
+
     //Cook SignUp Const
     const val COOK_NAME = "Cook`s Name"
     const val COOK_NAME_PLACEHOLDER = "Enter Cook Name"

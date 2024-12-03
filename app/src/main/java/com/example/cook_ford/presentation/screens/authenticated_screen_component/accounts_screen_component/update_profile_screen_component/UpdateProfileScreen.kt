@@ -43,7 +43,7 @@ import kotlinx.coroutines.launch
 fun EditProfileScreen(
     onNavigateBack: () -> Unit,
     profileResponse: ProfileResponse? = null,
-    onNavigateToSignOut: () -> Unit,
+    onNavigateToSignOut: (String) -> Unit,
     onNavigateToAuthenticatedRoute: () -> Unit
 ) {
     val editProfileViewModel: UpdateProfileViewModel = hiltViewModel()
@@ -100,7 +100,9 @@ fun EditProfileScreen(
                 editProfileState = editProfileState,
                 editProfileViewModel = editProfileViewModel,
                 viewState = viewState,
-                onNavigateToSignOut = onNavigateToSignOut,
+                onNavigateToSignOut = { userType->
+                    onNavigateToSignOut.invoke(userType)
+                } ,
                 changeProfileImageState = {
                     changeProfileState.value = it
                     Log.d("TAG", "EditProfileScreen: ${changeProfileState.value}")
@@ -118,12 +120,12 @@ fun ProfileForm(
     editProfileState: EditProfileState,
     editProfileViewModel: UpdateProfileViewModel,
     viewState: MainViewState,
-    onNavigateToSignOut: () -> Unit,
+    onNavigateToSignOut: (String) -> Unit,
     changeProfileImageState: (String) -> Unit
 ) {
 
     // EditProfile Inputs Composable
-    EditProfileForm(
+    UpdateProfileForm(
         changeProfileState = changeProfileState,
         editProfileState = editProfileState,
         viewState = viewState,
@@ -170,7 +172,10 @@ fun ProfileForm(
         onSubmit = {
             editProfileViewModel.onUiEvent(editProfileUiEvent = UpdateProfileUiEvent.Submit)
         },
-        onSignOutClick = onNavigateToSignOut
+
+        onSignOut = { userType->
+            onNavigateToSignOut.invoke(userType)
+        }
     )
 }
 

@@ -5,7 +5,7 @@ import com.example.cook_ford.utils.AppConstants
 /**
  * CookPreferences State holding ui input values
  */
-data class CookPreferencesState (
+data class UserPreferencesState (
     val cookType: String = AppConstants.EMPTY_STRING,
     val numberOfVisit: Int = AppConstants.ZERO,
     val readyToRelocate: Boolean = false,
@@ -16,7 +16,7 @@ data class CookPreferencesState (
     val cousin: List<String>?= emptyList(),
     val language: List<String>?= emptyList(),
     val experience: Int = AppConstants.ZERO,
-    val errorState: CookPreferencesErrorState = CookPreferencesErrorState(),
+    val errorState: UserPreferencesErrorState = UserPreferencesErrorState(),
     var isLoading: Boolean = true,
     val errorMessage: String?= AppConstants.EMPTY_STRING,
     var isSuccessful: Boolean = false
@@ -26,7 +26,7 @@ data class CookPreferencesState (
  * Error state in CookPreferences holding respective
  * text field validation errors
  */
-data class CookPreferencesErrorState(
+data class UserPreferencesErrorState(
     val cookTypeErrorState: ErrorState = ErrorState(),
     val numberOfVisitErrorState: ErrorState = ErrorState(),
     val readyToRelocateErrorState: ErrorState = ErrorState(),
