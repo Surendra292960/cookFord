@@ -45,7 +45,7 @@
         </activity>
 
         <provider
-            android:name=".presentation.screens.authenticated_screen_component.profile_screen_component.details_screen_component.model.GenericFileProvider"
+            android:name=".presentation.screens.authenticated_screen_component.user_component.profile_component.details_screen_component.model.GenericFileProvider"
             android:authorities="${applicationId}.com.vips.jetcapture.provider"
             android:exported="false"
             android:grantUriPermissions="true">

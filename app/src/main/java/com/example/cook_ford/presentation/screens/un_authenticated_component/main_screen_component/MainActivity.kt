@@ -32,6 +32,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import com.example.cook_ford.R
 import com.example.cook_ford.data.local.SessionConstant.ACCESS_TOKEN
+import com.example.cook_ford.data.local.SessionConstant.USER_TYPE
 import com.example.cook_ford.data.local.UserSession
 import com.example.cook_ford.presentation.route.NavigationRoutes
 import com.example.cook_ford.presentation.route.authenticatedGraph
@@ -78,21 +79,21 @@ fun SplashScreen(navController: NavController) {
         Log.d("TAG", "SplashScreen Data : ")
       /*  if (userSession.check(ACCESS_TOKEN)){
             navController.navigate(route = NavigationRoutes.Unauthenticated.OnBoard.route)
-        }else*/ if (userSession.check(ACCESS_TOKEN)){
-            Log.d("TAG", "SplashScreen if: ${userSession.check(ACCESS_TOKEN)}")
-            navController.navigate(route = NavigationRoutes.Authenticated.Dashboard.route){
-                popUpTo(NavigationRoutes.Unauthenticated.Splash.route){
-                    inclusive = true
-                }
-            }
-        }else{
-            Log.d("TAG", "SplashScreen else: ${userSession.check(ACCESS_TOKEN)}")
-            navController.navigate(route = NavigationRoutes.Unauthenticated.Onboard.route){
-                popUpTo(NavigationRoutes.Unauthenticated.Splash.route){
-                    inclusive = true
-                }
+        }else*/ if (userSession.check(ACCESS_TOKEN)) {
+        Log.d("TAG", "SplashScreen if: ${userSession.check(ACCESS_TOKEN)}")
+        navController.navigate(route = NavigationRoutes.Authenticated.Dashboard.route) {
+            popUpTo(NavigationRoutes.UnauthenticatedUser.Splash.route) {
+                inclusive = true
             }
         }
+    } else {
+        Log.d("TAG", "SplashScreen else: ${userSession.check(ACCESS_TOKEN)}")
+        navController.navigate(route = NavigationRoutes.UnauthenticatedUser.Onboard.route) {
+            popUpTo(NavigationRoutes.UnauthenticatedUser.Splash.route) {
+                inclusive = true
+            }
+        }
+    }
     }
 
     // Image
@@ -118,7 +119,7 @@ fun MainAppNavHost(
     NavHost(
         modifier = modifier,
         navController = navController,
-        startDestination = NavigationRoutes.Unauthenticated.NavigationRoute.route) {
+        startDestination = NavigationRoutes.UnauthenticatedUser.NavigationRoute.route) {
 
         // Unauthenticated user flow screens
         unauthenticatedGraph(navController = navController)

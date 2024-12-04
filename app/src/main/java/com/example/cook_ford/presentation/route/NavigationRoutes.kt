@@ -11,18 +11,16 @@ import com.example.cook_ford.presentation.route.bottom_nav.utils.NavTitle
 sealed class NavigationRoutes {
 
     // Unauthenticated Routes
-    sealed class Unauthenticated(val route: String) : NavigationRoutes() {
-        data object NavigationRoute : Unauthenticated(route = NavPath.UNAUTHENTICATED.toString())
-        data object Splash : Unauthenticated(route = NavPath.SPLASH.toString())
-        data object Onboard : Unauthenticated(route = NavPath.ONBOARD.toString())
-        data object Landing : Unauthenticated(route = NavPath.LANDING.toString())
-        data object PhoneVerification : Unauthenticated(route = NavPath.PHONE_VERIFICATION.toString())
-        data object SignIn : Unauthenticated(route = NavPath.SIGN_IN.toString())
-        data object CookSignIn : Unauthenticated(route = NavPath.SIGN_IN_AS_COOK.toString())
-        data object SignUp : Unauthenticated(route = NavPath.SIGN_UP.toString())
-        data object CookSignUp : Unauthenticated(route = NavPath.SIGN_UP_AS_COOK.toString())
-        data object AddAddress : Unauthenticated(route = NavPath.ADD_ADDRESS.toString())
-        data object ProfileScreen : Unauthenticated(route = NavPath.PROFILE.toString())
+    sealed class UnauthenticatedUser(val route: String) : NavigationRoutes() {
+        data object NavigationRoute : UnauthenticatedUser(route = NavPath.UNAUTHENTICATED.toString())
+        data object Splash : UnauthenticatedUser(route = NavPath.SPLASH.toString())
+        data object Onboard : UnauthenticatedUser(route = NavPath.ONBOARD.toString())
+        data object Landing : UnauthenticatedUser(route = NavPath.LANDING.toString())
+        data object PhoneVerification : UnauthenticatedUser(route = NavPath.PHONE_VERIFICATION.toString())
+        data object SignIn : UnauthenticatedUser(route = NavPath.SIGN_IN.toString())
+        data object CookSignIn : UnauthenticatedUser(route = NavPath.SIGN_IN_AS_COOK.toString())
+        data object SignUp : UnauthenticatedUser(route = NavPath.SIGN_UP.toString())
+        data object CookSignUp : UnauthenticatedUser(route = NavPath.SIGN_UP_AS_COOK.toString())
     }
 
     // Authenticated Routes
@@ -37,6 +35,14 @@ sealed class NavigationRoutes {
     sealed class HomeNavigation(val route: String, val title: String, val icon: ImageVector): NavigationRoutes(){
         data object NavigationRoute : HomeNavigation(route = NavPath.BOTTOM_NAVIGATION.toString(), title = NavTitle.HOME, icon = Icons.Default.Home)
         data object Home : HomeNavigation(route = NavPath.HOME.toString(), title = NavTitle.HOME, icon = Icons.Default.Home)
+        data object Search : HomeNavigation(route = NavPath.SEARCH.toString(), title = NavTitle.SEARCH, icon = Icons.Default.Search)
+        data object Account : HomeNavigation(route = NavPath.ACCOUNT.toString(), title = NavTitle.ACCOUNT, icon = Icons.Default.Person)
+    }
+
+    // BottomNavigation Cook Routes
+    sealed class CookHomeNavigation(val route: String, val title: String, val icon: ImageVector) : NavigationRoutes() {
+        data object NavigationRoute : CookHomeNavigation(route = NavPath.COOK_BOTTOM_NAVIGATION.toString(), title = NavTitle.HOME, icon = Icons.Default.Home)
+        data object Home : CookHomeNavigation(route = NavPath.HOME.toString(), title = NavTitle.HOME, icon = Icons.Default.Home)
         data object Search : HomeNavigation(route = NavPath.SEARCH.toString(), title = NavTitle.SEARCH, icon = Icons.Default.Search)
         data object Account : HomeNavigation(route = NavPath.ACCOUNT.toString(), title = NavTitle.ACCOUNT, icon = Icons.Default.Person)
     }

@@ -11,8 +11,6 @@ enum class NavPath {
      SIGN_IN_AS_COOK,
      SIGN_UP,
      SIGN_UP_AS_COOK,
-     PROFILE,
-     ADD_ADDRESS,
 
     //Authenticated
      AUTHENTICATED,
@@ -37,6 +35,8 @@ enum class NavPath {
 
     //Bottom Nav
     BOTTOM_NAVIGATION,
+    //Cook Bottom Nav
+    COOK_BOTTOM_NAVIGATION,
     HOME, 
     SEARCH, 
     LIST, 

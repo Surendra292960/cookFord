@@ -79,4 +79,8 @@ object AppConstants {
     const val EXPERIENCE = "Experience"
     const val FROM = "From"
 
+   //User Type
+   const val PROVIDER = "provider"
+   const val USER = "user"
+
 }

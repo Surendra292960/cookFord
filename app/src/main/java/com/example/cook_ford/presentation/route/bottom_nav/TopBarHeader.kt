@@ -8,6 +8,7 @@ fun getTitleByRoute(route:String): String {
     Log.d("TAG", "getTitleByRoute: $route")
 
     return when (route) {
+        //User Home Navigation
         NavConst.HOME -> NavTitle.HOME
         NavConst.SEARCH -> NavTitle.SEARCH
         NavConst.ACCOUNT -> NavTitle.ACCOUNT

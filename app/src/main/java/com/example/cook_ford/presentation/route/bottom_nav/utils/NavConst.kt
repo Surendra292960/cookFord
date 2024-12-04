@@ -2,7 +2,7 @@ package com.example.cook_ford.presentation.route.bottom_nav.utils
 
 object NavConst {
 
-    //HomeScreen
+    //User HomeScreen
     const val HOME = "HOME"
     const val SEARCH = "SEARCH"
     const val ACCOUNT = "ACCOUNT"

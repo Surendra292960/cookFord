@@ -100,6 +100,7 @@ fun BottomNavigationBar(
      * Home Navigation
      */
     when (navBackStackEntry?.destination?.route) {
+        //User Home Navigation
         NavigationRoutes.HomeNavigation.Home.route -> {
             bottomNavVisibility = true
             topBarVisibility.invoke(true)
@@ -109,6 +110,20 @@ fun BottomNavigationBar(
             topBarVisibility.invoke(true)
         }
         NavigationRoutes.HomeNavigation.Account.route -> {
+            bottomNavVisibility = true
+            topBarVisibility.invoke(true)
+        }
+
+        //Cook Home Navigation
+        NavigationRoutes.CookHomeNavigation.Home.route -> {
+            bottomNavVisibility = true
+            topBarVisibility.invoke(true)
+        }
+        NavigationRoutes.CookHomeNavigation.Search.route -> {
+            bottomNavVisibility = true
+            topBarVisibility.invoke(true)
+        }
+        NavigationRoutes.CookHomeNavigation.Account.route -> {
             bottomNavVisibility = true
             topBarVisibility.invoke(true)
         }
