@@ -64,4 +64,10 @@ sealed class NavigationRoutes {
         data object PostJob : AccountNavigation(route = NavPath.POST_JOB.toString())
         data object CookPreferences : AccountNavigation(route = NavPath.COOK_PREFERENCES.toString())
     }
+
+    sealed class CookAccountNavigation(val route: String) : NavigationRoutes() {
+        data object NavigationRoute : CookAccountNavigation(route = NavPath.COOK_ACCOUNT_NAVIGATION.toString())
+        data object UpdateCookProfile : CookAccountNavigation(route = NavPath.UPDATE_COOK_PROFILE.toString())
+        data object ManageCookAccount : CookAccountNavigation(route = NavPath.MANAGE_COOK_ACCOUNT.toString())
+    }
 }
