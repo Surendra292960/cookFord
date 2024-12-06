@@ -2,6 +2,7 @@ package com.example.cook_ford.presentation.route.bottom_nav
 
 import android.util.Log
 import com.example.cook_ford.presentation.route.bottom_nav.utils.NavConst
+import com.example.cook_ford.presentation.route.bottom_nav.utils.NavPath
 import com.example.cook_ford.presentation.route.bottom_nav.utils.NavTitle
 
 fun getTitleByRoute(route:String): String {
@@ -21,6 +22,10 @@ fun getTitleByRoute(route:String): String {
         NavConst.CALL_CREDIT -> NavTitle.CALL_CREDIT
         NavConst.POST_JOB -> NavTitle.POST_JOB
         NavConst.COOK_PREFERENCES -> NavTitle.COOK_PREFERENCES
+
+        //Cook Home Navigation
+        NavConst.UPDATE_COOK_PROFILE -> NavTitle.UPDATE_COOK_PROFILE
+        NavConst.MANAGE_COOK_ACCOUNT -> NavTitle.MANAGE_COOK_ACCOUNT
 
         // other cases
         else -> NavTitle.HOME

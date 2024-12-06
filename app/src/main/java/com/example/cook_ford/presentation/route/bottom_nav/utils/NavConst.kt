@@ -19,4 +19,8 @@ object NavConst {
     const val ADD_COOK_PROFILE = "ADD_COOK_PROFILE"
     const val POST_JOB = "POST_JOB"
     const val COOK_PREFERENCES = "COOK_PREFERENCES"
+
+    //Cook Account
+    const val UPDATE_COOK_PROFILE = "UPDATE_COOK_PROFILE"
+    const val MANAGE_COOK_ACCOUNT = "MANAGE_COOK_ACCOUNT"
 }

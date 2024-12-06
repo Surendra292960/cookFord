@@ -170,6 +170,18 @@ fun BottomNavigationBar(
             bottomNavVisibility = false
             topBarVisibility(false)
         }
+
+        /**
+         * Cook Account Navigation
+         */
+        NavigationRoutes.CookAccountNavigation.UpdateCookProfile.route  -> {
+            bottomNavVisibility = false
+            topBarVisibility(true)
+        }
+        NavigationRoutes.CookAccountNavigation.ManageCookAccount.route -> {
+            bottomNavVisibility = false
+            topBarVisibility(true)
+        }
         /*
         DetailScreen.NotificationScreen.route -> {
             bottomNavVisibility = false
