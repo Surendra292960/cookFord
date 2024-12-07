@@ -1,4 +1,4 @@
-package com.example.cook_ford.presentation.screens.authenticated_component.user_component.profile_component.reviews_screen_component
+package com.example.cook_ford.presentation.screens.authenticated_component.cook_component.profile_component.reviews_screen_component
 
 import android.util.Log
 import androidx.compose.runtime.State
@@ -11,10 +11,10 @@ import com.example.cook_ford.data.remote.NetworkResult
 import com.example.cook_ford.data.remote.profile_response.ProfileResponse
 import com.example.cook_ford.domain.use_cases.ProfileUseCase
 import com.example.cook_ford.presentation.component.widgets.snack_bar.MainViewState
+import com.example.cook_ford.presentation.screens.authenticated_component.cook_component.profile_component.reviews_screen_component.state.CookReviewErrorState
+import com.example.cook_ford.presentation.screens.authenticated_component.cook_component.profile_component.reviews_screen_component.state.CookReviewState
 import com.example.cook_ford.presentation.screens.authenticated_component.cook_component.profile_component.reviews_screen_component.state.CookReviewUiEvent
 import com.example.cook_ford.presentation.screens.authenticated_component.cook_component.profile_component.reviews_screen_component.state.cookReviewEmptyErrorState
-import com.example.cook_ford.presentation.screens.authenticated_component.user_component.profile_component.reviews_screen_component.state.ReviewErrorState
-import com.example.cook_ford.presentation.screens.authenticated_component.user_component.profile_component.reviews_screen_component.state.ReviewState
 import com.example.cook_ford.presentation.screens.un_authenticated_component.sign_in_screen_component.state.ErrorState
 import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -25,14 +25,14 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class ReviewViewModel  @Inject constructor(
+class CookReviewViewModel  @Inject constructor(
     private val profileUseCase: ProfileUseCase,
     private val userSession: UserSession,
     private val stateHandle: SavedStateHandle
 ) : ViewModel() {
 
-    private val _reviewState = mutableStateOf(ReviewState())
-    val reviewState: State<ReviewState> = _reviewState
+    private val _cookReviewState = mutableStateOf(CookReviewState())
+    val cookReviewState: State<CookReviewState> = _cookReviewState
 
 
     private val _viewState = MutableStateFlow(MainViewState())
@@ -45,9 +45,9 @@ class ReviewViewModel  @Inject constructor(
         when (reviewUiEvent) {
             //Mobile changed
             is CookReviewUiEvent.CookReviewChanged -> {
-                _reviewState.value = _reviewState.value.copy(
-                    review = reviewUiEvent.inputValue,
-                    errorState = _reviewState.value.errorState.copy(
+                _cookReviewState.value = _cookReviewState.value.copy(
+                    cookReview = reviewUiEvent.inputValue,
+                    errorState = _cookReviewState.value.errorState.copy(
                         reviewErrorState = if (reviewUiEvent.inputValue.trim().isNotEmpty())
                             ErrorState()
                         else
@@ -67,12 +67,12 @@ class ReviewViewModel  @Inject constructor(
     }
 
     private fun validateInputs(): Boolean {
-        val review = _reviewState.value.review.trim()
+        val review = _cookReviewState.value.cookReview.trim()
 
         // Review empty
         if (review.isEmpty()) {
-            _reviewState.value = _reviewState.value.copy(
-                errorState = ReviewErrorState(
+            _cookReviewState.value = _cookReviewState.value.copy(
+                errorState = CookReviewErrorState(
                     reviewErrorState = cookReviewEmptyErrorState
                 )
             )
@@ -81,37 +81,37 @@ class ReviewViewModel  @Inject constructor(
         // No errors
         else {
             // Set default error state
-            _reviewState.value = _reviewState.value.copy(errorState = ReviewErrorState())
+            _cookReviewState.value = _cookReviewState.value.copy(errorState = CookReviewErrorState())
             return true
         }
     }
 
     private fun makeProfileRequestForReview(profileId: String) = viewModelScope.launch(Dispatchers.IO) {
         Log.d("TAG", "makeProfileRequestForReview-> profileId: $profileId")
-        //_reviewState.value = _reviewState.value.copy(isLoading = true)
+        //_cookReviewState.value = _cookReviewState.value.copy(isLoading = true)
         profileUseCase.invoke(profileId).collect { result ->
             when(result){
                 is NetworkResult.Success->{
                     if (result.status == true){
                         result.data?.let { response->
-                            _reviewState.value = _reviewState.value.copy(isLoading = false, profileResponse = response, isSuccessful = true)
+                            _cookReviewState.value = _cookReviewState.value.copy(isLoading = false, profileResponse = response, isSuccessful = true)
                         }
-                        Log.d("TAG", "makeProfileRequestForReview->: ${Gson().toJson(_reviewState.value)}")
+                        Log.d("TAG", "makeProfileRequestForReview->: ${Gson().toJson(_cookReviewState.value)}")
                     }
                 }
                 is NetworkResult.Error->{
-                    Log.d("TAG", "makeProfileRequestForReview-> Error: ${Gson().toJson(_reviewState.value)}")
-                    _reviewState.value = _reviewState.value.copy(errorMessage = result.message!!)
+                    Log.d("TAG", "makeProfileRequestForReview-> Error: ${Gson().toJson(_cookReviewState.value)}")
+                    _cookReviewState.value = _cookReviewState.value.copy(errorMessage = result.message!!)
                 }
                 is NetworkResult.Loading->{
                     Log.d("TAG", "makeProfileRequestForReview->: Loading")
-                    _reviewState.value = _reviewState.value.copy(isLoading = true)
+                    _cookReviewState.value = _cookReviewState.value.copy(isLoading = true)
                 }
             }
         }
     }
 
     fun setProfileData(profileResponse: ProfileResponse) {
-        _reviewState.value = _reviewState.value.copy(isLoading = false, profileResponse = profileResponse, isSuccessful = true)
+        _cookReviewState.value = _cookReviewState.value.copy(isLoading = false, profileResponse = profileResponse, isSuccessful = true)
     }
 }

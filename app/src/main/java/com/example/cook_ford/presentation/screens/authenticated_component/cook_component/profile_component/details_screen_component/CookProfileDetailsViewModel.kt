@@ -104,8 +104,8 @@ open class CookProfileDetailsViewModel @Inject constructor(
     fun getTimeSlots():List<TimeSlots>{
         val timeSlotsList:MutableList<TimeSlots> = mutableListOf()
         if (profileState.value.isSuccessful){
-            profileState.value?.profileResponse?.get(0)?.profile?.timeSlots?.let{
-                it?.forEach { slots->
+            profileState.value.profileResponse?.get(0)?.profile?.timeSlots?.let{
+                it.forEach { slots->
                     timeSlotsList.add(TimeSlots(slots.startTime?.trim().plus(" - "+slots.endTime?.trim())))
                     Log.d("TAG", "ProfileDetailScreen TimeSlots List : ${Gson().toJson(timeSlots)}")
                 }

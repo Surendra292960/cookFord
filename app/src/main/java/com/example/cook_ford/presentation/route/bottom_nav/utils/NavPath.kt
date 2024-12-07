@@ -30,12 +30,13 @@ enum class NavPath {
     CALL_CREDIT,
     UPDATE_PROFILE,
     ADD_COOK_PROFILE,
-    MANAGE_COOK_ACCOUNT,
     POST_JOB,
     COOK_PREFERENCES,
 
     //Bottom Nav
     BOTTOM_NAVIGATION,
+
+
     //Cook Bottom Nav
     COOK_BOTTOM_NAVIGATION,
     HOME, 
@@ -43,7 +44,18 @@ enum class NavPath {
     LIST, 
     ACCOUNT,
 
-    //Account
+    //Cook Profile Details
+    COOK_DETAILS_NAV,
+    COOK_PROFILE_DETAILS,
+    COOK_REVIEW,
+    COOK_REPORT,
+    COOK_MESSAGE,
+
+    //Cook Account
     COOK_ACCOUNT_NAVIGATION,
     UPDATE_COOK_PROFILE,
+    MANAGE_COOK_ACCOUNT,
+    UPLOAD_CUISINES,
+    ADD_COOK_PREFERENCES,
+
 }

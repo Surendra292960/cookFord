@@ -1,6 +1,5 @@
 package com.example.cook_ford.presentation.screens.authenticated_component.user_component.profile_component.list_screen_component
 import android.util.Log
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -23,7 +22,6 @@ import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Card
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.filled.Verified
@@ -39,6 +37,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -81,7 +80,7 @@ fun ProfilesScreen(
 
     Log.d("TAG", "ProfileListScreen isLoading: ${profileState.isLoading}")
     LaunchedEffect(Unit) {
-        profileViewModel.getProfileRequest()
+        profileViewModel.getProfileRequestById()
 
     }
 
@@ -93,7 +92,7 @@ fun ProfilesScreen(
                 modifier = Modifier.fillMaxSize(),
                 state = profileLazyListState,
                 horizontalAlignment = Alignment.CenterHorizontally,
-                contentPadding = PaddingValues(AppTheme.dimens.paddingSmall,),
+                contentPadding = PaddingValues(AppTheme.dimens.paddingSmall),
                 content = {
                     Log.d("TAG", "ProfileListScreens : ${profileState.profile?.size}")
                     profileState.profile?.size?.let {
@@ -155,14 +154,16 @@ fun UsersProfileList(index: Int, onItemClick: (String) -> Unit, profileState: Co
                             .clip(CircleShape)
                             .border(1.dp, Color.LightGray, CircleShape)
                             .background(Color.White)) {
-                            Card(
+                            ElevatedCard(
                                 modifier = Modifier
+                                    .background(color = Color.LightGray, shape = RectangleShape)
                                     .size(100.dp)
                                     .clip(CircleShape)
                                     .align(Alignment.Center),
                                 shape = CircleShape,
-                                elevation = 2.dp,
-                                border = BorderStroke(1.dp, Color.LightGray)
+                                elevation = CardDefaults.cardElevation(
+                                    defaultElevation = 6.dp
+                                ),
                             ) {
                                 if (profileState.profile?.get(index)?.gender == "Female") {
                                     Image(

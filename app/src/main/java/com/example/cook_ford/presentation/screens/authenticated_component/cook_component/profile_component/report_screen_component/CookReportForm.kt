@@ -1,4 +1,4 @@
-package com.example.cook_ford.presentation.screens.authenticated_component.user_component.profile_component.report_screen_component
+package com.example.cook_ford.presentation.screens.authenticated_component.cook_component.profile_component.report_screen_component
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -14,18 +14,17 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.cook_ford.R
-import com.example.cook_ford.presentation.component.SingleSelectionComponent
 import com.example.cook_ford.presentation.component.widgets.KeyboardOption
 import com.example.cook_ford.presentation.component.widgets.OutlinedSubmitButton
+import com.example.cook_ford.presentation.component.SingleSelectionComponent
 import com.example.cook_ford.presentation.component.widgets.Textarea
 import com.example.cook_ford.presentation.component.widgets.snack_bar.MainViewState
-import com.example.cook_ford.presentation.screens.authenticated_component.cook_component.profile_component.report_screen_component.CookReportViewModel
-import com.example.cook_ford.presentation.screens.authenticated_component.user_component.profile_component.report_screen_component.state.ReportState
+import com.example.cook_ford.presentation.screens.authenticated_component.cook_component.profile_component.report_screen_component.state.CookReportState
 import com.example.cook_ford.utils.AppConstants
 
 @Composable
-fun ReportForm(
-    reportState: ReportState,
+fun CookReportForm(
+    cookReportState: CookReportState,
     viewState: MainViewState,
     modifier: Modifier,
     onIssueChange: (String) -> Unit,
@@ -47,14 +46,14 @@ fun ReportForm(
             Spacer(modifier = Modifier.height(10.dp))
 
             Textarea(
-                value = reportState.report,
+                value = cookReportState.cookReport,
                 onChange = onReportChange,
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(200.dp),
                 keyboardOptions = KeyboardOption(imeAction = ImeAction.Done, keyboardType = KeyboardType.Text,label = AppConstants.LABEL_REPORT, placeholder = AppConstants.REPORT_PLACEHOLDER),
-                isError = reportState.errorState.reportErrorState.hasError,
-                errorText = stringResource(id = reportState.errorState.reportErrorState.errorMessageStringResource),
+                isError = cookReportState.errorState.reportErrorState.hasError,
+                errorText = stringResource(id = cookReportState.errorState.reportErrorState.errorMessageStringResource),
                 maxChar = 800
                 /*submit = { TODO() }*/)
 

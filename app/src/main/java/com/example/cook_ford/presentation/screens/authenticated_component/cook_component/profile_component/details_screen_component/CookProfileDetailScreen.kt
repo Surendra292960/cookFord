@@ -110,6 +110,8 @@ fun CookProfileDetailScreen(
 	onNavigateToMessageScreen: () -> Unit,
 	onNavigateToAuthenticatedHomeRoute: () -> Unit) {
 
+	Log.d("TAG", "ProfileDetailScreen isLoading: Data")
+
 	val cookProfileDetailsViewModel: CookProfileDetailsViewModel = hiltViewModel()
 	val profileState by remember { cookProfileDetailsViewModel.profileState }
 	Progressbar(profileState.isLoading)
@@ -127,9 +129,9 @@ fun CookProfileDetailScreen(
 				items(size){  index->
 					TopBar(onNavigateBack = { onNavigateBack.invoke() })
 					Spacer(modifier = Modifier.height(10.dp))
-
-					if (profileState.profileResponse!![index].userType.equals(AppConstants.PROVIDER)) {
-						Stats(profileState.profileResponse!![index], "10.1M", "100", clickOnChat = {
+					Log.d("TAG", "ProfileDetailScreen username : ${profileState.profileResponse!![index].userType}")
+					if (profileState.profileResponse!![index].userType.equals(AppConstants.PROVIDER, ignoreCase = true)) {
+						Status(profileState.profileResponse!![index], "10.1M", "100", clickOnChat = {
 							navController.currentBackStackEntry?.savedStateHandle?.apply { set("profileResponse", Gson().toJson(profileState.profileResponse!![index])) }
 							onNavigateToMessageScreen.invoke()
 						})
@@ -321,7 +323,8 @@ fun ProfileImage(contentDescription: String?, modifier: Modifier = Modifier, ele
 }
 
 @Composable
-fun Stats(profile: ProfileResponse, followers: String, following: String, clickOnChat:()->Unit) {
+fun Status(profile: ProfileResponse, followers: String, following: String, clickOnChat:()->Unit) {
+	Log.d("TAG", "ProfileDetailScreen username : ${profile.username}")
 	val nameList = listOf(
 		"6",
 		"days ago."

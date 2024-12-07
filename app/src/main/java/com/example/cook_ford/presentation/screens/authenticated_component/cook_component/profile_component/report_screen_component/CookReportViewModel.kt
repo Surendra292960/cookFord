@@ -1,4 +1,4 @@
-package com.example.cook_ford.presentation.screens.authenticated_component.user_component.profile_component.report_screen_component
+package com.example.cook_ford.presentation.screens.authenticated_component.cook_component.profile_component.report_screen_component
 
 import android.util.Log
 import androidx.compose.runtime.State
@@ -11,11 +11,11 @@ import com.example.cook_ford.data.remote.NetworkResult
 import com.example.cook_ford.data.remote.profile_response.ProfileResponse
 import com.example.cook_ford.domain.use_cases.ProfileUseCase
 import com.example.cook_ford.presentation.component.widgets.snack_bar.MainViewState
-import com.example.cook_ford.presentation.screens.authenticated_component.user_component.profile_component.report_screen_component.state.ReportErrorState
-import com.example.cook_ford.presentation.screens.authenticated_component.user_component.profile_component.report_screen_component.state.ReportState
-import com.example.cook_ford.presentation.screens.authenticated_component.user_component.profile_component.report_screen_component.state.ReportUiEvent
-import com.example.cook_ford.presentation.screens.authenticated_component.user_component.profile_component.report_screen_component.state.issueEmptyErrorState
-import com.example.cook_ford.presentation.screens.authenticated_component.user_component.profile_component.report_screen_component.state.reportEmptyErrorState
+import com.example.cook_ford.presentation.screens.authenticated_component.cook_component.profile_component.report_screen_component.state.CookReportErrorState
+import com.example.cook_ford.presentation.screens.authenticated_component.cook_component.profile_component.report_screen_component.state.CookReportState
+import com.example.cook_ford.presentation.screens.authenticated_component.cook_component.profile_component.report_screen_component.state.CookReportUiEvent
+import com.example.cook_ford.presentation.screens.authenticated_component.cook_component.profile_component.report_screen_component.state.cookIssueEmptyErrorState
+import com.example.cook_ford.presentation.screens.authenticated_component.cook_component.profile_component.report_screen_component.state.cookReportEmptyErrorState
 import com.example.cook_ford.presentation.screens.un_authenticated_component.sign_in_screen_component.state.ErrorState
 import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -29,7 +29,7 @@ import javax.inject.Inject
 
 
 @HiltViewModel
-class ReportViewModel  @Inject constructor(
+class CookReportViewModel  @Inject constructor(
     private val profileUseCase: ProfileUseCase,
     private val userSession: UserSession,
     private val stateHandle: SavedStateHandle
@@ -37,8 +37,8 @@ class ReportViewModel  @Inject constructor(
 
     val selectedItem = mutableSetOf<String>()
 
-    private val _reportState = mutableStateOf(ReportState())
-    val reportState : State<ReportState> = _reportState
+    private val _cookReportState = mutableStateOf(CookReportState())
+    val cookReportState : State<CookReportState> = _cookReportState
 
     private val _viewState = MutableStateFlow(MainViewState())
     val viewState = _viewState.asStateFlow()
@@ -49,36 +49,36 @@ class ReportViewModel  @Inject constructor(
     val issueList = listOf("issue in cook`s food", "profile not updated", "issue in cook`s profile")
 
 
-    fun onUiEvent(reportUiEvent: ReportUiEvent) {
+    fun onUiEvent(reportUiEvent: CookReportUiEvent) {
         when (reportUiEvent) {
 
             //Issue changed
-            is ReportUiEvent.IssueChanged -> {
+            is CookReportUiEvent.CookIssueChanged -> {
                 Log.d("TAG", "onUiEvent: ${reportUiEvent.inputValue}")
-                _reportState.value = _reportState.value.copy(
-                    issue = reportUiEvent.inputValue,
-                    errorState = _reportState.value.errorState.copy(
+                _cookReportState.value = _cookReportState.value.copy(
+                    cookIssue = reportUiEvent.inputValue,
+                    errorState = _cookReportState.value.errorState.copy(
                        reportErrorState = if (reportUiEvent.inputValue.trim().isNotEmpty())
                             ErrorState()
                         else
-                            issueEmptyErrorState
+                            cookIssueEmptyErrorState
                     )
                 )
             }
             //Report changed
-            is ReportUiEvent.ReportChanged -> {
-                _reportState.value = _reportState.value.copy(
-                    report = reportUiEvent.inputValue,
-                    errorState = _reportState.value.errorState.copy(
+            is CookReportUiEvent.CookReportChanged -> {
+                _cookReportState.value = _cookReportState.value.copy(
+                    cookReport = reportUiEvent.inputValue,
+                    errorState = _cookReportState.value.errorState.copy(
                         reportErrorState = if (reportUiEvent.inputValue.trim().isNotEmpty())
                             ErrorState()
                         else
-                            reportEmptyErrorState
+                            cookReportEmptyErrorState
                     )
                 )
             }
 
-            ReportUiEvent.Submit -> {
+            CookReportUiEvent.Submit -> {
                 val inputsValidated = validateInputs()
                 Log.d("TAG", "onUiEvent: $inputsValidated")
                 if (inputsValidated) {
@@ -89,17 +89,17 @@ class ReportViewModel  @Inject constructor(
     }
 
     private fun validateInputs(): Boolean {
-        val report = _reportState.value.report.trim()
-        val issue = _reportState.value.issue.trim()
+        val report = _cookReportState.value.cookReport.trim()
+        val issue = _cookReportState.value.cookIssue.trim()
 
         // Issue empty
         if (issue.isEmpty()) {
             Log.d("TAG", "validateInputs: issue isEmpty")
             viewModelScope.launch {
                 _onProcessSuccess.emit("Please select issue")
-                _reportState.value = _reportState.value.copy(
-                    errorState = ReportErrorState(
-                        issueErrorState = issueEmptyErrorState
+                _cookReportState.value = _cookReportState.value.copy(
+                    errorState = CookReportErrorState(
+                        issueErrorState = cookIssueEmptyErrorState
                     )
                 )
             }
@@ -108,9 +108,9 @@ class ReportViewModel  @Inject constructor(
         // Review empty
         if (report.isEmpty()) {
             Log.d("TAG", "validateInputs: report isEmpty")
-            _reportState.value = _reportState.value.copy(
-                errorState = ReportErrorState(
-                    reportErrorState = reportEmptyErrorState
+            _cookReportState.value = _cookReportState.value.copy(
+                errorState = CookReportErrorState(
+                    reportErrorState = cookReportEmptyErrorState
                 )
             )
             return false
@@ -118,37 +118,37 @@ class ReportViewModel  @Inject constructor(
         // No errors
         else {
             // Set default error state
-            _reportState.value = _reportState.value.copy(errorState = ReportErrorState())
+            _cookReportState.value = _cookReportState.value.copy(errorState = CookReportErrorState())
             return true
         }
     }
 
     private fun makeProfileRequestForReview(profileId: String) = viewModelScope.launch(Dispatchers.IO) {
         Log.d("TAG", "makeProfileRequestForReview-> profileId: $profileId")
-        //_reportState.value = _reportState.value.copy(isLoading = true)
+        //_cookReportState.value = _cookReportState.value.copy(isLoading = true)
         profileUseCase.invoke(profileId).collect { result ->
             when(result){
                 is NetworkResult.Success->{
                     if (result.status == true){
                         result.data?.let { response->
-                            _reportState.value = _reportState.value.copy(isLoading = false, profileResponse = response, isSuccessful = true)
+                            _cookReportState.value = _cookReportState.value.copy(isLoading = false, profileResponse = response, isSuccessful = true)
                         }
-                        Log.d("TAG", "makeProfileRequestForReview->: ${Gson().toJson(_reportState.value)}")
+                        Log.d("TAG", "makeProfileRequestForReview->: ${Gson().toJson(_cookReportState.value)}")
                     }
                 }
                 is NetworkResult.Error->{
-                    Log.d("TAG", "makeProfileRequestForReview-> Error: ${Gson().toJson(_reportState.value)}")
-                    _reportState.value = _reportState.value.copy(errorMessage = result.message!!)
+                    Log.d("TAG", "makeProfileRequestForReview-> Error: ${Gson().toJson(_cookReportState.value)}")
+                    _cookReportState.value = _cookReportState.value.copy(errorMessage = result.message!!)
                 }
                 is NetworkResult.Loading->{
                     Log.d("TAG", "makeProfileRequestForReview->: Loading")
-                    _reportState.value = _reportState.value.copy(isLoading = true)
+                    _cookReportState.value = _cookReportState.value.copy(isLoading = true)
                 }
             }
         }
     }
 
     fun setProfileData(profileResponse: ProfileResponse?) {
-        _reportState.value = _reportState.value.copy(isLoading = false, profileResponse = profileResponse, isSuccessful = true)
+        _cookReportState.value = _cookReportState.value.copy(isLoading = false, profileResponse = profileResponse, isSuccessful = true)
     }
 }

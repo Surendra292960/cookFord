@@ -26,6 +26,12 @@ fun getTitleByRoute(route:String): String {
         //Cook Home Navigation
         NavConst.UPDATE_COOK_PROFILE -> NavTitle.UPDATE_COOK_PROFILE
         NavConst.MANAGE_COOK_ACCOUNT -> NavTitle.MANAGE_COOK_ACCOUNT
+        NavConst.COOK_PROFILE_DETAILS -> NavTitle.COOK_PROFILE_DETAILS
+        NavConst.COOK_REVIEW -> NavTitle.COOK_REVIEW
+        NavConst.COOK_REPORT -> NavTitle.COOK_REPORT
+        NavConst.COOK_MESSAGE -> NavTitle.COOK_MESSAGE
+        NavConst.ADD_COOK_PREFERENCES -> NavTitle.ADD_COOK_PREFERENCES
+        NavConst.UPLOAD_CUISINES -> NavTitle.UPLOAD_CUISINES
 
         // other cases
         else -> NavTitle.HOME

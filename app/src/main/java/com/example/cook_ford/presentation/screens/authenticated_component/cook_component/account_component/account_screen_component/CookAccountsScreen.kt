@@ -131,7 +131,7 @@ val accountData = mutableListOf(
 fun CookAccountsScreen(
    // state: ProfileUiState,
     navController: NavHostController,
-    onNavigateToEditProfile: () -> Unit,
+    onNavigateToUpdateCookProfile: () -> Unit,
     onNavigateToCallCreditScreen: () -> Unit,
     onNavigateToAddCookScreen: () -> Unit,
     onNavigateToManageAccountScreen: () -> Unit,
@@ -164,7 +164,7 @@ fun CookAccountsScreen(
 
                 Box(modifier = Modifier,
                     contentAlignment = Alignment.Center) {
-                    ProfileImage(changeProfileState, onChange = {})
+                    ProfileImage(modifier = Modifier, changeProfileState, onChange = {})
                     Image(
                         modifier = Modifier
                             .padding(AppTheme.dimens.paddingNormal)
@@ -177,7 +177,7 @@ fun CookAccountsScreen(
                                         Gson().toJson(accountState.profileResponse)
                                     )
                                 }
-                                onNavigateToEditProfile.invoke()
+                                onNavigateToUpdateCookProfile.invoke()
                             },
                         painter = painterResource(id = R.drawable.ic_edit_icon),
                         contentDescription = "Edit Profile"
@@ -762,7 +762,7 @@ fun Context.dial(phone: String) {
 fun PreviewProfileScreen() {
     CookAccountsScreen(
         //  state = state,
-       onNavigateToEditProfile = {},
+       onNavigateToUpdateCookProfile = {},
         onNavigateToCallCreditScreen = {},
         onNavigateToAddCookScreen = {},
         onNavigateToManageAccountScreen = {},

@@ -86,7 +86,7 @@ fun HomeScreen(
                 .padding(padding),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center) {
-            if(homeViewModel.getUserType()=="Provider"){
+            if(homeViewModel.getUserType().equals(AppConstants.PROVIDER, ignoreCase = true)){
                 CookHomeNavGraph(navController = navController)
             }else{
                 HomeNavGraph(navController = navController)

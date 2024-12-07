@@ -1,4 +1,4 @@
-package com.example.cook_ford.presentation.screens.authenticated_component.user_component.profile_component.reviews_screen_component
+package com.example.cook_ford.presentation.screens.authenticated_component.cook_component.profile_component.reviews_screen_component
 
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
@@ -44,7 +44,7 @@ import com.example.cook_ford.presentation.screens.authenticated_component.cook_c
 @Preview(showSystemUi = true, showBackground = true)
 @Composable
 fun Preview() {
-    com.example.cook_ford.presentation.screens.authenticated_component.cook_component.profile_component.reviews_screen_component.ReviewScreen(
+    ReviewScreen(
         onNavigateBack = {},
         profileResponse = ProfileResponse(),
         onNavigateToAuthenticatedHomeRoute = {}
@@ -56,10 +56,10 @@ fun ReviewScreen(
     onNavigateBack:()->Unit,
     profileResponse:ProfileResponse,
     onNavigateToAuthenticatedHomeRoute: () -> Unit) {
-    val reviewViewModel: ReviewViewModel = hiltViewModel()
+    val reviewViewModel: CookReviewViewModel = hiltViewModel()
     val viewState:MainViewState by reviewViewModel.viewState.collectAsState()
 
-    val reviewState by remember { reviewViewModel.reviewState }
+    val cookReviewState by remember { reviewViewModel.cookReviewState }
 
     val imeState = rememberImeState()
     val scrollState = rememberScrollState()
@@ -70,7 +70,7 @@ fun ReviewScreen(
         }
     }
 
-    Progressbar(reviewState.isLoading)
+    Progressbar(cookReviewState.isLoading)
     LaunchedEffect(key1 = true) {
         reviewViewModel.setProfileData(profileResponse)
     }
@@ -80,14 +80,10 @@ fun ReviewScreen(
         .fillMaxSize()
         .verticalScroll(scrollState)) {
 
-        reviewState.profileResponse?.let {
-            ImageWithUserName(
-                it
-            )
-        }
+        cookReviewState.profileResponse?.let { ImageWithUserName(it) }
 
-        ReviewForm(
-            reviewState = reviewState,
+        CookReviewForm(
+            cookReviewState = cookReviewState,
             viewState = viewState,
             modifier = Modifier
                 .fillMaxWidth()
@@ -144,6 +140,7 @@ fun ImageWithUserName(profileRes: ProfileResponse) {
                 horizontalAlignment = Alignment.Start) {
 
                 Row(verticalAlignment = Alignment.CenterVertically) {
+
                     profileRes.username?.let {
                         TitleText(
                             modifier = Modifier,

@@ -158,7 +158,7 @@ fun AccountsScreen(
     val reviewState by remember { accountViewModel.reviewState }
 
     accountData.forEachIndexed{ index, value->
-        if (accountViewModel.getUserType()=="Provider"){
+        if (accountViewModel.getUserType().equals(AppConstants.PROVIDER, ignoreCase = true)){
             if (accountData[index].title == "Sign In as Cook"){
                 accountData.removeAt(index)
             }
@@ -178,7 +178,7 @@ fun AccountsScreen(
 
                 Box(modifier = Modifier,
                     contentAlignment = Alignment.Center) {
-                    ProfileImage(changeProfileState, onChange = {})
+                    ProfileImage(modifier = Modifier, changeProfileState, onChange = {})
                     Image(
                         modifier = Modifier
                             .padding(AppTheme.dimens.paddingNormal)

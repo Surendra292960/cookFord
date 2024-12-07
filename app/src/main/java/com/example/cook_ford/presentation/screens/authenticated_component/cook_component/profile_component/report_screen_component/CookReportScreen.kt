@@ -1,5 +1,6 @@
-package com.example.cook_ford.presentation.screens.authenticated_component.user_component.profile_component.reviews_screen_component
+package com.example.cook_ford.presentation.screens.authenticated_component.cook_component.profile_component.report_screen_component
 
+import android.util.Log
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -10,13 +11,13 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -27,39 +28,46 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.repeatOnLifecycle
 import com.example.cook_ford.R
 import com.example.cook_ford.data.remote.profile_response.ProfileResponse
 import com.example.cook_ford.presentation.component.rememberImeState
 import com.example.cook_ford.presentation.component.widgets.Progressbar
 import com.example.cook_ford.presentation.component.widgets.TitleText
 import com.example.cook_ford.presentation.component.widgets.snack_bar.MainViewState
-import com.example.cook_ford.presentation.screens.authenticated_component.cook_component.profile_component.reviews_screen_component.state.CookReviewUiEvent
+import com.example.cook_ford.presentation.screens.authenticated_component.cook_component.profile_component.report_screen_component.state.CookReportUiEvent
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 @Preview(showSystemUi = true, showBackground = true)
 @Composable
 fun Preview() {
-    com.example.cook_ford.presentation.screens.authenticated_component.cook_component.profile_component.reviews_screen_component.ReviewScreen(
+    CookReportScreen(
         onNavigateBack = {},
-        profileResponse = ProfileResponse(),
         onNavigateToAuthenticatedHomeRoute = {}
     )
 }
 
 @Composable
-fun ReviewScreen(
+fun CookReportScreen(
     onNavigateBack:()->Unit,
-    profileResponse:ProfileResponse,
+    profileResponse: ProfileResponse?=null,
     onNavigateToAuthenticatedHomeRoute: () -> Unit) {
-    val reviewViewModel: ReviewViewModel = hiltViewModel()
-    val viewState:MainViewState by reviewViewModel.viewState.collectAsState()
 
-    val reviewState by remember { reviewViewModel.reviewState }
+    val reportViewModel: CookReportViewModel = hiltViewModel()
+    val cookReportState by reportViewModel.cookReportState
+    val viewState:MainViewState by reportViewModel.viewState.collectAsState()
+    val snackBarHostState = remember { SnackbarHostState() }
+    val lifecycle = LocalLifecycleOwner.current.lifecycle
+
 
     val imeState = rememberImeState()
     val scrollState = rememberScrollState()
@@ -70,39 +78,47 @@ fun ReviewScreen(
         }
     }
 
-    Progressbar(reviewState.isLoading)
+
+    Progressbar(cookReportState.isLoading)
     LaunchedEffect(key1 = true) {
-        reviewViewModel.setProfileData(profileResponse)
+        reportViewModel.setProfileData(profileResponse)
     }
 
+    if (cookReportState.isSuccessful) {
+        Log.d("TAG", "Data isSuccessful : ${cookReportState.isSuccessful}")
+        Column(modifier = Modifier.background(Color.White).fillMaxSize().verticalScroll(scrollState)) {
 
-    Column(modifier = Modifier.background(Color.White)
-        .fillMaxSize()
-        .verticalScroll(scrollState)) {
+            cookReportState.profileResponse?.let { ImageWithUserName(it) }
 
-        reviewState.profileResponse?.let {
-            ImageWithUserName(
-                it
-            )
-        }
-
-        ReviewForm(
-            reviewState = reviewState,
-            viewState = viewState,
-            modifier = Modifier
-                .fillMaxWidth()
-                .imePadding()
-                .padding(start = 10.dp, end = 10.dp),
-            onReviewChange = { inputString ->
-                reviewViewModel.onUiEvent(
-                    reviewUiEvent = CookReviewUiEvent.CookReviewChanged(
-                        inputString
+            CookReportForm(
+                cookReportState = cookReportState,
+                viewState = viewState,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 10.dp, end = 10.dp),
+                onIssueChange = { inputString ->
+                    Log.d("TAG", "ReportScreen: $inputString")
+                    reportViewModel.onUiEvent(
+                        reportUiEvent = CookReportUiEvent.CookIssueChanged(
+                            inputString
+                        )
                     )
-                )
-            },
-            onSubmit = {
-                reviewViewModel.onUiEvent(reviewUiEvent = CookReviewUiEvent.Submit)
-            })
+                },
+                onReportChange = { inputString ->
+                    Log.d("TAG", "ReportScreen: $inputString")
+                    reportViewModel.onUiEvent(
+                        reportUiEvent = CookReportUiEvent.CookReportChanged(
+                            inputString
+                        )
+                    )
+                },
+                onSubmit = {
+                    reportViewModel.onUiEvent(reportUiEvent = CookReportUiEvent.Submit)
+                }
+            )
+
+            ShowSnackbar(lifecycle, snackBarHostState)
+        }
     }
 }
 
@@ -144,6 +160,7 @@ fun ImageWithUserName(profileRes: ProfileResponse) {
                 horizontalAlignment = Alignment.Start) {
 
                 Row(verticalAlignment = Alignment.CenterVertically) {
+
                     profileRes.username?.let {
                         TitleText(
                             modifier = Modifier,
@@ -159,4 +176,17 @@ fun ImageWithUserName(profileRes: ProfileResponse) {
     }
 }
 
-
+@Composable
+fun ShowSnackbar(lifecycle: Lifecycle, snackBarHostState: SnackbarHostState) {
+    val reportViewModel: CookReportViewModel = hiltViewModel()
+    LaunchedEffect(key1 = Unit) {
+        lifecycle.repeatOnLifecycle(state = Lifecycle.State.STARTED) {
+            launch {
+                reportViewModel.onProcessSuccess.collectLatest { message: String ->
+                    Log.d("TAG", "Report: Event success")
+                    snackBarHostState.showSnackbar(message)
+                }
+            }
+        }
+    }
+}

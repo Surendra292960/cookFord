@@ -39,14 +39,6 @@ sealed class NavigationRoutes {
         data object Account : HomeNavigation(route = NavPath.ACCOUNT.toString(), title = NavTitle.ACCOUNT, icon = Icons.Default.Person)
     }
 
-    // BottomNavigation Cook Routes
-    sealed class CookHomeNavigation(val route: String, val title: String, val icon: ImageVector) : NavigationRoutes() {
-        data object NavigationRoute : CookHomeNavigation(route = NavPath.COOK_BOTTOM_NAVIGATION.toString(), title = NavTitle.HOME, icon = Icons.Default.Home)
-        data object Home : CookHomeNavigation(route = NavPath.HOME.toString(), title = NavTitle.HOME, icon = Icons.Default.Home)
-        data object Search : HomeNavigation(route = NavPath.SEARCH.toString(), title = NavTitle.SEARCH, icon = Icons.Default.Search)
-        data object Account : HomeNavigation(route = NavPath.ACCOUNT.toString(), title = NavTitle.ACCOUNT, icon = Icons.Default.Person)
-    }
-
     sealed class DetailsNavigation(val route: String) : NavigationRoutes() {
         data object NavigationRoute : DetailsNavigation(route = NavPath.DETAILS_NAV.toString())
         data object ProfileDetail : DetailsNavigation(route = NavPath.PROFILE_DETAILS.toString())
@@ -65,9 +57,27 @@ sealed class NavigationRoutes {
         data object CookPreferences : AccountNavigation(route = NavPath.COOK_PREFERENCES.toString())
     }
 
+    // BottomNavigation Cook Routes
+    sealed class CookHomeNavigation(val route: String, val title: String, val icon: ImageVector) : NavigationRoutes() {
+        data object NavigationRoute : CookHomeNavigation(route = NavPath.COOK_BOTTOM_NAVIGATION.toString(), title = NavTitle.HOME, icon = Icons.Default.Home)
+        data object Home : CookHomeNavigation(route = NavPath.HOME.toString(), title = NavTitle.HOME, icon = Icons.Default.Home)
+        data object Search : HomeNavigation(route = NavPath.SEARCH.toString(), title = NavTitle.SEARCH, icon = Icons.Default.Search)
+        data object Account : HomeNavigation(route = NavPath.ACCOUNT.toString(), title = NavTitle.ACCOUNT, icon = Icons.Default.Person)
+    }
+
+    sealed class CookDetailsNavigation(val route: String) : NavigationRoutes() {
+        data object NavigationRoute : CookDetailsNavigation(route = NavPath.COOK_DETAILS_NAV.toString())
+        data object CookProfileDetail : CookDetailsNavigation(route = NavPath.COOK_PROFILE_DETAILS.toString())
+        data object CookProfileReview : CookDetailsNavigation(route = NavPath.COOK_REVIEW.toString())
+        data object CookProfileReport : CookDetailsNavigation(route = NavPath.COOK_REPORT.toString())
+        data object CookMessage : CookDetailsNavigation(route = NavPath.COOK_MESSAGE.toString())
+    }
+
     sealed class CookAccountNavigation(val route: String) : NavigationRoutes() {
         data object NavigationRoute : CookAccountNavigation(route = NavPath.COOK_ACCOUNT_NAVIGATION.toString())
         data object UpdateCookProfile : CookAccountNavigation(route = NavPath.UPDATE_COOK_PROFILE.toString())
         data object ManageCookAccount : CookAccountNavigation(route = NavPath.MANAGE_COOK_ACCOUNT.toString())
+        data object UploadCuisines : CookAccountNavigation(route = NavPath.UPLOAD_CUISINES.toString())
+        data object AddCookPreferences : CookAccountNavigation(route = NavPath.ADD_COOK_PREFERENCES.toString())
     }
 }

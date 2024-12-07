@@ -29,24 +29,24 @@ class CookProfileViewModel @Inject constructor(
     private val _profileState = mutableStateOf(CookProfileState())
     val profileState: State<CookProfileState> = _profileState
 
-    fun getProfileRequest() = viewModelScope.launch(Dispatchers.IO) {
+    fun getProfileRequestById() = viewModelScope.launch(Dispatchers.IO) {
         _profileState.value = _profileState.value.copy(isLoading = true)
         profileUseCase.invoke().collect { result ->
             when(result){
                 is NetworkResult.Success->{
                     if (result.status == true){
                         result.data?.let { response->
-                            _profileState.value = _profileState.value.copy(isLoading = false, profile = result.data, isSuccessful = true)
+                            _profileState.value = _profileState.value.copy(isLoading = false, profile = response, isSuccessful = true)
                         }
-                        Log.d("TAG", "getProfileRequest getProfileResponse: ${Gson().toJson(_profileState.value)}")
+                        Log.d("TAG", "getProfileRequestById getProfileResponse: ${Gson().toJson(_profileState.value)}")
                     }
                 }
                 is NetworkResult.Error->{
-                    Log.d("TAG", "getProfileRequest: ${result.message}")
+                    Log.d("TAG", "getProfileRequestById: ${result.message}")
                     _profileState.value = _profileState.value.copy(errorMessage = result.message!!)
                 }
                 is NetworkResult.Loading->{
-                    Log.d("TAG", "getProfileRequest: Loading")
+                    Log.d("TAG", "getProfileRequestById: Loading")
                     _profileState.value = _profileState.value.copy(isLoading = true)
 
                 }

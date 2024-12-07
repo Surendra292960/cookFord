@@ -17,8 +17,6 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -30,11 +28,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalLifecycleOwner
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.repeatOnLifecycle
@@ -42,7 +41,9 @@ import com.example.cook_ford.R
 import com.example.cook_ford.data.remote.profile_response.ProfileResponse
 import com.example.cook_ford.presentation.component.rememberImeState
 import com.example.cook_ford.presentation.component.widgets.Progressbar
+import com.example.cook_ford.presentation.component.widgets.TitleText
 import com.example.cook_ford.presentation.component.widgets.snack_bar.MainViewState
+import com.example.cook_ford.presentation.screens.authenticated_component.cook_component.profile_component.report_screen_component.CookReportViewModel
 import com.example.cook_ford.presentation.screens.authenticated_component.user_component.profile_component.report_screen_component.state.ReportUiEvent
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -86,9 +87,13 @@ fun ReportScreen(
 
     if (reportState.isSuccessful) {
         Log.d("TAG", "Data isSuccessful : ${reportState.isSuccessful}")
-        Column(modifier = Modifier.fillMaxSize().verticalScroll(scrollState)) {
+        Column(modifier = Modifier.background(Color.White).fillMaxSize().verticalScroll(scrollState)) {
 
-            reportState.profileResponse?.let { ImageWithUserName(it) }
+            reportState.profileResponse?.let {
+                ImageWithUserName(
+                    it
+                )
+            }
 
             ReportForm(
                 reportState = reportState,
@@ -117,7 +122,10 @@ fun ReportScreen(
                 }
             )
 
-            ShowSnackbar(lifecycle, snackBarHostState)
+            com.example.cook_ford.presentation.screens.authenticated_component.cook_component.profile_component.report_screen_component.ShowSnackbar(
+                lifecycle,
+                snackBarHostState
+            )
         }
     }
 }
@@ -160,13 +168,17 @@ fun ImageWithUserName(profileRes: ProfileResponse) {
                 horizontalAlignment = Alignment.Start) {
 
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    Text(
-                        text = profileRes.username.toString(),
-                        style = MaterialTheme.typography.subtitle2,
-                        fontSize = 18.sp,
-                        modifier = Modifier.align(Alignment.CenterVertically),
-                        color = Color.DarkGray
-                    )
+
+                    profileRes.username?.let {
+                        TitleText(
+                            modifier = Modifier,
+                            text = it,
+                            textAlign = TextAlign.Start,
+                            textColor = Color.DarkGray,
+                            fontWeight = FontWeight.ExtraBold
+                        )
+                    }
+
                 }
             }
         }
@@ -175,7 +187,7 @@ fun ImageWithUserName(profileRes: ProfileResponse) {
 
 @Composable
 fun ShowSnackbar(lifecycle: Lifecycle, snackBarHostState: SnackbarHostState) {
-    val reportViewModel: ReportViewModel = hiltViewModel()
+    val reportViewModel: CookReportViewModel = hiltViewModel()
     LaunchedEffect(key1 = Unit) {
         lifecycle.repeatOnLifecycle(state = Lifecycle.State.STARTED) {
             launch {

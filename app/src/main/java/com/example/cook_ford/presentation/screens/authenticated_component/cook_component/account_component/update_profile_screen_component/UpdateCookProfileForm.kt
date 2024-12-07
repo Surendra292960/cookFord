@@ -58,6 +58,7 @@ fun UpdateCookProfileForm(
 
         // Profile Image
         ProfileImage(
+            modifier = Modifier,
             changeProfileState,
             onChange = onProfileImageChange
         )
@@ -154,12 +155,12 @@ fun UpdateCookProfileForm(
             text = stringResource(id = R.string.sign_out_button_text),
             isLoading = viewState.isLoading,
             onClick = {
-                if (updateCookProfileViewModel.getUserType()=="Provider"){
+                if (updateCookProfileViewModel.getUserType().equals(AppConstants.PROVIDER, ignoreCase = true)){
                     updateCookProfileViewModel.signOut()
-                    onSignOut.invoke("Provider")
+                    onSignOut.invoke(AppConstants.PROVIDER)
                 }else{
                     updateCookProfileViewModel.signOut()
-                    onSignOut.invoke("User")
+                    onSignOut.invoke(AppConstants.USER)
                 }
             }
         )

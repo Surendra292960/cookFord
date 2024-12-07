@@ -59,6 +59,7 @@ fun UpdateProfileForm(
 
         // Profile Image
         ProfileImage(
+            modifier = Modifier,
             changeProfileState,
             onChange = onProfileImageChange
         )
@@ -155,12 +156,12 @@ fun UpdateProfileForm(
             text = stringResource(id = R.string.sign_out_button_text),
             isLoading = viewState.isLoading,
             onClick = {
-                if (updateProfileViewModel.getUserType()=="Provider"){
+                if (updateProfileViewModel.getUserType().equals(AppConstants.PROVIDER, ignoreCase = true)){
                     updateProfileViewModel.signOut()
-                    onSignOut.invoke("Provider")
+                    onSignOut.invoke(AppConstants.PROVIDER)
                 }else{
                     updateProfileViewModel.signOut()
-                    onSignOut.invoke("User")
+                    onSignOut.invoke(AppConstants.USER)
                 }
             }
         )

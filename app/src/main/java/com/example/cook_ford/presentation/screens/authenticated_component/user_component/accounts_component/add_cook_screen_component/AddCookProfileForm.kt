@@ -83,7 +83,7 @@ fun AddCookProfileForm(
         horizontalAlignment = Alignment.CenterHorizontally) {
 
         // Profile Image
-        ProfileImage(changeProfileState, onChange = onProfileImageChange)
+        ProfileImage(modifier = Modifier, changeProfileState, onChange = onProfileImageChange)
 
         Spacer(modifier = Modifier.height(10.dp))
 

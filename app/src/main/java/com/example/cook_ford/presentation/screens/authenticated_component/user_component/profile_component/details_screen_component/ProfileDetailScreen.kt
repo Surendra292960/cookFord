@@ -94,6 +94,7 @@ import com.example.cook_ford.presentation.theme.DeepGreen
 import com.example.cook_ford.presentation.theme.FontName
 import com.example.cook_ford.presentation.theme.LightGray_2
 import com.example.cook_ford.presentation.theme.OrangeYellow1
+import com.example.cook_ford.utils.AppConstants
 import com.example.cook_ford.utils.Utility.shareProfile
 import com.google.gson.Gson
 
@@ -129,8 +130,8 @@ fun ProfileDetailScreen(
 						onNavigateBack = { onNavigateBack.invoke() })
 					Spacer(modifier = Modifier.height(10.dp))
 
-					if (profileState.profileResponse!![index].userType=="provider") {
-						com.example.cook_ford.presentation.screens.authenticated_component.cook_component.profile_component.details_screen_component.Stats(
+					if (profileState.profileResponse!![index].userType.equals(AppConstants.PROVIDER, ignoreCase = true)) {
+						com.example.cook_ford.presentation.screens.authenticated_component.cook_component.profile_component.details_screen_component.Status(
 							profileState.profileResponse!![index],
 							"10.1M",
 							"100",

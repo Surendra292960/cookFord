@@ -12,9 +12,11 @@ val Pink40 = Color(0xFF7D5260)
 
 
 val OrangeYellow1 = Color(0xfff0bd28)
-val Orange = Color(0xFFE22209)
-val LightGreen = Color(0xFF3EC25F)
+val Orange = Color(0xFFEF5A48)
+val Red = Color(0xFFFF5252)
+val LightGreen = Color(0xFF8CEEA3)
 val LightGreen1 = Color(0xFF059C2A)
+val Green = Color(0xFF4CAF50)
 val DeepGreen = Color(0xFF036D1C)
 //val LightGray = Color(0xFFECF0EE)
 val LightGray = Color(0xFFF7F8F7)

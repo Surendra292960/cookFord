@@ -197,7 +197,7 @@ class CookSignUpViewModel @Inject constructor(private val signUpUseCase: SignUpU
                             password = signUpState.value.password,
                             gender = signUpState.value.gender,
                             phone = "8755092960",
-                            userType = "provider",
+                            userType = AppConstants.PROVIDER,
                             latitude = _location.value.first.toString(),
                             longitude = _location.value.second.toString()
                         )

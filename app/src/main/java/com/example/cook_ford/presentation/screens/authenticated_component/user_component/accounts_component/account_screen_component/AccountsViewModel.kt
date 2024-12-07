@@ -42,7 +42,7 @@ class AccountsViewModel @Inject constructor(
     val viewState = _viewState.asStateFlow()
 
     init {
-        userSession.getString(SessionConstant.USER_ID)?.let { getProfileRequest(it) }
+        userSession.getString(SessionConstant.USER_ID)?.let { getProfileRequestById(it) }
     }
 
     fun onReViewUiEvent(reviewUiEvent: ReviewUiEvent) {
@@ -130,7 +130,7 @@ class AccountsViewModel @Inject constructor(
         }
     }
 
-    private fun getProfileRequest(profileId: String) = viewModelScope.launch(Dispatchers.IO) {
+    private fun getProfileRequestById(profileId: String) = viewModelScope.launch(Dispatchers.IO) {
         Log.d("TAG", "makeProfileRequest profileId: $profileId")
         // _accountState.value = _accountState.value.copy(isLoading = true)
         profileUseCase.invoke(profileId).collect { result ->

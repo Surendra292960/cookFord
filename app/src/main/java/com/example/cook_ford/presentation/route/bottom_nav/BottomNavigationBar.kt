@@ -114,19 +114,6 @@ fun BottomNavigationBar(
             topBarVisibility.invoke(true)
         }
 
-        //Cook Home Navigation
-        NavigationRoutes.CookHomeNavigation.Home.route -> {
-            bottomNavVisibility = true
-            topBarVisibility.invoke(true)
-        }
-        NavigationRoutes.CookHomeNavigation.Search.route -> {
-            bottomNavVisibility = true
-            topBarVisibility.invoke(true)
-        }
-        NavigationRoutes.CookHomeNavigation.Account.route -> {
-            bottomNavVisibility = true
-            topBarVisibility.invoke(true)
-        }
         /**
          * Profile Details Navigation
          */
@@ -172,6 +159,22 @@ fun BottomNavigationBar(
         }
 
         /**
+         * Cook Home Navigation
+         * */
+        NavigationRoutes.CookHomeNavigation.Home.route -> {
+            bottomNavVisibility = true
+            topBarVisibility.invoke(true)
+        }
+        NavigationRoutes.CookHomeNavigation.Search.route -> {
+            bottomNavVisibility = true
+            topBarVisibility.invoke(true)
+        }
+        NavigationRoutes.CookHomeNavigation.Account.route -> {
+            bottomNavVisibility = true
+            topBarVisibility.invoke(true)
+        }
+
+        /**
          * Cook Account Navigation
          */
         NavigationRoutes.CookAccountNavigation.UpdateCookProfile.route  -> {
@@ -182,6 +185,35 @@ fun BottomNavigationBar(
             bottomNavVisibility = false
             topBarVisibility(true)
         }
+        NavigationRoutes.CookAccountNavigation.UploadCuisines.route  -> {
+            bottomNavVisibility = false
+            topBarVisibility(true)
+        }
+        NavigationRoutes.CookAccountNavigation.AddCookPreferences.route -> {
+            bottomNavVisibility = false
+            topBarVisibility(true)
+        }
+
+        /**
+         * Profile Details Navigation
+         */
+        NavigationRoutes.CookDetailsNavigation.CookProfileDetail.route -> {
+            bottomNavVisibility = false
+            topBarVisibility.invoke(true)
+        }
+        NavigationRoutes.CookDetailsNavigation.CookProfileReview.route -> {
+            bottomNavVisibility = false
+            topBarVisibility(true)
+        }
+        NavigationRoutes.CookDetailsNavigation.CookProfileReport.route -> {
+            bottomNavVisibility = false
+            topBarVisibility(true)
+        }
+        NavigationRoutes.CookDetailsNavigation.CookMessage.route -> {
+            bottomNavVisibility = false
+            topBarVisibility(true)
+        }
+
         /*
         DetailScreen.NotificationScreen.route -> {
             bottomNavVisibility = false

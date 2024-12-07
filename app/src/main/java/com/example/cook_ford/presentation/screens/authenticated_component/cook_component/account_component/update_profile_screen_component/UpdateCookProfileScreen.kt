@@ -124,7 +124,6 @@ fun ProfileForm(
     changeProfileImageState: (String) -> Unit
 ) {
 
-    Log.d("TAG", "ProfileForm: ")
     // EditProfile Inputs Composable
     UpdateCookProfileForm(
         changeProfileState = changeProfileState,

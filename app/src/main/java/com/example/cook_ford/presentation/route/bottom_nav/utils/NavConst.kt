@@ -20,7 +20,15 @@ object NavConst {
     const val POST_JOB = "POST_JOB"
     const val COOK_PREFERENCES = "COOK_PREFERENCES"
 
+    //Cook Profile Details
+    const val COOK_PROFILE_DETAILS = "COOK_PROFILE_DETAILS"
+    const val COOK_REVIEW = "COOK_REVIEW"
+    const val COOK_REPORT = "COOK_REPORT"
+    const val COOK_MESSAGE = "COOK_MESSAGE"
+
     //Cook Account
     const val UPDATE_COOK_PROFILE = "UPDATE_COOK_PROFILE"
     const val MANAGE_COOK_ACCOUNT = "MANAGE_COOK_ACCOUNT"
+    const val UPLOAD_CUISINES = "UPLOAD_CUISINES"
+    const val ADD_COOK_PREFERENCES = "ADD_COOK_PREFERENCES"
 }

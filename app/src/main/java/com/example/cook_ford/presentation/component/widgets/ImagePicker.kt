@@ -32,7 +32,7 @@ import coil.compose.AsyncImage
 import com.example.cook_ford.R
 
 @Composable
-fun ProfileImage(changeProfileState: MutableState<String>, onChange: (String) -> Unit) {
+fun ProfileImage(modifier: Modifier = Modifier, changeProfileState: MutableState<String>, onChange: (String) -> Unit) {
     var selectedImages by remember { mutableStateOf<Uri?>(null) }
 
     val singlePhotoPickerLauncher = rememberLauncherForActivityResult(

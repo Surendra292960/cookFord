@@ -81,7 +81,7 @@ fun PostJobScreen(
             .padding(all = 5.dp)
             .weight(1f, false), horizontalAlignment = Alignment.CenterHorizontally) {
 
-            ProfileImage(changeProfileState, onChange = {})
+            ProfileImage(modifier = Modifier, changeProfileState, onChange = {})
 
             Text(
                 text = "We will notify you when any new cook is\n available for your requirement",

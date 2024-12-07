@@ -35,8 +35,16 @@ object NavTitle {
     const val POST_JOB = "Post Job"
     const val COOK_PREFERENCES = "Cook Preferences"
 
+    //Cook Profile Details
+    const val COOK_PROFILE_DETAILS = "Cook Profile Details"
+    const val COOK_REVIEW = "Cook Review"
+    const val COOK_REPORT = "Cook Report"
+    const val COOK_MESSAGE = "Cook Message"
+
     //Cook Account
-    const val UPDATE_COOK_PROFILE = "Update Profile"
-    const val MANAGE_COOK_ACCOUNT = "Manage Account"
+    const val UPDATE_COOK_PROFILE = "Cook Update Profile"
+    const val MANAGE_COOK_ACCOUNT = "Cook Manage Account"
+    const val ADD_COOK_PREFERENCES = "Cook Preferences"
+    const val UPLOAD_CUISINES = "Upload Cuisines"
 }
 

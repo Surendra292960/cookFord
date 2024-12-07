@@ -17,21 +17,23 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
 import com.example.cook_ford.presentation.theme.AppTheme
 
-/*
 @Composable
-fun TitleText(
+fun LargeText(
     modifier: Modifier = Modifier,
     text: String,
-    textAlign: TextAlign = TextAlign.Start
-) {
+    textColor: Color,
+    fontWeight:FontWeight,
+    textAlign: TextAlign = TextAlign.Start) {
     Text(
         modifier = modifier,
         text = text,
-        textAlign = textAlign,
+        letterSpacing = 0.5.sp,
         style = MaterialTheme.typography.headlineLarge,
-        color = MaterialTheme.colorScheme.secondary
+        textAlign = textAlign,
+        fontWeight = fontWeight,
+        color = textColor
     )
-}*/
+}
 
 @Composable
 fun TitleText(
@@ -44,7 +46,26 @@ fun TitleText(
         modifier = modifier,
         text = text,
         letterSpacing = 0.5.sp,
-        style = MaterialTheme.typography.bodyMedium,
+        style = MaterialTheme.typography.bodyLarge,
+        textAlign = textAlign,
+        fontWeight = fontWeight,
+        fontSize = 16.sp,
+        color = textColor
+    )
+}
+
+@Composable
+fun SubTitleText(
+    modifier: Modifier = Modifier,
+    text: String,
+    textColor: Color,
+    fontWeight:FontWeight,
+    textAlign: TextAlign = TextAlign.Start) {
+    Text(
+        modifier = modifier,
+        text = text,
+        letterSpacing = 0.5.sp,
+        style = MaterialTheme.typography.bodyLarge,
         textAlign = textAlign,
         fontWeight = fontWeight,
         fontSize = 15.sp,
@@ -62,6 +83,7 @@ fun MediumTitleText(
     Text(
         modifier = modifier,
         text = text,
+        fontSize = 14.sp,
         style = MaterialTheme.typography.bodyMedium,
         textAlign = textAlign,
         fontWeight = fontWeight,
@@ -79,7 +101,27 @@ fun SmallTitleText(
     Text(
         modifier = modifier,
         text = text,
-      //  fontSize = 9.sp,
+        fontSize = 13.sp,
+        style = MaterialTheme.typography.bodySmall,
+        //fontFamily = FontFamily.Default,
+        fontWeight = fontWeight,
+        textAlign = textAlign,
+        color = textColor
+    )
+}
+
+@Composable
+fun SmallSubTitleText(
+    modifier: Modifier = Modifier,
+    text: String,
+    textColor: Color,
+    fontWeight:FontWeight,
+    textAlign: TextAlign = TextAlign.Start) {
+    Text(
+        modifier = modifier,
+        text = text,
+        fontSize = 12.sp,
+        //letterSpacing = 1.sp,
         style = MaterialTheme.typography.bodySmall,
         //fontFamily = FontFamily.Default,
         fontWeight = fontWeight,
@@ -97,7 +139,6 @@ fun SubTitleText(
     Text(
         modifier = modifier,
         text = text,
-        letterSpacing = 1.sp,
         style = MaterialTheme.typography.bodyMedium,
         //color = MaterialTheme.colorScheme.onPrimary,
         textAlign = textAlign
