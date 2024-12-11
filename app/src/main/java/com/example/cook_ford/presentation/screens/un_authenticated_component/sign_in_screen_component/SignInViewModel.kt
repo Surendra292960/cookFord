@@ -17,10 +17,10 @@ import com.example.cook_ford.presentation.screens.un_authenticated_component.sig
 import com.example.cook_ford.presentation.screens.un_authenticated_component.sign_in_screen_component.state.SignInErrorState
 import com.example.cook_ford.presentation.screens.un_authenticated_component.sign_in_screen_component.state.SignInState
 import com.example.cook_ford.presentation.screens.un_authenticated_component.sign_in_screen_component.state.SignInUiEvent
+import com.example.cook_ford.presentation.screens.un_authenticated_component.sign_in_screen_component.state.emailEmptyErrorState
 import com.example.cook_ford.presentation.screens.un_authenticated_component.sign_in_screen_component.state.passwordEmptyErrorState
-import com.example.cook_ford.presentation.screens.authenticated_component.cook_component.account_component.cook_sign_up.state.emailEmptyErrorState
-import com.example.cook_ford.presentation.screens.authenticated_component.cook_component.account_component.cook_sign_up.state.invalidPasswordErrorState
-import com.example.cook_ford.presentation.screens.authenticated_component.cook_component.account_component.cook_sign_up.state.invalidUserNameErrorState
+import com.example.cook_ford.presentation.screens.un_authenticated_component.sign_up_screen_user_component.state.invalidPasswordErrorState
+import com.example.cook_ford.presentation.screens.un_authenticated_component.sign_up_screen_user_component.state.invalidUserNameErrorState
 import com.example.cook_ford.utils.AppConstants.PASSWORD_PATTERN
 import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -110,7 +110,7 @@ class SignInViewModel @Inject constructor(private val signInUseCase: SignInUseCa
 
     /**
      * Function to validate inputs
-     * Ideally it should be on domain layer (usecase)
+     * Ideally it should be on domain layer (useCase)
      * @return true -> inputs are valid
      * @return false -> inputs are invalid
      */

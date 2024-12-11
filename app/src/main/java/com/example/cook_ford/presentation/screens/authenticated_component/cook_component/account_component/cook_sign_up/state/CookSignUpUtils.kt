@@ -1,3 +1,4 @@
+/*
 package com.example.cook_ford.presentation.screens.authenticated_component.cook_component.account_component.cook_sign_up.state
 
 import com.example.cook_ford.R
@@ -76,3 +77,4 @@ val zipCodeErrorState = ErrorState(
     hasError = true,
     errorMessageStringResource = R.string.sign_up_error_msg_empty_zip_code
 )
+*/

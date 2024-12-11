@@ -52,8 +52,7 @@ import com.example.cook_ford.presentation.component.CuisineSlotComponent
 import com.example.cook_ford.presentation.component.widgets.Child
 import com.example.cook_ford.presentation.component.widgets.MediumTitleText
 import com.example.cook_ford.presentation.component.widgets.Progressbar
-import com.example.cook_ford.presentation.screens.authenticated_component.cook_component.profile_component.list_screen_component.CookProfileViewModel
-import com.example.cook_ford.presentation.screens.authenticated_component.cook_component.profile_component.list_screen_component.state.CookProfileState
+import com.example.cook_ford.presentation.screens.authenticated_component.user_component.profile_component.list_screen_component.state.ProfileState
 import com.example.cook_ford.presentation.theme.AppTheme
 import com.example.cook_ford.presentation.theme.LightGray_2
 import com.example.cook_ford.presentation.theme.LightGreen
@@ -64,8 +63,8 @@ import com.google.gson.Gson
 @Preview(showSystemUi = true, showBackground = true)
 @Composable
 fun Preview() {
-    com.example.cook_ford.presentation.screens.authenticated_component.cook_component.profile_component.list_screen_component.UsersProfileList(
-        index = 0, onItemClick = {}, profileState = CookProfileState()
+    UsersProfileList(
+        index = 0, onItemClick = {}, profileState = ProfileState()
     )
 }
 
@@ -75,13 +74,12 @@ fun ProfilesScreen(
     navController: NavHostController,
     profileLazyListState: LazyListState = rememberLazyListState(),
     onNavigateToProfileDetails: () -> Unit) {
-    val profileViewModel: CookProfileViewModel = hiltViewModel()
+    val profileViewModel: ProfileViewModel = hiltViewModel()
     val profileState by remember { profileViewModel.profileState }
 
     Log.d("TAG", "ProfileListScreen isLoading: ${profileState.isLoading}")
     LaunchedEffect(Unit) {
-        profileViewModel.getProfileRequestById()
-
+        profileViewModel.getProfilesRequest()
     }
 
     Box(modifier = Modifier.background(Color.White).fillMaxSize()) {
@@ -97,7 +95,8 @@ fun ProfilesScreen(
                     Log.d("TAG", "ProfileListScreens : ${profileState.profile?.size}")
                     profileState.profile?.size?.let {
                         items(it) { index ->
-                            if (profileState.profile!![index].userType!=AppConstants.PROVIDER){
+                            if (!profileState.profile!![index].userType.equals(AppConstants.USER, ignoreCase = true)){
+                                Log.d("TAG", "ProfileListScreens userType : ${profileState.profile!![index].userType}")
                                 UsersProfileList(
                                     profileState = profileState,
                                     index = index,
@@ -125,10 +124,10 @@ fun ProfilesScreen(
 
 
 @Composable
-fun UsersProfileList(index: Int, onItemClick: (String) -> Unit, profileState: CookProfileState) {
-
+fun UsersProfileList(index: Int, onItemClick: (String) -> Unit, profileState: ProfileState) {
+    Log.d("TAG", "UsersProfileList userType : ${profileState.profile!![index].userType}")
         ElevatedCard(modifier = Modifier
-            .clickable { profileState.profile?.get(index)?._id?.let { onItemClick(it) } }
+            .clickable { profileState.profile[index]._id?.let { onItemClick(it) } }
             .padding(bottom = 10.dp),
             colors = CardDefaults.cardColors(Color.White),
             elevation = CardDefaults.elevatedCardElevation(AppTheme.dimens.paddingTooSmall),
@@ -165,7 +164,7 @@ fun UsersProfileList(index: Int, onItemClick: (String) -> Unit, profileState: Co
                                     defaultElevation = 6.dp
                                 ),
                             ) {
-                                if (profileState.profile?.get(index)?.gender == "Female") {
+                                if (profileState.profile[index].gender == "Female") {
                                     Image(
                                         painter = painterResource(id = R.drawable.female_chef),
                                         contentDescription = "Profile Photo",
@@ -183,7 +182,7 @@ fun UsersProfileList(index: Int, onItemClick: (String) -> Unit, profileState: Co
                             }
                         }
 
-                        profileState.profile?.get(index)?.profile?.total_rating?.let {
+                        profileState.profile[index].profile?.total_rating?.let {
                             Row(modifier = Modifier.padding(vertical = 5.dp)) {
                                 Icon(Icons.Filled.Star,
                                     contentDescription = "",
@@ -212,7 +211,7 @@ fun UsersProfileList(index: Int, onItemClick: (String) -> Unit, profileState: Co
                         verticalArrangement = Arrangement.SpaceAround,
                         horizontalAlignment = Alignment.Start) {
 
-                        profileState.profile?.get(index)?.username?.let {
+                        profileState.profile[index].username?.let {
 
                             Row(modifier = Modifier.padding(horizontal = 2.dp, vertical = 2.dp)) {
 
@@ -231,17 +230,15 @@ fun UsersProfileList(index: Int, onItemClick: (String) -> Unit, profileState: Co
 
                         Spacer(modifier = Modifier.height(8.dp))
 
-                        profileState.profile?.get(index)?.profile?.cuisine?.let { CuisineSlotComponent(slots = it, borderColor = LightGray_2) }
+                        profileState.profile[index].profile?.cuisine?.let { CuisineSlotComponent(slots = it, borderColor = LightGray_2) }
 
                         Spacer(modifier = Modifier.height(8.dp))
                     }
                 }
             }
-            profileState.profile?.get(index)?.let {
-                com.example.cook_ford.presentation.screens.authenticated_component.cook_component.profile_component.list_screen_component.BottomMenuText(
-                    it
+                BottomMenuText(
+                    profileState.profile[index]
                 )
-            }
         }
     }
 }

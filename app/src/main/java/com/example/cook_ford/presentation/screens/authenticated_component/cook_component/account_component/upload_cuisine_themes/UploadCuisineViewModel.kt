@@ -1,35 +1,26 @@
-package com.example.cook_ford.presentation.screens.authenticated_component.user_component.profile_component.list_screen_component
+package com.example.cook_ford.presentation.screens.authenticated_component.cook_component.account_component.upload_cuisine_themes
+
 import android.util.Log
 import androidx.compose.runtime.State
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.cook_ford.data.local.SessionConstant
 import com.example.cook_ford.data.local.UserSession
 import com.example.cook_ford.data.remote.NetworkResult
-import com.example.cook_ford.data.remote.profile_response.ProfileResponse
 import com.example.cook_ford.domain.use_cases.ProfileUseCase
-import com.example.cook_ford.presentation.screens.authenticated_component.user_component.profile_component.list_screen_component.state.ProfileState
+import com.example.cook_ford.presentation.screens.authenticated_component.cook_component.profile_component.list_screen_component.state.CookProfileState
 import com.google.gson.Gson
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+class UploadCuisineViewModel @Inject constructor(private val profileUseCase: ProfileUseCase, private val userSession: UserSession):ViewModel() {
 
-@HiltViewModel
-class ProfileViewModel @Inject constructor(
-    private val profileUseCase: ProfileUseCase,
-    private val userSession: UserSession) : ViewModel() {
+    private val _profileState = mutableStateOf(CookProfileState())
+    val profileState: State<CookProfileState> = _profileState
 
-    var shareProfile by mutableStateOf(ProfileResponse())
-
-    private val _profileState = mutableStateOf(ProfileState())
-    val profileState: State<ProfileState> = _profileState
-
-    fun getProfilesRequest() = viewModelScope.launch(Dispatchers.IO) {
+    fun getProfileRequestById() = viewModelScope.launch(Dispatchers.IO) {
         _profileState.value = _profileState.value.copy(isLoading = true)
         profileUseCase.invoke().collect { result ->
             when(result){

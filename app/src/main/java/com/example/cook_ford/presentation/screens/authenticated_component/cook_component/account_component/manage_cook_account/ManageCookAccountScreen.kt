@@ -90,7 +90,7 @@ val options = mutableListOf(
         trailingIcon = R.drawable.arrow_forward_ios,
         isBorder = true,
         title = "Manage time slots",
-        subTitle = "Last updated about an hour ago",
+        subTitle = "Add/Remove your work time slots",
         titleColor = Color.DarkGray,
         subTitleColor = Color.Gray
     ),
@@ -112,7 +112,8 @@ fun ManageCookAccountScreen(
     onNavigateToAuthenticatedRoute: () -> Unit,
     onNavigateToCookProfileDetail: () -> Unit,
     onNavigateToUploadCuisines: () -> Unit,
-    onNavigateToCookPreferences: () -> Unit,
+    onNavigateToUploadAadhaar: () -> Unit,
+    onNavigateToManageTimeSlots: () -> Unit,
 
 ) {
     val changeProfileState = remember { mutableStateOf("Male") }
@@ -277,7 +278,15 @@ fun ManageCookAccountScreen(
                     )
                 }
                 Button(
-                    onClick = { /* Handle Verify action */ },
+                    onClick = {
+                        navController.currentBackStackEntry?.savedStateHandle?.apply {
+                            set(
+                                "profileResponse",
+                                Gson().toJson(accountState.profileResponse)
+                            )
+                        }
+                        onNavigateToUploadAadhaar.invoke()
+                    },
                     colors = ButtonDefaults.buttonColors(containerColor = Green)
                 ) {
                     SmallTitleText(
@@ -362,7 +371,7 @@ fun ManageCookAccountScreen(
                             Gson().toJson(accountState.profileResponse)
                         )
                     }
-                    onNavigateToCookPreferences.invoke()
+                    onNavigateToManageTimeSlots.invoke()
                 }
             }
         }
@@ -412,7 +421,7 @@ fun ProfileOptionItem(option: CookAccountModelData, onClick: (String) -> Unit) {
                 text = option.title,
                 textAlign = TextAlign.Start,
                 textColor = option.titleColor,
-                fontWeight = FontWeight.Bold
+                fontWeight = FontWeight.Medium
             )
 
             MediumTitleText(

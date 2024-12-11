@@ -1,6 +1,7 @@
 package com.example.cook_ford.presentation.component.widgets
 import android.util.Log
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -49,6 +50,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -508,18 +510,22 @@ fun SubmitButton(
 }
 
 @Composable
-fun SubmitButtonAutoSize(
+fun AutoSizeButton(
     modifier: Modifier = Modifier,
     text: String,
+    textColor: Color = Color.White,
+    buttonColor: Color = Color.White,
     isLoading: Boolean,
     onClick: () -> Unit) {
-    Button(modifier = modifier,
+    Button(
+        modifier = modifier,
+        colors = ButtonDefaults.buttonColors(containerColor = buttonColor),
         enabled = !isLoading,
         onClick = onClick) {
         if (isLoading) {
             Progressbar(isLoading)
         } else {
-            Text(text = text, modifier=modifier, style = MaterialTheme.typography.titleMedium)
+            Text(text = text, color = textColor, modifier=modifier, textAlign = TextAlign.Center, style = MaterialTheme.typography.titleMedium)
         }
     }
 }

@@ -65,6 +65,7 @@ import com.example.cook_ford.presentation.screens.un_authenticated_component.sig
 import com.example.cook_ford.presentation.theme.AppTheme
 import com.example.cook_ford.presentation.theme.Cook_fordTheme
 import com.example.cook_ford.presentation.theme.DeepGreen
+import com.google.gson.Gson
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -84,6 +85,8 @@ fun SignInScreen(
 
     val imeState = rememberImeState()
     val scrollState = rememberScrollState()
+
+    Log.d("TAG", "SignInScreen GSON : ${Gson().toJson(signInState)}")
 
     LaunchedEffect(key1 = imeState.value) {
         if (imeState.value){

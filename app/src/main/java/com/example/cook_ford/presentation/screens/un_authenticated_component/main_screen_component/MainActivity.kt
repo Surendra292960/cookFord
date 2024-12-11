@@ -32,7 +32,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import com.example.cook_ford.R
 import com.example.cook_ford.data.local.SessionConstant.ACCESS_TOKEN
-import com.example.cook_ford.data.local.SessionConstant.USER_TYPE
 import com.example.cook_ford.data.local.UserSession
 import com.example.cook_ford.presentation.route.NavigationRoutes
 import com.example.cook_ford.presentation.route.authenticatedGraph
@@ -82,14 +81,14 @@ fun SplashScreen(navController: NavController) {
         }else*/ if (userSession.check(ACCESS_TOKEN)) {
         Log.d("TAG", "SplashScreen if: ${userSession.check(ACCESS_TOKEN)}")
         navController.navigate(route = NavigationRoutes.Authenticated.Dashboard.route) {
-            popUpTo(NavigationRoutes.UnauthenticatedUser.Splash.route) {
+            popUpTo(NavigationRoutes.Unauthenticated.Splash.route) {
                 inclusive = true
             }
         }
     } else {
         Log.d("TAG", "SplashScreen else: ${userSession.check(ACCESS_TOKEN)}")
-        navController.navigate(route = NavigationRoutes.UnauthenticatedUser.Onboard.route) {
-            popUpTo(NavigationRoutes.UnauthenticatedUser.Splash.route) {
+        navController.navigate(route = NavigationRoutes.Unauthenticated.Onboard.route) {
+            popUpTo(NavigationRoutes.Unauthenticated.Splash.route) {
                 inclusive = true
             }
         }
@@ -119,7 +118,7 @@ fun MainAppNavHost(
     NavHost(
         modifier = modifier,
         navController = navController,
-        startDestination = NavigationRoutes.UnauthenticatedUser.NavigationRoute.route) {
+        startDestination = NavigationRoutes.Unauthenticated.NavigationRoute.route) {
 
         // Unauthenticated user flow screens
         unauthenticatedGraph(navController = navController)

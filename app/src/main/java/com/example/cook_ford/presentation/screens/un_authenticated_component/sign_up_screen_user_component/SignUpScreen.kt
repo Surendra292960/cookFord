@@ -37,7 +37,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -46,6 +45,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavController
 import com.example.cook_ford.R
@@ -60,6 +60,7 @@ import com.example.cook_ford.presentation.theme.Cook_fordTheme
 import com.example.cook_ford.presentation.theme.DeepGreen
 import com.example.cook_ford.utils.Utility.getCurrentLocation
 import com.google.android.gms.location.LocationServices
+import com.google.gson.Gson
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -70,9 +71,9 @@ fun SignUpScreen(
     navController: NavController,
     signUpViewModel: SignUpViewModel = hiltViewModel(),
     onNavigateToAuthenticatedRoute: () -> Unit) {
-    val signUpState by remember { signUpViewModel.signUpState }
     val showDialogState: Boolean by signUpViewModel.showDialog.collectAsState()
     val signUpResponse by signUpViewModel.signUpResponse.collectAsState()
+    val signUpState by signUpViewModel.signUpState.collectAsState()
     val snackBarHostState = remember { SnackbarHostState() }
     val viewState: MainViewState by signUpViewModel.viewState.collectAsState()
     val lifecycle = LocalLifecycleOwner.current.lifecycle
@@ -82,6 +83,7 @@ fun SignUpScreen(
     var isPermissionGranted by remember { mutableStateOf(false) }
     val fusedLocationClient = remember { LocationServices.getFusedLocationProviderClient(mContext) }
 
+    Log.d("TAG", "SignUpScreen GSON : ${Gson().toJson(signUpState)}")
 
     Log.d("TAG", "SignUpScreen userType : $userType")
 
@@ -315,8 +317,10 @@ fun ShowCustomDialog(
 @Composable
 fun PreviewScreen() {
     Cook_fordTheme {
-        SignUpScreen(userType = "", onNavigateToAuthenticatedRoute = {}, navController = NavController(
-            LocalContext.current)
+        SignUpScreen(
+            userType = "",
+            onNavigateToAuthenticatedRoute = {},
+            navController = NavController(LocalContext.current)
         )
     }
 }

@@ -111,6 +111,8 @@ affordable price</string>
     <string name="sign_up_error_msg_empty_otp">Please enter otp</string>
     <string name="get_started_button_text">Get Started</string>
     <string name="appy_button_text">Apply</string>
+    <string name="view_button_text">View</string>
+    <string name="delete_button_text">Delete</string>
 
 
 </resources>

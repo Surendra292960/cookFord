@@ -8,7 +8,7 @@ import javax.inject.Inject
 
 class ProfileUseCase @Inject constructor(private val repository: AuthRepositoryImpl) {
     suspend operator fun invoke(): Flow<NetworkResult<List<ProfileResponse>>> {
-        return repository.getProfile()
+        return repository.getProfiles()
     }
     suspend operator fun invoke(profileId: String): Flow<NetworkResult<ProfileResponse>> {
         return repository.getProfileById(profileId)

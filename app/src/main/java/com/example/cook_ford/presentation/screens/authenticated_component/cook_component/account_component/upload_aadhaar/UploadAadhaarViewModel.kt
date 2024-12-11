@@ -1,4 +1,4 @@
-package com.example.cook_ford.presentation.screens.authenticated_component.cook_component.account_component.add_cook_themes
+package com.example.cook_ford.presentation.screens.authenticated_component.cook_component.account_component.upload_aadhaar
 
 import android.util.Log
 import androidx.compose.runtime.State
@@ -15,7 +15,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class UploadCuisineViewModel @Inject constructor(private val profileUseCase: ProfileUseCase, private val userSession: UserSession):ViewModel() {
+class UploadAadhaarViewModel @Inject constructor(private val profileUseCase: ProfileUseCase, private val userSession: UserSession):ViewModel() {
 
     private val _profileState = mutableStateOf(CookProfileState())
     val profileState: State<CookProfileState> = _profileState

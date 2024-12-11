@@ -13,12 +13,14 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.example.cook_ford.data.remote.profile_response.ProfileResponse
 import com.example.cook_ford.presentation.screens.authenticated_component.cook_component.account_component.account_screen_component.CookAccountsScreen
-import com.example.cook_ford.presentation.screens.authenticated_component.cook_component.account_component.add_cook_preferences.CookPreferencesScreen
-import com.example.cook_ford.presentation.screens.authenticated_component.cook_component.account_component.add_cook_themes.UploadCuisineImages
+import com.example.cook_ford.presentation.screens.authenticated_component.cook_component.account_component.add_cook_time_slots.ManageTimeSlotsScreen
 import com.example.cook_ford.presentation.screens.authenticated_component.cook_component.account_component.manage_cook_account.ManageCookAccountScreen
 import com.example.cook_ford.presentation.screens.authenticated_component.cook_component.account_component.update_profile_screen_component.UpdateCookProfileScreen
+import com.example.cook_ford.presentation.screens.authenticated_component.cook_component.account_component.upload_aadhaar.UploadAadhaarScreen
+import com.example.cook_ford.presentation.screens.authenticated_component.cook_component.account_component.upload_cuisine_themes.UploadCuisineImagesScreen
 import com.example.cook_ford.presentation.screens.authenticated_component.cook_component.profile_component.details_screen_component.CookProfileDetailScreen
 import com.example.cook_ford.presentation.screens.authenticated_component.cook_component.profile_component.list_screen_component.CookProfilesScreen
+import com.example.cook_ford.presentation.screens.authenticated_component.cook_component.profile_component.reviews_screen_component.ReviewScreen
 import com.example.cook_ford.presentation.screens.authenticated_component.user_component.accounts_component.account_screen_component.AccountsScreen
 import com.example.cook_ford.presentation.screens.authenticated_component.user_component.accounts_component.add_cook_screen_component.AddCookProfileScreen
 import com.example.cook_ford.presentation.screens.authenticated_component.user_component.accounts_component.call_credit_screen_component.CallCreditScreen
@@ -28,7 +30,6 @@ import com.example.cook_ford.presentation.screens.authenticated_component.user_c
 import com.example.cook_ford.presentation.screens.authenticated_component.user_component.profile_component.chat_screen_component.MessageScreen
 import com.example.cook_ford.presentation.screens.authenticated_component.user_component.profile_component.details_screen_component.ProfileDetailScreen
 import com.example.cook_ford.presentation.screens.authenticated_component.user_component.profile_component.list_screen_component.ProfilesScreen
-import com.example.cook_ford.presentation.screens.authenticated_component.cook_component.profile_component.reviews_screen_component.ReviewScreen
 import com.example.cook_ford.presentation.screens.authenticated_component.user_component.profile_component.report_screen_component.ReportScreen
 import com.example.cook_ford.presentation.screens.dashboard_component.home_screen_component.HomeScreen
 import com.example.cook_ford.presentation.screens.un_authenticated_component.landind_screen_component.LandingScreen
@@ -49,21 +50,21 @@ import com.google.gson.Gson
 fun NavGraphBuilder.unauthenticatedGraph(navController: NavController) {
 
     navigation(
-        route = NavigationRoutes.UnauthenticatedUser.NavigationRoute.route,
-        startDestination = NavigationRoutes.UnauthenticatedUser.Splash.route
+        route = NavigationRoutes.Unauthenticated.NavigationRoute.route,
+        startDestination = NavigationRoutes.Unauthenticated.Splash.route
     ) {
 
         // Splash
-        composable(route = NavigationRoutes.UnauthenticatedUser.Splash.route) {
+        composable(route = NavigationRoutes.Unauthenticated.Splash.route) {
             SplashScreen(navController = navController)
         }
 
         // Onboard
-        composable(route = NavigationRoutes.UnauthenticatedUser.Onboard.route) {
+        composable(route = NavigationRoutes.Unauthenticated.Onboard.route) {
             OnBoardingScreen(navController = navController,
                 onNavigateToAuthenticatedRoute = {
-                    navController.navigate(route = NavigationRoutes.UnauthenticatedUser.Landing.route) {
-                        popUpTo(route = NavigationRoutes.UnauthenticatedUser.Onboard.route) {
+                    navController.navigate(route = NavigationRoutes.Unauthenticated.Landing.route) {
+                        popUpTo(route = NavigationRoutes.Unauthenticated.Onboard.route) {
                             inclusive = true
                         }
                     }
@@ -72,37 +73,37 @@ fun NavGraphBuilder.unauthenticatedGraph(navController: NavController) {
         }
 
         //Landing
-        composable(route = NavigationRoutes.UnauthenticatedUser.Landing.route) {
+        composable(route = NavigationRoutes.Unauthenticated.Landing.route) {
             LandingScreen(navController = navController,
                 onNavigateToUserSignInRoute = {
-                    navController.navigate(route = NavigationRoutes.UnauthenticatedUser.SignIn.route)
+                    navController.navigate(route = NavigationRoutes.Unauthenticated.SignIn.route)
                 },
                 onNavigateToCookSignInRoute = {
-                    navController.navigate(route = NavigationRoutes.UnauthenticatedUser.CookSignIn.route)
+                    navController.navigate(route = NavigationRoutes.Unauthenticated.CookSignIn.route)
                 }
             )
         }
 
         //PhoneVerificationScreen
-        composable(route = NavigationRoutes.UnauthenticatedUser.PhoneVerification.route) {
+        composable(route = NavigationRoutes.Unauthenticated.PhoneVerification.route) {
             PhoneVerificationScreen(navController = navController,
                 onNavigateBack = { navController.navigateUp() },
                 onNavigateToAuthenticatedRoute = {
-                    navController.navigate(route = NavigationRoutes.UnauthenticatedUser.SignIn.route)
+                    navController.navigate(route = NavigationRoutes.Unauthenticated.SignIn.route)
                 }
             )
         }
 
         // SignIn
-        composable(route = NavigationRoutes.UnauthenticatedUser.SignIn.route) {
+        composable(route = NavigationRoutes.Unauthenticated.SignIn.route) {
             Log.d("TAG", "unauthenticatedGraph: SignIn ")
             SignInScreen(
                 navController = navController,
-                onNavigateToSignUp = { navController.navigate(route = NavigationRoutes.UnauthenticatedUser.SignUp.route) },
+                onNavigateToSignUp = { navController.navigate(route = NavigationRoutes.Unauthenticated.SignUp.route) },
                 onNavigateToForgotPassword = {},
                 onNavigateToAuthenticatedRoute = {
                     navController.navigate(route = NavigationRoutes.Authenticated.NavigationRoute.route) {
-                        popUpTo(route = NavigationRoutes.UnauthenticatedUser.NavigationRoute.route) {
+                        popUpTo(route = NavigationRoutes.Unauthenticated.NavigationRoute.route) {
                             inclusive = true
                         }
                     }
@@ -111,13 +112,13 @@ fun NavGraphBuilder.unauthenticatedGraph(navController: NavController) {
         }
 
         // SignUp User
-        composable(route = NavigationRoutes.UnauthenticatedUser.SignUp.route) {
+        composable(route = NavigationRoutes.Unauthenticated.SignUp.route) {
             SignUpScreen(
                 userType = AppConstants.USER,
                 navController = navController,
                 onNavigateToAuthenticatedRoute = {
-                    navController.navigate(route = NavigationRoutes.UnauthenticatedUser.SignIn.route) {
-                        popUpTo(route = NavigationRoutes.UnauthenticatedUser.NavigationRoute.route) {
+                    navController.navigate(route = NavigationRoutes.Unauthenticated.SignIn.route) {
+                        popUpTo(route = NavigationRoutes.Unauthenticated.NavigationRoute.route) {
                             inclusive = true
                         }
                     }
@@ -126,15 +127,15 @@ fun NavGraphBuilder.unauthenticatedGraph(navController: NavController) {
         }
 
         // SignIn Cook
-        composable(route = NavigationRoutes.UnauthenticatedUser.CookSignIn.route) {
+        composable(route = NavigationRoutes.Unauthenticated.CookSignIn.route) {
             Log.d("TAG", "unauthenticatedGraph: CookSignIn ")
             SignInScreen(
                 navController = navController,
-                onNavigateToSignUp = { navController.navigate(route = NavigationRoutes.UnauthenticatedUser.CookSignUp.route) },
+                onNavigateToSignUp = { navController.navigate(route = NavigationRoutes.Unauthenticated.CookSignUp.route) },
                 onNavigateToForgotPassword = {},
                 onNavigateToAuthenticatedRoute = {
                     navController.navigate(route = NavigationRoutes.Authenticated.NavigationRoute.route) {
-                        popUpTo(route = NavigationRoutes.UnauthenticatedUser.NavigationRoute.route) {
+                        popUpTo(route = NavigationRoutes.Unauthenticated.NavigationRoute.route) {
                             inclusive = true
                         }
                     }
@@ -143,13 +144,13 @@ fun NavGraphBuilder.unauthenticatedGraph(navController: NavController) {
         }
 
         // SignUp Cook
-        composable(route = NavigationRoutes.UnauthenticatedUser.CookSignUp.route) {
+        composable(route = NavigationRoutes.Unauthenticated.CookSignUp.route) {
             SignUpScreen(
                 userType = AppConstants.PROVIDER,
                 navController = navController,
                 onNavigateToAuthenticatedRoute = {
-                    navController.navigate(route = NavigationRoutes.UnauthenticatedUser.CookSignIn.route) {
-                        popUpTo(route = NavigationRoutes.UnauthenticatedUser.NavigationRoute.route) {
+                    navController.navigate(route = NavigationRoutes.Unauthenticated.CookSignIn.route) {
+                        popUpTo(route = NavigationRoutes.Unauthenticated.NavigationRoute.route) {
                             inclusive = true
                         }
                     }
@@ -188,6 +189,7 @@ fun NavGraphBuilder.authenticatedGraph(navController: NavController) {
  * Home screens bottom nav graph builder
  * (Unauthenticated user)
  */
+@RequiresApi(Build.VERSION_CODES.TIRAMISU)
 @Composable
 fun HomeNavGraph(navController: NavHostController) {
     NavHost(
@@ -274,6 +276,7 @@ fun HomeNavGraph(navController: NavHostController) {
  * Details screens nav graph builder
  * (Unauthenticated user)
  */
+@RequiresApi(Build.VERSION_CODES.TIRAMISU)
 @OptIn(ExperimentalFoundationApi::class)
 fun NavGraphBuilder.detailNavGraph(navController: NavHostController) {
     navigation(
@@ -370,6 +373,7 @@ fun NavGraphBuilder.detailNavGraph(navController: NavHostController) {
  * Account screens nav graph builder
  * (Unauthenticated user)
  */
+@RequiresApi(Build.VERSION_CODES.TIRAMISU)
 fun NavGraphBuilder.accountNavGraph(navController: NavHostController) {
     navigation(
         route = NavigationRoutes.AccountNavigation.NavigationRoute.route,
@@ -384,13 +388,13 @@ fun NavGraphBuilder.accountNavGraph(navController: NavHostController) {
                         profileResponse = profileResponse,
                         onNavigateToSignOut = { userType ->
                             if (userType.equals(AppConstants.PROVIDER, ignoreCase = true)) {
-                                navController.navigate(route = NavigationRoutes.UnauthenticatedUser.CookSignIn.route) {
-                                    /* popUpTo(route = NavigationRoutes.Unauthenticated.NavigationRoute.route) {
+                                navController.navigate(route = NavigationRoutes.Unauthenticated.CookSignIn.route) {
+                                     popUpTo(route = NavigationRoutes.AccountNavigation.NavigationRoute.route) {
                                          inclusive = true
-                                     }*/
+                                     }
                                 }
                             } else {
-                                navController.navigate(route = NavigationRoutes.UnauthenticatedUser.SignIn.route) {
+                                navController.navigate(route = NavigationRoutes.Unauthenticated.SignIn.route) {
                                     /*   popUpTo(route = NavigationRoutes.Unauthenticated.NavigationRoute.route) {
                                            inclusive = true
                                        }*/
@@ -476,6 +480,8 @@ fun NavGraphBuilder.accountNavGraph(navController: NavHostController) {
                     )
                 }
         }
+
+       // unauthenticatedGraph(navController = navController)
     }
 }
 
@@ -676,13 +682,13 @@ fun NavGraphBuilder.cookAccountNavGraph(navController: NavHostController) {
                         profileResponse = profileResponse,
                         onNavigateToSignOut = { userType ->
                             if (userType.equals(AppConstants.PROVIDER, ignoreCase = true)) {
-                                navController.navigate(route = NavigationRoutes.UnauthenticatedUser.CookSignIn.route) {
+                                navController.navigate(route = NavigationRoutes.Unauthenticated.CookSignIn.route) {
                                     /* popUpTo(route = NavigationRoutes.Unauthenticated.NavigationRoute.route) {
                                          inclusive = true
                                      }*/
                                 }
                             } else {
-                                navController.navigate(route = NavigationRoutes.UnauthenticatedUser.SignIn.route) {
+                                navController.navigate(route = NavigationRoutes.Unauthenticated.SignIn.route) {
                                     /*   popUpTo(route = NavigationRoutes.Unauthenticated.NavigationRoute.route) {
                                            inclusive = true
                                        }*/
@@ -713,9 +719,9 @@ fun NavGraphBuilder.cookAccountNavGraph(navController: NavHostController) {
                         profileResponse = profileResponse,
                         onNavigateToAuthenticatedRoute = {
                             navController.navigate(route = NavigationRoutes.CookAccountNavigation.ManageCookAccount.route) {
-                                /* popUpTo(route = NavigationRoutes.Unauthenticated.NavigationRoute.route) {
-                             inclusive = true
-                         }*/
+                                 popUpTo(route = NavigationRoutes.Unauthenticated.NavigationRoute.route) {
+                                    inclusive = true
+                                }
                             }
                         },
                         onNavigateToCookProfileDetail = {
@@ -732,8 +738,15 @@ fun NavGraphBuilder.cookAccountNavGraph(navController: NavHostController) {
                                 }
                             }
                         },
-                        onNavigateToCookPreferences = {
-                            navController.navigate(route = NavigationRoutes.CookAccountNavigation.AddCookPreferences.route) {
+                        onNavigateToUploadAadhaar = {
+                            navController.navigate(route = NavigationRoutes.CookAccountNavigation.UploadAadhaar.route) {
+                                popUpTo(route = NavigationRoutes.Authenticated.NavigationRoute.route) {
+                                    inclusive = true
+                                }
+                            }
+                        },
+                        onNavigateToManageTimeSlots = {
+                            navController.navigate(route = NavigationRoutes.CookAccountNavigation.ManageTimeSlots.route) {
                                 popUpTo(route = NavigationRoutes.Authenticated.NavigationRoute.route) {
                                     inclusive = true
                                 }
@@ -750,7 +763,7 @@ fun NavGraphBuilder.cookAccountNavGraph(navController: NavHostController) {
                         "TAG",
                         "cookAccountNavGraph review data: ${Gson().toJson(profileResponse)}"
                     )
-                    UploadCuisineImages(
+                    UploadCuisineImagesScreen(
                         navController = navController,
                         onNavigateBack = { navController.navigateUp() },
                         profileResponse = profileResponse,
@@ -759,14 +772,31 @@ fun NavGraphBuilder.cookAccountNavGraph(navController: NavHostController) {
                 }
         }
 
-        composable(route = NavigationRoutes.CookAccountNavigation.AddCookPreferences.route) {
+
+        composable(route = NavigationRoutes.CookAccountNavigation.UploadAadhaar.route) {
             navController.previousBackStackEntry?.savedStateHandle?.get<String>("profileResponse")
                 .let { Gson().fromJson(it, ProfileResponse::class.java) }.let { profileResponse ->
                     Log.d(
                         "TAG",
                         "cookAccountNavGraph review data: ${Gson().toJson(profileResponse)}"
                     )
-                    CookPreferencesScreen(
+                    UploadAadhaarScreen(
+                        navController = navController,
+                        onNavigateBack = { navController.navigateUp() },
+                        profileResponse = profileResponse,
+                        onNavigateToAuthenticatedRoute = {}
+                    )
+                }
+        }
+
+        composable(route = NavigationRoutes.CookAccountNavigation.ManageTimeSlots.route) {
+            navController.previousBackStackEntry?.savedStateHandle?.get<String>("profileResponse")
+                .let { Gson().fromJson(it, ProfileResponse::class.java) }.let { profileResponse ->
+                    Log.d(
+                        "TAG",
+                        "cookAccountNavGraph review data: ${Gson().toJson(profileResponse)}"
+                    )
+                    ManageTimeSlotsScreen(
                         onNavigateBack = { navController.navigateUp() },
                         profileResponse = profileResponse,
                         onNavigateToAuthenticatedRoute = {}

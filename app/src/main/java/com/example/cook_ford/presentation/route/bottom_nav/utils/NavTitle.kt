@@ -44,7 +44,8 @@ object NavTitle {
     //Cook Account
     const val UPDATE_COOK_PROFILE = "Cook Update Profile"
     const val MANAGE_COOK_ACCOUNT = "Cook Manage Account"
-    const val ADD_COOK_PREFERENCES = "Cook Preferences"
     const val UPLOAD_CUISINES = "Upload Cuisines"
+    const val UPLOAD_AADHAAR = "Upload Aadhaar"
+    const val MANAGE_TIME_SLOTS = "Manage time slots"
 }
 

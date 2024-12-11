@@ -1,3 +1,4 @@
+/*
 package com.example.cook_ford.presentation.screens.authenticated_component.cook_component.account_component.cook_sign_up
 import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
@@ -65,7 +66,9 @@ fun CookSignUpForm(
             errorText = stringResource(id = signUpState.errorState.usernameErrorState.errorMessageStringResource),
             maxChar = 30,
             textColor = Color.Gray
-            /*submit = { TODO() }*/)
+            */
+/*submit = { TODO() }*//*
+)
 
         Spacer(modifier = Modifier.height(10.dp))
 
@@ -79,7 +82,9 @@ fun CookSignUpForm(
             errorText = stringResource(id = signUpState.errorState.emailErrorState.errorMessageStringResource),
             maxChar = 30,
             textColor = Color.Gray
-            /*submit = { TODO() }*/)
+            */
+/*submit = { TODO() }*//*
+)
 
         Spacer(modifier = Modifier.height(10.dp))
 
@@ -93,7 +98,9 @@ fun CookSignUpForm(
             errorText = stringResource(id = signUpState.errorState.passwordErrorState.errorMessageStringResource),
             maxChar = 25,
             textColor = Color.Gray
-            /*submit = { TODO() },*/
+            */
+/*submit = { TODO() },*//*
+
         )
 
         Spacer(modifier = Modifier.height(10.dp))
@@ -108,7 +115,9 @@ fun CookSignUpForm(
             errorText = stringResource(id = signUpState.errorState.confirmPasswordErrorState.errorMessageStringResource),
             maxChar = 25,
             textColor = Color.Gray
-            /*submit = { TODO() },*/
+            */
+/*submit = { TODO() },*//*
+
         )
 
         Spacer(modifier = Modifier.height(10.dp))
@@ -139,4 +148,4 @@ fun CookSignUpForm(
             onClick = onSubmit
         )
     }
-}
+}*/

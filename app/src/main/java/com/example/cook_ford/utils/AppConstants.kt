@@ -82,5 +82,6 @@ object AppConstants {
    //User Type
    const val PROVIDER = "provider"
    const val USER = "user"
+   const val ADD_PHOTO = "Add photo"
 
 }

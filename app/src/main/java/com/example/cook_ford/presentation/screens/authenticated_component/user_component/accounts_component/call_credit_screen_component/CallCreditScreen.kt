@@ -88,9 +88,7 @@ fun CallCreditScreen(
 
     Column(modifier = Modifier.fillMaxSize().verticalScroll(rememberScrollState()), horizontalAlignment = Alignment.Start) {
 
-        Row(modifier = Modifier.fillMaxSize().background(Color.White).padding(top = 20.dp, start = 20.dp, end = 20.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween) {
+        Row(modifier = Modifier.fillMaxSize().background(Color.White).padding(top = 20.dp, start = 20.dp, end = 20.dp), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceBetween) {
             Box(modifier = Modifier.weight(0.3f)) {
                 DefaultBackArrow(onClick = {
                     onNavigateBack.invoke()
@@ -424,8 +422,7 @@ fun CallCreditScreen(
             Spacer(modifier = Modifier.height(20.dp))
         }
 
-        Column(modifier = Modifier
-            .background(Color.White)){
+        Column(modifier = Modifier.background(Color.White)){
             HorizontalDivider(modifier = Modifier.height(1.dp))
             Spacer(modifier = Modifier.height(10.dp))
 

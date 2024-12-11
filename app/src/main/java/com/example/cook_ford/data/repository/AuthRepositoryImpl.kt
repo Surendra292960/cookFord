@@ -1,5 +1,6 @@
 package com.example.cook_ford.data.repository
 
+import AuthPreferences
 import com.example.cook_ford.data.ApiService
 import com.example.cook_ford.data.remote.BaseRepo
 import com.example.cook_ford.data.remote.NetworkResult
@@ -32,7 +33,7 @@ class AuthRepositoryImpl(
 
     }
 
-    override suspend fun getProfile(): Flow<NetworkResult<List<ProfileResponse>>> {
+    override suspend fun getProfiles(): Flow<NetworkResult<List<ProfileResponse>>> {
         return flow {
             emit(safeApiCall { apiService.getProfileRequest() })
         }.flowOn(Dispatchers.IO)

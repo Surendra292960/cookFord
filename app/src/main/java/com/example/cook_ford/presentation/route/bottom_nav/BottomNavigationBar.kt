@@ -189,7 +189,11 @@ fun BottomNavigationBar(
             bottomNavVisibility = false
             topBarVisibility(true)
         }
-        NavigationRoutes.CookAccountNavigation.AddCookPreferences.route -> {
+        NavigationRoutes.CookAccountNavigation.UploadAadhaar.route  -> {
+            bottomNavVisibility = false
+            topBarVisibility(true)
+        }
+        NavigationRoutes.CookAccountNavigation.ManageTimeSlots.route  -> {
             bottomNavVisibility = false
             topBarVisibility(true)
         }

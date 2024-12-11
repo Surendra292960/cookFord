@@ -6,14 +6,14 @@ import com.example.cook_ford.utils.AppConstants.EMPTY_STRING
  * SignUp State holding ui input values
  */
 data class SignUpState(
-    val username: String = EMPTY_STRING,
-    val email: String = EMPTY_STRING,
-    val password: String = EMPTY_STRING,
-    val confirmPassword: String = EMPTY_STRING,
-    val gender: String = EMPTY_STRING,
-    val userType: String = EMPTY_STRING,
-    val errorState: SignUpErrorState = SignUpErrorState(),
-    val isSignUpSuccessful: Boolean = false
+    val username: String = "",
+    val email: String = "",
+    val password: String = "",
+    val confirmPassword: String = "",
+    val gender: String = "",
+    val userType: String = "",
+    val isSignUpSuccessful: Boolean = false,
+    val errorState: SignUpErrorState = SignUpErrorState()
 )
 
 /**

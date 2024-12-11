@@ -1,3 +1,4 @@
+/*
 package com.example.cook_ford.presentation.screens.authenticated_component.cook_component.account_component.cook_sign_up
 import android.util.Log
 import androidx.compose.animation.core.tween
@@ -104,10 +105,12 @@ fun CookSignUpScreen(
         ShowCustomDialog(signUpResponse.message, signUpViewModel, showDialogState)
 
         Log.d("TAG", "SignInScreen: $showDialogState")
-        /**
+        */
+/**
          * Navigate to Authenticated navigation route
          * once signIn is successful
-         */
+         *//*
+
         if (!showDialogState){
             LaunchedEffect(key1 = true) {
                 onNavigateToAuthenticatedRoute.invoke()
@@ -149,12 +152,15 @@ fun CookSignUpScreen(
                         // Skip Button
                         TextButton(
                             shape = CircleShape,
-                            onClick = { /*onSkipClick*/ },
+                            onClick = { */
+/*onSkipClick*//*
+ },
                             modifier = Modifier.align(Alignment.CenterEnd),
                             contentPadding = PaddingValues(5.dp)
                         ) {
 
-                            /*   Text(text = "Skip",
+                            */
+/*   Text(text = "Skip",
                                style = MaterialTheme.typography.bodyLarge,
                                color = Color.Black,
                                textAlign = TextAlign.Center,
@@ -162,13 +168,15 @@ fun CookSignUpScreen(
                                fontWeight = FontWeight.W600,
                                modifier = Modifier
                                    .shadow(0.dp)
-                                   .clip(CircleShape))*/
+                                   .clip(CircleShape))*//*
+
                         }
                     }
 
                     Column(modifier = Modifier.fillMaxSize().verticalScroll(scrollState), horizontalAlignment = Alignment.CenterHorizontally) {
 
-                        /*      Spacer(modifier = Modifier.height(10.dp))
+                        */
+/*      Spacer(modifier = Modifier.height(10.dp))
 
                     // Image
                     Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxSize()) {
@@ -182,7 +190,8 @@ fun CookSignUpScreen(
                                 .width(100.dp)
                         )
                     }
-    */
+    *//*
+
                         Spacer(modifier = Modifier.height(20.dp))
 
                         Text(
@@ -301,3 +310,4 @@ fun PreviewScreen() {
         )
     }
 }
+*/

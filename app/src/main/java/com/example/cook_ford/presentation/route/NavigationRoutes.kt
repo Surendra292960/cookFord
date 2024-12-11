@@ -11,16 +11,16 @@ import com.example.cook_ford.presentation.route.bottom_nav.utils.NavTitle
 sealed class NavigationRoutes {
 
     // Unauthenticated Routes
-    sealed class UnauthenticatedUser(val route: String) : NavigationRoutes() {
-        data object NavigationRoute : UnauthenticatedUser(route = NavPath.UNAUTHENTICATED.toString())
-        data object Splash : UnauthenticatedUser(route = NavPath.SPLASH.toString())
-        data object Onboard : UnauthenticatedUser(route = NavPath.ONBOARD.toString())
-        data object Landing : UnauthenticatedUser(route = NavPath.LANDING.toString())
-        data object PhoneVerification : UnauthenticatedUser(route = NavPath.PHONE_VERIFICATION.toString())
-        data object SignIn : UnauthenticatedUser(route = NavPath.SIGN_IN.toString())
-        data object CookSignIn : UnauthenticatedUser(route = NavPath.SIGN_IN_AS_COOK.toString())
-        data object SignUp : UnauthenticatedUser(route = NavPath.SIGN_UP.toString())
-        data object CookSignUp : UnauthenticatedUser(route = NavPath.SIGN_UP_AS_COOK.toString())
+    sealed class Unauthenticated(val route: String) : NavigationRoutes() {
+        data object NavigationRoute : Unauthenticated(route = NavPath.UNAUTHENTICATED.toString())
+        data object Splash : Unauthenticated(route = NavPath.SPLASH.toString())
+        data object Onboard : Unauthenticated(route = NavPath.ONBOARD.toString())
+        data object Landing : Unauthenticated(route = NavPath.LANDING.toString())
+        data object PhoneVerification : Unauthenticated(route = NavPath.PHONE_VERIFICATION.toString())
+        data object SignIn : Unauthenticated(route = NavPath.SIGN_IN.toString())
+        data object CookSignIn : Unauthenticated(route = NavPath.SIGN_IN_AS_COOK.toString())
+        data object SignUp : Unauthenticated(route = NavPath.SIGN_UP.toString())
+        data object CookSignUp : Unauthenticated(route = NavPath.SIGN_UP_AS_COOK.toString())
     }
 
     // Authenticated Routes
@@ -45,12 +45,11 @@ sealed class NavigationRoutes {
         data object ProfileReview : DetailsNavigation(route = NavPath.REVIEW.toString())
         data object ProfileReport : DetailsNavigation(route = NavPath.REPORT.toString())
         data object Message : DetailsNavigation(route = NavPath.MESSAGE.toString())
-
     }
 
     sealed class AccountNavigation(val route: String) : NavigationRoutes() {
         data object NavigationRoute : AccountNavigation(route = NavPath.ACCOUNT_NAVIGATION.toString())
-        data object CallCredit : DetailsNavigation(route = NavPath.CALL_CREDIT.toString())
+        data object CallCredit : AccountNavigation(route = NavPath.CALL_CREDIT.toString())
         data object EditProfile : AccountNavigation(route = NavPath.UPDATE_PROFILE.toString())
         data object AddCookProfile : AccountNavigation(route = NavPath.ADD_COOK_PROFILE.toString())
         data object PostJob : AccountNavigation(route = NavPath.POST_JOB.toString())
@@ -78,6 +77,7 @@ sealed class NavigationRoutes {
         data object UpdateCookProfile : CookAccountNavigation(route = NavPath.UPDATE_COOK_PROFILE.toString())
         data object ManageCookAccount : CookAccountNavigation(route = NavPath.MANAGE_COOK_ACCOUNT.toString())
         data object UploadCuisines : CookAccountNavigation(route = NavPath.UPLOAD_CUISINES.toString())
-        data object AddCookPreferences : CookAccountNavigation(route = NavPath.ADD_COOK_PREFERENCES.toString())
+        data object UploadAadhaar : CookAccountNavigation(route = NavPath.UPLOAD_AADHAAR.toString())
+        data object ManageTimeSlots : CookAccountNavigation(route = NavPath.MANAGE_TIME_SLOTS.toString())
     }
 }

@@ -16,13 +16,13 @@ import com.example.cook_ford.presentation.component.widgets.dialog.DialogState
 import com.example.cook_ford.presentation.component.widgets.snack_bar.MainViewState
 import com.example.cook_ford.presentation.screens.un_authenticated_component.sign_in_screen_component.state.ErrorState
 import com.example.cook_ford.presentation.screens.un_authenticated_component.sign_in_screen_component.state.passwordEmptyErrorState
-import com.example.cook_ford.presentation.screens.authenticated_component.cook_component.account_component.cook_sign_up.state.confirmPasswordEmptyErrorState
-import com.example.cook_ford.presentation.screens.authenticated_component.cook_component.account_component.cook_sign_up.state.emailEmptyErrorState
-import com.example.cook_ford.presentation.screens.authenticated_component.cook_component.account_component.cook_sign_up.state.genderSelectionErrorState
-import com.example.cook_ford.presentation.screens.authenticated_component.cook_component.account_component.cook_sign_up.state.invalidPasswordErrorState
-import com.example.cook_ford.presentation.screens.authenticated_component.cook_component.account_component.cook_sign_up.state.invalidUserNameErrorState
-import com.example.cook_ford.presentation.screens.authenticated_component.cook_component.account_component.cook_sign_up.state.passwordMismatchErrorState
-import com.example.cook_ford.presentation.screens.authenticated_component.cook_component.account_component.cook_sign_up.state.usernameEmptyErrorState
+import com.example.cook_ford.presentation.screens.un_authenticated_component.sign_up_screen_user_component.state.confirmPasswordEmptyErrorState
+import com.example.cook_ford.presentation.screens.un_authenticated_component.sign_up_screen_user_component.state.emailEmptyErrorState
+import com.example.cook_ford.presentation.screens.un_authenticated_component.sign_up_screen_user_component.state.genderSelectionErrorState
+import com.example.cook_ford.presentation.screens.un_authenticated_component.sign_up_screen_user_component.state.invalidPasswordErrorState
+import com.example.cook_ford.presentation.screens.un_authenticated_component.sign_up_screen_user_component.state.invalidUserNameErrorState
+import com.example.cook_ford.presentation.screens.un_authenticated_component.sign_up_screen_user_component.state.passwordMismatchErrorState
+import com.example.cook_ford.presentation.screens.un_authenticated_component.sign_up_screen_user_component.state.usernameEmptyErrorState
 import com.example.cook_ford.presentation.screens.un_authenticated_component.sign_up_screen_user_component.state.SignUpErrorState
 import com.example.cook_ford.presentation.screens.un_authenticated_component.sign_up_screen_user_component.state.SignUpState
 import com.example.cook_ford.presentation.screens.un_authenticated_component.sign_up_screen_user_component.state.SignUpUiEvent
@@ -41,11 +41,11 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SignUpViewModel @Inject constructor(private val signUpUseCase: SignUpUseCase, private val userSession: UserSession) :ViewModel() {
-    var signUpState = mutableStateOf(SignUpState())
-        private set
+    //var signUpState = mutableStateOf(SignUpState())
+    private val _signUpState = MutableStateFlow(SignUpState())
+    val signUpState: StateFlow<SignUpState> = _signUpState
 
     var dialogState = mutableStateOf(DialogState())
-        private set
 
     private val _signUpResponse: MutableStateFlow<SignUpResponse> = MutableStateFlow(SignUpResponse())
     val signUpResponse: StateFlow<SignUpResponse> = _signUpResponse.asStateFlow()
@@ -86,9 +86,9 @@ class SignUpViewModel @Inject constructor(private val signUpUseCase: SignUpUseCa
         when (signUpUiEvent) {
             // Name id changed event
             is SignUpUiEvent.UserNameChanged -> {
-                signUpState.value = signUpState.value.copy(
+                _signUpState.value = _signUpState.value.copy(
                     username = signUpUiEvent.inputValue,
-                    errorState = signUpState.value.errorState.copy(
+                    errorState = _signUpState.value.errorState.copy(
                         usernameErrorState = if (signUpUiEvent.inputValue.trim().isEmpty()) {
                             // Name empty state
                             usernameEmptyErrorState
@@ -101,9 +101,9 @@ class SignUpViewModel @Inject constructor(private val signUpUseCase: SignUpUseCa
             }
             // Email id changed event
             is SignUpUiEvent.EmailChanged -> {
-                signUpState.value = signUpState.value.copy(
+                _signUpState.value = _signUpState.value.copy(
                     email = signUpUiEvent.inputValue,
-                    errorState = signUpState.value.errorState.copy(
+                    errorState = _signUpState.value.errorState.copy(
                         emailErrorState = if (signUpUiEvent.inputValue.trim().isEmpty()) {
                             // Email id empty state
                             emailEmptyErrorState
@@ -117,9 +117,9 @@ class SignUpViewModel @Inject constructor(private val signUpUseCase: SignUpUseCa
 
             // Password changed event
             is SignUpUiEvent.PasswordChanged -> {
-                signUpState.value = signUpState.value.copy(
+                _signUpState.value = _signUpState.value.copy(
                     password = signUpUiEvent.inputValue,
-                    errorState = signUpState.value.errorState.copy(
+                    errorState = _signUpState.value.errorState.copy(
                         passwordErrorState = if (signUpUiEvent.inputValue.trim().isEmpty()) {
                             // Password Empty state
                             passwordEmptyErrorState
@@ -133,16 +133,16 @@ class SignUpViewModel @Inject constructor(private val signUpUseCase: SignUpUseCa
 
             // Confirm Password changed event
             is SignUpUiEvent.ConfirmPasswordChanged -> {
-                signUpState.value = signUpState.value.copy(
+                _signUpState.value = _signUpState.value.copy(
                     confirmPassword = signUpUiEvent.inputValue,
-                    errorState = signUpState.value.errorState.copy(
+                    errorState = _signUpState.value.errorState.copy(
                         confirmPasswordErrorState = when {
                             // Empty state of confirm password
                             signUpUiEvent.inputValue.trim().isEmpty() -> {
                                 confirmPasswordEmptyErrorState
                             }
                             // Password is different than the confirm password
-                            signUpState.value.password.trim() != signUpUiEvent.inputValue -> {
+                            _signUpState.value.password.trim() != signUpUiEvent.inputValue -> {
                                 passwordMismatchErrorState
                             }
                             // Valid state
@@ -154,9 +154,9 @@ class SignUpViewModel @Inject constructor(private val signUpUseCase: SignUpUseCa
 
             // Email id changed event
             is SignUpUiEvent.GenderChange -> {
-                signUpState.value = signUpState.value.copy(
+                _signUpState.value = _signUpState.value.copy(
                     gender = signUpUiEvent.inputValue,
-                    errorState = signUpState.value.errorState.copy(
+                    errorState = _signUpState.value.errorState.copy(
                         genderErrorState = if (signUpUiEvent.inputValue.trim().isEmpty()) {
                             // Email id empty state
                             genderSelectionErrorState
@@ -171,15 +171,16 @@ class SignUpViewModel @Inject constructor(private val signUpUseCase: SignUpUseCa
             // Submit SignUp event
             is SignUpUiEvent.Submit -> {
                 val inputsValidated = validateInputs()
+                Log.d("TAG", "SignUpScreen: onSubmit $inputsValidated")
                 if (inputsValidated) {
                     // TODO Trigger registration in authentication flow
-                    Log.d("TAG", "onUiEvent: ${Gson().toJson(signUpState.value)}")
+                    Log.d("TAG", "onUiEvent: ${Gson().toJson(_signUpState.value)}")
                     /*userSession.getString(SessionConstant.PHONE_NUMBER)?.let { phone->
                         SignUpRequest(
-                            username = signUpState.value.username,
-                            email = signUpState.value.email,
-                            password = signUpState.value.password,
-                            gender = signUpState.value.gender,
+                            username = _signUpState.value.username,
+                            email = _signUpState.value.email,
+                            password = _signUpState.value.password,
+                            gender = _signUpState.value.gender,
                             phone = phone,
                             latitude = _location.value.first.toString(),
                             longitude = _location.value.second.toString()
@@ -210,21 +211,21 @@ class SignUpViewModel @Inject constructor(private val signUpUseCase: SignUpUseCa
 
     /**
      * Function to validate inputs
-     * Ideally it should be on domain layer (usecase)
+     * Ideally it should be on domain layer (useCase)
      * @return true -> inputs are valid
      * @return false -> inputs are invalid
      */
     private fun validateInputs(): Boolean {
-        val username = signUpState.value.username.trim()
-        val email = signUpState.value.email.trim()
-        val password = signUpState.value.password.trim()
-        val confirmPassword = signUpState.value.confirmPassword.trim()
-        val gender = signUpState.value.gender.trim()
-        Log.d("TAG", "validateInputs: $confirmPassword")
+        val username = _signUpState.value.username.trim()
+        val email = _signUpState.value.email.trim()
+        val password = _signUpState.value.password.trim()
+        val confirmPassword = _signUpState.value.confirmPassword.trim()
+        val gender = _signUpState.value.gender.trim()
 
+        Log.d("TAG", "validateInputs: $username")
         // Name empty
         if (username.isEmpty()) {
-            signUpState.value = signUpState.value.copy(
+            _signUpState.value = _signUpState.value.copy(
                 errorState = SignUpErrorState(
                     usernameErrorState = usernameEmptyErrorState
                 )
@@ -234,7 +235,7 @@ class SignUpViewModel @Inject constructor(private val signUpUseCase: SignUpUseCa
 
         // Email empty
         if (email.isEmpty()) {
-            signUpState.value = signUpState.value.copy(
+            _signUpState.value = _signUpState.value.copy(
                 errorState = SignUpErrorState(
                     emailErrorState = emailEmptyErrorState
                 )
@@ -244,7 +245,7 @@ class SignUpViewModel @Inject constructor(private val signUpUseCase: SignUpUseCa
 
         // Email Matcher
         if (email.isNotEmpty() && !Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            signUpState.value = signUpState.value.copy(
+            _signUpState.value = _signUpState.value.copy(
                 errorState = SignUpErrorState(
                     emailErrorState = invalidUserNameErrorState
                 )
@@ -254,7 +255,7 @@ class SignUpViewModel @Inject constructor(private val signUpUseCase: SignUpUseCa
 
         //Password Empty
         if (password.isEmpty()) {
-            signUpState.value = signUpState.value.copy(
+            _signUpState.value = _signUpState.value.copy(
                 errorState = SignUpErrorState(
                     passwordErrorState = passwordEmptyErrorState
                 )
@@ -264,7 +265,7 @@ class SignUpViewModel @Inject constructor(private val signUpUseCase: SignUpUseCa
 
         //Password Matcher
         if (password.isNotEmpty() &&!AppConstants.PASSWORD_PATTERN?.matcher(password)!!.matches()) {
-            signUpState.value = signUpState.value.copy(
+            _signUpState.value = _signUpState.value.copy(
                 errorState = SignUpErrorState(
                     passwordErrorState = invalidPasswordErrorState
                 )
@@ -274,7 +275,7 @@ class SignUpViewModel @Inject constructor(private val signUpUseCase: SignUpUseCa
 
         //Confirm Password Empty
         if (confirmPassword.isEmpty()) {
-            signUpState.value = signUpState.value.copy(
+            _signUpState.value = _signUpState.value.copy(
                 errorState = SignUpErrorState(
                     confirmPasswordErrorState = confirmPasswordEmptyErrorState
                 )
@@ -284,7 +285,7 @@ class SignUpViewModel @Inject constructor(private val signUpUseCase: SignUpUseCa
 
         // Password and Confirm Password are different
         if (password != confirmPassword) {
-            signUpState.value = signUpState.value.copy(
+            _signUpState.value = _signUpState.value.copy(
                 errorState = SignUpErrorState(
                     confirmPasswordErrorState = passwordMismatchErrorState
                 )
@@ -294,7 +295,7 @@ class SignUpViewModel @Inject constructor(private val signUpUseCase: SignUpUseCa
 
         //Gender Empty
         if (gender.isEmpty()) {
-            signUpState.value = signUpState.value.copy(
+            _signUpState.value = _signUpState.value.copy(
                 errorState = SignUpErrorState(
                     genderErrorState = genderSelectionErrorState
                 )
@@ -305,7 +306,7 @@ class SignUpViewModel @Inject constructor(private val signUpUseCase: SignUpUseCa
         // No errors
         else {
             // Set default error state
-            signUpState.value = signUpState.value.copy(errorState = SignUpErrorState())
+            _signUpState.value = _signUpState.value.copy(errorState = SignUpErrorState())
             return true
         }
     }
@@ -320,7 +321,7 @@ class SignUpViewModel @Inject constructor(private val signUpUseCase: SignUpUseCa
                         Log.d("TAG", "makeSignUpRequest SignUpResponse: ${Gson().toJson(result)}")
                         result.data?.let { response->
                             _signUpResponse.emit(result.data)
-                            signUpState.value = signUpState.value.copy(isSignUpSuccessful = true)
+                            _signUpState.value = _signUpState.value.copy(isSignUpSuccessful = true)
                             //TODO save token after dialog dismiss
                             userSession.put(AUTH_ID, response._id)
                             _viewState.update { currentState -> currentState.copy(isLoading = false) }
@@ -331,7 +332,7 @@ class SignUpViewModel @Inject constructor(private val signUpUseCase: SignUpUseCa
                 is NetworkResult.Error->{
 
                     Log.d("TAG", "makeSignUpRequest SignUpResponse: ${result.message}")
-                     _viewState.update { currentState -> currentState.copy(isLoading = false) }
+                    _viewState.update { currentState -> currentState.copy(isLoading = false) }
                     _onProcessSuccess.emit(result.message!!)
                 }
                 is NetworkResult.Loading->{
@@ -343,7 +344,7 @@ class SignUpViewModel @Inject constructor(private val signUpUseCase: SignUpUseCa
 
     fun setUserType(userType: String) {
         Log.d("TAG", "setUserType: $userType")
-        signUpState.value = signUpState.value.copy(userType = userType, errorState = SignUpErrorState())
-        Log.d("TAG", "setUserType data: ${signUpState.value.userType}")
+        _signUpState.value = _signUpState.value.copy(userType = userType, errorState = SignUpErrorState())
+        Log.d("TAG", "setUserType data: ${_signUpState.value.userType}")
     }
 }

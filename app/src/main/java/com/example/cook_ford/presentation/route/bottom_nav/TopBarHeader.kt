@@ -30,8 +30,9 @@ fun getTitleByRoute(route:String): String {
         NavConst.COOK_REVIEW -> NavTitle.COOK_REVIEW
         NavConst.COOK_REPORT -> NavTitle.COOK_REPORT
         NavConst.COOK_MESSAGE -> NavTitle.COOK_MESSAGE
-        NavConst.ADD_COOK_PREFERENCES -> NavTitle.ADD_COOK_PREFERENCES
         NavConst.UPLOAD_CUISINES -> NavTitle.UPLOAD_CUISINES
+        NavConst.UPLOAD_AADHAAR -> NavTitle.UPLOAD_AADHAAR
+        NavConst.MANAGE_TIME_SLOTS -> NavTitle.MANAGE_TIME_SLOTS
 
         // other cases
         else -> NavTitle.HOME

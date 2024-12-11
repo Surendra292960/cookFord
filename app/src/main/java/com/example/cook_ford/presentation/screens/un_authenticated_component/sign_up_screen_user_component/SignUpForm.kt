@@ -119,7 +119,7 @@ fun SignUpForm(
                 .padding(start = 10.dp, end = 10.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically) {
-            Text(text = "Gender", fontFamily = FontName, color = Color.Gray, fontWeight = FontWeight.W700, fontSize = 16.sp)
+            Text(text = AppConstants.GENDER, fontFamily = FontName, color = Color.Gray, fontWeight = FontWeight.W700, fontSize = 16.sp)
             SegmentedControl(
                 items = genders,
                 defaultSelectedItemIndex = 0,) {
@@ -130,7 +130,7 @@ fun SignUpForm(
 
         Spacer(modifier = Modifier.height(10.dp))
 
-        // Registration Submit Button
+        // SignUp Submit Button
         OutlinedSubmitButton(
             modifier = Modifier.padding(top = AppTheme.dimens.paddingLarge),
             text = stringResource(id = R.string.sign_up_button_text),

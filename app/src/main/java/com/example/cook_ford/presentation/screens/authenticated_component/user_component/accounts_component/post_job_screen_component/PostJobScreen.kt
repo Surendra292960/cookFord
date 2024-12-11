@@ -59,7 +59,7 @@ import com.example.cook_ford.presentation.component.widgets.InputTextField
 import com.example.cook_ford.presentation.component.widgets.KeyboardOption
 import com.example.cook_ford.presentation.component.widgets.OutlinedSmallSubmitButton
 import com.example.cook_ford.presentation.component.widgets.ProfileImage
-import com.example.cook_ford.presentation.component.widgets.SubmitButtonAutoSize
+import com.example.cook_ford.presentation.component.widgets.AutoSizeButton
 import com.example.cook_ford.presentation.theme.FontName
 
 @Composable
@@ -107,7 +107,7 @@ fun PostJobScreen(
 
                 Spacer(modifier = Modifier.height(10.dp))
 
-                SubmitButtonAutoSize(
+                AutoSizeButton(
                     modifier = Modifier.padding(3.dp),
                     text = stringResource(id = R.string.post_job_button_text),
                     isLoading = false,

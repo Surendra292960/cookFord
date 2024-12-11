@@ -1,3 +1,4 @@
+/*
 package com.example.cook_ford.presentation.screens.authenticated_component.cook_component.account_component.cook_sign_up
 
 import android.location.Location
@@ -78,9 +79,11 @@ class CookSignUpViewModel @Inject constructor(private val signUpUseCase: SignUpU
         Log.d("TAG", "Location Data : ${_location.value.first}, ${_location.value.second}")
     }
 
-    /**
+    */
+/**
      * Function called on any signUp event [CookUiEvent]
-     */
+     *//*
+
     fun onUiEvent(signUpUiEvent: CookUiEvent) {
         when (signUpUiEvent) {
             // Name id changed event
@@ -173,7 +176,8 @@ class CookSignUpViewModel @Inject constructor(private val signUpUseCase: SignUpU
                 if (inputsValidated) {
                     // TODO Trigger registration in authentication flow
                     Log.d("TAG", "onUiEvent: ${Gson().toJson(signUpState.value)}")
-                    /*userSession.getString(SessionConstant.PHONE_NUMBER)?.let { phone->
+                    */
+/*userSession.getString(SessionConstant.PHONE_NUMBER)?.let { phone->
                         SignUpRequest(
                             username = signUpState.value.username,
                             email = signUpState.value.email,
@@ -188,7 +192,8 @@ class CookSignUpViewModel @Inject constructor(private val signUpUseCase: SignUpU
                         makeSigUpRequest(
                             signupRequest
                         )
-                    }*/
+                    }*//*
+
 
                     makeSigUpRequest(
                         SignUpRequest(
@@ -212,12 +217,14 @@ class CookSignUpViewModel @Inject constructor(private val signUpUseCase: SignUpU
         }
     }
 
-    /**
+    */
+/**
      * Function to validate inputs
      * Ideally it should be on domain layer (usecase)
      * @return true -> inputs are valid
      * @return false -> inputs are invalid
-     */
+     *//*
+
     private fun validateInputs(): Boolean {
         val username = signUpState.value.username.trim()
         val email = signUpState.value.email.trim()
@@ -344,4 +351,4 @@ class CookSignUpViewModel @Inject constructor(private val signUpUseCase: SignUpU
             }
         }
     }
-}
+}*/
