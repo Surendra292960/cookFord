@@ -79,5 +79,6 @@ sealed class NavigationRoutes {
         data object UploadCuisines : CookAccountNavigation(route = NavPath.UPLOAD_CUISINES.toString())
         data object UploadAadhaar : CookAccountNavigation(route = NavPath.UPLOAD_AADHAAR.toString())
         data object ManageTimeSlots : CookAccountNavigation(route = NavPath.MANAGE_TIME_SLOTS.toString())
+        data object CookJobList : CookAccountNavigation(route = NavPath.COOK_JOB_LIST.toString())
     }
 }

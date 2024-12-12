@@ -14,6 +14,7 @@ import androidx.navigation.navigation
 import com.example.cook_ford.data.remote.profile_response.ProfileResponse
 import com.example.cook_ford.presentation.screens.authenticated_component.cook_component.account_component.account_screen_component.CookAccountsScreen
 import com.example.cook_ford.presentation.screens.authenticated_component.cook_component.account_component.add_cook_time_slots.ManageTimeSlotsScreen
+import com.example.cook_ford.presentation.screens.authenticated_component.cook_component.account_component.cook_available_jobs_list.CookJobListScreen
 import com.example.cook_ford.presentation.screens.authenticated_component.cook_component.account_component.manage_cook_account.ManageCookAccountScreen
 import com.example.cook_ford.presentation.screens.authenticated_component.cook_component.account_component.update_profile_screen_component.UpdateCookProfileScreen
 import com.example.cook_ford.presentation.screens.authenticated_component.cook_component.account_component.upload_aadhaar.UploadAadhaarScreen
@@ -751,6 +752,13 @@ fun NavGraphBuilder.cookAccountNavGraph(navController: NavHostController) {
                                     inclusive = true
                                 }
                             }
+                        },
+                        onNavigateToCookJobList = {
+                            navController.navigate(route = NavigationRoutes.CookAccountNavigation.CookJobList.route) {
+                                popUpTo(route = NavigationRoutes.Authenticated.NavigationRoute.route) {
+                                    inclusive = true
+                                }
+                            }
                         }
                     )
                 }
@@ -797,6 +805,21 @@ fun NavGraphBuilder.cookAccountNavGraph(navController: NavHostController) {
                         "cookAccountNavGraph review data: ${Gson().toJson(profileResponse)}"
                     )
                     ManageTimeSlotsScreen(
+                        onNavigateBack = { navController.navigateUp() },
+                        profileResponse = profileResponse,
+                        onNavigateToAuthenticatedRoute = {}
+                    )
+                }
+        }
+
+        composable(route = NavigationRoutes.CookAccountNavigation.CookJobList.route) {
+            navController.previousBackStackEntry?.savedStateHandle?.get<String>("profileResponse")
+                .let { Gson().fromJson(it, ProfileResponse::class.java) }.let { profileResponse ->
+                    Log.d(
+                        "TAG",
+                        "cookAccountNavGraph review data: ${Gson().toJson(profileResponse)}"
+                    )
+                    CookJobListScreen(
                         onNavigateBack = { navController.navigateUp() },
                         profileResponse = profileResponse,
                         onNavigateToAuthenticatedRoute = {}

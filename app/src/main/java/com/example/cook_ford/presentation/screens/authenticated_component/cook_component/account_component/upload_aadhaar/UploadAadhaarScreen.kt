@@ -90,8 +90,8 @@ fun UploadAadhaarScreen(
                 contentPadding = PaddingValues(AppTheme.dimens.paddingSmall),
                 content = {
                     items(data.size) { index ->
-                        AddPhotoCard(data[index]) { onChange ->
-                            Log.d("TAG", "UploadAadhaarScreen: $onChange")
+                        AddPhotoCard(data[index]) { uri, title->
+                            Log.d("TAG", "UploadAadhaarScreen: $uri : $title")
                         }
                     }
                 }
@@ -111,13 +111,13 @@ fun UploadAadhaarScreen(
 }
 
 @Composable
-fun AddPhotoCard(title: String, onChange: (String) -> Unit) {
+fun AddPhotoCard(title: String, onChange: (String, String) -> Unit) {
     var selectedImages by remember { mutableStateOf<Uri?>(null) }
     val singlePhotoPickerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.PickVisualMedia(),
         onResult = { uri ->
             selectedImages = uri
-            onChange(uri.toString())
+            onChange(uri.toString(), title)
         }
     )
 

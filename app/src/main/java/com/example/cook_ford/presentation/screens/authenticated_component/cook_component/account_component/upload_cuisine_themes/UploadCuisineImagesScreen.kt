@@ -19,27 +19,20 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -51,22 +44,18 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
 import com.example.cook_ford.R
 import com.example.cook_ford.data.remote.profile_response.ProfileResponse
 import com.example.cook_ford.presentation.component.widgets.AutoSizeButton
-import com.example.cook_ford.presentation.component.widgets.OutlinedSmallSubmitButton
 import com.example.cook_ford.presentation.component.widgets.SubTitleText
 import com.example.cook_ford.presentation.component.widgets.SubmitButton
-import com.example.cook_ford.presentation.screens.authenticated_component.cook_component.account_component.upload_aadhaar.data
 import com.example.cook_ford.presentation.theme.AppTheme
-import com.example.cook_ford.presentation.theme.FontName
 import com.example.cook_ford.utils.AppConstants
 
-val item = listOf(1, 2, 3, 4, 5)
+val item = listOf(1, 2, 3, 4, 5, 6)
 
 @Composable
 fun UploadCuisineImagesScreen(
@@ -76,6 +65,10 @@ fun UploadCuisineImagesScreen(
     onNavigateToAuthenticatedRoute: () -> Unit,
     profileLazyListState: LazyListState = rememberLazyListState()
 ) {
+
+    val selectedImages = remember { mutableStateOf(List(item.size) { null as Uri? }) }
+
+
     Column( modifier = Modifier
         .fillMaxSize()
         .background(Color.White)
@@ -93,10 +86,20 @@ fun UploadCuisineImagesScreen(
                 content = {
                     items(item.size) { index ->
                         AddPhotoCard(
-                            item[index]
-                        ) { onChange ->
-                            Log.d("TAG", "UploadAadhaarScreen: $onChange")
-                        }
+                            selectedImages = selectedImages.value[index],
+                            onImageChange = { uri ->
+                                selectedImages.value = selectedImages.value.toMutableList().also {
+                                    it[index] = uri
+                                }
+                                Log.d("TAG", "UploadCuisineImagesScreen Selected : $index : $uri")
+                            },
+                            onDeleteImage = { uri ->
+                                selectedImages.value = selectedImages.value.toMutableList().also {
+                                    it[index] = null
+                                }
+                                Log.d("TAG", "UploadCuisineImagesScreen Deleted : $index : $uri")
+                            }
+                        )
                     }
                 }
             )
@@ -112,13 +115,12 @@ fun UploadCuisineImagesScreen(
 }
 
 @Composable
-fun AddPhotoCard(item: Int, onChange: (String) -> Unit) {
-    var selectedImages by remember { mutableStateOf<Uri?>(null) }
+fun AddPhotoCard(selectedImages: Uri?, onImageChange: (Uri?) -> Unit, onDeleteImage: (uri: Uri?) -> Unit) {
+
     val singlePhotoPickerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.PickVisualMedia(),
         onResult = { uri ->
-            selectedImages = uri
-            onChange(uri.toString())
+            onImageChange(uri)
         }
     )
 
@@ -150,10 +152,8 @@ fun AddPhotoCard(item: Int, onChange: (String) -> Unit) {
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Box(modifier = Modifier) {
-                    AsyncImage(model = if (selectedImages != null) {
-                        selectedImages
-                    } else {
-                        Column(
+                    AsyncImage(model = selectedImages
+                        ?: Column(
                             modifier = Modifier
                                 .background(Color.White)
                                 .fillMaxSize(),
@@ -176,8 +176,7 @@ fun AddPhotoCard(item: Int, onChange: (String) -> Unit) {
                                 textColor = Color.Gray,
                                 fontWeight = FontWeight.W700
                             )
-                        }
-                    },
+                        },
                         contentDescription = "Profile Photo",
                         modifier = Modifier.clip(RectangleShape),
                         contentScale = ContentScale.Crop
@@ -203,7 +202,9 @@ fun AddPhotoCard(item: Int, onChange: (String) -> Unit) {
                                 textColor = Color.White,
                                 buttonColor = Color.Red,
                                 isLoading = false,
-                                onClick = { selectedImages = null }
+                                onClick = {
+                                    onDeleteImage(selectedImages)
+                                }
                             )
                         }
                     }

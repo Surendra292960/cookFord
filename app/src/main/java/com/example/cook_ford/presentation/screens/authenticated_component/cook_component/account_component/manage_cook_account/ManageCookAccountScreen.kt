@@ -114,6 +114,7 @@ fun ManageCookAccountScreen(
     onNavigateToUploadCuisines: () -> Unit,
     onNavigateToUploadAadhaar: () -> Unit,
     onNavigateToManageTimeSlots: () -> Unit,
+    onNavigateToCookJobList: () -> Unit,
 
 ) {
     val changeProfileState = remember { mutableStateOf("Male") }
@@ -372,6 +373,14 @@ fun ManageCookAccountScreen(
                         )
                     }
                     onNavigateToManageTimeSlots.invoke()
+                }else if(option == "View Job Listings"){
+                    navController.currentBackStackEntry?.savedStateHandle?.apply {
+                        set(
+                            "profileResponse",
+                            Gson().toJson(accountState.profileResponse)
+                        )
+                    }
+                    onNavigateToCookJobList.invoke()
                 }
             }
         }

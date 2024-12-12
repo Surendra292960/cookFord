@@ -58,5 +58,6 @@ enum class NavPath {
     UPLOAD_CUISINES,
     UPLOAD_AADHAAR,
     MANAGE_TIME_SLOTS,
+    COOK_JOB_LIST,
 
 }

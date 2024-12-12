@@ -197,6 +197,10 @@ fun BottomNavigationBar(
             bottomNavVisibility = false
             topBarVisibility(true)
         }
+        NavigationRoutes.CookAccountNavigation.CookJobList.route  -> {
+            bottomNavVisibility = false
+            topBarVisibility(true)
+        }
 
         /**
          * Profile Details Navigation

@@ -33,6 +33,7 @@ fun getTitleByRoute(route:String): String {
         NavConst.UPLOAD_CUISINES -> NavTitle.UPLOAD_CUISINES
         NavConst.UPLOAD_AADHAAR -> NavTitle.UPLOAD_AADHAAR
         NavConst.MANAGE_TIME_SLOTS -> NavTitle.MANAGE_TIME_SLOTS
+        NavConst.COOK_JOB_LIST -> NavTitle.COOK_JOB_LIST
 
         // other cases
         else -> NavTitle.HOME

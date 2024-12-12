@@ -42,10 +42,11 @@ object NavTitle {
     const val COOK_MESSAGE = "Cook Message"
 
     //Cook Account
-    const val UPDATE_COOK_PROFILE = "Cook Update Profile"
-    const val MANAGE_COOK_ACCOUNT = "Cook Manage Account"
+    const val UPDATE_COOK_PROFILE = "Update Profile"
+    const val MANAGE_COOK_ACCOUNT = "Manage Account"
     const val UPLOAD_CUISINES = "Upload Cuisines"
     const val UPLOAD_AADHAAR = "Upload Aadhaar"
     const val MANAGE_TIME_SLOTS = "Manage time slots"
+    const val COOK_JOB_LIST = "Job List"
 }
 
