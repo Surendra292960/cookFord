@@ -132,7 +132,6 @@ fun CookAccountsScreen(
    // state: ProfileUiState,
     navController: NavHostController,
     onNavigateToUpdateCookProfile: () -> Unit,
-    onNavigateToCallCreditScreen: () -> Unit,
     onNavigateToAddCookScreen: () -> Unit,
     onNavigateToManageAccountScreen: () -> Unit,
     onNavigateToContactUsScreen: () -> Unit,
@@ -190,47 +189,10 @@ fun CookAccountsScreen(
                     elevation = CardDefaults.elevatedCardElevation(AppTheme.dimens.paddingTooSmall),
                     shape = RoundedCornerShape(topStart = 28.dp, topEnd = 28.dp)) {
 
+                    Spacer(modifier = Modifier.height(10.dp))
+
                     LazyColumn(modifier = Modifier.fillMaxWidth(), state = profileLazyListState, horizontalAlignment = Alignment.CenterHorizontally, contentPadding = PaddingValues(start = 10.dp, end = 10.dp),
                         content = {
-                            item {
-                                Row(modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(AppTheme.dimens.paddingSmall), horizontalArrangement = Arrangement.SpaceEvenly) {
-                                    OutlinedSmallSubmitButton(
-                                        modifier = Modifier
-                                            .padding(top = AppTheme.dimens.paddingLarge)
-                                            .weight(1f),
-                                        text = AppConstants.CALL_CREDIT,
-                                        textColor = Color.White,
-                                        isLoading = false,
-                                        backgroundColor = Color.LightGray,
-                                        icon = ButtonIcons(leadingIcon = Icons.Default.ExposureZero, tintColor = DeepGreen, leadingIconSize = 30.dp),
-                                        onClick = { /*onSubmit*/ }
-                                    )
-
-                                    Spacer(modifier = Modifier.width(20.dp))
-
-                                    OutlinedSmallSubmitButton(
-                                        modifier = Modifier
-                                            .padding(top = AppTheme.dimens.paddingLarge)
-                                            .weight(1f),
-                                        text = AppConstants.BUY_CALL_CREDIT,
-                                        textColor = Color.White,
-                                        isLoading = false,
-                                        backgroundColor = OrangeYellow1,
-                                        onClick = {
-                                            navController.currentBackStackEntry?.savedStateHandle?.apply {
-                                                set(
-                                                    "profileResponse",
-                                                    Gson().toJson(accountState.profileResponse)
-                                                )
-                                            }
-                                            onNavigateToCallCreditScreen.invoke()
-                                        }
-                                    )
-                                    Spacer(modifier = Modifier.width(10.dp))
-                                }
-                            }
                             items(accountData.size) { index ->
                                 AccountItem(
                                     accountViewModel = accountViewModel,
@@ -323,9 +285,10 @@ fun CookAccountsScreen(
                             }
                             item {
                                 HorizontalDivider(
-                                    modifier = Modifier.padding(top = 5.dp),
+                                    modifier = Modifier.padding(top = 10.dp),
                                     color = LightGray_2
                                 )
+                                Spacer(modifier = Modifier.height(20.dp))
                                 FooterStatus()
                                 if (showReviewBottomSheet) {
                                     BottomSheet(
@@ -483,6 +446,7 @@ fun AccountItem(
 
 @Composable
 fun FooterStatus() {
+
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -763,7 +727,6 @@ fun PreviewProfileScreen() {
     CookAccountsScreen(
         //  state = state,
        onNavigateToUpdateCookProfile = {},
-        onNavigateToCallCreditScreen = {},
         onNavigateToAddCookScreen = {},
         onNavigateToManageAccountScreen = {},
         onNavigateToContactUsScreen = {},

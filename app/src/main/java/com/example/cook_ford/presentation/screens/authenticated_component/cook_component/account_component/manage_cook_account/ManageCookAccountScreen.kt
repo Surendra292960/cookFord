@@ -1,4 +1,5 @@
 package com.example.cook_ford.presentation.screens.authenticated_component.cook_component.account_component.manage_cook_account
+
 import android.util.Log
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.background
@@ -24,6 +25,7 @@ import androidx.compose.material3.CardColors
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Switch
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -66,18 +68,19 @@ data class CookAccountModelData(
     val isBorder: Boolean = false,
     val title: String,
     var subTitle: String,
-    val titleColor:Color = Color.DarkGray,
-    var subTitleColor:Color = Color.Gray
+    val titleColor: Color = Color.DarkGray,
+    var subTitleColor: Color = Color.Gray
 )
+
 val options = mutableListOf(
-    CookAccountModelData(
-        trailingIcon = R.drawable.arrow_forward_ios,
-        isBorder = true,
-        title = "View Job Listings",
-        subTitle = "Available jobs as per your profile",
-        titleColor = Color.DarkGray,
-        subTitleColor = Color.Gray
-    ),
+    /* CookAccountModelData(
+         trailingIcon = R.drawable.arrow_forward_ios,
+         isBorder = true,
+         title = "View Job Listings",
+         subTitle = "Available jobs as per your profile",
+         titleColor = Color.DarkGray,
+         subTitleColor = Color.Gray
+     ),*/
     CookAccountModelData(
         trailingIcon = R.drawable.arrow_forward_ios,
         isBorder = true,
@@ -116,28 +119,29 @@ fun ManageCookAccountScreen(
     onNavigateToManageTimeSlots: () -> Unit,
     onNavigateToCookJobList: () -> Unit,
 
-) {
+    ) {
     val changeProfileState = remember { mutableStateOf("Male") }
-    val manageCookAccountViewModel:ManageCookAccountViewModel= hiltViewModel()
+    val manageCookAccountViewModel: ManageCookAccountViewModel = hiltViewModel()
     val accountState by remember { manageCookAccountViewModel.manageAccountState }
     var isEnable by remember { mutableStateOf(true) }
-/*    var list by remember { mutableStateOf(options) }
+    var list by remember { mutableStateOf(options) }
 
-    if (!isEnable){
-        options.forEach{ value->
-            if (value.subTitle == "Available job as per your profile") {
-                value.subTitle = "Make your profile active to view jobs"  // Replace
-                value.subTitleColor = Color.Red
+    LaunchedEffect(key1 = true) {
+        if (!isEnable) {
+            options.forEach { value ->
+                if (value.subTitle.startsWith("Available")) {
+                    value.subTitle = "Make your profile active to view jobs"  // Replace
+                    value.subTitleColor = Color.Red
+                }
+                Log.d("TAG", "ManageCookAccountScreen Data: ${value.subTitle}")
             }
-            //Log.d("TAG", "ManageCookAccountScreen: ${value.subTitle}")
+        } else {
+            options.forEach { value ->
+                value.subTitleColor = Color.Gray
+                Log.d("TAG", "ManageCookAccountScreen: ${value.subTitle}")
+            }
         }
-    }else{
-        options.forEach{ value->
-            value.subTitleColor = Color.Gray
-            //Log.d("TAG", "ManageCookAccountScreen: ${value.subTitle}")
-        }
-
-    }*/
+    }
 
     Log.d("TAG", "ManageCookAccountScreen: ${Gson().toJson(options)}")
 
@@ -147,7 +151,7 @@ fun ManageCookAccountScreen(
             .background(Color.White)
             .fillMaxSize()
             .padding(16.dp),
-             horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
         //Profile Image
@@ -304,40 +308,35 @@ fun ManageCookAccountScreen(
         Spacer(modifier = Modifier.height(16.dp))
 
         // Looking for Work Toggle
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = 8.dp),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-           Column(modifier = Modifier, verticalArrangement = Arrangement.SpaceBetween) {
-               TitleText(
-                   modifier = Modifier,
-                   text ="Looking for work",
-                   textAlign = TextAlign.Start,
-                   textColor = Color.DarkGray,
-                   fontWeight = FontWeight.Bold
-               )
+        Row(modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
+            Column(modifier = Modifier, verticalArrangement = Arrangement.SpaceBetween) {
 
-               if(isEnable){
-                   MediumTitleText(
-                       modifier = Modifier,
-                       text = "Your profile is Active",
-                       textAlign = TextAlign.Start,
-                       textColor = Color.Gray,
-                       fontWeight = FontWeight.Medium
-                   )
-               }else{
-                   MediumTitleText(
-                       modifier = Modifier,
-                       text = "Your profile is InActive",
-                       textAlign = TextAlign.Start,
-                       textColor = Color.Red,
-                       fontWeight = FontWeight.Medium
-                   )
-               }
-           }
+                TitleText(
+                    modifier = Modifier,
+                    text = "Looking for work",
+                    textAlign = TextAlign.Start,
+                    textColor = Color.DarkGray,
+                    fontWeight = FontWeight.Medium
+                )
+
+                if (isEnable) {
+                    MediumTitleText(
+                        modifier = Modifier,
+                        text = "Your profile is Active",
+                        textAlign = TextAlign.Start,
+                        textColor = Color.Gray,
+                        fontWeight = FontWeight.Medium
+                    )
+                } else {
+                    MediumTitleText(
+                        modifier = Modifier,
+                        text = "Your profile is InActive",
+                        textAlign = TextAlign.Start,
+                        textColor = Color.Red,
+                        fontWeight = FontWeight.Medium
+                    )
+                }
+            }
 
             Switch(
                 checked = isEnable, // Adjust state accordingly
@@ -345,35 +344,11 @@ fun ManageCookAccountScreen(
             )
         }
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Row(modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp),
+            horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
 
-        options.forEach { option ->
-            ProfileOptionItem(option){ option->
-                if (option == "View Profile"){
-                    navController.currentBackStackEntry?.savedStateHandle?.apply {
-                        set(
-                            "profileResponse",
-                            Gson().toJson(accountState.profileResponse)
-                        )
-                    }
-                    onNavigateToCookProfileDetail.invoke()
-                }else if(option == "Upload Images"){
-                    navController.currentBackStackEntry?.savedStateHandle?.apply {
-                        set(
-                            "profileResponse",
-                            Gson().toJson(accountState.profileResponse)
-                        )
-                    }
-                    onNavigateToUploadCuisines.invoke()
-                }else if(option == "Manage time slots"){
-                    navController.currentBackStackEntry?.savedStateHandle?.apply {
-                        set(
-                            "profileResponse",
-                            Gson().toJson(accountState.profileResponse)
-                        )
-                    }
-                    onNavigateToManageTimeSlots.invoke()
-                }else if(option == "View Job Listings"){
+            Column(modifier = Modifier.clickable {
+                if (isEnable){
                     navController.currentBackStackEntry?.savedStateHandle?.apply {
                         set(
                             "profileResponse",
@@ -381,6 +356,72 @@ fun ManageCookAccountScreen(
                         )
                     }
                     onNavigateToCookJobList.invoke()
+                }
+            }, verticalArrangement = Arrangement.SpaceBetween) {
+
+                TitleText(
+                    modifier = Modifier,
+                    text = "View Job Listings",
+                    textAlign = TextAlign.Start,
+                    textColor = Color.DarkGray,
+                    fontWeight = FontWeight.Medium
+                )
+
+                if (isEnable) {
+                    MediumTitleText(
+                        modifier = Modifier,
+                        text = "Available jobs as per your profile",
+                        textAlign = TextAlign.Start,
+                        textColor = Color.Gray,
+                        fontWeight = FontWeight.Medium
+                    )
+                } else {
+                    MediumTitleText(
+                        modifier = Modifier,
+                        text = "Make your profile active to view jobs",
+                        textAlign = TextAlign.Start,
+                        textColor = Color.Red,
+                        fontWeight = FontWeight.Medium
+                    )
+                }
+            }
+
+            Icon(
+                modifier = Modifier.size(20.dp),
+                imageVector = Icons.AutoMirrored.Filled.ArrowForwardIos,
+                tint = Color.DarkGray,
+                contentDescription = "Arrow"
+            )
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        options.forEach { option ->
+            ProfileOptionItem(option) { option ->
+                if (option == "View Profile") {
+                    navController.currentBackStackEntry?.savedStateHandle?.apply {
+                        set(
+                            "profileResponse",
+                            Gson().toJson(accountState.profileResponse)
+                        )
+                    }
+                    onNavigateToCookProfileDetail.invoke()
+                } else if (option == "Upload Images") {
+                    navController.currentBackStackEntry?.savedStateHandle?.apply {
+                        set(
+                            "profileResponse",
+                            Gson().toJson(accountState.profileResponse)
+                        )
+                    }
+                    onNavigateToUploadCuisines.invoke()
+                } else if (option == "Manage time slots") {
+                    navController.currentBackStackEntry?.savedStateHandle?.apply {
+                        set(
+                            "profileResponse",
+                            Gson().toJson(accountState.profileResponse)
+                        )
+                    }
+                    onNavigateToManageTimeSlots.invoke()
                 }
             }
         }
@@ -441,6 +482,11 @@ fun ProfileOptionItem(option: CookAccountModelData, onClick: (String) -> Unit) {
                 fontWeight = FontWeight.Medium
             )
         }
-        Icon(modifier = Modifier.size(20.dp), imageVector = Icons.AutoMirrored.Filled.ArrowForwardIos, contentDescription = "Arrow")
+        Icon(
+            modifier = Modifier.size(20.dp),
+            imageVector = Icons.AutoMirrored.Filled.ArrowForwardIos,
+            tint = Color.DarkGray,
+            contentDescription = "Arrow"
+        )
     }
 }

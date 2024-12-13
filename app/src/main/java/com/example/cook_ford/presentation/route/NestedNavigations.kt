@@ -518,13 +518,6 @@ fun CookHomeNavGraph(navController: NavHostController) {
         composable(route = NavigationRoutes.CookHomeNavigation.Account.route) {
             CookAccountsScreen(
                 navController = navController,
-                onNavigateToCallCreditScreen = {
-                    /*   navController.navigate(route = NavigationRoutes.AccountNavigation.CallCredit.route){
-                           popUpTo(route = NavigationRoutes.Authenticated.NavigationRoute.route) {
-                               inclusive = true
-                           }
-                       }*/
-                },
                 onNavigateToUpdateCookProfile = {
                     navController.navigate(route = NavigationRoutes.CookAccountNavigation.UpdateCookProfile.route) {
                         popUpTo(route = NavigationRoutes.Authenticated.NavigationRoute.route) {

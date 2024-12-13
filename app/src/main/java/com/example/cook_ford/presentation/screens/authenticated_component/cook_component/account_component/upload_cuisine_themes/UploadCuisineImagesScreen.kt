@@ -1,6 +1,5 @@
 package com.example.cook_ford.presentation.screens.authenticated_component.cook_component.account_component.upload_cuisine_themes
 
-import android.net.Uri
 import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
@@ -14,6 +13,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -44,18 +44,20 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
 import com.example.cook_ford.R
 import com.example.cook_ford.data.remote.profile_response.ProfileResponse
 import com.example.cook_ford.presentation.component.widgets.AutoSizeButton
-import com.example.cook_ford.presentation.component.widgets.SubTitleText
 import com.example.cook_ford.presentation.component.widgets.SubmitButton
+import com.example.cook_ford.presentation.component.widgets.TitleText
+import com.example.cook_ford.presentation.screens.authenticated_component.cook_component.account_component.upload_cuisine_themes.state.CuisineImages
+import com.example.cook_ford.presentation.screens.authenticated_component.cook_component.account_component.upload_cuisine_themes.state.item
 import com.example.cook_ford.presentation.theme.AppTheme
 import com.example.cook_ford.utils.AppConstants
 
-val item = listOf(1, 2, 3, 4, 5, 6)
 
 @Composable
 fun UploadCuisineImagesScreen(
@@ -63,10 +65,10 @@ fun UploadCuisineImagesScreen(
     onNavigateBack: () -> Unit,
     profileResponse: ProfileResponse? = null,
     onNavigateToAuthenticatedRoute: () -> Unit,
-    profileLazyListState: LazyListState = rememberLazyListState()
-) {
+    profileLazyListState: LazyListState = rememberLazyListState()) {
 
-    val selectedImages = remember { mutableStateOf(List(item.size) { null as Uri? }) }
+    val cuisineViewModel: UploadCuisineViewModel = hiltViewModel()
+    val selectedImages = remember { mutableStateOf(item) }
 
 
     Column( modifier = Modifier
@@ -76,8 +78,10 @@ fun UploadCuisineImagesScreen(
         , horizontalAlignment = Alignment.Start
     ) {
 
-        Column( modifier = Modifier.fillMaxSize()
-            .fillMaxSize().weight(1f, fill = false), horizontalAlignment = Alignment.CenterHorizontally) {
+        Column( modifier = Modifier
+            .fillMaxSize()
+            .fillMaxSize()
+            .weight(1f, fill = false), horizontalAlignment = Alignment.CenterHorizontally) {
 
             LazyColumn(
                 modifier = Modifier.fillMaxSize(),
@@ -87,17 +91,17 @@ fun UploadCuisineImagesScreen(
                     items(item.size) { index ->
                         AddPhotoCard(
                             selectedImages = selectedImages.value[index],
-                            onImageChange = { uri ->
+                            onImageChange = { image ->
                                 selectedImages.value = selectedImages.value.toMutableList().also {
-                                    it[index] = uri
+                                    it[index] = image
                                 }
-                                Log.d("TAG", "UploadCuisineImagesScreen Selected : $index : $uri")
+                                Log.d("TAG", "UploadCuisineImagesScreen Selected : $index : $image")
                             },
-                            onDeleteImage = { uri ->
+                            onDeleteImage = { image ->
+                                Log.d("TAG", "UploadCuisineImagesScreen Deleted : $index : $image")
                                 selectedImages.value = selectedImages.value.toMutableList().also {
-                                    it[index] = null
+                                    it[index] = image
                                 }
-                                Log.d("TAG", "UploadCuisineImagesScreen Deleted : $index : $uri")
                             }
                         )
                     }
@@ -106,7 +110,9 @@ fun UploadCuisineImagesScreen(
         }
 
         SubmitButton(
-            modifier = Modifier.padding(start = 20.dp, end = 20.dp).background(Color.Transparent, shape = CircleShape),
+            modifier = Modifier
+                .padding(start = 20.dp, end = 20.dp)
+                .background(Color.Transparent, shape = CircleShape),
             text = stringResource(id = R.string.submit_button_text),
             isLoading = false,
             onClick = {  }
@@ -115,12 +121,13 @@ fun UploadCuisineImagesScreen(
 }
 
 @Composable
-fun AddPhotoCard(selectedImages: Uri?, onImageChange: (Uri?) -> Unit, onDeleteImage: (uri: Uri?) -> Unit) {
+fun AddPhotoCard(selectedImages: CuisineImages, onImageChange: (CuisineImages) -> Unit, onDeleteImage: (CuisineImages) -> Unit) {
+
 
     val singlePhotoPickerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.PickVisualMedia(),
         onResult = { uri ->
-            onImageChange(uri)
+            onImageChange(CuisineImages(index = selectedImages.index, uri = uri.toString()))
         }
     )
 
@@ -130,11 +137,14 @@ fun AddPhotoCard(selectedImages: Uri?, onImageChange: (Uri?) -> Unit, onDeleteIm
         )
     }
 
+
     Column(
-        modifier = Modifier.padding(10.dp).fillMaxWidth(),
+        modifier = Modifier
+            .fillMaxWidth(),
         verticalArrangement = Arrangement.spacedBy(15.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+
         OutlinedCard(
             modifier = Modifier
                 .fillMaxWidth()
@@ -142,7 +152,7 @@ fun AddPhotoCard(selectedImages: Uri?, onImageChange: (Uri?) -> Unit, onDeleteIm
                 .clickable { launchPhotoPicker() },
             shape = RoundedCornerShape(8.dp),
             colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
-            border = BorderStroke(1.dp, Color.Gray),
+            border = BorderStroke(1.dp, Color.Gray)
         ) {
             Column(
                 modifier = Modifier
@@ -151,15 +161,15 @@ fun AddPhotoCard(selectedImages: Uri?, onImageChange: (Uri?) -> Unit, onDeleteIm
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
+
                 Box(modifier = Modifier) {
-                    AsyncImage(model = selectedImages
-                        ?: Column(
-                            modifier = Modifier
-                                .background(Color.White)
-                                .fillMaxSize(),
-                            verticalArrangement = Arrangement.Center,
-                            horizontalAlignment = Alignment.CenterHorizontally
-                        ) {
+                    Log.d("TAG", "AddPhotoCard selectedImages : ${selectedImages.index} : $selectedImages")
+                    AsyncImage(model = if (selectedImages.uri != AppConstants.EMPTY_STRING) {
+                        selectedImages.uri
+                    } else {
+                        Column(modifier = Modifier
+                            .background(Color.White)
+                            .fillMaxSize(), verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
                             Icon(
                                 imageVector = Icons.Default.Add,
                                 contentDescription = AppConstants.ADD_PHOTO,
@@ -169,19 +179,20 @@ fun AddPhotoCard(selectedImages: Uri?, onImageChange: (Uri?) -> Unit, onDeleteIm
 
                             Spacer(modifier = Modifier.height(8.dp))
 
-                            SubTitleText(
+                            TitleText(
                                 modifier = Modifier,
                                 text = AppConstants.ADD_PHOTO,
                                 textAlign = TextAlign.Start,
                                 textColor = Color.Gray,
                                 fontWeight = FontWeight.W700
                             )
-                        },
+                        }
+                    },
                         contentDescription = "Profile Photo",
                         modifier = Modifier.clip(RectangleShape),
                         contentScale = ContentScale.Crop
                     )
-                    if (selectedImages != null) {
+                    if (selectedImages.uri != AppConstants.EMPTY_STRING) {
                         Row(
                             modifier = Modifier.align(Alignment.BottomEnd),
                             horizontalArrangement = Arrangement.SpaceBetween,
@@ -193,7 +204,7 @@ fun AddPhotoCard(selectedImages: Uri?, onImageChange: (Uri?) -> Unit, onDeleteIm
                                 textColor = Color.Green,
                                 buttonColor = Color.White,
                                 isLoading = false,
-                                onClick = { }
+                                onClick = { /*Preview*/}
                             )
 
                             AutoSizeButton(
@@ -203,7 +214,7 @@ fun AddPhotoCard(selectedImages: Uri?, onImageChange: (Uri?) -> Unit, onDeleteIm
                                 buttonColor = Color.Red,
                                 isLoading = false,
                                 onClick = {
-                                    onDeleteImage(selectedImages)
+                                    onDeleteImage(CuisineImages(index = selectedImages.index, uri = AppConstants.EMPTY_STRING))
                                 }
                             )
                         }
@@ -212,6 +223,16 @@ fun AddPhotoCard(selectedImages: Uri?, onImageChange: (Uri?) -> Unit, onDeleteIm
             }
         }
     }
+}
+
+@Composable
+fun PreviewImage(selectedImages: CuisineImages, onDismiss: () -> Unit){
+    AsyncImage(
+        modifier = Modifier.fillMaxWidth().fillMaxHeight().clickable { onDismiss.invoke() },
+        model = selectedImages.uri,
+        contentDescription = "Profile Photo",
+        contentScale = ContentScale.Crop
+    )
 }
 
 @Composable

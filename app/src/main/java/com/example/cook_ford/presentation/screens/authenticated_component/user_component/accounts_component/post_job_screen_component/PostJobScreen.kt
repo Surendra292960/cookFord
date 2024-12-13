@@ -61,6 +61,7 @@ import com.example.cook_ford.presentation.component.widgets.OutlinedSmallSubmitB
 import com.example.cook_ford.presentation.component.widgets.ProfileImage
 import com.example.cook_ford.presentation.component.widgets.AutoSizeButton
 import com.example.cook_ford.presentation.theme.FontName
+import com.example.cook_ford.presentation.theme.Green
 
 @Composable
 fun PostJobScreen(
@@ -110,6 +111,7 @@ fun PostJobScreen(
                 AutoSizeButton(
                     modifier = Modifier.padding(3.dp),
                     text = stringResource(id = R.string.post_job_button_text),
+                    buttonColor = Green,
                     isLoading = false,
                     onClick = { postJobState.value = true }
                 )

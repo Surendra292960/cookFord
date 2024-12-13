@@ -40,6 +40,7 @@ fun ManageTimeSlotsScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
+            .verticalScroll(rememberScrollState())
             .background(Color.White).padding(20.dp), horizontalAlignment = Alignment.Start) {
 
         Spacer(modifier = Modifier.height(10.dp))
@@ -49,7 +50,7 @@ fun ManageTimeSlotsScreen(
             text = "Select your available time slots",
             fontWeight = FontWeight.W500,
             textAlign = TextAlign.Center,
-            textColor = Color.Gray
+            textColor = Color.DarkGray
         )
 
         Spacer(modifier = Modifier.height(10.dp))
@@ -73,6 +74,7 @@ fun ManageTimeSlotsScreen(
             horizontalAlignment = Alignment.Start
         ) {
 
+            //Morning
             MediumTitleText(
                 modifier = Modifier,
                 text = AppConstants.MORNING,
@@ -80,15 +82,16 @@ fun ManageTimeSlotsScreen(
                 textAlign = TextAlign.Center,
                 textColor = Color.DarkGray
             )
-            // Spacer(modifier = Modifier.width(10.dp))
+
             MultiSelectionComponent(
                 modifier = Modifier,
                 itemList = morning,
                 onSelectionChanged = {
-                    Log.d("TAG", "CookPreferencesScreen: $it")
+                    Log.d("TAG", "ManageTimeSlotsScreen Morning: $it")
                 }
             )
 
+            //Afternoon
             MediumTitleText(
                 modifier = Modifier,
                 text = AppConstants.AFTER_NOON,
@@ -96,15 +99,16 @@ fun ManageTimeSlotsScreen(
                 textAlign = TextAlign.Center,
                 textColor = Color.DarkGray
             )
-            //Spacer(modifier = Modifier.width(10.dp))
+
             MultiSelectionComponent(
                 modifier = Modifier,
                 itemList = afternoon,
                 onSelectionChanged = {
-                    Log.d("TAG", "CookPreferencesScreen: $it")
+                    Log.d("TAG", "ManageTimeSlotsScreen Afternoon: $it")
                 }
             )
 
+            //Evening
             MediumTitleText(
                 modifier = Modifier,
                 text = AppConstants.EVENING,
@@ -112,12 +116,12 @@ fun ManageTimeSlotsScreen(
                 textAlign = TextAlign.Center,
                 textColor = Color.DarkGray
             )
-            // Spacer(modifier = Modifier.width(10.dp))
+
             MultiSelectionComponent(
                 modifier = Modifier,
                 itemList = evening,
                 onSelectionChanged = {
-                    Log.d("TAG", "CookPreferencesScreen: $it")
+                    Log.d("TAG", "ManageTimeSlotsScreen Evening: $it")
                 }
             )
 

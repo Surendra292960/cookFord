@@ -1,5 +1,6 @@
 package com.example.cook_ford.presentation.screens.authenticated_component.cook_component.account_component.upload_cuisine_themes
 
+import android.net.Uri
 import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
@@ -11,11 +12,15 @@ import com.example.cook_ford.data.remote.NetworkResult
 import com.example.cook_ford.domain.use_cases.ProfileUseCase
 import com.example.cook_ford.presentation.screens.authenticated_component.cook_component.profile_component.list_screen_component.state.CookProfileState
 import com.google.gson.Gson
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@HiltViewModel
 class UploadCuisineViewModel @Inject constructor(private val profileUseCase: ProfileUseCase, private val userSession: UserSession):ViewModel() {
+
+    var selectedCuisine = mutableSetOf<List<Uri?>>()
 
     private val _profileState = mutableStateOf(CookProfileState())
     val profileState: State<CookProfileState> = _profileState
