@@ -84,6 +84,8 @@ import com.example.cook_ford.presentation.theme.LightGreen
 import com.example.cook_ford.presentation.theme.LightGreen1
 import com.example.cook_ford.presentation.theme.OrangeYellow1
 import com.example.cook_ford.utils.AppConstants
+import com.example.cook_ford.utils.Utility.composeEmail
+import com.example.cook_ford.utils.Utility.shareWithCommunity
 import com.google.gson.Gson
 
 
@@ -280,7 +282,7 @@ fun CookAccountsScreen(
                                             )
                                         }
                                         onNavigateToLicenseScreen.invoke()
-                                    },
+                                    }
                                 )
                             }
                             item {
@@ -685,41 +687,6 @@ fun AnimatedImage() {
     )
 }
 
-fun Context.composeEmail(addresses: Array<String>, subject: String) {
-    val intent = Intent(Intent.ACTION_SENDTO)
-    intent.setData(Uri.parse("mailto:")) // only email apps should handle this
-    intent.putExtra(Intent.EXTRA_EMAIL, arrayOf(addresses[0]))
-    intent.putExtra(Intent.EXTRA_SUBJECT, subject)
-    intent.putExtra(Intent.EXTRA_TEXT, "")
-    if (intent.resolveActivity(packageManager) != null) {
-        startActivity(intent)
-    }
-}
-
-fun Context.shareWithCommunity(to: String, subject: String) {
-    try {
-        val email = Intent(Intent.ACTION_SEND)
-        email.putExtra(Intent.EXTRA_EMAIL, arrayOf(to))
-        email.putExtra(Intent.EXTRA_SUBJECT, subject)
-        email.putExtra(Intent.EXTRA_TEXT, message)
-        //need this to prompts email client only
-        email.setType("message/rfc822")
-        this.startActivity(Intent.createChooser(email, "Choose an Email client :"))
-    } catch (e: ActivityNotFoundException) {
-        // TODO: Handle case where no email app is available
-    } catch (t: Throwable) {
-        // TODO: Handle potential other type of exceptions
-    }
-}
-
-fun Context.dial(phone: String) {
-    try {
-        val intent = Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", phone, null))
-        startActivity(intent)
-    } catch (t: Throwable) {
-        // TODO: Handle potential exceptions
-    }
-}
 
 @Preview(showBackground = true)
 @Composable

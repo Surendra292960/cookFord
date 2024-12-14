@@ -41,7 +41,9 @@ fun ReportForm(
             SingleSelectionComponent(
                 modifier = Modifier,
                 issueList = reportViewModel.issueList,
-                onIssueChange = onIssueChange
+                onIssueChange = onIssueChange,
+                isError = reportState.errorState.issueErrorState.hasError,
+                errorText = stringResource(id = reportState.errorState.issueErrorState.errorMessageStringResource),
             )
 
             Spacer(modifier = Modifier.height(10.dp))

@@ -48,5 +48,6 @@ object NavTitle {
     const val UPLOAD_AADHAAR = "Upload Aadhaar"
     const val MANAGE_TIME_SLOTS = "Manage time slots"
     const val COOK_JOB_LIST = "Job List"
+    const val PERSONAL_INFO = "Personal Info"
 }
 

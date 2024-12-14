@@ -131,7 +131,7 @@ fun CookProfileDetailScreen(
 					Spacer(modifier = Modifier.height(10.dp))
 					Log.d("TAG", "ProfileDetailScreen username : ${profileState.profileResponse!![index].userType}")
 					if (profileState.profileResponse!![index].userType.equals(AppConstants.PROVIDER, ignoreCase = true)) {
-						Status(profileState.profileResponse!![index], "10.1M", "100", clickOnChat = {
+						Status(profileState.profileResponse!![index], clickOnChat = {
 							navController.currentBackStackEntry?.savedStateHandle?.apply { set("profileResponse", Gson().toJson(profileState.profileResponse!![index])) }
 							onNavigateToMessageScreen.invoke()
 						})
@@ -323,7 +323,7 @@ fun ProfileImage(contentDescription: String?, modifier: Modifier = Modifier, ele
 }
 
 @Composable
-fun Status(profile: ProfileResponse, followers: String, following: String, clickOnChat:()->Unit) {
+fun Status(profile: ProfileResponse, clickOnChat:()->Unit) {
 	Log.d("TAG", "ProfileDetailScreen username : ${profile.username}")
 	val nameList = listOf(
 		"6",
@@ -377,7 +377,7 @@ fun Status(profile: ProfileResponse, followers: String, following: String, click
 					verticalAlignment = Alignment.CenterVertically) {
 					Icon(
 						Icons.Filled.Star,
-						"",
+						contentDescription = "",
 						tint = OrangeYellow1,
 						modifier = Modifier
 							.size(20.dp)
@@ -393,7 +393,7 @@ fun Status(profile: ProfileResponse, followers: String, following: String, click
 					}
 				}
 				Text(
-					text = "Rating",
+					text = AppConstants.RATING,
 					style = MaterialTheme.typography.subtitle2,
 					color = Color.Gray
 				)
@@ -409,12 +409,12 @@ fun Status(profile: ProfileResponse, followers: String, following: String, click
 			Spacer(modifier = Modifier.width(16.dp))
 			Column(horizontalAlignment = Alignment.CenterHorizontally) {
 				Text(
-					text = followers,
+					text = "2",
 					style = MaterialTheme.typography.subtitle2,
 					color = Color.DarkGray
 				)
 				Text(
-					text = "Followers",
+					text = AppConstants.CALL_CREDIT,
 					style = MaterialTheme.typography.subtitle2,
 					color = Color.Gray
 				)
@@ -432,12 +432,12 @@ fun Status(profile: ProfileResponse, followers: String, following: String, click
 				horizontalAlignment = Alignment.CenterHorizontally
 			) {
 				Text(
-					text = following,
+					text = "0",
 					style = MaterialTheme.typography.subtitle2,
 					color = Color.DarkGray
 				)
 				Text(
-					text = "Following",
+					text = AppConstants.VIEWS,
 					style = MaterialTheme.typography.subtitle2,
 					color = Color.Gray
 				)
@@ -1140,7 +1140,7 @@ fun AddNote() {
 
 		Spacer(modifier = Modifier.height(10.dp))
 
-		NoteForm(
+		CookNoteForm(
 			cookNoteState = noteState,
 			viewState = false,
 			modifier = Modifier

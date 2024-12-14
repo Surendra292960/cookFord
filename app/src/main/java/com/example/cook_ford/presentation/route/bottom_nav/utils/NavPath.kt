@@ -59,5 +59,7 @@ enum class NavPath {
     UPLOAD_AADHAAR,
     MANAGE_TIME_SLOTS,
     COOK_JOB_LIST,
+    PERSONAL_INFO
+
 
 }

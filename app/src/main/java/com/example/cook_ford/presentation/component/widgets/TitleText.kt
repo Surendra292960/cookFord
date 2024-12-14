@@ -79,7 +79,10 @@ fun MediumTitleText(
     text: String,
     textColor: Color,
     fontWeight:FontWeight,
-    textAlign: TextAlign = TextAlign.Start) {
+    textAlign: TextAlign = TextAlign.Start,
+    isError:Boolean = false,
+    errorText:String = "") {
+
     Text(
         modifier = modifier,
         text = text,
@@ -89,6 +92,18 @@ fun MediumTitleText(
         fontWeight = fontWeight,
         color = textColor
     )
+
+    if (isError){
+        Text(
+            modifier = modifier,
+            text = errorText,
+            fontSize = 14.sp,
+            style = MaterialTheme.typography.bodyMedium,
+            textAlign = textAlign,
+            fontWeight = fontWeight,
+            color = Color.Red
+        )
+    }
 }
 
 @Composable

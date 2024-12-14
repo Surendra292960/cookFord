@@ -1,6 +1,5 @@
 package com.example.cook_ford.presentation.screens.authenticated_component.cook_component.account_component.manage_cook_account
 
-import android.util.Log
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -25,7 +24,6 @@ import androidx.compose.material3.CardColors
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Switch
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -73,14 +71,14 @@ data class CookAccountModelData(
 )
 
 val options = mutableListOf(
-    /* CookAccountModelData(
+     CookAccountModelData(
          trailingIcon = R.drawable.arrow_forward_ios,
          isBorder = true,
-         title = "View Job Listings",
-         subTitle = "Available jobs as per your profile",
+         title = "Personal Information",
+         subTitle = "Add your personal information here",
          titleColor = Color.DarkGray,
          subTitleColor = Color.Gray
-     ),*/
+     ),
     CookAccountModelData(
         trailingIcon = R.drawable.arrow_forward_ios,
         isBorder = true,
@@ -118,32 +116,14 @@ fun ManageCookAccountScreen(
     onNavigateToUploadAadhaar: () -> Unit,
     onNavigateToManageTimeSlots: () -> Unit,
     onNavigateToCookJobList: () -> Unit,
+    onNavigateToPersonalInfo: () -> Unit,
 
     ) {
     val changeProfileState = remember { mutableStateOf("Male") }
     val manageCookAccountViewModel: ManageCookAccountViewModel = hiltViewModel()
     val accountState by remember { manageCookAccountViewModel.manageAccountState }
     var isEnable by remember { mutableStateOf(true) }
-    var list by remember { mutableStateOf(options) }
 
-    LaunchedEffect(key1 = true) {
-        if (!isEnable) {
-            options.forEach { value ->
-                if (value.subTitle.startsWith("Available")) {
-                    value.subTitle = "Make your profile active to view jobs"  // Replace
-                    value.subTitleColor = Color.Red
-                }
-                Log.d("TAG", "ManageCookAccountScreen Data: ${value.subTitle}")
-            }
-        } else {
-            options.forEach { value ->
-                value.subTitleColor = Color.Gray
-                Log.d("TAG", "ManageCookAccountScreen: ${value.subTitle}")
-            }
-        }
-    }
-
-    Log.d("TAG", "ManageCookAccountScreen: ${Gson().toJson(options)}")
 
     Column(
         modifier = Modifier
@@ -422,6 +402,14 @@ fun ManageCookAccountScreen(
                         )
                     }
                     onNavigateToManageTimeSlots.invoke()
+                } else if (option == "Personal Information") {
+                    navController.currentBackStackEntry?.savedStateHandle?.apply {
+                        set(
+                            "profileResponse",
+                            Gson().toJson(accountState.profileResponse)
+                        )
+                    }
+                    onNavigateToPersonalInfo.invoke()
                 }
             }
         }

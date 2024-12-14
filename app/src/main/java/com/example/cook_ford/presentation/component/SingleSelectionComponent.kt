@@ -33,6 +33,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.cook_ford.presentation.component.widgets.MediumTitleText
+import com.example.cook_ford.presentation.theme.AppTheme
+import com.example.cook_ford.utils.AppConstants
 import java.util.regex.Matcher
 import java.util.regex.Pattern
 
@@ -40,10 +43,23 @@ import java.util.regex.Pattern
 @Composable
 fun SingleSelectionComponent(
     modifier: Modifier,
+    isError: Boolean = false,
+    errorText: String = AppConstants.EMPTY_STRING,
     issueList: List<String>,
     onIssueChange: (String) -> Unit
 ) {
     val selectedIndex = remember { mutableIntStateOf(-1) }
+
+    if (isError){
+        MediumTitleText(
+            modifier = Modifier.padding(top = AppTheme.dimens.paddingSmall,
+                bottom = AppTheme.dimens.paddingSmall),
+            text = errorText,
+            textAlign = TextAlign.Start,
+            textColor = Color.Red,
+            fontWeight = FontWeight.W700
+        )
+    }
 
     FlowRow(
         horizontalArrangement = Arrangement.spacedBy(0.dp),

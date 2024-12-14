@@ -43,10 +43,17 @@
     <string name="sign_up_error_msg_password_mismatch">Please enter the same password here as above</string>
     <string name="sign_up_error_msg_gender_not_selected">Gender not selected</string>
 
+    <string name="sign_up_error_msg_empty_first_name">Please enter your first name</string>
+    <string name="sign_up_error_msg_empty_last_name">Please enter your last name</string>
     <string name="sign_up_error_msg_empty_address">Please enter your address</string>
     <string name="sign_up_error_msg_empty_city">Please enter your city</string>
     <string name="sign_up_error_msg_empty_state">Please enter your state</string>
     <string name="sign_up_error_msg_empty_zip_code">Please enter your zip code</string>
+
+    <!--Time Slots-->
+    <string name="time_slots_error_msg_empty_morning">Please select morning time</string>
+    <string name="time_slots_error_msg_empty_afternoon">Please select afternoon time</string>
+    <string name="time_slots_error_msg_empty_evening">Please select evening time</string>
 
     <!--Dashboard-->
     <string name="dashboard_title_welcome_user">Welcome User</string>

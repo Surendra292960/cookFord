@@ -20,7 +20,7 @@ import com.example.cook_ford.presentation.screens.authenticated_component.cook_c
 import com.example.cook_ford.utils.AppConstants
 
 @Composable
-fun NoteForm(
+fun CookNoteForm(
     cookNoteState: CookNoteState,
     viewState: Boolean,
     modifier: Modifier,

@@ -84,7 +84,6 @@ import com.example.cook_ford.presentation.component.widgets.MediumTitleText
 import com.example.cook_ford.presentation.component.widgets.OutlinedSmallSubmitButton
 import com.example.cook_ford.presentation.component.widgets.Progressbar
 import com.example.cook_ford.presentation.component.widgets.RatingStar
-import com.example.cook_ford.presentation.screens.authenticated_component.cook_component.profile_component.details_screen_component.CookProfileDetailsViewModel
 import com.example.cook_ford.presentation.screens.authenticated_component.cook_component.profile_component.details_screen_component.model.ProfileCardView
 import com.example.cook_ford.presentation.screens.authenticated_component.cook_component.profile_component.details_screen_component.state.note_satate.CookNoteUiEvent
 import com.example.cook_ford.presentation.screens.un_authenticated_component.main_screen_component.MainActivity
@@ -111,7 +110,7 @@ fun ProfileDetailScreen(
 	onNavigateToMessageScreen: () -> Unit,
 	onNavigateToAuthenticatedHomeRoute: () -> Unit) {
 
-	val profileDetailsViewModel: CookProfileDetailsViewModel = hiltViewModel()
+	val profileDetailsViewModel: ProfileDetailsViewModel = hiltViewModel()
 	val profileState by remember { profileDetailsViewModel.profileState }
 	Progressbar(profileState.isLoading)
 	LaunchedEffect(key1 = true) {
@@ -126,15 +125,13 @@ fun ProfileDetailScreen(
 		) {
 			profileState.profileResponse?.size?.let { size->
 				items(size){  index->
-					com.example.cook_ford.presentation.screens.authenticated_component.cook_component.profile_component.details_screen_component.TopBar(
+					TopBar(
 						onNavigateBack = { onNavigateBack.invoke() })
 					Spacer(modifier = Modifier.height(10.dp))
 
 					if (profileState.profileResponse!![index].userType.equals(AppConstants.PROVIDER, ignoreCase = true)) {
-						com.example.cook_ford.presentation.screens.authenticated_component.cook_component.profile_component.details_screen_component.Status(
+						Status(
 							profileState.profileResponse!![index],
-							"10.1M",
-							"100",
 							clickOnChat = {
 								navController.currentBackStackEntry?.savedStateHandle?.apply {
 									set(
@@ -145,7 +142,7 @@ fun ProfileDetailScreen(
 								onNavigateToMessageScreen.invoke()
 							})
 						Spacer(modifier = Modifier.height(10.dp))
-						com.example.cook_ford.presentation.screens.authenticated_component.cook_component.profile_component.details_screen_component.ProviderSocialMediaIconsCard(
+						ProviderSocialMediaIconsCard(
 							profileDetailsViewModel,
 							onNavigateToReViewScreen = {
 								navController.currentBackStackEntry?.savedStateHandle?.apply {
@@ -177,12 +174,12 @@ fun ProfileDetailScreen(
 						)
 						HorizontalDivider(modifier = Modifier.background(Color.LightGray))
 						Spacer(modifier = Modifier.height(10.dp))
-						com.example.cook_ford.presentation.screens.authenticated_component.cook_component.profile_component.details_screen_component.ExperienceCard(
+						ExperienceCard(
 							profileState.profileResponse!![index],
 							timeSlots = profileDetailsViewModel.getTimeSlots()
 						)
 						profileState.profileResponse?.get(index)?.profile?.topCuisineUrls?.let {
-							com.example.cook_ford.presentation.screens.authenticated_component.cook_component.profile_component.details_screen_component.CuisineImages(
+							CuisineImages(
 								topCuisineUrls = it,
 								modifier = Modifier.padding(top = 10.dp)
 							)
@@ -204,23 +201,23 @@ fun ProfileDetailScreen(
 									fontWeight = FontWeight.W700
 								)
 
-								com.example.cook_ford.presentation.screens.authenticated_component.cook_component.profile_component.details_screen_component.Ratings(
+								Ratings(
 									text = "FoodQuality",
 									feedbackRating = rating.food_quality?.toFloat()
 								)
-								com.example.cook_ford.presentation.screens.authenticated_component.cook_component.profile_component.details_screen_component.Ratings(
+								Ratings(
 									text = "Hygiene",
 									feedbackRating = rating.hygiene?.toFloat()
 								)
-								com.example.cook_ford.presentation.screens.authenticated_component.cook_component.profile_component.details_screen_component.Ratings(
+								Ratings(
 									text = "Service",
 									feedbackRating = rating.service?.toFloat()
 								)
-								com.example.cook_ford.presentation.screens.authenticated_component.cook_component.profile_component.details_screen_component.Ratings(
+								Ratings(
 									text = "Cleanliness",
 									feedbackRating = rating.cleanliness?.toFloat()
 								)
-								com.example.cook_ford.presentation.screens.authenticated_component.cook_component.profile_component.details_screen_component.Ratings(
+								Ratings(
 									text = "Punctuality",
 									feedbackRating = rating.punctuality?.toFloat()
 								)
@@ -295,7 +292,7 @@ fun ProfileDetailScreen(
 
 
 						Spacer(modifier = Modifier.height(20.dp))
-						com.example.cook_ford.presentation.screens.authenticated_component.cook_component.profile_component.details_screen_component.FooterStatus()
+						FooterStatus()
 					}
 				}
 			}
@@ -330,7 +327,7 @@ fun TopBar(onNavigateBack:()->Unit) {
 			}
 
 			//TopBarNavigation(onNavigateBack = {onNavigateBack.invoke()}, title = "")
-			com.example.cook_ford.presentation.screens.authenticated_component.cook_component.profile_component.details_screen_component.ProfileImage(
+			ProfileImage(
 				contentDescription = null,
 				modifier = Modifier
 					.size(120.dp)
@@ -369,7 +366,8 @@ fun ProfileImage(contentDescription: String?, modifier: Modifier = Modifier, ele
 }
 
 @Composable
-fun Stats(profile: ProfileResponse, followers: String, following: String, clickOnChat:()->Unit) {
+fun Status(profile: ProfileResponse, clickOnChat:()->Unit) {
+	Log.d("TAG", "ProfileDetailScreen username : ${profile.username}")
 	val nameList = listOf(
 		"6",
 		"days ago."
@@ -422,7 +420,7 @@ fun Stats(profile: ProfileResponse, followers: String, following: String, clickO
 					verticalAlignment = Alignment.CenterVertically) {
 					Icon(
 						Icons.Filled.Star,
-						"",
+						contentDescription = "",
 						tint = OrangeYellow1,
 						modifier = Modifier
 							.size(20.dp)
@@ -438,7 +436,7 @@ fun Stats(profile: ProfileResponse, followers: String, following: String, clickO
 					}
 				}
 				Text(
-					text = "Rating",
+					text = AppConstants.RATING,
 					style = MaterialTheme.typography.subtitle2,
 					color = Color.Gray
 				)
@@ -454,12 +452,12 @@ fun Stats(profile: ProfileResponse, followers: String, following: String, clickO
 			Spacer(modifier = Modifier.width(16.dp))
 			Column(horizontalAlignment = Alignment.CenterHorizontally) {
 				Text(
-					text = followers,
+					text = "2",
 					style = MaterialTheme.typography.subtitle2,
 					color = Color.DarkGray
 				)
 				Text(
-					text = "Followers",
+					text = AppConstants.CALL_CREDIT,
 					style = MaterialTheme.typography.subtitle2,
 					color = Color.Gray
 				)
@@ -477,12 +475,12 @@ fun Stats(profile: ProfileResponse, followers: String, following: String, clickO
 				horizontalAlignment = Alignment.CenterHorizontally
 			) {
 				Text(
-					text = following,
+					text = "0",
 					style = MaterialTheme.typography.subtitle2,
 					color = Color.DarkGray
 				)
 				Text(
-					text = "Following",
+					text = AppConstants.VIEWS,
 					style = MaterialTheme.typography.subtitle2,
 					color = Color.Gray
 				)
@@ -538,7 +536,7 @@ fun Stats(profile: ProfileResponse, followers: String, following: String, clickO
 
 @Composable
 fun ProviderSocialMediaIconsCard(
-	profileDetailsViewModel: CookProfileDetailsViewModel,
+	profileDetailsViewModel: ProfileDetailsViewModel,
 	onNavigateToReViewScreen: () -> Unit,
 	onNavigateToCallCreditScreen: () -> Unit,
 	onNavigateToReportScreen: () -> Unit
@@ -546,7 +544,7 @@ fun ProviderSocialMediaIconsCard(
 	var showCallBottomSheet by remember { mutableStateOf(false) }
 	var showNoteBottomSheet by remember { mutableStateOf(false) }
 	if (showCallBottomSheet) {
-		com.example.cook_ford.presentation.screens.authenticated_component.cook_component.profile_component.details_screen_component.BottomSheet(
+		BottomSheet(
 			"Call",
 			onNavigateToCallCreditScreen = onNavigateToCallCreditScreen
 		) {
@@ -554,13 +552,13 @@ fun ProviderSocialMediaIconsCard(
 		}
 	}
 	if (showNoteBottomSheet) {
-		com.example.cook_ford.presentation.screens.authenticated_component.cook_component.profile_component.details_screen_component.BottomSheet(
+		BottomSheet(
 			"Note",
 			onNavigateToCallCreditScreen = {}) {
 			showNoteBottomSheet = false
 		}
 	}
-	com.example.cook_ford.presentation.screens.authenticated_component.cook_component.profile_component.details_screen_component.SocialMediaIcons(
+	SocialMediaIcons(
 		onClickIcon1 = {
 			Log.d("TAG", "ProfileDetailScreen: onClickIcon1")
 			showCallBottomSheet = true
@@ -1036,12 +1034,12 @@ fun BottomSheet(sheetType:String, onNavigateToCallCreditScreen: () -> Unit,  onD
 		sheetState = modalBottomSheetState,
 		dragHandle = null) {
 		if (sheetType == "Call"){
-			com.example.cook_ford.presentation.screens.authenticated_component.cook_component.profile_component.details_screen_component.ByCallCreditSheet(
+			ByCallCreditSheet(
 				onNavigateToCallCreditScreen = onNavigateToCallCreditScreen
 			)
 
 		}else{
-			com.example.cook_ford.presentation.screens.authenticated_component.cook_component.profile_component.details_screen_component.AddNote()
+			AddNote()
 		}
 	}
 }
@@ -1182,7 +1180,7 @@ fun ByCallCreditSheet(onNavigateToCallCreditScreen: () -> Unit){
 
 @Composable
 fun AddNote() {
-	val profileDetailsViewModel: CookProfileDetailsViewModel = hiltViewModel()
+	val profileDetailsViewModel: ProfileDetailsViewModel = hiltViewModel()
 	//val viewState by remember { profileDetailsViewModel.viewState }
 	val noteState by remember { profileDetailsViewModel.noteState }
 
@@ -1192,8 +1190,8 @@ fun AddNote() {
 
 		Spacer(modifier = Modifier.height(10.dp))
 
-		com.example.cook_ford.presentation.screens.authenticated_component.cook_component.profile_component.details_screen_component.NoteForm(
-			cookNoteState = noteState,
+		NoteForm(
+			noteState = noteState,
 			viewState = false,
 			modifier = Modifier
 				.fillMaxWidth()

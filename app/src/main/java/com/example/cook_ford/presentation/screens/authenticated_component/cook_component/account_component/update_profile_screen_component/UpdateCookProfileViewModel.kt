@@ -25,12 +25,11 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 
 @HiltViewModel
-class UpdateCookProfileViewModel @Inject constructor(
-    private val userSession: UserSession
-) : ViewModel() {
+class UpdateCookProfileViewModel @Inject constructor( private val userSession: UserSession) : ViewModel() {
     private val _updateCookProfileState = mutableStateOf(UpdateCookProfileState())
     val updateCookProfileState:State<UpdateCookProfileState> = _updateCookProfileState
 
@@ -134,9 +133,8 @@ class UpdateCookProfileViewModel @Inject constructor(
             // Submit
             is UpdateCookProfileUiEvent.Submit -> {
                 val inputsValidated = validateInputs()
-                //Log.d("TAG", "onUiEvent: $inputsValidated")
-               // Log.d("TAG", "onUiEvent: ${_editProfileState.value}")
                 if (inputsValidated) {
+                    _viewState.update { currentState -> currentState.copy(isLoading = true) }
                     Log.d("TAG", "onUiEvent: ${_updateCookProfileState.value}")
                     // TODO Trigger Edit Profile in authentication flow
 

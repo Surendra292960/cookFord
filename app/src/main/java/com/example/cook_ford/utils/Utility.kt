@@ -1,10 +1,13 @@
 package com.example.cook_ford.utils
 
 import android.Manifest
+import android.R.id.message
+import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -82,10 +85,7 @@ object Utility {
     }
 
 
-    fun getCurrentLocation(
-        fusedLocationClient: FusedLocationProviderClient,
-        onLocationRetrieved: (Location?) -> Unit
-    ) {
+    fun getCurrentLocation(fusedLocationClient: FusedLocationProviderClient, onLocationRetrieved: (Location?) -> Unit) {
         try {
             fusedLocationClient.lastLocation.addOnSuccessListener { location ->
                 onLocationRetrieved(location)
@@ -94,6 +94,44 @@ object Utility {
             }
         } catch (e: SecurityException) {
             onLocationRetrieved(null)
+        }
+    }
+
+
+
+    fun Context.composeEmail(addresses: Array<String>, subject: String) {
+        val intent = Intent(Intent.ACTION_SENDTO)
+        intent.setData(Uri.parse("mailto:")) // only email apps should handle this
+        intent.putExtra(Intent.EXTRA_EMAIL, arrayOf(addresses[0]))
+        intent.putExtra(Intent.EXTRA_SUBJECT, subject)
+        intent.putExtra(Intent.EXTRA_TEXT, "")
+        if (intent.resolveActivity(packageManager) != null) {
+            startActivity(intent)
+        }
+    }
+
+    fun Context.shareWithCommunity(to: String, subject: String) {
+        try {
+            val email = Intent(Intent.ACTION_SEND)
+            email.putExtra(Intent.EXTRA_EMAIL, arrayOf(to))
+            email.putExtra(Intent.EXTRA_SUBJECT, subject)
+            email.putExtra(Intent.EXTRA_TEXT, message)
+            //need this to prompts email client only
+            email.setType("message/rfc822")
+            this.startActivity(Intent.createChooser(email, "Choose an Email client :"))
+        } catch (e: ActivityNotFoundException) {
+            // TODO: Handle case where no email app is available
+        } catch (t: Throwable) {
+            // TODO: Handle potential other type of exceptions
+        }
+    }
+
+    fun Context.dial(phone: String) {
+        try {
+            val intent = Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", phone, null))
+            startActivity(intent)
+        } catch (t: Throwable) {
+            // TODO: Handle potential exceptions
         }
     }
 }

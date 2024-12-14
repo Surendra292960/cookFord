@@ -201,6 +201,10 @@ fun BottomNavigationBar(
             bottomNavVisibility = false
             topBarVisibility(true)
         }
+        NavigationRoutes.CookAccountNavigation.PersonalInfo.route  -> {
+            bottomNavVisibility = false
+            topBarVisibility(true)
+        }
 
         /**
          * Profile Details Navigation

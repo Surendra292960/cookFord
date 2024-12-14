@@ -35,6 +35,10 @@ object AppConstants {
     const val CONFIRM_PASSWORD_PLACEHOLDER = "Confirm Password"
 
     //Address Const
+    const val FIRST_NAME = "FName"
+    const val FIRST_NAME_PLACEHOLDER = "Enter First Name"
+    const val LAST_NAME = "LName"
+    const val LAST_NAME_PLACEHOLDER = "Enter Last Name"
     const val ADDRESS = "Address"
     const val ADDRESS_PLACEHOLDER  = "Enter Address"
     const val CITY = "City"
@@ -78,10 +82,13 @@ object AppConstants {
     const val LANGUAGE = "Language"
     const val EXPERIENCE = "Experience"
     const val FROM = "From"
+    const val PERSONAL_INFO = "Add Your Personal Info Here"
 
    //User Type
    const val PROVIDER = "provider"
    const val USER = "user"
    const val ADD_PHOTO = "Add photo"
+   const val RATING = "Rating"
+   const val VIEWS = "Views"
 
 }

@@ -40,6 +40,10 @@ class ManageCookAccountViewModel @Inject constructor(
         userSession.getString(SessionConstant.USER_ID)?.let { getProfileRequestById(it) }
     }
 
+    fun setViewState(viewState: MainViewState) {
+        _viewState.value = viewState
+    }
+
 
     private fun getProfileRequestById(profileId: String) = viewModelScope.launch(Dispatchers.IO) {
         Log.d("TAG", "getProfileRequestById profileId: $profileId")
