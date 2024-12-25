@@ -174,6 +174,13 @@ fun CookPersonalInfoScreen(
                                         )
                                     )
                                 },
+                                onReligionChange = { inputString ->
+                                    cookPersonalInfoViewModel.onUiEvent(
+                                        cookPersonalInfoUiEvent = CookPersonalInfoUiEvent.ReligionChange(
+                                            inputValue = inputString
+                                        )
+                                    )
+                                },
                                 onSubmit = {
                                     cookPersonalInfoViewModel.onUiEvent(cookPersonalInfoUiEvent = CookPersonalInfoUiEvent.Submit)
                                 }

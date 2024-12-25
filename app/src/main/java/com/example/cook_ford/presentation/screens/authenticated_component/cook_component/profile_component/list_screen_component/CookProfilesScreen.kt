@@ -78,10 +78,6 @@ fun CookProfilesScreen(
     val profileState by remember { profileViewModel.profileState }
 
     Log.d("TAG", "ProfileListScreen isLoading: ${profileState.isLoading}")
-    LaunchedEffect(Unit) {
-        profileViewModel.getProfileRequestById()
-
-    }
 
     Box(modifier = Modifier
         .background(Color.White)

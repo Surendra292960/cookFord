@@ -29,14 +29,18 @@ class CookProfileViewModel @Inject constructor(
     private val _profileState = mutableStateOf(CookProfileState())
     val profileState: State<CookProfileState> = _profileState
 
-    fun getProfileRequestById() = viewModelScope.launch(Dispatchers.IO) {
+    init {
+        userSession.getString(SessionConstant.USER_ID)?.let { getProfileRequestById(it) }
+    }
+
+    private fun getProfileRequestById(profileId: String) = viewModelScope.launch(Dispatchers.IO) {
         _profileState.value = _profileState.value.copy(isLoading = true)
-        profileUseCase.invoke().collect { result ->
+        profileUseCase.invoke(profileId).collect { result ->
             when(result){
                 is NetworkResult.Success->{
                     if (result.status == true){
                         result.data?.let { response->
-                            _profileState.value = _profileState.value.copy(isLoading = false, profile = response, isSuccessful = true)
+                            _profileState.value = _profileState.value.copy(isLoading = false, profile = listOf(response), isSuccessful = true)
                         }
                         Log.d("TAG", "getProfileRequestById getProfileResponse: ${Gson().toJson(_profileState.value)}")
                     }

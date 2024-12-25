@@ -22,6 +22,7 @@ import com.example.cook_ford.presentation.screens.authenticated_component.cook_c
 import com.example.cook_ford.presentation.screens.authenticated_component.cook_component.account_component.add_cook_personal_info.state.cityEmptyErrorState
 import com.example.cook_ford.presentation.screens.authenticated_component.cook_component.account_component.add_cook_personal_info.state.firstNameEmptyErrorState
 import com.example.cook_ford.presentation.screens.authenticated_component.cook_component.account_component.add_cook_personal_info.state.lastNameEmptyErrorState
+import com.example.cook_ford.presentation.screens.authenticated_component.cook_component.account_component.add_cook_personal_info.state.religionEmptyErrorState
 import com.example.cook_ford.presentation.screens.authenticated_component.cook_component.account_component.add_cook_personal_info.state.stateEmptyErrorState
 import com.example.cook_ford.presentation.screens.authenticated_component.cook_component.account_component.add_cook_personal_info.state.zipCodeEmptyErrorState
 import com.example.cook_ford.presentation.screens.un_authenticated_component.sign_in_screen_component.state.ErrorState
@@ -177,6 +178,22 @@ class CookPersonalInfoViewModel @Inject constructor(private val signUpUseCase: S
                 )
             }
 
+            // Religion id changed event
+            is CookPersonalInfoUiEvent.ReligionChange -> {
+                _cookPersonalInfoState.value = _cookPersonalInfoState.value.copy(
+                    religion = cookPersonalInfoUiEvent.inputValue,
+                    errorState = _cookPersonalInfoState.value.errorState.copy(
+                        religionErrorState = if (cookPersonalInfoUiEvent.inputValue.trim().isEmpty()) {
+                            // Religion id empty state
+                            religionEmptyErrorState
+                        } else {
+                            // Valid state
+                            ErrorState()
+                        }
+                    )
+                )
+            }
+
             // Submit SignUp event
             is CookPersonalInfoUiEvent.Submit -> {
                 val inputsValidated = validateInputs()
@@ -215,7 +232,18 @@ class CookPersonalInfoViewModel @Inject constructor(private val signUpUseCase: S
         val city = cookPersonalInfoState.value.city.trim()
         val state = cookPersonalInfoState.value.state.trim()
         val zipCode = cookPersonalInfoState.value.zipCode.trim()
+        val religion = cookPersonalInfoState.value.religion.trim()
 
+
+        //religion Empty
+        if (religion.isEmpty()) {
+            _cookPersonalInfoState.value = _cookPersonalInfoState.value.copy(
+                errorState = CookPersonalInfoErrorState(
+                    religionErrorState = religionEmptyErrorState
+                )
+            )
+            return false
+        }
 
         // firstName empty
         if (firstName.isEmpty()) {

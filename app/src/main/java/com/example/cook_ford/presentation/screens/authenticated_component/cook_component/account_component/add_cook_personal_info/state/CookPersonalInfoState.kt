@@ -13,6 +13,7 @@ data class CookPersonalInfoState(
     val city: String = EMPTY_STRING,
     val state: String = EMPTY_STRING,
     val zipCode: String = EMPTY_STRING,
+    val religion: String = EMPTY_STRING,
     val errorState: CookPersonalInfoErrorState = CookPersonalInfoErrorState(),
     var isLoading: Boolean = true,
     var profileResponse: ProfileResponse? = null,
@@ -30,4 +31,5 @@ data class CookPersonalInfoErrorState(
     val cityErrorState: ErrorState = ErrorState(),
     val stateErrorState: ErrorState = ErrorState(),
     val zipCodeErrorState: ErrorState = ErrorState(),
+    val religionErrorState: ErrorState = ErrorState(),
 )

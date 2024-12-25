@@ -1,4 +1,5 @@
 package com.example.cook_ford.presentation.component.widgets
+
 import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
@@ -43,6 +44,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -55,8 +57,12 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
+import com.example.cook_ford.R
+import com.example.cook_ford.presentation.screens.authenticated_component.cook_component.account_component.upload_aadhaar.state.AadhaarImages
 import com.example.cook_ford.presentation.theme.AppTheme
 import com.example.cook_ford.presentation.theme.FontName
+import com.example.cook_ford.utils.AppConstants
+import com.example.cook_ford.utils.AppConstants.EMPTY_STRING
 
 /*
 @Composable
@@ -113,9 +119,9 @@ data class KeyboardOption(
     val placeholder: String
 )
 
-data class DefaultIcons(val leadingIcon: ImageVector, val trailingIcon: TrailingIcon?=null)
+data class DefaultIcons(val leadingIcon: ImageVector, val trailingIcon: TrailingIcon? = null)
 
-data class TrailingIcon(val visibilityOff: ImageVector, val visibility: ImageVector?=null)
+data class TrailingIcon(val visibilityOff: ImageVector, val visibility: ImageVector? = null)
 
 
 @Composable
@@ -128,7 +134,8 @@ fun OutlinedInputTextField(
     isError: Boolean = false,
     errorText: String = "",
     maxChar: Int = 0,
-    /*submit: () -> Unit*/) {
+    /*submit: () -> Unit*/
+) {
 
     var isPasswordVisible by remember { mutableStateOf(false) }
     val keyboardController = LocalSoftwareKeyboardController.current
@@ -136,7 +143,8 @@ fun OutlinedInputTextField(
     val focusManager = LocalFocusManager.current
 
     val leadingIcon = @Composable {
-        Icon(defaultIcons.leadingIcon,
+        Icon(
+            defaultIcons.leadingIcon,
             contentDescription = "",
             tint = MaterialTheme.colorScheme.primary
         )
@@ -144,7 +152,7 @@ fun OutlinedInputTextField(
 
     val trailingIcon = @Composable {
         IconButton(onClick = { isPasswordVisible = !isPasswordVisible }) {
-            (if (isPasswordVisible) defaultIcons.trailingIcon?.visibilityOff else defaultIcons.trailingIcon?.visibility)?.let { visibility->
+            (if (isPasswordVisible) defaultIcons.trailingIcon?.visibilityOff else defaultIcons.trailingIcon?.visibility)?.let { visibility ->
                 Icon(
                     visibility,
                     contentDescription = "",
@@ -157,15 +165,18 @@ fun OutlinedInputTextField(
 
     OutlinedTextField(
         value = value,
-        onValueChange = { if (it.length <= maxChar) onChange.invoke(it)},
+        onValueChange = { if (it.length <= maxChar) onChange.invoke(it) },
         modifier = modifier,
         leadingIcon = leadingIcon,
         trailingIcon = trailingIcon,
-        keyboardOptions = KeyboardOptions(imeAction = keyboardOptions.imeAction, keyboardType = keyboardOptions.keyboardType),
+        keyboardOptions = KeyboardOptions(
+            imeAction = keyboardOptions.imeAction,
+            keyboardType = keyboardOptions.keyboardType
+        ),
         keyboardActions = KeyboardActions {
             if (keyboardOptions.imeAction == ImeAction.Done) {
                 keyboardController?.hide()
-            }else{
+            } else {
                 focusManager.moveFocus(FocusDirection.Down)
             }
         },
@@ -173,13 +184,13 @@ fun OutlinedInputTextField(
         label = { Text(keyboardOptions.label) },
         singleLine = true,
         maxLines = 1,
-        visualTransformation = if (keyboardOptions.keyboardType ==KeyboardType.Password){
+        visualTransformation = if (keyboardOptions.keyboardType == KeyboardType.Password) {
             if (isPasswordVisible) {
                 VisualTransformation.None
             } else {
                 PasswordVisualTransformation()
             }
-        }else{
+        } else {
             VisualTransformation.None
         },
         isError = isError,
@@ -192,8 +203,6 @@ fun OutlinedInputTextField(
 }
 
 
-
-
 @Composable
 fun InputTextField(
     value: String,
@@ -204,8 +213,9 @@ fun InputTextField(
     isError: Boolean = false,
     errorText: String = "",
     maxChar: Int = 0,
-    textColor:Color
-    /*submit: () -> Unit*/) {
+    textColor: Color
+    /*submit: () -> Unit*/
+) {
 
     var isPasswordVisible by remember { mutableStateOf(false) }
     val keyboardController = LocalSoftwareKeyboardController.current
@@ -213,7 +223,8 @@ fun InputTextField(
     val focusManager = LocalFocusManager.current
 
     val leadingIcon = @Composable {
-        Icon(defaultIcons.leadingIcon,
+        Icon(
+            defaultIcons.leadingIcon,
             contentDescription = "",
             tint = Color.Gray
         )
@@ -221,7 +232,7 @@ fun InputTextField(
 
     val trailingIcon = @Composable {
         IconButton(onClick = { isPasswordVisible = !isPasswordVisible }) {
-            (if (isPasswordVisible) defaultIcons.trailingIcon?.visibilityOff else defaultIcons.trailingIcon?.visibility)?.let { visibility->
+            (if (isPasswordVisible) defaultIcons.trailingIcon?.visibilityOff else defaultIcons.trailingIcon?.visibility)?.let { visibility ->
                 Icon(
                     visibility,
                     contentDescription = "",
@@ -238,7 +249,10 @@ fun InputTextField(
         modifier = modifier,
         leadingIcon = leadingIcon,
         trailingIcon = trailingIcon,
-        keyboardOptions = KeyboardOptions(imeAction = keyboardOptions.imeAction, keyboardType = keyboardOptions.keyboardType),
+        keyboardOptions = KeyboardOptions(
+            imeAction = keyboardOptions.imeAction,
+            keyboardType = keyboardOptions.keyboardType
+        ),
         colors = TextFieldDefaults.colors(
             focusedIndicatorColor = Color.LightGray,
             unfocusedIndicatorColor = Color.LightGray,
@@ -255,25 +269,33 @@ fun InputTextField(
         keyboardActions = KeyboardActions {
             if (keyboardOptions.imeAction == ImeAction.Done) {
                 keyboardController?.hide()
-            }else{
+            } else {
                 focusManager.moveFocus(FocusDirection.Down)
             }
         },
-        placeholder = { Text(keyboardOptions.placeholder,fontFamily = FontName,
-            fontSize = 16.sp,
-            fontWeight = FontWeight.W600, color = Color.LightGray) },
-        label = { Text(keyboardOptions.label,fontFamily = FontName,
-            fontSize = 14.sp,
-            fontWeight = FontWeight.W600, color = Color.Gray) },
+        placeholder = {
+            Text(
+                keyboardOptions.placeholder, fontFamily = FontName,
+                fontSize = 16.sp,
+                fontWeight = FontWeight.W600, color = Color.LightGray
+            )
+        },
+        label = {
+            Text(
+                keyboardOptions.label, fontFamily = FontName,
+                fontSize = 14.sp,
+                fontWeight = FontWeight.W600, color = Color.Gray
+            )
+        },
         singleLine = true,
         maxLines = 1,
-        visualTransformation = if (keyboardOptions.keyboardType ==KeyboardType.Password){
+        visualTransformation = if (keyboardOptions.keyboardType == KeyboardType.Password) {
             if (isPasswordVisible) {
                 VisualTransformation.None
             } else {
                 PasswordVisualTransformation()
             }
-        }else{
+        } else {
             VisualTransformation.None
         },
         isError = isError,
@@ -294,13 +316,14 @@ fun Textarea(
     keyboardOptions: KeyboardOption,
     isError: Boolean = false,
     errorText: String = "",
-    maxChar: Int = 0) {
+    maxChar: Int = 0
+) {
     val focusManager = LocalFocusManager.current
     val keyboardController = LocalSoftwareKeyboardController.current
     OutlinedTextField(
         value = value,
         modifier = modifier,
-        onValueChange = {if (it.length <= maxChar) onChange.invoke(it)},
+        onValueChange = { if (it.length <= maxChar) onChange.invoke(it) },
         colors = TextFieldDefaults.colors(
             focusedIndicatorColor = Color.LightGray,
             unfocusedIndicatorColor = Color.LightGray,
@@ -308,7 +331,10 @@ fun Textarea(
             focusedContainerColor = Color.Transparent,
             unfocusedContainerColor = Color.Transparent,
         ),
-        keyboardOptions = KeyboardOptions(imeAction = keyboardOptions.imeAction, keyboardType = keyboardOptions.keyboardType),
+        keyboardOptions = KeyboardOptions(
+            imeAction = keyboardOptions.imeAction,
+            keyboardType = keyboardOptions.keyboardType
+        ),
         placeholder = { Text(keyboardOptions.placeholder) },
         label = { Text(keyboardOptions.label) },
         isError = isError,
@@ -321,15 +347,15 @@ fun Textarea(
 }
 
 
-
 @Composable
 fun SegmentedControl(
     items: List<String>,
     defaultSelectedItemIndex: Int = 0,
     useFixedWidth: Boolean = false,
     itemWidth: Dp = 120.dp,
-    cornerRadius : Int = 1,
-    onItemSelection: (selectedItemIndex: Int) -> Unit, ) {
+    cornerRadius: Int = 1,
+    onItemSelection: (selectedItemIndex: Int) -> Unit,
+) {
     Log.d("TAG", "SegmentedControl: $defaultSelectedItemIndex")
     val selectedIndex = remember { mutableIntStateOf(defaultSelectedItemIndex) }
 
@@ -349,7 +375,9 @@ fun SegmentedControl(
                                 .offset(0.dp, 0.dp)
                                 .zIndex(if (selectedIndex.intValue == index) 1f else 0f)
                         }
-                    } else -> {
+                    }
+
+                    else -> {
                         if (useFixedWidth)
                             Modifier
                                 .width(itemWidth)
@@ -417,7 +445,8 @@ fun SegmentedControl(
                      */
                     ButtonDefaults.outlinedButtonColors(
                         contentColor = Color.Gray,
-                        containerColor = Color.White)
+                        containerColor = Color.White
+                    )
                 },
             ) {
                 Text(
@@ -437,14 +466,15 @@ fun SegmentedControl(
 
 @Composable
 fun RadioButton() {
-    val selectedValue = remember { mutableStateOf("") }
+    val selectedValue = remember { mutableStateOf(EMPTY_STRING) }
     val label = "Item"
     Row(verticalAlignment = Alignment.CenterVertically) {
         RadioButton(
             selected = selectedValue.value == label,
             onClick = { selectedValue.value = label }
         )
-        Text(text = label,
+        Text(
+            text = label,
             modifier = Modifier.fillMaxWidth()
         )
     }
@@ -453,58 +483,94 @@ fun RadioButton() {
 @Composable
 fun MultipleRadioButtons(onChange: (String) -> Unit) {
 
-    val selectedValue = remember { mutableStateOf("") }
+    val selectedValue = remember { mutableStateOf(EMPTY_STRING) }
 
     val isSelectedItem: (String) -> Boolean = { selectedValue.value == it }
     val onChangeState: (String) -> Unit = { selectedValue.value = it }
 
     val items = listOf("Male", "Female", "Other")
 
-  Column(verticalArrangement = Arrangement.Center,
-      horizontalAlignment = Alignment.CenterHorizontally) {
+    Column(
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
 
-      Text(text = "Selected value: ${selectedValue.value.ifEmpty { "NONE" }}")
+        Text(text = "Selected value: ${selectedValue.value.ifEmpty { "NONE" }}")
 
-      Row(horizontalArrangement = Arrangement.Center,
-          verticalAlignment = Alignment.CenterVertically,
-          modifier = Modifier
-              .padding(10.dp)
-              .fillMaxWidth()){
+        Row(
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier
+                .padding(10.dp)
+                .fillMaxWidth()
+        ) {
 
-          items.forEach { item ->
-              Row (horizontalArrangement = Arrangement.Center,
-                  verticalAlignment = Alignment.CenterVertically,
-                  modifier = Modifier
-                      .selectable(
-                          selected = isSelectedItem(item),
-                          onClick = { onChangeState(item) },
-                          role = Role.RadioButton
-                      )
-                      .padding(10.dp)){
-                  Spacer(modifier = Modifier.width(10.dp))
-                  RadioButton(selected = isSelectedItem(item), onClick = null)
-                  Text(text = item)
-              }
-          }
-      }
-  }
+            items.forEach { item ->
+                Row(
+                    horizontalArrangement = Arrangement.Center,
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier
+                        .selectable(
+                            selected = isSelectedItem(item),
+                            onClick = { onChangeState(item) },
+                            role = Role.RadioButton
+                        )
+                        .padding(10.dp)
+                ) {
+                    Spacer(modifier = Modifier.width(10.dp))
+                    RadioButton(selected = isSelectedItem(item), onClick = null)
+                    Text(text = item)
+                }
+            }
+        }
+    }
 }
 
 @Composable
 fun SubmitButton(
     modifier: Modifier = Modifier,
     text: String,
-    isLoading: Boolean,
-    onClick: () -> Unit) {
-    Button(modifier = modifier
-        .height(AppTheme.dimens.normalButtonHeight)
-        .fillMaxWidth(),
+    isLoading: Boolean = false,
+    onClick: () -> Unit
+) {
+    Button(
+        modifier = modifier
+            .height(AppTheme.dimens.normalButtonHeight)
+            .fillMaxWidth(),
         enabled = !isLoading,
-        onClick = onClick) {
+        onClick = onClick
+    ) {
         if (isLoading) {
-            Progressbar(isLoading)
+            Progressbar(showProgressbar = isLoading)
         } else {
             Text(text = text, style = MaterialTheme.typography.titleMedium)
+        }
+    }
+}
+
+@Composable
+fun SmallButton(
+    modifier: Modifier = Modifier,
+    text: String,
+    textColor: Color = Color.White,
+    buttonColor: Color = Color.White,
+    isLoading: Boolean = false,
+    onClick: () -> Unit
+) {
+    Button(
+        modifier = Modifier.padding(AppTheme.dimens.paddingSmall),
+        colors = ButtonDefaults.buttonColors(containerColor = buttonColor),
+        onClick = onClick) {
+        if (isLoading) {
+            Progressbar(showProgressbar = isLoading)
+        } else {
+            SmallTitleText(
+                modifier = modifier,
+                text = text,
+                textAlign = TextAlign.Center,
+                textColor = textColor,
+                fontWeight = FontWeight.Bold
+            )
         }
     }
 }
@@ -516,16 +582,24 @@ fun AutoSizeButton(
     textColor: Color = Color.White,
     buttonColor: Color = Color.White,
     isLoading: Boolean,
-    onClick: () -> Unit) {
+    onClick: () -> Unit
+) {
     Button(
         modifier = modifier,
         colors = ButtonDefaults.buttonColors(containerColor = buttonColor),
         enabled = !isLoading,
-        onClick = onClick) {
+        onClick = onClick
+    ) {
         if (isLoading) {
             Progressbar(isLoading)
         } else {
-            Text(text = text, color = textColor, modifier=modifier, textAlign = TextAlign.Center, style = MaterialTheme.typography.titleMedium)
+            Text(
+                text = text,
+                color = textColor,
+                modifier = modifier,
+                textAlign = TextAlign.Center,
+                style = MaterialTheme.typography.titleMedium
+            )
         }
     }
 }
@@ -537,13 +611,16 @@ fun OutlinedSubmitButton(
     textColor: Color,
     text: String,
     isLoading: Boolean,
-    onClick: () -> Unit) {
-    OutlinedButton(modifier = modifier
-        .height(AppTheme.dimens.normalButtonHeight)
-        .fillMaxWidth(),
+    onClick: () -> Unit
+) {
+    OutlinedButton(
+        modifier = modifier
+            .height(AppTheme.dimens.normalButtonHeight)
+            .fillMaxWidth(),
         enabled = !isLoading,
         border = BorderStroke(1.dp, color = textColor),
-        onClick = onClick) {
+        onClick = onClick
+    ) {
         if (isLoading) {
             Progressbar(showProgressbar = isLoading)
         } else {
@@ -552,7 +629,12 @@ fun OutlinedSubmitButton(
     }
 }
 
-data class ButtonIcons(val leadingIcon: ImageVector?=null, val trailingIcon: ImageVector?=null, val tintColor: Color, val leadingIconSize: Dp)
+data class ButtonIcons(
+    val leadingIcon: ImageVector? = null,
+    val trailingIcon: ImageVector? = null,
+    val tintColor: Color,
+    val leadingIconSize: Dp
+)
 
 @Composable
 fun OutlinedSmallSubmitButton(
@@ -560,19 +642,22 @@ fun OutlinedSmallSubmitButton(
     textColor: Color,
     text: String,
     isLoading: Boolean,
-    backgroundColor:Color = Color.Transparent,
+    backgroundColor: Color = Color.Transparent,
     icon: ButtonIcons? = null,
-    onClick: () -> Unit) {
-    OutlinedButton(modifier = modifier
-        .height(AppTheme.dimens.mediumButtonHeight)
-        .fillMaxWidth(),
+    onClick: () -> Unit
+) {
+    OutlinedButton(
+        modifier = modifier
+            .height(AppTheme.dimens.mediumButtonHeight)
+            .fillMaxWidth(),
         colors = ButtonDefaults.outlinedButtonColors(
             containerColor = backgroundColor,
             contentColor = textColor
         ),
         enabled = !isLoading,
         border = BorderStroke(0.dp, color = Color.Gray),
-        onClick = onClick) {
+        onClick = onClick
+    ) {
         if (isLoading) {
             Progressbar(showProgressbar = isLoading)
         } else {
@@ -580,14 +665,16 @@ fun OutlinedSmallSubmitButton(
                 icon?.leadingIcon != null -> {
                     Icon(
                         icon.leadingIcon,
-                        contentDescription = "",
+                        contentDescription = EMPTY_STRING,
                         tint = icon.tintColor,
                         modifier = Modifier.size(icon.leadingIconSize)
                     )
                 }
+
                 icon?.trailingIcon != null -> {
-                    Icon(icon.trailingIcon,
-                        contentDescription = "",
+                    Icon(
+                        icon.trailingIcon,
+                        contentDescription = EMPTY_STRING,
                         tint = icon.tintColor
                     )
                 }
@@ -602,12 +689,14 @@ fun OutlinedSmallSubmitButton(
 fun LabeledCheckbox(
     label: String,
     onCheckChanged: () -> Unit,
-    isChecked: Boolean) {
+    isChecked: Boolean
+) {
 
     Row(
         Modifier
             .clickable(onClick = onCheckChanged)
-            .padding(4.dp)) {
+            .padding(4.dp)
+    ) {
         Checkbox(checked = isChecked, onCheckedChange = null)
         Spacer(modifier = Modifier.size(6.dp))
         Text(label)

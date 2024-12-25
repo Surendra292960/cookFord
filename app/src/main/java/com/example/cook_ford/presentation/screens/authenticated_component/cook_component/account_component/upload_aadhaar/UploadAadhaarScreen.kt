@@ -25,10 +25,12 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material3.Button
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -49,6 +51,7 @@ import coil.compose.AsyncImage
 import com.example.cook_ford.R
 import com.example.cook_ford.data.remote.profile_response.ProfileResponse
 import com.example.cook_ford.presentation.component.widgets.AutoSizeButton
+import com.example.cook_ford.presentation.component.widgets.SmallButton
 import com.example.cook_ford.presentation.component.widgets.SubTitleText
 import com.example.cook_ford.presentation.component.widgets.SubmitButton
 import com.example.cook_ford.presentation.component.widgets.TitleText
@@ -68,16 +71,19 @@ fun UploadAadhaarScreen(
 ) {
     val selectedImages = remember { mutableStateOf(data) }
     
-    Column( modifier = Modifier.fillMaxSize()
-            .background(Color.White)
-            .padding(10.dp), horizontalAlignment = Alignment.Start) {
+    Column( modifier = Modifier
+        .fillMaxSize()
+        .background(Color.White)
+        .padding(10.dp), horizontalAlignment = Alignment.Start) {
         Column(modifier = Modifier
-                .fillMaxSize()
-                .fillMaxSize()
-                .weight(1f, fill = false),
+            .fillMaxSize()
+            .fillMaxSize()
+            .weight(1f, fill = false),
             horizontalAlignment = Alignment.CenterHorizontally) {
 
-            LazyColumn(modifier = Modifier.background(Color.White).fillMaxSize(),
+            LazyColumn(modifier = Modifier
+                .background(Color.White)
+                .fillMaxSize(),
                 state = profileLazyListState,
                 horizontalAlignment = Alignment.CenterHorizontally,
                 contentPadding = PaddingValues(AppTheme.dimens.paddingSmall),
@@ -103,8 +109,9 @@ fun UploadAadhaarScreen(
             )
         }
 
-        SubmitButton(modifier = Modifier.padding(start = 20.dp, end = 20.dp)
-                .background(Color.Transparent, shape = CircleShape),
+        SubmitButton(modifier = Modifier
+            .padding(start = 20.dp, end = 20.dp)
+            .background(Color.Transparent, shape = CircleShape),
             text = stringResource(id = R.string.submit_button_text),
             isLoading = false,
             onClick = { }
@@ -195,7 +202,8 @@ fun AddPhotoCard(selectedImages: AadhaarImages, onImageChange: (AadhaarImages) -
                             horizontalArrangement = Arrangement.SpaceBetween,
                             verticalAlignment = Alignment.CenterVertically
                         ) {
-                            AutoSizeButton(
+
+                            SmallButton(
                                 modifier = Modifier.padding(3.dp),
                                 text = stringResource(id = R.string.view_button_text),
                                 textColor = Color.Green,
@@ -204,7 +212,7 @@ fun AddPhotoCard(selectedImages: AadhaarImages, onImageChange: (AadhaarImages) -
                                 onClick = { }
                             )
 
-                            AutoSizeButton(
+                            SmallButton(
                                 modifier = Modifier.padding(3.dp),
                                 text = stringResource(id = R.string.delete_button_text),
                                 textColor = Color.White,

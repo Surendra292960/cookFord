@@ -32,3 +32,8 @@ val zipCodeEmptyErrorState = ErrorState(
     hasError = true,
     errorMessageStringResource = R.string.sign_up_error_msg_empty_zip_code
 )
+
+val religionEmptyErrorState = ErrorState(
+    hasError = true,
+    errorMessageStringResource = R.string.sign_up_error_msg_empty_religion
+)

@@ -47,6 +47,8 @@ object AppConstants {
     const val STATE_PLACEHOLDER  = "Enter State"
     const val ZIP_CODE = "Zip Code"
     const val ZIP_CODE_PLACEHOLDER  = "Enter Zip Code"
+    const val RELIGION = "Religion"
+    const val RELIGION_PLACEHOLDER  = "Enter Religion"
 
     //Cook SignUp Const
     const val COOK_NAME = "Cook`s Name"

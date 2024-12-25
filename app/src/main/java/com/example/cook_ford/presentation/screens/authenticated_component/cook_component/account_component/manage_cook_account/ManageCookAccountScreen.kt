@@ -31,6 +31,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -41,6 +42,7 @@ import com.example.cook_ford.data.remote.profile_response.ProfileResponse
 import com.example.cook_ford.presentation.component.widgets.LargeText
 import com.example.cook_ford.presentation.component.widgets.MediumTitleText
 import com.example.cook_ford.presentation.component.widgets.ProfileImage
+import com.example.cook_ford.presentation.component.widgets.SmallButton
 import com.example.cook_ford.presentation.component.widgets.SmallTitleText
 import com.example.cook_ford.presentation.component.widgets.SubTitleText
 import com.example.cook_ford.presentation.component.widgets.TitleText
@@ -262,7 +264,12 @@ fun ManageCookAccountScreen(
                         fontWeight = FontWeight.W200
                     )
                 }
-                Button(
+                SmallButton(
+                    modifier = Modifier,
+                    text = stringResource(id = R.string.apply_button_text),
+                    textColor = Color.White,
+                    buttonColor = Green,
+                    isLoading = false,
                     onClick = {
                         navController.currentBackStackEntry?.savedStateHandle?.apply {
                             set(
@@ -271,17 +278,8 @@ fun ManageCookAccountScreen(
                             )
                         }
                         onNavigateToUploadAadhaar.invoke()
-                    },
-                    colors = ButtonDefaults.buttonColors(containerColor = Green)
-                ) {
-                    SmallTitleText(
-                        modifier = Modifier,
-                        text = "Verify",
-                        textAlign = TextAlign.Start,
-                        textColor = Color.White,
-                        fontWeight = FontWeight.Bold
-                    )
-                }
+                    }
+                )
             }
         }
 

@@ -1,5 +1,4 @@
 package com.example.cook_ford.presentation.screens.authenticated_component.cook_component.account_component.upload_cuisine_themes
-
 import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
@@ -51,6 +50,7 @@ import coil.compose.AsyncImage
 import com.example.cook_ford.R
 import com.example.cook_ford.data.remote.profile_response.ProfileResponse
 import com.example.cook_ford.presentation.component.widgets.AutoSizeButton
+import com.example.cook_ford.presentation.component.widgets.SmallButton
 import com.example.cook_ford.presentation.component.widgets.SubmitButton
 import com.example.cook_ford.presentation.component.widgets.TitleText
 import com.example.cook_ford.presentation.screens.authenticated_component.cook_component.account_component.upload_cuisine_themes.state.CuisineImages
@@ -198,7 +198,7 @@ fun AddPhotoCard(selectedImages: CuisineImages, onImageChange: (CuisineImages) -
                             horizontalArrangement = Arrangement.SpaceBetween,
                             verticalAlignment = Alignment.CenterVertically
                         ) {
-                            AutoSizeButton(
+                            SmallButton(
                                 modifier = Modifier.padding(3.dp),
                                 text = stringResource(id = R.string.view_button_text),
                                 textColor = Color.Green,
@@ -207,7 +207,7 @@ fun AddPhotoCard(selectedImages: CuisineImages, onImageChange: (CuisineImages) -
                                 onClick = { /*Preview*/}
                             )
 
-                            AutoSizeButton(
+                            SmallButton(
                                 modifier = Modifier.padding(3.dp),
                                 text = stringResource(id = R.string.delete_button_text),
                                 textColor = Color.White,

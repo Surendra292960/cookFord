@@ -10,5 +10,6 @@ sealed class CookPersonalInfoUiEvent {
     data class CityChange(val inputValue: String) : CookPersonalInfoUiEvent()
     data class StateChange(val inputValue: String) : CookPersonalInfoUiEvent()
     data class ZipCodeChange(val inputValue: String) : CookPersonalInfoUiEvent()
+    data class ReligionChange(val inputValue: String) : CookPersonalInfoUiEvent()
     data object Submit : CookPersonalInfoUiEvent()
 }

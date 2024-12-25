@@ -43,6 +43,7 @@ fun CookPersonalInfoForm(
     onCityChange: (String) -> Unit,
     onStateChange: (String) -> Unit,
     onZipCodeChange: (String) -> Unit,
+    onReligionChange: (String) -> Unit,
     onSubmit: () -> Unit){
 
     Column(modifier = Modifier.fillMaxSize()) {
@@ -76,6 +77,20 @@ fun CookPersonalInfoForm(
                textColor = Color.Gray
            )
        }
+
+        Spacer(modifier = Modifier.height(10.dp))
+
+        InputTextField(
+            value = cookPersonalInfoState.religion,
+            onChange = onReligionChange,
+            modifier = Modifier.fillMaxWidth(),
+            keyboardOptions = KeyboardOption(imeAction = ImeAction.Next, keyboardType = KeyboardType.Text,label = AppConstants.RELIGION, placeholder = AppConstants.RELIGION_PLACEHOLDER),
+            DefaultIcons(leadingIcon = Icons.Default.Person),
+            isError = cookPersonalInfoState.errorState.religionErrorState.hasError,
+            errorText = stringResource(id = cookPersonalInfoState.errorState.religionErrorState.errorMessageStringResource),
+            maxChar = 30,
+            textColor = Color.Gray
+        )
 
         Spacer(modifier = Modifier.height(10.dp))
 
@@ -144,6 +159,7 @@ fun CookPersonalInfoForm(
                 textColor = Color.Gray
             )
         }
+
         Spacer(modifier = Modifier.height(10.dp))
 
         // Registration Submit Button

@@ -300,7 +300,7 @@ fun UserPreferencesScreen(
             OutlinedSmallSubmitButton(
                 modifier = Modifier.padding(all = 10.dp),
                 textColor = Color.Gray,
-                text = stringResource(id = R.string.appy_button_text),
+                text = stringResource(id = R.string.apply_button_text),
                 isLoading = false,
                 onClick = { /*onSubmit*/ }
             )

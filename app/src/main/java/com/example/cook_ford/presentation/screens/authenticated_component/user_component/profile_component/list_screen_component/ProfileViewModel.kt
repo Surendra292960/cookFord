@@ -29,7 +29,11 @@ class ProfileViewModel @Inject constructor(
     private val _profileState = mutableStateOf(ProfileState())
     val profileState: State<ProfileState> = _profileState
 
-    fun getProfilesRequest() = viewModelScope.launch(Dispatchers.IO) {
+    init {
+        getProfilesRequest()
+    }
+
+    private fun getProfilesRequest() = viewModelScope.launch(Dispatchers.IO) {
         _profileState.value = _profileState.value.copy(isLoading = true)
         profileUseCase.invoke().collect { result ->
             when(result){
