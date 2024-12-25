@@ -17,8 +17,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowForwardIos
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardColors
 import androidx.compose.material3.Icon
@@ -42,6 +40,7 @@ import com.example.cook_ford.data.remote.profile_response.ProfileResponse
 import com.example.cook_ford.presentation.component.widgets.LargeText
 import com.example.cook_ford.presentation.component.widgets.MediumTitleText
 import com.example.cook_ford.presentation.component.widgets.ProfileImage
+import com.example.cook_ford.presentation.component.widgets.SemiCircularArcLoaderDemo
 import com.example.cook_ford.presentation.component.widgets.SmallButton
 import com.example.cook_ford.presentation.component.widgets.SmallTitleText
 import com.example.cook_ford.presentation.component.widgets.SubTitleText
@@ -136,18 +135,36 @@ fun ManageCookAccountScreen(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
-        //Profile Image
-        ProfileImage(modifier = Modifier, changeProfileState, onChange = {})
+        Row(modifier = Modifier.fillMaxSize(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically) {
 
-        //Profile Name
-        accountState.profileResponse?.username?.let {
-            SubTitleText(
-                modifier = Modifier,
-                text = it,
-                textAlign = TextAlign.Start,
-                textColor = Color.DarkGray,
-                fontWeight = FontWeight.W700
-            )
+            Column(modifier = Modifier.fillMaxSize().weight(1f),
+                verticalArrangement = Arrangement.SpaceBetween,
+                horizontalAlignment = Alignment.CenterHorizontally) {
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                //Profile Image
+                ProfileImage(modifier = Modifier.weight(1f), changeProfileState, onChange = {})
+
+                //Profile Name
+                accountState.profileResponse?.username?.let {
+                    SubTitleText(
+                        modifier = Modifier,
+                        text = it,
+                        textAlign = TextAlign.Start,
+                        textColor = Color.DarkGray,
+                        fontWeight = FontWeight.W700
+                    )
+                }
+            }
+
+            Column(modifier = Modifier.fillMaxSize().weight(1f),
+                verticalArrangement = Arrangement.SpaceBetween,
+                horizontalAlignment = Alignment.CenterHorizontally) {
+                SemiCircularArcLoaderDemo()
+            }
         }
 
         // Profile Stats Section
