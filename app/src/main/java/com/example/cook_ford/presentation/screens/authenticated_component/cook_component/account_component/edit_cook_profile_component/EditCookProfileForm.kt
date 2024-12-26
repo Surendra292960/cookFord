@@ -1,4 +1,4 @@
-package com.example.cook_ford.presentation.screens.authenticated_component.user_component.accounts_component.add_cook_screen_component
+package com.example.cook_ford.presentation.screens.authenticated_component.cook_component.account_component.edit_cook_profile_component
 import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -49,16 +49,16 @@ import com.example.cook_ford.presentation.component.widgets.OutlinedSubmitButton
 import com.example.cook_ford.presentation.component.widgets.ProfileImage
 import com.example.cook_ford.presentation.component.widgets.SegmentedControl
 import com.example.cook_ford.presentation.component.widgets.snack_bar.MainViewState
-import com.example.cook_ford.presentation.screens.authenticated_component.user_component.accounts_component.add_cook_screen_component.state.AddCookProfileState
+import com.example.cook_ford.presentation.screens.authenticated_component.cook_component.account_component.edit_cook_profile_component.state.EditCookProfileState
 import com.example.cook_ford.presentation.theme.DeepGreen
 import com.example.cook_ford.presentation.theme.FontName
 import com.example.cook_ford.utils.AppConstants
 import com.google.gson.Gson
 
 @Composable
-fun AddCookProfileForm(
+fun EditCookProfileForm(
     changeProfileState: MutableState<String>,
-    addCookProfileState: AddCookProfileState,
+    addCookProfileState: EditCookProfileState,
     viewState: MainViewState,
     onUserNameChange: (String) -> Unit,
     onAlternatePhoneChange: (String) -> Unit,
@@ -72,10 +72,10 @@ fun AddCookProfileForm(
 
     val jobType = listOf(
         "Part time\n(Daily/Occasional meals)",
-        "Full day\n(Domestic)",
-        "Live in\n(Domestic)",
-        "Catering\n(Parties & Events)")
-    val jobTypeLast = listOf("Restaurant chef\n(Commercial)")
+        "Full day\n(12hrs, Domestic)",
+        "Live in\n(24hrs, Domestic)",
+        "Party\n(One time)")
+    val jobTypeLast = listOf("Commercial Chef\n(Hotel, Restaurant)")
     val genders = listOf("Male", "Female")
     val mCities = listOf("Delhi", "Mumbai", "Chennai", "Kolkata", "Hyderabad", "Bengaluru", "Pune")
 
@@ -87,11 +87,9 @@ fun AddCookProfileForm(
 
         Spacer(modifier = Modifier.height(10.dp))
 
-        com.example.cook_ford.presentation.screens.authenticated_component.cook_component.account_component.edit_cook_profile_component.JobTypeSection(
-            jobType = jobType, jobTypeLast = jobTypeLast, onChange = onJobTypeChange,
+        JobTypeSection(jobType = jobType, jobTypeLast = jobTypeLast, onChange = onJobTypeChange,
             isError = addCookProfileState.errorState.jobTypeErrorState.hasError,
-            errorText = stringResource(id = addCookProfileState.errorState.jobTypeErrorState.errorMessageStringResource),
-        )
+            errorText = stringResource(id = addCookProfileState.errorState.jobTypeErrorState.errorMessageStringResource),)
 
         Row(modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
@@ -166,7 +164,108 @@ fun AddCookProfileForm(
         )
         Spacer(modifier = Modifier.height(10.dp))
 
+        InputTextField(
+            value = "Date of birth",
+            onChange = {"23456"},
+            modifier = Modifier.fillMaxWidth(),
+            keyboardOptions = KeyboardOption(
+                imeAction = ImeAction.Done,
+                keyboardType = KeyboardType.Phone,
+                label = AppConstants.COOK_ALTERNATE_PHONE,
+                placeholder = AppConstants.COOK_ALTERNATE_PHONE_PLACEHOLDER
+            ),
+            DefaultIcons(leadingIcon = Icons.Default.Phone),
+            isError = addCookProfileState.errorState.alternatePhoneErrorState.hasError,
+            errorText = stringResource(id = addCookProfileState.errorState.alternatePhoneErrorState.errorMessageStringResource),
+            maxChar = 12,
+            textColor = Color.Gray
+            /*submit = { TODO() }*/
+        )
 
+        Spacer(modifier = Modifier.height(10.dp))
+
+        InputTextField(
+            value = "Address",
+            onChange = {"where are you from?(Native place) (optional)"},
+            modifier = Modifier.fillMaxWidth(),
+            keyboardOptions = KeyboardOption(
+                imeAction = ImeAction.Done,
+                keyboardType = KeyboardType.Phone,
+                label = AppConstants.COOK_ALTERNATE_PHONE,
+                placeholder = AppConstants.COOK_ALTERNATE_PHONE_PLACEHOLDER
+            ),
+            DefaultIcons(leadingIcon = Icons.Default.Phone),
+            isError = addCookProfileState.errorState.alternatePhoneErrorState.hasError,
+            errorText = stringResource(id = addCookProfileState.errorState.alternatePhoneErrorState.errorMessageStringResource),
+            maxChar = 12,
+            textColor = Color.Gray
+            /*submit = { TODO() }*/
+        )
+
+        Spacer(modifier = Modifier.height(10.dp))
+
+        InputTextField(
+            value = "Experience",
+            onChange = {"Experience in cooking (in year)"},
+            modifier = Modifier.fillMaxWidth(),
+            keyboardOptions = KeyboardOption(
+                imeAction = ImeAction.Done,
+                keyboardType = KeyboardType.Phone,
+                label = AppConstants.COOK_ALTERNATE_PHONE,
+                placeholder = AppConstants.COOK_ALTERNATE_PHONE_PLACEHOLDER
+            ),
+            DefaultIcons(leadingIcon = Icons.Default.Phone),
+            isError = addCookProfileState.errorState.alternatePhoneErrorState.hasError,
+            errorText = stringResource(id = addCookProfileState.errorState.alternatePhoneErrorState.errorMessageStringResource),
+            maxChar = 12,
+            textColor = Color.Gray
+            /*submit = { TODO() }*/
+        )
+
+        Spacer(modifier = Modifier.height(10.dp))
+
+        InputTextField(
+            value = "5000",
+            onChange = {"min monthly charges"},
+            modifier = Modifier.fillMaxWidth(),
+            keyboardOptions = KeyboardOption(
+                imeAction = ImeAction.Done,
+                keyboardType = KeyboardType.Phone,
+                label = AppConstants.COOK_ALTERNATE_PHONE,
+                placeholder = AppConstants.COOK_ALTERNATE_PHONE_PLACEHOLDER
+            ),
+            DefaultIcons(leadingIcon = Icons.Default.Phone),
+            isError = addCookProfileState.errorState.alternatePhoneErrorState.hasError,
+            errorText = stringResource(id = addCookProfileState.errorState.alternatePhoneErrorState.errorMessageStringResource),
+            maxChar = 12,
+            textColor = Color.Gray
+            /*submit = { TODO() }*/
+        )
+
+        Spacer(modifier = Modifier.height(10.dp))
+
+        InputTextField(
+            value = "Religion",
+            onChange = {"(optional)"},
+            modifier = Modifier.fillMaxWidth(),
+            keyboardOptions = KeyboardOption(
+                imeAction = ImeAction.Done,
+                keyboardType = KeyboardType.Phone,
+                label = AppConstants.COOK_ALTERNATE_PHONE,
+                placeholder = AppConstants.COOK_ALTERNATE_PHONE_PLACEHOLDER
+            ),
+            DefaultIcons(leadingIcon = Icons.Default.Phone),
+            isError = addCookProfileState.errorState.alternatePhoneErrorState.hasError,
+            errorText = stringResource(id = addCookProfileState.errorState.alternatePhoneErrorState.errorMessageStringResource),
+            maxChar = 12,
+            textColor = Color.Gray
+            /*submit = { TODO() }*/
+        )
+
+        Spacer(modifier = Modifier.height(10.dp))
+
+Text(text = "Cuisine", fontFamily = FontName, color = Color.Gray, fontWeight = FontWeight.W700, fontSize = 16.sp)
+Text(text = "Languages", fontFamily = FontName, color = Color.Gray, fontWeight = FontWeight.W700, fontSize = 16.sp)
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -184,7 +283,7 @@ fun AddCookProfileForm(
 
         Spacer(modifier = Modifier.height(20.dp))
 
-        com.example.cook_ford.presentation.screens.authenticated_component.cook_component.account_component.edit_cook_profile_component.StatusCard()
+        StatusCard()
         Spacer(modifier = Modifier.height(20.dp))
 
         // Submit Button
@@ -227,7 +326,7 @@ fun JobTypeSection(
         verticalArrangement = Arrangement.spacedBy(4.dp),
         horizontalArrangement = Arrangement.spacedBy(4.dp)) {
         items(jobType.size) { index ->
-            com.example.cook_ford.presentation.screens.authenticated_component.cook_component.account_component.edit_cook_profile_component.JobTypeItem(
+            JobTypeItem(
                 label = jobType[index],
                 selected = index == 0,
                 enabled = index == 0,
@@ -236,10 +335,10 @@ fun JobTypeSection(
         }
 
         items(jobTypeLast.size, span = { GridItemSpan(columnsCount) }) { index->
-            com.example.cook_ford.presentation.screens.authenticated_component.cook_component.account_component.edit_cook_profile_component.JobTypeItem(
-                label = jobTypeLast[index],
+            JobTypeItem(
+                label =jobTypeLast[index],
                 selected = false,
-                enabled = false,
+                enabled =false,
                 onChange = onChange,
             )
         }
@@ -256,7 +355,7 @@ fun JobTypeItem(
     selected: Boolean,
     enabled: Boolean,
     onChange: (MutableSet<String>) -> Unit) {
-    val addCookProfileViewModel: AddCookProfileViewModel = hiltViewModel()
+    val addCookProfileViewModel: EditCookProfileViewModel = hiltViewModel()
     val isSelected = remember { mutableStateOf(selected) }
     Log.d("TAG", "JobTypeItem: ${Gson().toJson(addCookProfileViewModel.selectedItem)}")
     if(isSelected.value) addCookProfileViewModel.selectedItem.add(label)

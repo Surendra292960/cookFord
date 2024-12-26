@@ -28,7 +28,7 @@ import kotlin.math.sin
 /*** Semi-Circular Arc Loader Demo ***/
 @Preview
 @Composable
-fun SemiCircularArcLoaderDemo() {
+fun SemiCircularArcLoaderDemo(progress: Float) {
     Box(
         modifier = Modifier
             .size(90.dp),
@@ -36,7 +36,7 @@ fun SemiCircularArcLoaderDemo() {
     ) {
         SemiCircularLoader(
             size = 190.dp,
-            progress = 100f,
+            progress = progress,
             startAngle = 99.9f,
             indicatorThickness = 7.dp,
             indicatorBrush = Brush.linearGradient(

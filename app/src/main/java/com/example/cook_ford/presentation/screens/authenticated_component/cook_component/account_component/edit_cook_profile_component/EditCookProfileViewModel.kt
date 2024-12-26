@@ -1,12 +1,12 @@
-package com.example.cook_ford.presentation.screens.authenticated_component.user_component.accounts_component.add_cook_screen_component
+package com.example.cook_ford.presentation.screens.authenticated_component.cook_component.account_component.edit_cook_profile_component
 import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import com.example.cook_ford.data.local.UserSession
 import com.example.cook_ford.presentation.component.widgets.snack_bar.MainViewState
-import com.example.cook_ford.presentation.screens.authenticated_component.user_component.accounts_component.add_cook_screen_component.state.AddCookProfileErrorState
-import com.example.cook_ford.presentation.screens.authenticated_component.user_component.accounts_component.add_cook_screen_component.state.AddCookProfileState
-import com.example.cook_ford.presentation.screens.authenticated_component.user_component.accounts_component.add_cook_screen_component.state.AddCookProfileUiEvent
+import com.example.cook_ford.presentation.screens.authenticated_component.cook_component.account_component.edit_cook_profile_component.state.EditCookProfileErrorState
+import com.example.cook_ford.presentation.screens.authenticated_component.cook_component.account_component.edit_cook_profile_component.state.EditCookProfileState
+import com.example.cook_ford.presentation.screens.authenticated_component.cook_component.account_component.edit_cook_profile_component.state.EditCookProfileUiEvent
 import com.example.cook_ford.presentation.screens.authenticated_component.cook_component.account_component.edit_cook_profile_component.state.cook_alternate_phoneEmptyErrorState
 import com.example.cook_ford.presentation.screens.authenticated_component.cook_component.account_component.edit_cook_profile_component.state.cook_cityEmptyErrorState
 import com.example.cook_ford.presentation.screens.authenticated_component.cook_component.account_component.edit_cook_profile_component.state.cook_jobTypeEmptyErrorState
@@ -25,12 +25,12 @@ import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
 
 @HiltViewModel
-class AddCookProfileViewModel  @Inject constructor(
+class EditCookProfileViewModel  @Inject constructor(
     private val userSession: UserSession
 ) : ViewModel() {
 
     val selectedItem = mutableSetOf<String>()
-    var addCookProfileState = mutableStateOf(AddCookProfileState())
+    var addCookProfileState = mutableStateOf(EditCookProfileState())
         private set
 
     private val _showDialog = MutableStateFlow(true)
@@ -57,13 +57,13 @@ class AddCookProfileViewModel  @Inject constructor(
     }
 
     /**
-     * Function called on any event [AddCookProfileUiEvent]
+     * Function called on any event [EditCookProfileUiEvent]
      */
-    fun onUiEvent(addCookProfileUiEvent: AddCookProfileUiEvent) {
+    fun onUiEvent(addCookProfileUiEvent: EditCookProfileUiEvent) {
         when (addCookProfileUiEvent) {
 
             //Profile Image changed
-            is AddCookProfileUiEvent.ProfileImageChanged -> {
+            is EditCookProfileUiEvent.ProfileImageChanged -> {
                 Log.d("TAG", "onUiEvent: ${addCookProfileUiEvent.inputValue}")
                 addCookProfileState.value = addCookProfileState.value.copy(
                     profileImage = addCookProfileUiEvent.inputValue,
@@ -78,7 +78,7 @@ class AddCookProfileViewModel  @Inject constructor(
 
 
             //JobType changed
-            is AddCookProfileUiEvent.JobTypeChange -> {
+            is EditCookProfileUiEvent.JobTypeChange -> {
                 Log.d("TAG", "onUiEvent: ${addCookProfileUiEvent.inputValue}")
                 addCookProfileState.value = addCookProfileState.value.copy(
                     jobType = addCookProfileUiEvent.inputValue,
@@ -92,7 +92,7 @@ class AddCookProfileViewModel  @Inject constructor(
             }
 
             //CityChange changed
-            is AddCookProfileUiEvent.CityChanged -> {
+            is EditCookProfileUiEvent.CityChanged -> {
                 addCookProfileState.value = addCookProfileState.value.copy(
                     city = addCookProfileUiEvent.inputValue,
                     errorState = addCookProfileState.value.errorState.copy(
@@ -105,7 +105,7 @@ class AddCookProfileViewModel  @Inject constructor(
             }
 
             // UserName changed
-            is AddCookProfileUiEvent.UserNameChanged -> {
+            is EditCookProfileUiEvent.UserNameChanged -> {
                 addCookProfileState.value = addCookProfileState.value.copy(
                     username = addCookProfileUiEvent.inputValue,
                     errorState = addCookProfileState.value.errorState.copy(
@@ -117,7 +117,7 @@ class AddCookProfileViewModel  @Inject constructor(
                 )
             }
             // Email changed
-            is AddCookProfileUiEvent.PhoneChanged -> {
+            is EditCookProfileUiEvent.PhoneChanged -> {
                 addCookProfileState.value = addCookProfileState.value.copy(
                     phone = addCookProfileUiEvent.inputValue,
                     errorState = addCookProfileState.value.errorState.copy(
@@ -130,7 +130,7 @@ class AddCookProfileViewModel  @Inject constructor(
             }
 
             //Mobile changed
-            is AddCookProfileUiEvent.AlternatePhoneChanged -> {
+            is EditCookProfileUiEvent.AlternatePhoneChanged -> {
                 Log.d("TAG", "onUiEvent: ${addCookProfileUiEvent.inputValue}")
                 addCookProfileState.value = addCookProfileState.value.copy(
                     alternatePhone = addCookProfileUiEvent.inputValue,
@@ -144,7 +144,7 @@ class AddCookProfileViewModel  @Inject constructor(
             }
 
             //GenderChange changed
-            is AddCookProfileUiEvent.GenderChange -> {
+            is EditCookProfileUiEvent.GenderChange -> {
                 addCookProfileState.value = addCookProfileState.value.copy(
                     gender = addCookProfileUiEvent.inputValue,
                     errorState = addCookProfileState.value.errorState.copy(
@@ -157,7 +157,7 @@ class AddCookProfileViewModel  @Inject constructor(
             }
 
             // Submit
-            is AddCookProfileUiEvent.Submit -> {
+            is EditCookProfileUiEvent.Submit -> {
                 val inputsValidated = validateInputs()
                 //Log.d("TAG", "onUiEvent: $inputsValidated")
                 Log.d("TAG", "onUiEvent: ${addCookProfileState.value}")
@@ -198,7 +198,7 @@ class AddCookProfileViewModel  @Inject constructor(
         //JobType Not Selected
         if (jobType?.size == AppConstants.ZERO) {
             addCookProfileState.value = addCookProfileState.value.copy(
-                errorState = AddCookProfileErrorState(
+                errorState = EditCookProfileErrorState(
                     jobTypeErrorState = cook_jobTypeEmptyErrorState
                 )
             )
@@ -208,7 +208,7 @@ class AddCookProfileViewModel  @Inject constructor(
         //City Not Selected
         if (city.isEmpty()) {
             addCookProfileState.value = addCookProfileState.value.copy(
-                errorState = AddCookProfileErrorState(
+                errorState = EditCookProfileErrorState(
                     cityErrorState = cook_cityEmptyErrorState
                 )
             )
@@ -218,7 +218,7 @@ class AddCookProfileViewModel  @Inject constructor(
         // userName empty
         if (userName.isEmpty()) {
             addCookProfileState.value = addCookProfileState.value.copy(
-                errorState = AddCookProfileErrorState(
+                errorState = EditCookProfileErrorState(
                     usernameErrorState = cook_nameEmptyErrorState
                 )
             )
@@ -227,7 +227,7 @@ class AddCookProfileViewModel  @Inject constructor(
         // Phone empty
         if (phone.isEmpty()) {
             addCookProfileState.value = addCookProfileState.value.copy(
-                errorState = AddCookProfileErrorState(
+                errorState = EditCookProfileErrorState(
                     phoneErrorState = cook_phoneEmptyErrorState
                 )
             )
@@ -236,7 +236,7 @@ class AddCookProfileViewModel  @Inject constructor(
         // Alternate Phone Empty
         if (alternatePhone.isEmpty()) {
             addCookProfileState.value = addCookProfileState.value.copy(
-                errorState = AddCookProfileErrorState(
+                errorState = EditCookProfileErrorState(
                     alternatePhoneErrorState = cook_alternate_phoneEmptyErrorState
                 )
             )
@@ -246,7 +246,7 @@ class AddCookProfileViewModel  @Inject constructor(
         //Gender Not Selected
         if (gender.isEmpty()) {
             addCookProfileState.value = addCookProfileState.value.copy(
-                errorState = AddCookProfileErrorState(
+                errorState = EditCookProfileErrorState(
                     genderErrorState = genderSelectionErrorState
                 )
             )
@@ -256,7 +256,7 @@ class AddCookProfileViewModel  @Inject constructor(
         // No errors
         else {
             // Set default error state
-            addCookProfileState.value = addCookProfileState.value.copy(errorState = AddCookProfileErrorState())
+            addCookProfileState.value = addCookProfileState.value.copy(errorState = EditCookProfileErrorState())
             return true
         }
     }

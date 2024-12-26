@@ -17,6 +17,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowForwardIos
+import androidx.compose.material.icons.filled.Verified
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardColors
 import androidx.compose.material3.Icon
@@ -91,6 +92,14 @@ val options = mutableListOf(
     CookAccountModelData(
         trailingIcon = R.drawable.arrow_forward_ios,
         isBorder = true,
+        title = "Edit Profile",
+        subTitle = "Last updated a month ago",
+        titleColor = Color.DarkGray,
+        subTitleColor = Color.Gray
+    ),
+    CookAccountModelData(
+        trailingIcon = R.drawable.arrow_forward_ios,
+        isBorder = true,
         title = "Manage time slots",
         subTitle = "Add/Remove your work time slots",
         titleColor = Color.DarkGray,
@@ -118,13 +127,14 @@ fun ManageCookAccountScreen(
     onNavigateToManageTimeSlots: () -> Unit,
     onNavigateToCookJobList: () -> Unit,
     onNavigateToPersonalInfo: () -> Unit,
+    onNavigateToEditCookProfile: () -> Unit,
 
     ) {
     val changeProfileState = remember { mutableStateOf("Male") }
     val manageCookAccountViewModel: ManageCookAccountViewModel = hiltViewModel()
     val accountState by remember { manageCookAccountViewModel.manageAccountState }
     var isEnable by remember { mutableStateOf(true) }
-
+    val progress = 100f
 
     Column(
         modifier = Modifier
@@ -163,7 +173,8 @@ fun ManageCookAccountScreen(
             Column(modifier = Modifier.fillMaxSize().weight(1f),
                 verticalArrangement = Arrangement.SpaceBetween,
                 horizontalAlignment = Alignment.CenterHorizontally) {
-                SemiCircularArcLoaderDemo()
+
+                SemiCircularArcLoaderDemo(progress)
             }
         }
 
@@ -425,6 +436,14 @@ fun ManageCookAccountScreen(
                         )
                     }
                     onNavigateToPersonalInfo.invoke()
+                } else if (option == "Edit Profile") {
+                    navController.currentBackStackEntry?.savedStateHandle?.apply {
+                        set(
+                            "profileResponse",
+                            Gson().toJson(accountState.profileResponse)
+                        )
+                    }
+                    onNavigateToEditCookProfile.invoke()
                 }
             }
         }

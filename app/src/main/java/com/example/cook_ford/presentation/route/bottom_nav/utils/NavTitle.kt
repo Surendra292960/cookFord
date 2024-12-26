@@ -49,5 +49,6 @@ object NavTitle {
     const val MANAGE_TIME_SLOTS = "Manage time slots"
     const val COOK_JOB_LIST = "Job List"
     const val PERSONAL_INFO = "Personal Info"
+    const val EDIT_COOK_PROFILE = "Edit Profile"
 }
 

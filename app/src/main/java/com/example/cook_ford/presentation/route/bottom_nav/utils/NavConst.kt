@@ -34,4 +34,5 @@ object NavConst {
     const val MANAGE_TIME_SLOTS = "MANAGE_TIME_SLOTS"
     const val COOK_JOB_LIST = "COOK_JOB_LIST"
     const val PERSONAL_INFO = "PERSONAL_INFO"
+    const val EDIT_COOK_PROFILE = "EDIT_COOK_PROFILE"
 }

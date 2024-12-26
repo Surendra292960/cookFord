@@ -73,7 +73,8 @@ fun SignUpScreen(
     onNavigateToAuthenticatedRoute: () -> Unit) {
     val showDialogState: Boolean by signUpViewModel.showDialog.collectAsState()
     val signUpResponse by signUpViewModel.signUpResponse.collectAsState()
-    val signUpState by signUpViewModel.signUpState.collectAsState()
+    val signUpState by remember { signUpViewModel.signUpState }
+
     val snackBarHostState = remember { SnackbarHostState() }
     val viewState: MainViewState by signUpViewModel.viewState.collectAsState()
     val lifecycle = LocalLifecycleOwner.current.lifecycle
@@ -125,6 +126,7 @@ fun SignUpScreen(
             }
         }
     } else {
+        Log.d("TAG", "SignInScreen: open")
         // Full Screen Content
         if (isPermissionGranted){
             Scaffold(snackbarHost = { SnackbarHost(hostState = snackBarHostState) }) { paddingValues ->
@@ -187,21 +189,6 @@ fun SignUpScreen(
                         .fillMaxSize()
                         .verticalScroll(scrollState), horizontalAlignment = Alignment.CenterHorizontally) {
 
-                        /*      Spacer(modifier = Modifier.height(10.dp))
-
-                    // Image
-                    Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxSize()) {
-                        // Change the logo
-                        Image(
-                            painter = painterResource(id = R.drawable.cook_ford_rounded_logo),
-                            contentDescription = "Logo",
-                            //modifier = Modifier.scale(3f))
-                            modifier = Modifier
-                                .height(100.dp)
-                                .width(100.dp)
-                        )
-                    }
-    */
                         Spacer(modifier = Modifier.height(20.dp))
 
                         Text(
