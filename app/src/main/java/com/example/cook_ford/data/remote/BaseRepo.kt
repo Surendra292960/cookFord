@@ -17,7 +17,7 @@ abstract class BaseRepo {
 					return NetworkResult.Success(body,response.isSuccessful)
 				}
 			}
-			val errorResponse = convertErrorBody( response)
+			val errorResponse = convertErrorBody(response)
 			return error(errorResponse, response.isSuccessful)
 		} catch (e: IOException) {
 			return error(errorMessage = e.message ?: AppConstants.PLEASE_CHECK_INTERNET, status = false)

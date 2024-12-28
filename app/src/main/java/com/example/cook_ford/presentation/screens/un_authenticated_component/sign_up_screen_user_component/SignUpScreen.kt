@@ -72,8 +72,7 @@ fun SignUpScreen(
     signUpViewModel: SignUpViewModel = hiltViewModel(),
     onNavigateToAuthenticatedRoute: () -> Unit) {
     val showDialogState: Boolean by signUpViewModel.showDialog.collectAsState()
-    val signUpResponse by signUpViewModel.signUpResponse.collectAsState()
-    val signUpState by remember { signUpViewModel.signUpState }
+    val signUpState by signUpViewModel.signUpState.collectAsState()
 
     val snackBarHostState = remember { SnackbarHostState() }
     val viewState: MainViewState by signUpViewModel.viewState.collectAsState()
@@ -88,7 +87,6 @@ fun SignUpScreen(
 
     Log.d("TAG", "SignUpScreen userType : $userType")
 
-    signUpViewModel.setUserType(userType)
     LocationPermissionScreen(
         onPermissionGranted = { isGranted->
             if (isGranted) {
@@ -110,7 +108,7 @@ fun SignUpScreen(
     if (signUpState.isSignUpSuccessful) {
 
         ShowCustomDialog(
-            signUpResponse.message,
+            signUpState.signUpResponse.message,
             signUpViewModel,
             showDialogState
         )
@@ -253,6 +251,7 @@ fun SignUpScreen(
                                     )
                                 },
                                 onSubmit = {
+                                    signUpViewModel.setUserType(userType)
                                     signUpViewModel.onUiEvent(signUpUiEvent = SignUpUiEvent.Submit)
                                 }
                             )

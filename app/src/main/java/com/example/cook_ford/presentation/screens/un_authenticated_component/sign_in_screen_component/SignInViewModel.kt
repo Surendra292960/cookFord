@@ -1,7 +1,5 @@
 package com.example.cook_ford.presentation.screens.un_authenticated_component.sign_in_screen_component
 import android.util.Log
-import android.util.Patterns
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.cook_ford.data.local.SessionConstant.ACCESS_TOKEN
@@ -10,18 +8,13 @@ import com.example.cook_ford.data.local.SessionConstant.USER_TYPE
 import com.example.cook_ford.data.local.UserSession
 import com.example.cook_ford.data.remote.NetworkResult
 import com.example.cook_ford.data.remote.auth_request.SignInRequest
-import com.example.cook_ford.data.remote.auth_response.SignInResponse
 import com.example.cook_ford.domain.use_cases.SignInUseCase
 import com.example.cook_ford.presentation.component.widgets.snack_bar.MainViewState
 import com.example.cook_ford.presentation.screens.un_authenticated_component.sign_in_screen_component.state.ErrorState
-import com.example.cook_ford.presentation.screens.un_authenticated_component.sign_in_screen_component.state.SignInErrorState
 import com.example.cook_ford.presentation.screens.un_authenticated_component.sign_in_screen_component.state.SignInState
 import com.example.cook_ford.presentation.screens.un_authenticated_component.sign_in_screen_component.state.SignInUiEvent
 import com.example.cook_ford.presentation.screens.un_authenticated_component.sign_in_screen_component.state.emailEmptyErrorState
 import com.example.cook_ford.presentation.screens.un_authenticated_component.sign_in_screen_component.state.passwordEmptyErrorState
-import com.example.cook_ford.presentation.screens.un_authenticated_component.sign_up_screen_user_component.state.invalidPasswordErrorState
-import com.example.cook_ford.presentation.screens.un_authenticated_component.sign_up_screen_user_component.state.invalidUserNameErrorState
-import com.example.cook_ford.utils.AppConstants.PASSWORD_PATTERN
 import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers.IO
@@ -37,10 +30,8 @@ import javax.inject.Inject
 @HiltViewModel
 class SignInViewModel @Inject constructor(private val signInUseCase: SignInUseCase, private val userSession: UserSession) : ViewModel() {
 
-    var signInState = mutableStateOf(SignInState())
-
-    private val _signInResponse: MutableStateFlow<SignInResponse> = MutableStateFlow(SignInResponse())
-    val signInResponse: StateFlow<SignInResponse> = _signInResponse.asStateFlow()
+    private val _signInState: MutableStateFlow<SignInState> = MutableStateFlow(SignInState())
+    val signInState: StateFlow<SignInState> = _signInState.asStateFlow()
 
     private val _showDialog = MutableStateFlow(true)
     val showDialog: StateFlow<Boolean> = _showDialog.asStateFlow()
@@ -72,9 +63,9 @@ class SignInViewModel @Inject constructor(private val signInUseCase: SignInUseCa
 
             // Email changed
             is SignInUiEvent.EmailChanged -> {
-                signInState.value = signInState.value.copy(
+                _signInState.value = _signInState.value.copy(
                     email = signInUiEvent.inputValue,
-                    errorState = signInState.value.errorState.copy(
+                    errorState = _signInState.value.errorState.copy(
                         emailErrorState = if (signInUiEvent.inputValue.trim().isNotEmpty())
                             ErrorState()
                         else
@@ -85,9 +76,9 @@ class SignInViewModel @Inject constructor(private val signInUseCase: SignInUseCa
 
             // Password changed
             is SignInUiEvent.PasswordChanged -> {
-                signInState.value = signInState.value.copy(
+                _signInState.value = _signInState.value.copy(
                     password = signInUiEvent.inputValue,
-                    errorState = signInState.value.errorState.copy(
+                    errorState = _signInState.value.errorState.copy(
                         passwordErrorState = if (signInUiEvent.inputValue.trim().isNotEmpty())
                             ErrorState()
                         else
@@ -98,70 +89,13 @@ class SignInViewModel @Inject constructor(private val signInUseCase: SignInUseCa
 
             // Submit signIn
             is SignInUiEvent.Submit -> {
-                val inputsValidated = validateInputs()
+                val inputsValidated = signInUseCase.invoke(_signInState)
                 Log.d("TAG", "onUiEvent: $inputsValidated")
                 if (inputsValidated) {
                     // TODO Trigger login in authentication flow
-                    makeSigInRequest(SignInRequest(email = signInState.value.email, password = signInState.value.password))
+                    makeSigInRequest(SignInRequest(email = _signInState.value.email, password = _signInState.value.password))
                 }
             }
-        }
-    }
-
-    /**
-     * Function to validate inputs
-     * Ideally it should be on domain layer (useCase)
-     * @return true -> inputs are valid
-     * @return false -> inputs are invalid
-     */
-    private fun validateInputs(): Boolean {
-        val email = signInState.value.email.trim()
-        val password = signInState.value.password.trim()
-
-        // Email empty
-        if (email.isEmpty()) {
-            signInState.value = signInState.value.copy(
-                errorState = SignInErrorState(
-                    emailErrorState = emailEmptyErrorState
-                )
-            )
-            return false
-        }
-        // Email Matcher
-        if (email.isNotEmpty() && !Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            signInState.value = signInState.value.copy(
-                errorState = SignInErrorState(
-                    emailErrorState = invalidUserNameErrorState
-                )
-            )
-            return false
-        }
-
-        //Password Empty
-         if (password.isEmpty()) {
-            signInState.value = signInState.value.copy(
-                errorState = SignInErrorState(
-                    passwordErrorState = passwordEmptyErrorState
-                )
-            )
-            return false
-        }
-
-        //Password Matcher
-        if (password.isNotEmpty() && !PASSWORD_PATTERN?.matcher(password)!!.matches()) {
-            signInState.value = signInState.value.copy(
-                errorState = SignInErrorState(
-                    passwordErrorState = invalidPasswordErrorState
-                )
-            )
-            return false
-        }
-
-        // No errors
-        else {
-            // Set default error state
-            signInState.value = signInState.value.copy(errorState = SignInErrorState())
-            return true
         }
     }
 
@@ -174,8 +108,8 @@ class SignInViewModel @Inject constructor(private val signInUseCase: SignInUseCa
                     if (result.status == true){
                         Log.d("TAG", "signInRequest SignInResponse: ${Gson().toJson(result)}")
                         result.data?.let { response->
-                            _signInResponse.emit(response)
-                            signInState.value = signInState.value.copy(isSignInSuccessful = result.status)
+                            _signInState.emit(signInState.value.copy(signInResponse = response))
+                            _signInState.value = _signInState.value.copy(isSignInSuccessful = result.status)
                             //TODO save token after dialog dismiss
                             userSession.put(ACCESS_TOKEN, response.accessToken)
                             userSession.put(USER_TYPE, response.userType)

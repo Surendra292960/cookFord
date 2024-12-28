@@ -76,9 +76,8 @@ fun SignInScreen(
     onNavigateToSignUp: () -> Unit,
     onNavigateToForgotPassword: () -> Unit,
     onNavigateToAuthenticatedRoute: () -> Unit) {
-    val signInState by remember { signInViewModel.signInState }
     val showDialogState: Boolean by signInViewModel.showDialog.collectAsState()
-    val signInResponse by signInViewModel.signInResponse.collectAsState()
+    val signInState by signInViewModel.signInState.collectAsState()
     val snackBarHostState = remember { SnackbarHostState() }
     val viewState: MainViewState by signInViewModel.viewState.collectAsState()
     val lifecycle = LocalLifecycleOwner.current.lifecycle
@@ -96,7 +95,7 @@ fun SignInScreen(
 
     if (signInState.isSignInSuccessful) {
 
-        ShowCustomDialog(signInResponse.message, signInViewModel, showDialogState)
+        ShowCustomDialog(signInState.signInResponse.message, signInViewModel, showDialogState)
 
         Log.d("TAG", "SignInScreen: $showDialogState")
         /**

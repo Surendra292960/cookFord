@@ -5,6 +5,7 @@ import com.example.cook_ford.data.ApiService
 import com.example.cook_ford.data.local.UserSession
 import com.example.cook_ford.data.repository.AuthRepositoryImpl
 import com.example.cook_ford.data.repository.FirebaseAuthRepositoryImpl
+import com.example.cook_ford.data.repository.UnAuthRepositoryImpl
 import com.example.cook_ford.domain.repository.FirebaseAuthRepository
 import com.example.cook_ford.domain.use_cases.ProfileUseCase
 import com.example.cook_ford.domain.use_cases.SignInUseCase
@@ -75,6 +76,10 @@ object AppModule {
 
     @Provides
     @Singleton
+    fun providesUnAuthRepository(apiService: ApiService): UnAuthRepositoryImpl = UnAuthRepositoryImpl(apiService = apiService)
+
+    @Provides
+    @Singleton
     fun providesAuthRepository(apiService: ApiService): AuthRepositoryImpl = AuthRepositoryImpl(apiService = apiService)
 
     @Singleton
@@ -92,21 +97,21 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun providesLoginUseCase(repository: AuthRepositoryImpl): SignInUseCase {
+    fun providesLoginUseCase(repository: UnAuthRepositoryImpl): SignInUseCase {
         return SignInUseCase(repository)
     }
 
     @Provides
     @Singleton
-    fun providesProfileUseCase(repository: AuthRepositoryImpl): ProfileUseCase {
-        return ProfileUseCase(repository)
+    fun providesRegisterUseCase(repository: UnAuthRepositoryImpl): SignUpUseCase {
+        return SignUpUseCase(repository)
     }
 
 
     @Provides
     @Singleton
-    fun providesRegisterUseCase(repository: AuthRepositoryImpl): SignUpUseCase {
-        return SignUpUseCase(repository)
+    fun providesProfileUseCase(repository: AuthRepositoryImpl): ProfileUseCase {
+        return ProfileUseCase(repository)
     }
 
 }
