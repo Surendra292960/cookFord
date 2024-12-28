@@ -2,7 +2,6 @@ package com.example.cook_ford.presentation.route.bottom_nav
 
 import android.util.Log
 import com.example.cook_ford.presentation.route.bottom_nav.utils.NavConst
-import com.example.cook_ford.presentation.route.bottom_nav.utils.NavPath
 import com.example.cook_ford.presentation.route.bottom_nav.utils.NavTitle
 
 fun getTitleByRoute(route:String): String {

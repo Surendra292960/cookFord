@@ -1,9 +1,4 @@
 package com.example.cook_ford.presentation.screens.authenticated_component.cook_component.account_component.account_screen_component
-import android.R.id.message
-import android.content.ActivityNotFoundException
-import android.content.Context
-import android.content.Intent
-import android.net.Uri
 import android.os.Build.VERSION.SDK_INT
 import android.util.Log
 import androidx.annotation.DrawableRes
@@ -22,7 +17,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
@@ -31,8 +25,6 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ExposureZero
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -66,9 +58,7 @@ import coil.decode.ImageDecoderDecoder
 import coil.request.ImageRequest
 import coil.size.Size
 import com.example.cook_ford.R
-import com.example.cook_ford.presentation.component.widgets.ButtonIcons
 import com.example.cook_ford.presentation.component.widgets.MediumTitleText
-import com.example.cook_ford.presentation.component.widgets.OutlinedSmallSubmitButton
 import com.example.cook_ford.presentation.component.widgets.ProfileImage
 import com.example.cook_ford.presentation.component.widgets.Progressbar
 import com.example.cook_ford.presentation.component.widgets.SmallTitleText
@@ -596,18 +586,25 @@ fun BottomSheet(
                             style = MaterialTheme.typography.subtitle2,
                         )
                         Text(
-                            text = if (reviewState.rating == 0.0f) {
-                                "Not Rated"
-                            } else if (reviewState.rating == 1.0f) {
-                                "Not so good"
-                            } else if (reviewState.rating == 2.0f) {
-                                "Can be better"
-                            } else if (reviewState.rating == 3.0f) {
-                                "Good"
-                            } else if (reviewState.rating == 4.0f) {
-                                "Liked it"
-                            } else {
-                                "Loved it"
+                            text = when (reviewState.rating) {
+                                0.0f -> {
+                                    "Not Rated"
+                                }
+                                1.0f -> {
+                                    "Not so good"
+                                }
+                                2.0f -> {
+                                    "Can be better"
+                                }
+                                3.0f -> {
+                                    "Good"
+                                }
+                                4.0f -> {
+                                    "Liked it"
+                                }
+                                else -> {
+                                    "Loved it"
+                                }
                             },
                             color = if (reviewState.rating == 0.0f) {
                                 Color.Red

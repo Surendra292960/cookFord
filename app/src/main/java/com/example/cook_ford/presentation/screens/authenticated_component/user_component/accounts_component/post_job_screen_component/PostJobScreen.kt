@@ -366,7 +366,7 @@ fun AccountProfileContent(
         .padding(all = 10.dp)) {
         Row(modifier = Modifier
             .wrapContentSize()
-            .clickable { onNavigateTo.invoke("qeqwdcwf") },
+            .clickable { onNavigateTo.invoke("Test") },
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween) {
 

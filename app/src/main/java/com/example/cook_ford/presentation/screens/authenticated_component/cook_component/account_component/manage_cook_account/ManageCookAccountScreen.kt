@@ -17,7 +17,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowForwardIos
-import androidx.compose.material.icons.filled.Verified
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardColors
 import androidx.compose.material3.Icon
@@ -404,46 +403,52 @@ fun ManageCookAccountScreen(
 
         options.forEach { option ->
             ProfileOptionItem(option) { option ->
-                if (option == "View Profile") {
-                    navController.currentBackStackEntry?.savedStateHandle?.apply {
-                        set(
-                            "profileResponse",
-                            Gson().toJson(accountState.profileResponse)
-                        )
+                when (option) {
+                    "View Profile" -> {
+                        navController.currentBackStackEntry?.savedStateHandle?.apply {
+                            set(
+                                "profileResponse",
+                                Gson().toJson(accountState.profileResponse)
+                            )
+                        }
+                        onNavigateToCookProfileDetail.invoke()
                     }
-                    onNavigateToCookProfileDetail.invoke()
-                } else if (option == "Upload Images") {
-                    navController.currentBackStackEntry?.savedStateHandle?.apply {
-                        set(
-                            "profileResponse",
-                            Gson().toJson(accountState.profileResponse)
-                        )
+                    "Upload Images" -> {
+                        navController.currentBackStackEntry?.savedStateHandle?.apply {
+                            set(
+                                "profileResponse",
+                                Gson().toJson(accountState.profileResponse)
+                            )
+                        }
+                        onNavigateToUploadCuisines.invoke()
                     }
-                    onNavigateToUploadCuisines.invoke()
-                } else if (option == "Manage time slots") {
-                    navController.currentBackStackEntry?.savedStateHandle?.apply {
-                        set(
-                            "profileResponse",
-                            Gson().toJson(accountState.profileResponse)
-                        )
+                    "Manage time slots" -> {
+                        navController.currentBackStackEntry?.savedStateHandle?.apply {
+                            set(
+                                "profileResponse",
+                                Gson().toJson(accountState.profileResponse)
+                            )
+                        }
+                        onNavigateToManageTimeSlots.invoke()
                     }
-                    onNavigateToManageTimeSlots.invoke()
-                } else if (option == "Personal Information") {
-                    navController.currentBackStackEntry?.savedStateHandle?.apply {
-                        set(
-                            "profileResponse",
-                            Gson().toJson(accountState.profileResponse)
-                        )
+                    "Personal Information" -> {
+                        navController.currentBackStackEntry?.savedStateHandle?.apply {
+                            set(
+                                "profileResponse",
+                                Gson().toJson(accountState.profileResponse)
+                            )
+                        }
+                        onNavigateToPersonalInfo.invoke()
                     }
-                    onNavigateToPersonalInfo.invoke()
-                } else if (option == "Edit Profile") {
-                    navController.currentBackStackEntry?.savedStateHandle?.apply {
-                        set(
-                            "profileResponse",
-                            Gson().toJson(accountState.profileResponse)
-                        )
+                    "Edit Profile" -> {
+                        navController.currentBackStackEntry?.savedStateHandle?.apply {
+                            set(
+                                "profileResponse",
+                                Gson().toJson(accountState.profileResponse)
+                            )
+                        }
+                        onNavigateToEditCookProfile.invoke()
                     }
-                    onNavigateToEditCookProfile.invoke()
                 }
             }
         }

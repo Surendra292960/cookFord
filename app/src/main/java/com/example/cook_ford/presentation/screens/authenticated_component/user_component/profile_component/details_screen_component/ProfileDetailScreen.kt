@@ -938,7 +938,7 @@ fun CuisineImages(topCuisineUrls: List<String>, modifier: Modifier = Modifier) {
 
 			LazyRow(state = listState, modifier = modifier.scale(1.01f)) {
 				items(topCuisineUrls.size) { index->
-					topCuisineUrls[index]?.let {
+					topCuisineUrls[index].let {
 						Card(
 							modifier = Modifier
 								.width(300.dp)

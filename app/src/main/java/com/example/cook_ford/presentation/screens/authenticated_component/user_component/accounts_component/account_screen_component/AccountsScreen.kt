@@ -644,18 +644,23 @@ fun BottomSheet(
                             style = MaterialTheme.typography.subtitle2,
                         )
                         Text(
-                            text = if (reviewState.rating == 0.0f) {
-                                "Not Rated"
-                            } else if (reviewState.rating == 1.0f) {
-                                "Not so good"
-                            } else if (reviewState.rating == 2.0f) {
-                                "Can be better"
-                            } else if (reviewState.rating == 3.0f) {
-                                "Good"
-                            } else if (reviewState.rating == 4.0f) {
-                                "Liked it"
-                            } else {
-                                "Loved it"
+                            text = when {
+                                reviewState.rating != 0.0f -> {
+                                    if (reviewState.rating == 1.0f) {
+                                        "Not so good"
+                                    } else if (reviewState.rating == 2.0f) {
+                                        "Can be better"
+                                    } else if (reviewState.rating == 3.0f) {
+                                        "Good"
+                                    } else if (reviewState.rating == 4.0f) {
+                                        "Liked it"
+                                    } else {
+                                        "Loved it"
+                                    }
+                                }
+                                else -> {
+                                    "Not Rated"
+                                }
                             },
                             color = if (reviewState.rating == 0.0f) {
                                 Color.Red

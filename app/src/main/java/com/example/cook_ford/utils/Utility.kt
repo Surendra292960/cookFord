@@ -1,19 +1,15 @@
 package com.example.cook_ford.utils
 
-import android.Manifest
 import android.R.id.message
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.location.Location
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
-import androidx.core.app.ActivityCompat
 import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationServices
 import java.io.Serializable
 import java.text.ParseException
 import java.text.SimpleDateFormat
@@ -39,7 +35,7 @@ object Utility {
 
             val currentDate = Date()
 
-            val diff: Long = currentDate.getTime() - oldDate.getTime()
+            val diff: Long = currentDate.time - oldDate.time
             val seconds = diff / 1000
             val minutes = seconds / 60
             val hours = minutes / 60
@@ -47,7 +43,9 @@ object Utility {
 
             if (oldDate.before(currentDate)) {
                 Log.e("oldDate", "is previous date")
-                Log.e("Difference: ", " seconds: " + seconds + " minutes: " + minutes + " hours: " + hours + " days: " + days)
+                Log.e("Difference: ",
+                    " seconds: $seconds minutes: $minutes hours: $hours days: $days"
+                )
             }
 
             // Log.e("toyBornTime", "" + toyBornTime);

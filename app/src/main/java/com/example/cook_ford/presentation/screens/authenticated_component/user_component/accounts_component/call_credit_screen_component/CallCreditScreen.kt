@@ -592,7 +592,13 @@ fun CollapsableLazyColumn(sections: List<CollapsableSection>, modifier: Modifier
 @Composable
 fun ContentView() {
 
-    val list = listOf(R.drawable.female_chef, R.drawable.male_chef, R.drawable.female_chef, R.drawable.spin_wheel,R.drawable.female_chef,)
+    val list = listOf(
+        R.drawable.female_chef,
+        R.drawable.male_chef,
+        R.drawable.female_chef,
+        R.drawable.spin_wheel,
+        R.drawable.female_chef
+    )
 
     val pagerState: PagerState = rememberPagerState(initialPage = list.size)
 

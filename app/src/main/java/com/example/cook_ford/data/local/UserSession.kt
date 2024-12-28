@@ -7,7 +7,7 @@ class UserSession (context: Context) {
 
     private val PREFS_NAME = "sharedpref12345"
     private var sharedPref: SharedPreferences = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
-    val editor: SharedPreferences.Editor = sharedPref.edit()
+    private val editor: SharedPreferences.Editor = sharedPref.edit()
 
     fun put(key: String, value: String) {
         editor.putString(key, value)

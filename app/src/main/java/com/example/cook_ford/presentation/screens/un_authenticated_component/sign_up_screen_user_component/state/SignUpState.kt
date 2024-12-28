@@ -1,6 +1,5 @@
 package com.example.cook_ford.presentation.screens.un_authenticated_component.sign_up_screen_user_component.state
 import com.example.cook_ford.presentation.screens.un_authenticated_component.sign_in_screen_component.state.ErrorState
-import com.example.cook_ford.utils.AppConstants.EMPTY_STRING
 
 /**
  * SignUp State holding ui input values

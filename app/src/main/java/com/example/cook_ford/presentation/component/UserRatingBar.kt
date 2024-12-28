@@ -33,8 +33,8 @@ fun UserRatingBar(
     modifier: Modifier = Modifier,
     onRatingChanged: (Int) -> Unit) {
     val ratingState: MutableState<Int> = remember { mutableIntStateOf(0) }
-    val selectedColor: Color = Color(0xFFFFD700)
-    val unselectedColor: Color = Color(0xFFA2ADB1)
+    val selectedColor = Color(0xFFFFD700)
+    val unselectedColor = Color(0xFFA2ADB1)
 
     Row(modifier = modifier.wrapContentSize()) {
         // 2. Star Icon Generation Loop

@@ -149,7 +149,7 @@ class UpdateProfileViewModel @Inject constructor(
 
     /**
      * Function to validate inputs
-     * Ideally it should be on domain layer (usecase)
+     * Ideally it should be on domain layer (useCase)
      * @return true -> inputs are valid
      * @return false -> inputs are invalid
      */

@@ -82,9 +82,9 @@
 
     <string name="verify_button_text">Verify</string>
 
-    <string name="onbaord_title1">Cooking Services</string>
-    <string name="onbaord_title2">Cooking Services</string>
-    <string name="onbaord_title3">Cooking Services</string>
+    <string name="onboard_title1">Cooking Services</string>
+    <string name="onboard_title2">Cooking Services</string>
+    <string name="onboard_title3">Cooking Services</string>
     <string name="onboard_text1">Cook Ford providing best place to make your food and satisfying your hunger with delicious food</string>
     <string name="onboard_text2">Cook Ford providing best place for women cooking services</string>
     <string name="onboard_text3">We are providing best solution where you can search cook/chef according to your location and time preferences</string>
@@ -92,9 +92,9 @@
     <string name="text_sign_in">Sign In</string>
 
     //Food App
-    <string name="onbaord_title1_food">Nearby restaurants</string>
-    <string name="onbaord_title2_food">Select the Favorites Menu</string>
-    <string name="onbaord_title3_food">Good food at a cheap price</string>
+    <string name="onboard_title1_food">Nearby restaurants</string>
+    <string name="onboard_title2_food">Select the Favorites Menu</string>
+    <string name="onboard_title3_food">Good food at a cheap price</string>
     <string name="onboard_text1_food">You don\'t have to go far to find a good restaurant,
 we have provided all the restaurants that is
 near you</string>

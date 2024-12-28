@@ -13,7 +13,7 @@ import java.lang.Exception
 class ShareUtils {
 
     companion object{
-        fun saveBitmapAndGetUri(context: Context, bitmap: Bitmap): Uri? {
+        private fun saveBitmapAndGetUri(context: Context, bitmap: Bitmap): Uri? {
             val path: String = context.externalCacheDir.toString() + "/testImg.jpg"
             var out: OutputStream? = null
             val file = File(path)
@@ -39,7 +39,7 @@ class ShareUtils {
             chooserIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
             try {
                 context.startActivity(chooserIntent)
-            } catch (ex: Exception) {
+            } catch (_: Exception) {
             }
         }
     }

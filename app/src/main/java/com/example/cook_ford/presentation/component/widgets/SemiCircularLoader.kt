@@ -20,13 +20,13 @@ import androidx.compose.ui.graphics.nativeCanvas
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import kotlin.math.cos
 import kotlin.math.sin
 
 /*** Semi-Circular Arc Loader Demo ***/
-@Preview
 @Composable
 fun SemiCircularArcLoaderDemo(progress: Float) {
     Box(
