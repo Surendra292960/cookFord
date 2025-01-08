@@ -1,0 +1,128 @@
+<resources>
+    <string name="app_name">cook_ford</string>
+    <string name="empty_string" />
+    <string name="mime_type" >*/*</string>
+
+    <string name="navigate_back">Navigate to the previous screen</string>
+
+    <!--SignIn-->
+    <string name="sign_in_heading_text">Sign In</string>
+    <string name="sign_in_email_id_or_phone_label">Email ID or Mobile Number</string>
+    <string name="sign_in_password_label">Password</string>
+    <string name="sign_in_button_text">Sign In</string>
+    <string name="forgot_password">Forgot Password?</string>
+    <string name="icon_password_visible">Password Visible</string>
+    <string name="icon_password_hidden">Password Hidden</string>
+
+    <!--SignIn Error Messages-->
+    <string name="sign_in_error_msg_empty_email">Please enter your email </string>
+    <string name="sign_in_error_msg_empty_password">Please enter your password</string>
+
+    <!--SignIn Page - SignUp Section-->
+    <string name="do_not_have_account">Don\'t have an account?</string>
+    <string name="register">Register</string>
+
+    <!--SignUp-->
+    <string name="sign_up_heading_text">Sign Up</string>
+    <string name="sign_up_email_label">Email ID</string>
+    <string name="sign_up_mobile_label">Mobile Number</string>
+    <string name="sign_up_password_label">Password</string>
+    <string name="sign_up_confirm_password_label">Confirm Password</string>
+    <string name="sign_up_button_text">SignUp</string>
+    <string name="back_to_sign_in">Back to Login</string>
+
+    <!--SignUp Error Messages-->
+    <string name="sign_up_error_msg_empty_name">Please enter your name</string>
+    <string name="sign_up_error_msg_valid_email">Please enter valid email</string>
+    <string name="sign_up_error_msg_empty_email">Please enter your email id</string>
+    <string name="sign_up_error_msg_empty_mobile">Please enter your mobile number</string>
+    <string name="sign_up_error_msg_valid_mobile">Please enter valid mobile number</string>
+    <string name="sign_up_error_msg_empty_password">Please enter your password</string>
+    <string name="sign_up_error_msg_valid_password">at least 1 special character | no white spaces | at least 4 characters </string>
+    <string name="sign_up_error_msg_empty_confirm_password">Please confirm your password</string>
+    <string name="sign_up_error_msg_password_mismatch">Please enter the same password here as above</string>
+    <string name="sign_up_error_msg_gender_not_selected">Gender not selected</string>
+
+    <string name="sign_up_error_msg_empty_first_name">Please enter your first name</string>
+    <string name="sign_up_error_msg_empty_last_name">Please enter your last name</string>
+    <string name="sign_up_error_msg_empty_address">Please enter your address</string>
+    <string name="sign_up_error_msg_empty_city">Please enter your city</string>
+    <string name="sign_up_error_msg_empty_state">Please enter your state</string>
+    <string name="sign_up_error_msg_empty_zip_code">Please enter your zip code</string>
+    <string name="sign_up_error_msg_empty_religion">Please enter your religion</string>
+
+    <!--Time Slots-->
+    <string name="time_slots_error_msg_empty_morning">Please select morning time</string>
+    <string name="time_slots_error_msg_empty_afternoon">Please select afternoon time</string>
+    <string name="time_slots_error_msg_empty_evening">Please select evening time</string>
+
+    <!--Dashboard-->
+    <string name="dashboard_title_welcome_user">Welcome User</string>
+    <string name="try_again_button_text">Try again</string>
+    <string name="dismiss_button_text">Dismiss</string>
+
+    <!--Review/Report/Note Text-->
+    <string name="submit_button_text">Submit</string>
+    <string name="review_error_msg_empty">Please write your review</string>
+    <string name="report_error_msg_empty">Add more details</string>
+    <string name="note_error_msg_empty">Please write your review</string>
+    <string name="rating_error_msg_empty">Please rate us</string>
+    <string name="save_button_text">Save</string>
+    <string name="done_button_text">Done</string>
+
+    <!--Cook-->
+    <string name="cook_error_msg_empty_name">Please enter cook name</string>
+    <string name="cook_error_msg_empty_phone">Please enter phone number</string>
+    <string name="cook_error_msg_empty_alternate_phone">Please enter alternate phone number</string>
+    <string name="cook_error_msg_empty_city">Please select city</string>
+    <string name="cook_error_msg_empty_job_type">Please select job type</string>
+    <string name="cook_error_msg_empty_cuisine">Please select cuisine</string>
+    <string name="cook_error_msg_empty_language">Please select language</string>
+    <string name="cook_error_msg_empty_profile_image">Please select profile image</string>
+    <string name="cook_address_text">Address</string>
+    <!--OTP-->
+
+    <string name="verify_button_text">Verify</string>
+
+    <string name="onboard_title1">Cooking Services</string>
+    <string name="onboard_title2">Cooking Services</string>
+    <string name="onboard_title3">Cooking Services</string>
+    <string name="onboard_text1">Cook Ford providing best place to make your food and satisfying your hunger with delicious food</string>
+    <string name="onboard_text2">Cook Ford providing best place for women cooking services</string>
+    <string name="onboard_text3">We are providing best solution where you can search cook/chef according to your location and time preferences</string>
+    <string name="text_book_trip">BOOK YOUR TRIP</string>
+    <string name="text_sign_in">Sign In</string>
+
+    //Food App
+    <string name="onboard_title1_food">Nearby restaurants</string>
+    <string name="onboard_title2_food">Select the Favorites Menu</string>
+    <string name="onboard_title3_food">Good food at a cheap price</string>
+    <string name="onboard_text1_food">You don\'t have to go far to find a good restaurant,
+we have provided all the restaurants that is
+near you</string>
+    <string name="onboard_text2_food">Now eat well, don\'t leave the house,You can
+choose your favorite food only with
+one click</string>
+    <string name="onboard_text3_food">You can eat at expensive restaurants with
+affordable price</string>
+    <string name="text_skip">Skip</string>
+    <string name="home">Home\n</string>
+    <string name="explore">Explore</string>
+    <string name="dark_mode">DarkMode</string>
+    <string name="videos">Videos</string>
+    <string name="profile">Profile</string>
+    <string name="back">Back</string>
+    <string name="sign_out_button_text">Sign Out</string>
+    <string name="post_job_button_text">Post a Job</string>
+    <string name="issue_error_msg_empty">Please select issue</string>
+    <string name="sign_in_with_phone_button_text">Sign in with Phone</string>
+    <string name="sign_in_as_a_cook_button_text">Sign in as a Cook</string>
+    <string name="sign_in_as_a_user_button_text">Sign in as a User</string>
+    <string name="sign_up_error_msg_empty_otp">Please enter otp</string>
+    <string name="get_started_button_text">Get Started</string>
+    <string name="apply_button_text">Apply</string>
+    <string name="view_button_text">View</string>
+    <string name="delete_button_text">Delete</string>
+
+
+</resources>
