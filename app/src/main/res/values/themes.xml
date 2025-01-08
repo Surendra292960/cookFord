@@ -8,4 +8,5 @@
         <item name="postSplashScreenTheme">@style/Theme.Cook_ford</item>
         <item name="android:windowSplashScreenAnimatedIcon" tools:targetApi="s">@drawable/animated_logo</item>
     </style>
+
 </resources>
