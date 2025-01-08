@@ -39,7 +39,6 @@ open class ProfileDetailsViewModel @Inject constructor(
     private val _noteState = mutableStateOf(NoteState())
     val noteState: State<NoteState> = _noteState
 
-
     private val _viewState = MutableStateFlow(MainViewState())
     val viewState = _viewState.asStateFlow()
 
