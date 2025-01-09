@@ -20,8 +20,11 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.CurrencyRupee
+import androidx.compose.material.icons.filled.Explicit
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Phone
+import androidx.compose.material.icons.filled.Place
 import androidx.compose.material.icons.filled.VerifiedUser
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -62,7 +65,15 @@ fun EditCookProfileForm(
     changeProfileState: MutableState<String>,
     editCookProfileState: EditCookProfileState,
     viewState: MainViewState,
+    onWorkAreaChange: (String) -> Unit,
     onUserNameChange: (String) -> Unit,
+    onDobChange: (String) -> Unit,
+    onAddressChange: (String) -> Unit,
+    onReligionChange: (String) -> Unit,
+    onExperienceChange: (String) -> Unit,
+    onSalaryChange: (String) -> Unit,
+    onNumberOfVisitChange: (String) -> Unit,
+    onFoodTypeChange: (String) -> Unit,
     onAlternatePhoneChange: (String) -> Unit,
     onPhoneChange: (String) -> Unit,
     onGenderChange: (String) -> Unit,
@@ -81,6 +92,8 @@ fun EditCookProfileForm(
         "Party\n(One time)")
     val jobTypeLast = listOf("Commercial Chef\n(Hotel, Restaurant)")
     val genders = listOf("Male", "Female")
+    val numberOfVisit = listOf("One", "Two")
+    val foodType = listOf("Yes", "No")
     val mCities = listOf("Delhi", "Mumbai", "Chennai", "Kolkata", "Hyderabad", "Bengaluru", "Pune")
 
     Column(modifier = Modifier.fillMaxSize(),
@@ -171,18 +184,18 @@ fun EditCookProfileForm(
         Spacer(modifier = Modifier.height(10.dp))
 
         InputTextField(
-            value = "Date of birth",
-            onChange = {"23456"},
+            value = editCookProfileState.dob,
+            onChange = onDobChange,
             modifier = Modifier.fillMaxWidth(),
             keyboardOptions = KeyboardOption(
                 imeAction = ImeAction.Done,
-                keyboardType = KeyboardType.Phone,
-                label = AppConstants.COOK_ALTERNATE_PHONE,
-                placeholder = AppConstants.COOK_ALTERNATE_PHONE_PLACEHOLDER
+                keyboardType = KeyboardType.Number,
+                label = AppConstants.COOK_DOB,
+                placeholder = AppConstants.COOK_DOB_PLACEHOLDER
             ),
-            DefaultIcons(leadingIcon = Icons.Default.Phone),
-            isError = editCookProfileState.errorState.alternatePhoneErrorState.hasError,
-            errorText = stringResource(id = editCookProfileState.errorState.alternatePhoneErrorState.errorMessageStringResource),
+            DefaultIcons(leadingIcon = Icons.Default.Person),
+            isError = editCookProfileState.errorState.dobErrorState.hasError,
+            errorText = stringResource(id = editCookProfileState.errorState.dobErrorState.errorMessageStringResource),
             maxChar = 12,
             textColor = Color.Gray
             /*submit = { TODO() }*/
@@ -191,18 +204,18 @@ fun EditCookProfileForm(
         Spacer(modifier = Modifier.height(10.dp))
 
         InputTextField(
-            value = "Address",
-            onChange = {"where are you from?(Native place) (optional)"},
+            value = editCookProfileState.address,
+            onChange = onAddressChange,
             modifier = Modifier.fillMaxWidth(),
             keyboardOptions = KeyboardOption(
                 imeAction = ImeAction.Done,
-                keyboardType = KeyboardType.Phone,
-                label = AppConstants.COOK_ALTERNATE_PHONE,
-                placeholder = AppConstants.COOK_ALTERNATE_PHONE_PLACEHOLDER
+                keyboardType = KeyboardType.Text,
+                label = AppConstants.COOK_ADDRESS,
+                placeholder = AppConstants.COOK_ADDRESS_PLACEHOLDER
             ),
-            DefaultIcons(leadingIcon = Icons.Default.Phone),
-            isError = editCookProfileState.errorState.alternatePhoneErrorState.hasError,
-            errorText = stringResource(id = editCookProfileState.errorState.alternatePhoneErrorState.errorMessageStringResource),
+            DefaultIcons(leadingIcon = Icons.Default.Place),
+            isError = editCookProfileState.errorState.addressErrorState.hasError,
+            errorText = stringResource(id = editCookProfileState.errorState.addressErrorState.errorMessageStringResource),
             maxChar = 12,
             textColor = Color.Gray
             /*submit = { TODO() }*/
@@ -211,18 +224,18 @@ fun EditCookProfileForm(
         Spacer(modifier = Modifier.height(10.dp))
 
         InputTextField(
-            value = "Experience",
-            onChange = {"Experience in cooking (in year)"},
+            value = editCookProfileState.experience,
+            onChange = onExperienceChange,
             modifier = Modifier.fillMaxWidth(),
             keyboardOptions = KeyboardOption(
                 imeAction = ImeAction.Done,
-                keyboardType = KeyboardType.Phone,
-                label = AppConstants.COOK_ALTERNATE_PHONE,
-                placeholder = AppConstants.COOK_ALTERNATE_PHONE_PLACEHOLDER
+                keyboardType = KeyboardType.Number,
+                label = AppConstants.COOK_EXPERIENCE,
+                placeholder = AppConstants.COOK_EXPERIENCE_PLACEHOLDER
             ),
-            DefaultIcons(leadingIcon = Icons.Default.Phone),
-            isError = editCookProfileState.errorState.alternatePhoneErrorState.hasError,
-            errorText = stringResource(id = editCookProfileState.errorState.alternatePhoneErrorState.errorMessageStringResource),
+            DefaultIcons(leadingIcon = Icons.Default.Explicit),
+            isError = editCookProfileState.errorState.experienceErrorState.hasError,
+            errorText = stringResource(id = editCookProfileState.errorState.experienceErrorState.errorMessageStringResource),
             maxChar = 12,
             textColor = Color.Gray
             /*submit = { TODO() }*/
@@ -231,18 +244,18 @@ fun EditCookProfileForm(
         Spacer(modifier = Modifier.height(10.dp))
 
         InputTextField(
-            value = "5000",
-            onChange = {"min monthly charges"},
+            value = editCookProfileState.salary,
+            onChange = onSalaryChange,
             modifier = Modifier.fillMaxWidth(),
             keyboardOptions = KeyboardOption(
                 imeAction = ImeAction.Done,
-                keyboardType = KeyboardType.Phone,
-                label = AppConstants.COOK_ALTERNATE_PHONE,
-                placeholder = AppConstants.COOK_ALTERNATE_PHONE_PLACEHOLDER
+                keyboardType = KeyboardType.Number,
+                label = AppConstants.COOK_SALARY,
+                placeholder = AppConstants.COOK_SALARY_PLACEHOLDER
             ),
-            DefaultIcons(leadingIcon = Icons.Default.Phone),
-            isError = editCookProfileState.errorState.alternatePhoneErrorState.hasError,
-            errorText = stringResource(id = editCookProfileState.errorState.alternatePhoneErrorState.errorMessageStringResource),
+            DefaultIcons(leadingIcon = Icons.Default.CurrencyRupee),
+            isError = editCookProfileState.errorState.salaryErrorState.hasError,
+            errorText = stringResource(id = editCookProfileState.errorState.salaryErrorState.errorMessageStringResource),
             maxChar = 12,
             textColor = Color.Gray
             /*submit = { TODO() }*/
@@ -251,18 +264,18 @@ fun EditCookProfileForm(
         Spacer(modifier = Modifier.height(10.dp))
 
         InputTextField(
-            value = "Religion",
-            onChange = {"(optional)"},
+            value = editCookProfileState.religion,
+            onChange = onReligionChange,
             modifier = Modifier.fillMaxWidth(),
             keyboardOptions = KeyboardOption(
                 imeAction = ImeAction.Done,
-                keyboardType = KeyboardType.Phone,
-                label = AppConstants.COOK_ALTERNATE_PHONE,
-                placeholder = AppConstants.COOK_ALTERNATE_PHONE_PLACEHOLDER
+                keyboardType = KeyboardType.Text,
+                label = AppConstants.COOK_RELIGION,
+                placeholder = AppConstants.COOK_RELIGION_PLACEHOLDER
             ),
-            DefaultIcons(leadingIcon = Icons.Default.Phone),
-            isError = editCookProfileState.errorState.alternatePhoneErrorState.hasError,
-            errorText = stringResource(id = editCookProfileState.errorState.alternatePhoneErrorState.errorMessageStringResource),
+            DefaultIcons(leadingIcon = Icons.Default.Person),
+            isError = editCookProfileState.errorState.religionErrorState.hasError,
+            errorText = stringResource(id = editCookProfileState.errorState.religionErrorState.errorMessageStringResource),
             maxChar = 12,
             textColor = Color.Gray
             /*submit = { TODO() }*/
@@ -312,7 +325,43 @@ fun EditCookProfileForm(
                 }
             )
         }
-        
+
+        Spacer(modifier = Modifier.height(20.dp))
+
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(start = 10.dp, end = 10.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically) {
+            Text(text = "Number of visit", fontFamily = FontName, color = Color.Gray, fontWeight = FontWeight.W700, fontSize = 16.sp)
+            SegmentedControl(
+                items = numberOfVisit,
+                defaultSelectedItemIndex = 0,) {
+                onGenderChange.invoke(genders[it])
+                Log.e("CustomToggle", "Selected item : ${numberOfVisit[it]}")
+            }
+        }
+
+        Spacer(modifier = Modifier.height(20.dp))
+
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(start = 10.dp, end = 10.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically) {
+            Text(text = "Cooks non-veg?", fontFamily = FontName, color = Color.Gray, fontWeight = FontWeight.W700, fontSize = 16.sp)
+            SegmentedControl(
+                items = foodType,
+                defaultSelectedItemIndex = 0,) {
+                onGenderChange.invoke(genders[it])
+                Log.e("CustomToggle", "Selected item : ${foodType[it]}")
+            }
+        }
+
+        Spacer(modifier = Modifier.height(20.dp))
+
         Row(
             modifier = Modifier
                 .fillMaxWidth()

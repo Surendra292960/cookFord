@@ -2,26 +2,36 @@ package com.example.cook_ford.presentation.screens.authenticated_component.cook_
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.cook_ford.data.local.SessionConstant
 import com.example.cook_ford.data.local.UserSession
 import com.example.cook_ford.data.remote.NetworkResult
 import com.example.cook_ford.domain.use_cases.authenticated_use_case.CuisineUseCase
 import com.example.cook_ford.domain.use_cases.authenticated_use_case.EditCookProfileUseCase
 import com.example.cook_ford.domain.use_cases.authenticated_use_case.LanguagesUseCase
+import com.example.cook_ford.domain.use_cases.authenticated_use_case.ProfileUseCase
 import com.example.cook_ford.presentation.component.widgets.snack_bar.MainViewState
 import com.example.cook_ford.presentation.screens.authenticated_component.cook_component.account_component.edit_cook_profile_component.state.EditCookProfileState
 import com.example.cook_ford.presentation.screens.authenticated_component.cook_component.account_component.edit_cook_profile_component.state.EditCookProfileUiEvent
+import com.example.cook_ford.presentation.screens.authenticated_component.cook_component.account_component.edit_cook_profile_component.state.cook_addressEmptyErrorState
 import com.example.cook_ford.presentation.screens.authenticated_component.cook_component.account_component.edit_cook_profile_component.state.cook_alternate_phoneEmptyErrorState
 import com.example.cook_ford.presentation.screens.authenticated_component.cook_component.account_component.edit_cook_profile_component.state.cook_cityEmptyErrorState
 import com.example.cook_ford.presentation.screens.authenticated_component.cook_component.account_component.edit_cook_profile_component.state.cook_cuisineEmptyErrorState
+import com.example.cook_ford.presentation.screens.authenticated_component.cook_component.account_component.edit_cook_profile_component.state.cook_dobEmptyErrorState
+import com.example.cook_ford.presentation.screens.authenticated_component.cook_component.account_component.edit_cook_profile_component.state.cook_experienceEmptyErrorState
 import com.example.cook_ford.presentation.screens.authenticated_component.cook_component.account_component.edit_cook_profile_component.state.cook_jobTypeEmptyErrorState
 import com.example.cook_ford.presentation.screens.authenticated_component.cook_component.account_component.edit_cook_profile_component.state.cook_languageEmptyErrorState
 import com.example.cook_ford.presentation.screens.authenticated_component.cook_component.account_component.edit_cook_profile_component.state.cook_nameEmptyErrorState
+import com.example.cook_ford.presentation.screens.authenticated_component.cook_component.account_component.edit_cook_profile_component.state.cook_numberOfVisitEmptyErrorState
 import com.example.cook_ford.presentation.screens.authenticated_component.cook_component.account_component.edit_cook_profile_component.state.cook_phoneEmptyErrorState
 import com.example.cook_ford.presentation.screens.authenticated_component.cook_component.account_component.edit_cook_profile_component.state.cook_profileImageEmptyErrorState
+import com.example.cook_ford.presentation.screens.authenticated_component.cook_component.account_component.edit_cook_profile_component.state.cook_religionEmptyErrorState
+import com.example.cook_ford.presentation.screens.authenticated_component.cook_component.account_component.edit_cook_profile_component.state.cook_salaryEmptyErrorState
+import com.example.cook_ford.presentation.screens.authenticated_component.cook_component.account_component.edit_cook_profile_component.state.cook_workAreaEmptyErrorState
 import com.example.cook_ford.presentation.screens.un_authenticated_component.sign_in_screen_component.state.ErrorState
 import com.example.cook_ford.presentation.screens.un_authenticated_component.sign_up_screen_user_component.state.genderSelectionErrorState
 import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -38,6 +48,7 @@ class EditCookProfileViewModel  @Inject constructor(
     private val languageUseCase: LanguagesUseCase,
     private val cuisineUseCase: CuisineUseCase,
     private val editCookProfileUseCase: EditCookProfileUseCase,
+    private val profileUseCase: ProfileUseCase
 ) : ViewModel() {
 
     val selectedItem = mutableSetOf<String>()
@@ -71,6 +82,7 @@ class EditCookProfileViewModel  @Inject constructor(
     }
 
     init {
+        userSession.getString(SessionConstant.USER_ID)?.let { getProfileRequestById(it) }
         getCuisinesRequest()
         getLanguagesRequest()
     }
@@ -109,6 +121,21 @@ class EditCookProfileViewModel  @Inject constructor(
                 )
             }
 
+            //Work Area changed
+            is EditCookProfileUiEvent.WorkAreaChanged -> {
+                Log.d("TAG", "onUiEvent: ${editCookProfileUiEvent.inputValue}")
+                _editCookProfileState.value = _editCookProfileState.value.copy(
+                    workArea = editCookProfileUiEvent.inputValue,
+                    errorState = _editCookProfileState.value.errorState.copy(
+                        workAreaErrorState = if (editCookProfileUiEvent.inputValue.trim().isNotEmpty())
+                            ErrorState()
+                        else
+                            cook_workAreaEmptyErrorState
+                    )
+                )
+            }
+
+
             //CityChange changed
             is EditCookProfileUiEvent.CityChanged -> {
                 _editCookProfileState.value = _editCookProfileState.value.copy(
@@ -121,6 +148,7 @@ class EditCookProfileViewModel  @Inject constructor(
                     )
                 )
             }
+
 
             // UserName changed
             is EditCookProfileUiEvent.UserNameChanged -> {
@@ -174,6 +202,98 @@ class EditCookProfileViewModel  @Inject constructor(
                 )
             }
 
+            //Dob changed
+            is EditCookProfileUiEvent.DobChanged -> {
+                _editCookProfileState.value  = _editCookProfileState.value.copy(
+                    dob = editCookProfileUiEvent.inputValue,
+                    errorState = _editCookProfileState.value.errorState.copy(
+                        dobErrorState = if (editCookProfileUiEvent.inputValue.trim().isNotEmpty())
+                            ErrorState()
+                        else
+                            cook_dobEmptyErrorState
+                    )
+                )
+            }
+
+            //Address changed
+            is EditCookProfileUiEvent.AddressChanged -> {
+                _editCookProfileState.value = _editCookProfileState.value.copy(
+                    address = editCookProfileUiEvent.inputValue,
+                    errorState = _editCookProfileState.value.errorState.copy(
+                        addressErrorState = if (editCookProfileUiEvent.inputValue.trim().isNotEmpty())
+                            ErrorState()
+                        else
+                            cook_addressEmptyErrorState
+                    )
+                )
+            }
+
+            //Religion changed
+            is EditCookProfileUiEvent.ReligionChanged -> {
+                _editCookProfileState.value = _editCookProfileState.value.copy(
+                    religion = editCookProfileUiEvent.inputValue,
+                    errorState = _editCookProfileState.value.errorState.copy(
+                        religionErrorState = if (editCookProfileUiEvent.inputValue.trim().isNotEmpty())
+                            ErrorState()
+                        else
+                            cook_religionEmptyErrorState
+                    )
+                )
+            }
+
+            //Experience changed
+            is EditCookProfileUiEvent.ExperienceChanged -> {
+                _editCookProfileState.value = _editCookProfileState.value.copy(
+                    experience = editCookProfileUiEvent.inputValue,
+                    errorState = _editCookProfileState.value.errorState.copy(
+                        experienceErrorState = if (editCookProfileUiEvent.inputValue.trim().isNotEmpty())
+                            ErrorState()
+                        else
+                            cook_experienceEmptyErrorState
+                    )
+                )
+            }
+
+            //Salary changed
+            is EditCookProfileUiEvent.SalaryChanged -> {
+                _editCookProfileState.value = _editCookProfileState.value.copy(
+                    salary = editCookProfileUiEvent.inputValue,
+                    errorState = _editCookProfileState.value.errorState.copy(
+                        salaryErrorState = if (editCookProfileUiEvent.inputValue.trim().isNotEmpty())
+                            ErrorState()
+                        else
+                            cook_salaryEmptyErrorState
+                    )
+                )
+            }
+
+            //No of Visit changed
+            is EditCookProfileUiEvent.NumberOfVisitChanged -> {
+                _editCookProfileState.value = _editCookProfileState.value.copy(
+                    numberOfVisit = editCookProfileUiEvent.inputValue,
+                    errorState = _editCookProfileState.value.errorState.copy(
+                        numberOfVisitErrorState = if (editCookProfileUiEvent.inputValue.trim().isNotEmpty())
+                            ErrorState()
+                        else
+                            cook_numberOfVisitEmptyErrorState
+                    )
+                )
+            }
+
+            //Food Type changed
+            is EditCookProfileUiEvent.FoodTypeChanged -> {
+                _editCookProfileState.value = _editCookProfileState.value.copy(
+                    foodType = editCookProfileUiEvent.inputValue,
+                    errorState = _editCookProfileState.value.errorState.copy(
+                        numberOfVisitErrorState = if (editCookProfileUiEvent.inputValue.trim().isNotEmpty())
+                            ErrorState()
+                        else
+                            cook_numberOfVisitEmptyErrorState
+                    )
+                )
+            }
+
+
             is EditCookProfileUiEvent.CuisineChange -> {
                 _editCookProfileState.value = _editCookProfileState.value.copy(
                     cuisine = editCookProfileUiEvent.inputValue,
@@ -203,7 +323,7 @@ class EditCookProfileViewModel  @Inject constructor(
             is EditCookProfileUiEvent.Submit -> {
                 val inputsValidated = editCookProfileUseCase.invoke(_editCookProfileState)
                 //Log.d("TAG", "onUiEvent: $inputsValidated")
-                Log.d("TAG", "onUiEvent: ${_editCookProfileState.value}")
+                Log.d("TAG", "onUiEvent: ${Gson().toJson(_editCookProfileState.value)}")
                 if (inputsValidated) {
                     // TODO Trigger Edit Profile in authentication flow
                     //makeSigInRequest(SignInRequest(email = editProfileState.value.email, password = editProfileState.value.username))
@@ -261,6 +381,40 @@ class EditCookProfileViewModel  @Inject constructor(
                 }
                 is NetworkResult.Loading->{
                     Log.d("TAG", "getLanguagesRequest: Loading")
+                }
+            }
+        }
+    }
+
+    private fun getProfileRequestById(profileId: String) = viewModelScope.launch(Dispatchers.IO) {
+        Log.d("TAG", "getProfileRequestById profileId: $profileId")
+        // _accountState.value = _accountState.value.copy(isLoading = true)
+        profileUseCase.invoke(profileId).collect { result ->
+            when(result){
+                is NetworkResult.Success->{
+                    if (result.status == true){
+                        result.data?.let { response->
+                            _editCookProfileState.value = _editCookProfileState.value.copy(
+                                isLoading = false,
+                                profileResponse = response,
+                                username = response.username!!,
+                                phone = response.phone!!,
+                                isProfileLoadedSuccessful = true
+                            )
+                            _viewState.update { currentState -> currentState.copy(isLoading = false) }
+                        }
+                        Log.d("TAG", "getProfileRequestById-> getProfileResponse: ${Gson().toJson(_editCookProfileState.value)}")
+                    }
+                }
+                is NetworkResult.Error->{
+                    Log.d("TAG", "getProfileRequestById-> Error: ${Gson().toJson(_editCookProfileState.value)}")
+                    _editCookProfileState.value = _editCookProfileState.value.copy(errorMessage = result.message!!)
+                    _viewState.update { currentState -> currentState.copy(isLoading = false) }
+                    _onProcessSuccess.emit(result.message!!)
+                }
+                is NetworkResult.Loading->{
+                    Log.d("TAG", "getProfileRequestById->: Loading")
+                    _editCookProfileState.value = _editCookProfileState.value.copy(isLoading = true)
                 }
             }
         }

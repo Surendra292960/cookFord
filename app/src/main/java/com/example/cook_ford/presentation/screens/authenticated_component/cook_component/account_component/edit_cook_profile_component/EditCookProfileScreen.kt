@@ -133,6 +133,15 @@ fun CookProfileForm(
             )
         },
 
+        onWorkAreaChange = { inputString ->
+            Log.d("TAG", "CookProfileForm: $inputString")
+            editCookProfileViewModel.onUiEvent(
+                editCookProfileUiEvent = EditCookProfileUiEvent.WorkAreaChanged(
+                    inputString
+                )
+            )
+        },
+
         onUserNameChange = { inputString ->
             Log.d("TAG", "CookProfileForm: $inputString")
             editCookProfileViewModel.onUiEvent(
@@ -141,6 +150,63 @@ fun CookProfileForm(
                 )
             )
         },
+
+        onDobChange = { inputString ->
+            editCookProfileViewModel.onUiEvent(
+                editCookProfileUiEvent = EditCookProfileUiEvent.DobChanged(
+                    inputString
+                )
+            )
+        },
+
+        onAddressChange = { inputString ->
+            editCookProfileViewModel.onUiEvent(
+                editCookProfileUiEvent = EditCookProfileUiEvent.AddressChanged(
+                    inputString
+                )
+            )
+        },
+
+        onReligionChange = { inputString ->
+            editCookProfileViewModel.onUiEvent(
+                editCookProfileUiEvent = EditCookProfileUiEvent.ReligionChanged(
+                    inputString
+                )
+            )
+        },
+
+        onExperienceChange = { inputString ->
+            editCookProfileViewModel.onUiEvent(
+                editCookProfileUiEvent = EditCookProfileUiEvent.ExperienceChanged(
+                    inputString
+                )
+            )
+        },
+
+        onSalaryChange = { inputString ->
+            editCookProfileViewModel.onUiEvent(
+                editCookProfileUiEvent = EditCookProfileUiEvent.SalaryChanged(
+                    inputString
+                )
+            )
+        },
+
+        onNumberOfVisitChange = { inputString ->
+            editCookProfileViewModel.onUiEvent(
+                editCookProfileUiEvent = EditCookProfileUiEvent.NumberOfVisitChanged(
+                    inputString
+                )
+            )
+        },
+
+        onFoodTypeChange = { inputString ->
+            editCookProfileViewModel.onUiEvent(
+                editCookProfileUiEvent = EditCookProfileUiEvent.FoodTypeChanged(
+                    inputString
+                )
+            )
+        },
+
         onPhoneChange = { inputString ->
             editCookProfileViewModel.onUiEvent(
                 editCookProfileUiEvent = EditCookProfileUiEvent.PhoneChanged(

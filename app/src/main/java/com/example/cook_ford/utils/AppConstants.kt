@@ -58,6 +58,17 @@ object AppConstants {
     const val COOK_PHONE_PLACEHOLDER = "Enter Phone Number"
     const val COOK_ALTERNATE_PHONE = "Alternate Phone Number"
     const val COOK_ALTERNATE_PHONE_PLACEHOLDER = "Enter Alternate Phone Number"
+    const val COOK_DOB = "Date of birth"
+    const val COOK_DOB_PLACEHOLDER = "Enter date of birth"
+    const val COOK_ADDRESS = "where are you from?(Native place)"
+    const val COOK_ADDRESS_PLACEHOLDER = "E.g Noida"
+    const val COOK_EXPERIENCE = "Experience in cooking (in year)"
+    const val COOK_EXPERIENCE_PLACEHOLDER = "E.g. 4"
+    const val COOK_SALARY = "min monthly charges"
+    const val COOK_SALARY_PLACEHOLDER = "Eg- 4000"
+    const val COOK_RELIGION = "Religion"
+    const val COOK_RELIGION_PLACEHOLDER = "Religion"
+
 
     //ReviewScreen
     const val LABEL_REVIEW = "Review"
