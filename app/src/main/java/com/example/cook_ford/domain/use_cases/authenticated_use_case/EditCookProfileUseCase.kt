@@ -1,5 +1,6 @@
 package com.example.cook_ford.domain.use_cases.authenticated_use_case
 
+import android.util.Log
 import com.example.cook_ford.data.repository.AuthRepositoryImpl
 import com.example.cook_ford.presentation.screens.authenticated_component.cook_component.account_component.edit_cook_profile_component.state.EditCookProfileErrorState
 import com.example.cook_ford.presentation.screens.authenticated_component.cook_component.account_component.edit_cook_profile_component.state.EditCookProfileState
@@ -62,6 +63,7 @@ class EditCookProfileUseCase  @Inject constructor(private val repository: AuthRe
 
         //JobType Not Selected
         if (jobType?.size == AppConstants.ZERO) {
+            Log.d("TAG", "validation jobType: $jobType")
             editCookProfileState.value = editCookProfileState.value.copy(
                 errorState = EditCookProfileErrorState(
                     jobTypeErrorState = cook_jobTypeEmptyErrorState
@@ -72,6 +74,7 @@ class EditCookProfileUseCase  @Inject constructor(private val repository: AuthRe
 
         //City Not Selected
         if (city.isEmpty()) {
+            Log.d("TAG", "validation city: $city")
             editCookProfileState.value = editCookProfileState.value.copy(
                 errorState = EditCookProfileErrorState(
                     cityErrorState = cook_cityEmptyErrorState
@@ -82,6 +85,7 @@ class EditCookProfileUseCase  @Inject constructor(private val repository: AuthRe
 
         // userName empty
         if (userName.isEmpty()) {
+            Log.d("TAG", "validation userName: $userName")
             editCookProfileState.value = editCookProfileState.value.copy(
                 errorState = EditCookProfileErrorState(
                     usernameErrorState = cook_nameEmptyErrorState
@@ -91,6 +95,7 @@ class EditCookProfileUseCase  @Inject constructor(private val repository: AuthRe
         }
         // Phone empty
         if (phone.isEmpty()) {
+            Log.d("TAG", "validation phone: $phone")
             editCookProfileState.value = editCookProfileState.value.copy(
                 errorState = EditCookProfileErrorState(
                     phoneErrorState = cook_phoneEmptyErrorState
@@ -100,6 +105,7 @@ class EditCookProfileUseCase  @Inject constructor(private val repository: AuthRe
         }
         // Alternate Phone Empty
         if (alternatePhone.isEmpty()) {
+            Log.d("TAG", "validation alternatePhone: $alternatePhone")
             editCookProfileState.value = editCookProfileState.value.copy(
                 errorState = EditCookProfileErrorState(
                     alternatePhoneErrorState = cook_alternate_phoneEmptyErrorState
@@ -110,91 +116,108 @@ class EditCookProfileUseCase  @Inject constructor(private val repository: AuthRe
 
         //Date Of Birth Not Selected
         if (dob.isEmpty()) {
+            Log.d("TAG", "validation dob: $dob")
             editCookProfileState.value = editCookProfileState.value.copy(
                 errorState = EditCookProfileErrorState(
                     dobErrorState = cook_dobEmptyErrorState
                 )
             )
+            return false
         }
 
         //Address empty
         if (address.isEmpty()) {
+            Log.d("TAG", "validation address: $address")
             editCookProfileState.value = editCookProfileState.value.copy(
                 errorState = EditCookProfileErrorState(
                     addressErrorState = cook_addressEmptyErrorState
                 )
             )
+            return false
         }
-
-        //Religion empty
-        if (religion.isEmpty()) {
-            editCookProfileState.value = editCookProfileState.value.copy(
-                errorState = EditCookProfileErrorState(
-                    religionErrorState = cook_religionEmptyErrorState
-                )
-            )
-        }
-
 
         //Experience empty
         if (experience.isEmpty()) {
+            Log.d("TAG", "validation experience: $experience")
             editCookProfileState.value = editCookProfileState.value.copy(
                 errorState = EditCookProfileErrorState(
                     experienceErrorState = cook_experienceEmptyErrorState
                 )
             )
+            return false
         }
 
         //Salary empty
         if (salary.isEmpty()) {
+            Log.d("TAG", "validation salary: $salary")
             editCookProfileState.value = editCookProfileState.value.copy(
                 errorState = EditCookProfileErrorState(
                     salaryErrorState = cook_salaryEmptyErrorState
                 )
             )
+            return false
         }
 
-        //Salary empty
-        if (numberOfVisit.isEmpty()) {
+        //Religion empty
+        if (religion.isEmpty()) {
+            Log.d("TAG", "validation religion: $religion")
             editCookProfileState.value = editCookProfileState.value.copy(
                 errorState = EditCookProfileErrorState(
-                    numberOfVisitErrorState = cook_numberOfVisitEmptyErrorState
+                    religionErrorState = cook_religionEmptyErrorState
                 )
             )
+            return false
         }
-
-        //FoodType empty
-        if (foodType.isEmpty()) {
-            editCookProfileState.value = editCookProfileState.value.copy(
-                errorState = EditCookProfileErrorState(
-                    foodTypeErrorState = cook_foodTypeEmptyErrorState
-                )
-            )
-        }
-
 
         //cuisine empty
         if (cuisine.isNullOrEmpty()) {
+            Log.d("TAG", "validation cuisine: $cuisine")
             editCookProfileState.value = editCookProfileState.value.copy(
                 errorState = EditCookProfileErrorState(
                     cuisinesErrorState = cook_cuisineEmptyErrorState
                 )
             )
+            return false
         }
 
 
         //Language empty
         if (languages.isNullOrEmpty()) {
+            Log.d("TAG", "validation languages: $languages")
             editCookProfileState.value = editCookProfileState.value.copy(
                 errorState = EditCookProfileErrorState(
                     languagesErrorState = cook_languageEmptyErrorState
                 )
             )
+            return false
+        }
+
+        //Visit empty
+        if (numberOfVisit.isEmpty()) {
+            Log.d("TAG", "validation numberOfVisit: $numberOfVisit")
+            editCookProfileState.value = editCookProfileState.value.copy(
+                errorState = EditCookProfileErrorState(
+                    numberOfVisitErrorState = cook_numberOfVisitEmptyErrorState
+                )
+            )
+            return false
+        }
+
+        //FoodType empty
+        if (foodType.isEmpty()) {
+            Log.d("TAG", "validation foodType: $foodType")
+            editCookProfileState.value = editCookProfileState.value.copy(
+                errorState = EditCookProfileErrorState(
+                    foodTypeErrorState = cook_foodTypeEmptyErrorState
+                )
+            )
+            return false
         }
 
 
         //Gender Not Selected
         if (gender.isEmpty()) {
+            Log.d("TAG", "validation gender: $gender")
             editCookProfileState.value = editCookProfileState.value.copy(
                 errorState = EditCookProfileErrorState(
                     genderErrorState = genderSelectionErrorState

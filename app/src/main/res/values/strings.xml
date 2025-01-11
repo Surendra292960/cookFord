@@ -131,6 +131,7 @@ affordable price</string>
     <string name="apply_button_text">Apply</string>
     <string name="view_button_text">View</string>
     <string name="delete_button_text">Delete</string>
+    <string name="submit_button_continue">Continue</string>
 
 
 </resources>

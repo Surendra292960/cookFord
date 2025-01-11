@@ -79,8 +79,8 @@ fun EditCookProfileScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(start = 16.dp, end = 16.dp)
                 .background(Color.White)
+                .padding(start = 16.dp, end = 16.dp)
                 .verticalScroll(scrollState),
             horizontalAlignment = Alignment.CenterHorizontally) {
 

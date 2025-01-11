@@ -1,7 +1,7 @@
 package com.example.cook_ford.data
 
 object ApiConstants {
-    const val BASE_URL = "http://192.168.1.37:5000/"
+    const val BASE_URL = "http://192.168.1.38:5000/"
 
     const val SIGN_IN_END_POINT = "api/users/login"
     const val SIGN_UP_END_POINT = "api/users/signup"

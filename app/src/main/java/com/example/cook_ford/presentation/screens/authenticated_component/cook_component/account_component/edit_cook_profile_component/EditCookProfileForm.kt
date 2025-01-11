@@ -1,4 +1,5 @@
 package com.example.cook_ford.presentation.screens.authenticated_component.cook_component.account_component.edit_cook_profile_component
+import com.example.cook_ford.presentation.screens.authenticated_component.cook_component.account_component.edit_cook_profile_component.state.EditCookProfileState
 import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -21,6 +22,7 @@ import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CurrencyRupee
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Explicit
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Phone
@@ -41,7 +43,6 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.cook_ford.R
 import com.example.cook_ford.presentation.component.MultiSelectionComponent
@@ -53,8 +54,8 @@ import com.example.cook_ford.presentation.component.widgets.MediumTitleText
 import com.example.cook_ford.presentation.component.widgets.OutlinedSubmitButton
 import com.example.cook_ford.presentation.component.widgets.ProfileImage
 import com.example.cook_ford.presentation.component.widgets.SegmentedControl
+import com.example.cook_ford.presentation.component.widgets.SmallTitleText
 import com.example.cook_ford.presentation.component.widgets.snack_bar.MainViewState
-import com.example.cook_ford.presentation.screens.authenticated_component.cook_component.account_component.edit_cook_profile_component.state.EditCookProfileState
 import com.example.cook_ford.presentation.theme.DeepGreen
 import com.example.cook_ford.presentation.theme.FontName
 import com.example.cook_ford.utils.AppConstants
@@ -113,7 +114,14 @@ fun EditCookProfileForm(
         Row(modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically) {
-            Text(text = "Select cook`s city", fontFamily = FontName, color = Color.Gray, fontWeight = FontWeight.W700, fontSize = 16.sp)
+
+            MediumTitleText(
+                modifier = Modifier,
+                text = AppConstants.SELECT_COOK_CITY,
+                fontWeight = FontWeight.W700,
+                textAlign = TextAlign.Start,
+                textColor = Color.DarkGray
+            )
 
             DropDownMenu(
                 value = editCookProfileState.city,
@@ -124,7 +132,52 @@ fun EditCookProfileForm(
                 cities = mCities,
             )
         }
+
         Spacer(modifier = Modifier.height(10.dp))
+
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(start = 10.dp, end = 10.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically) {
+
+           Column(modifier = Modifier) {
+               MediumTitleText(
+                   modifier = Modifier,
+                   text = AppConstants.WORK_AREA,
+                   fontWeight = FontWeight.W700,
+                   textAlign = TextAlign.Start,
+                   textColor = Color.DarkGray
+               )
+
+               Spacer(modifier = Modifier.height(5.dp))
+
+               SmallTitleText(
+                   modifier = Modifier,
+                   text = AppConstants.WORK_AREA_SUBTEXT,
+                   fontWeight = FontWeight.W200,
+                   textAlign = TextAlign.Start,
+                   textColor = Color.DarkGray
+               )
+           }
+
+            Icon(
+                modifier = Modifier.size(20.dp),
+                imageVector = Icons.Default.Edit,
+                contentDescription = "",
+                tint = Color.Gray
+            )
+
+           /* SegmentedControl(
+                items = numberOfVisit,
+                defaultSelectedItemIndex = 0,) {
+                onWorkAreaChange.invoke(numberOfVisit[it])
+                Log.e("CustomToggle", "Selected item : ${numberOfVisit[it]}")
+            }*/
+        }
+
+        Spacer(modifier = Modifier.height(15.dp))
 
         InputTextField(
             value = editCookProfileState.username,
@@ -169,7 +222,7 @@ fun EditCookProfileForm(
             onChange = onAlternatePhoneChange,
             modifier = Modifier.fillMaxWidth(),
             keyboardOptions = KeyboardOption(
-                imeAction = ImeAction.Done,
+                imeAction = ImeAction.Next,
                 keyboardType = KeyboardType.Phone,
                 label = AppConstants.COOK_ALTERNATE_PHONE,
                 placeholder = AppConstants.COOK_ALTERNATE_PHONE_PLACEHOLDER
@@ -188,7 +241,7 @@ fun EditCookProfileForm(
             onChange = onDobChange,
             modifier = Modifier.fillMaxWidth(),
             keyboardOptions = KeyboardOption(
-                imeAction = ImeAction.Done,
+                imeAction = ImeAction.Next,
                 keyboardType = KeyboardType.Number,
                 label = AppConstants.COOK_DOB,
                 placeholder = AppConstants.COOK_DOB_PLACEHOLDER
@@ -208,7 +261,7 @@ fun EditCookProfileForm(
             onChange = onAddressChange,
             modifier = Modifier.fillMaxWidth(),
             keyboardOptions = KeyboardOption(
-                imeAction = ImeAction.Done,
+                imeAction = ImeAction.Next,
                 keyboardType = KeyboardType.Text,
                 label = AppConstants.COOK_ADDRESS,
                 placeholder = AppConstants.COOK_ADDRESS_PLACEHOLDER
@@ -216,7 +269,7 @@ fun EditCookProfileForm(
             DefaultIcons(leadingIcon = Icons.Default.Place),
             isError = editCookProfileState.errorState.addressErrorState.hasError,
             errorText = stringResource(id = editCookProfileState.errorState.addressErrorState.errorMessageStringResource),
-            maxChar = 12,
+            maxChar = 100,
             textColor = Color.Gray
             /*submit = { TODO() }*/
         )
@@ -228,7 +281,7 @@ fun EditCookProfileForm(
             onChange = onExperienceChange,
             modifier = Modifier.fillMaxWidth(),
             keyboardOptions = KeyboardOption(
-                imeAction = ImeAction.Done,
+                imeAction = ImeAction.Next,
                 keyboardType = KeyboardType.Number,
                 label = AppConstants.COOK_EXPERIENCE,
                 placeholder = AppConstants.COOK_EXPERIENCE_PLACEHOLDER
@@ -236,7 +289,7 @@ fun EditCookProfileForm(
             DefaultIcons(leadingIcon = Icons.Default.Explicit),
             isError = editCookProfileState.errorState.experienceErrorState.hasError,
             errorText = stringResource(id = editCookProfileState.errorState.experienceErrorState.errorMessageStringResource),
-            maxChar = 12,
+            maxChar = 2,
             textColor = Color.Gray
             /*submit = { TODO() }*/
         )
@@ -248,7 +301,7 @@ fun EditCookProfileForm(
             onChange = onSalaryChange,
             modifier = Modifier.fillMaxWidth(),
             keyboardOptions = KeyboardOption(
-                imeAction = ImeAction.Done,
+                imeAction = ImeAction.Next,
                 keyboardType = KeyboardType.Number,
                 label = AppConstants.COOK_SALARY,
                 placeholder = AppConstants.COOK_SALARY_PLACEHOLDER
@@ -256,7 +309,7 @@ fun EditCookProfileForm(
             DefaultIcons(leadingIcon = Icons.Default.CurrencyRupee),
             isError = editCookProfileState.errorState.salaryErrorState.hasError,
             errorText = stringResource(id = editCookProfileState.errorState.salaryErrorState.errorMessageStringResource),
-            maxChar = 12,
+            maxChar = 5,
             textColor = Color.Gray
             /*submit = { TODO() }*/
         )
@@ -276,7 +329,7 @@ fun EditCookProfileForm(
             DefaultIcons(leadingIcon = Icons.Default.Person),
             isError = editCookProfileState.errorState.religionErrorState.hasError,
             errorText = stringResource(id = editCookProfileState.errorState.religionErrorState.errorMessageStringResource),
-            maxChar = 12,
+            maxChar = 15,
             textColor = Color.Gray
             /*submit = { TODO() }*/
         )
@@ -334,12 +387,20 @@ fun EditCookProfileForm(
                 .padding(start = 10.dp, end = 10.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically) {
-            Text(text = "Number of visit", fontFamily = FontName, color = Color.Gray, fontWeight = FontWeight.W700, fontSize = 16.sp)
+
+            MediumTitleText(
+                modifier = Modifier,
+                text = AppConstants.NO_OF_VISIT,
+                fontWeight = FontWeight.Bold,
+                textAlign = TextAlign.Start,
+                textColor = Color.DarkGray,
+            )
+
             SegmentedControl(
                 items = numberOfVisit,
                 defaultSelectedItemIndex = 0,) {
-                onGenderChange.invoke(genders[it])
-                Log.e("CustomToggle", "Selected item : ${numberOfVisit[it]}")
+                onNumberOfVisitChange.invoke(numberOfVisit[it])
+                Log.e("CustomToggle", "numberOfVisit Selected item : ${numberOfVisit[it]}")
             }
         }
 
@@ -351,11 +412,19 @@ fun EditCookProfileForm(
                 .padding(start = 10.dp, end = 10.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically) {
-            Text(text = "Cooks non-veg?", fontFamily = FontName, color = Color.Gray, fontWeight = FontWeight.W700, fontSize = 16.sp)
+
+            MediumTitleText(
+                modifier = Modifier,
+                text = AppConstants.FOOD_TYPE,
+                fontWeight = FontWeight.Bold,
+                textAlign = TextAlign.Start,
+                textColor = Color.DarkGray
+            )
+
             SegmentedControl(
                 items = foodType,
-                defaultSelectedItemIndex = 0,) {
-                onGenderChange.invoke(genders[it])
+                defaultSelectedItemIndex = 0) {
+                onFoodTypeChange.invoke(foodType[it])
                 Log.e("CustomToggle", "Selected item : ${foodType[it]}")
             }
         }
@@ -368,7 +437,15 @@ fun EditCookProfileForm(
                 .padding(start = 10.dp, end = 10.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically) {
-            Text(text = "Gender", fontFamily = FontName, color = Color.Gray, fontWeight = FontWeight.W700, fontSize = 16.sp)
+
+            MediumTitleText(
+                modifier = Modifier,
+                text = AppConstants.GENDER,
+                fontWeight = FontWeight.Bold,
+                textAlign = TextAlign.Start,
+                textColor = Color.DarkGray
+            )
+
             SegmentedControl(
                 items = genders,
                 defaultSelectedItemIndex = 0,) {
@@ -380,6 +457,7 @@ fun EditCookProfileForm(
         Spacer(modifier = Modifier.height(20.dp))
 
         StatusCard()
+
         Spacer(modifier = Modifier.height(20.dp))
 
         // Submit Button
@@ -392,15 +470,6 @@ fun EditCookProfileForm(
         )
 
         Spacer(modifier = Modifier.height(10.dp))
-
-        //EditProfile SignOut Button
-      /*  OutlinedSubmitButton(
-            modifier = Modifier.padding(top = 5.dp),
-            textColor = Color.Gray,
-            text = stringResource(id = R.string.sign_out_button_text),
-            isLoading = viewState.isLoading,
-            onClick = onSubmit
-        )*/
     }
 }
 

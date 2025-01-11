@@ -29,6 +29,9 @@ class ProfileViewModel @Inject constructor(
     private val _profileState = mutableStateOf(ProfileState())
     val profileState: State<ProfileState> = _profileState
 
+    companion object{
+        var isWelcomeBottomSheetDisplayed = true
+    }
     init {
         getProfilesRequest()
     }

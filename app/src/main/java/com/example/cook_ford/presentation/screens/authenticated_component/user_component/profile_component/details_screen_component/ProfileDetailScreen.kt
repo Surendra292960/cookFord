@@ -125,8 +125,7 @@ fun ProfileDetailScreen(
 		) {
 			profileState.profileResponse?.size?.let { size->
 				items(size){  index->
-					TopBar(
-						onNavigateBack = { onNavigateBack.invoke() })
+					TopBar(onNavigateBack = { onNavigateBack.invoke() })
 					Spacer(modifier = Modifier.height(10.dp))
 
 					if (profileState.profileResponse!![index].userType.equals(AppConstants.PROVIDER, ignoreCase = true)) {
@@ -1034,7 +1033,7 @@ fun BottomSheet(sheetType:String, onNavigateToCallCreditScreen: () -> Unit,  onD
 		sheetState = modalBottomSheetState,
 		dragHandle = null) {
 		if (sheetType == "Call"){
-			ByCallCreditSheet(
+			ByCallCreditBottomSheet(
 				onNavigateToCallCreditScreen = onNavigateToCallCreditScreen
 			)
 
@@ -1045,7 +1044,7 @@ fun BottomSheet(sheetType:String, onNavigateToCallCreditScreen: () -> Unit,  onD
 }
 
 @Composable
-fun ByCallCreditSheet(onNavigateToCallCreditScreen: () -> Unit){
+fun ByCallCreditBottomSheet(onNavigateToCallCreditScreen: () -> Unit){
 	Column(modifier = Modifier
 		.fillMaxWidth()
 		.padding(top = 20.dp)

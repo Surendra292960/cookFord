@@ -52,10 +52,10 @@ class EditCookProfileViewModel  @Inject constructor(
 ) : ViewModel() {
 
     val selectedItem = mutableSetOf<String>()
+    val selectedCuisineItem = mutableSetOf<String>()
+    val selectedLanguageItem = mutableSetOf<String>()
 
-    private val _editCookProfileState: MutableStateFlow<EditCookProfileState>  = MutableStateFlow(
-        EditCookProfileState()
-    )
+    private val _editCookProfileState: MutableStateFlow<EditCookProfileState>  = MutableStateFlow(EditCookProfileState())
     val editCookProfileState: StateFlow<EditCookProfileState> = _editCookProfileState
 
     private val _showDialog = MutableStateFlow(true)
@@ -138,6 +138,7 @@ class EditCookProfileViewModel  @Inject constructor(
 
             //CityChange changed
             is EditCookProfileUiEvent.CityChanged -> {
+                Log.d("TAG", "onUiEvent: ${editCookProfileUiEvent.inputValue}")
                 _editCookProfileState.value = _editCookProfileState.value.copy(
                     city = editCookProfileUiEvent.inputValue,
                     errorState = _editCookProfileState.value.errorState.copy(
@@ -152,6 +153,7 @@ class EditCookProfileViewModel  @Inject constructor(
 
             // UserName changed
             is EditCookProfileUiEvent.UserNameChanged -> {
+                Log.d("TAG", "onUiEvent: ${editCookProfileUiEvent.inputValue}")
                 _editCookProfileState.value = _editCookProfileState.value.copy(
                     username = editCookProfileUiEvent.inputValue,
                     errorState = _editCookProfileState.value.errorState.copy(
@@ -162,8 +164,9 @@ class EditCookProfileViewModel  @Inject constructor(
                     )
                 )
             }
-            // Email changed
+            // Phone changed
             is EditCookProfileUiEvent.PhoneChanged -> {
+                Log.d("TAG", "onUiEvent: ${editCookProfileUiEvent.inputValue}")
                 _editCookProfileState.value = _editCookProfileState.value.copy(
                     phone = editCookProfileUiEvent.inputValue,
                     errorState = _editCookProfileState.value.errorState.copy(
@@ -175,7 +178,7 @@ class EditCookProfileViewModel  @Inject constructor(
                 )
             }
 
-            //Mobile changed
+            //Alternate Phone changed
             is EditCookProfileUiEvent.AlternatePhoneChanged -> {
                 Log.d("TAG", "onUiEvent: ${editCookProfileUiEvent.inputValue}")
                 _editCookProfileState.value = _editCookProfileState.value.copy(
@@ -189,21 +192,9 @@ class EditCookProfileViewModel  @Inject constructor(
                 )
             }
 
-            //GenderChange changed
-            is EditCookProfileUiEvent.GenderChange -> {
-                _editCookProfileState.value = _editCookProfileState.value.copy(
-                    gender = editCookProfileUiEvent.inputValue,
-                    errorState = _editCookProfileState.value.errorState.copy(
-                        genderErrorState = if (editCookProfileUiEvent.inputValue.trim().isNotEmpty())
-                            ErrorState()
-                        else
-                            genderSelectionErrorState
-                    )
-                )
-            }
-
             //Dob changed
             is EditCookProfileUiEvent.DobChanged -> {
+                Log.d("TAG", "onUiEvent: ${editCookProfileUiEvent.inputValue}")
                 _editCookProfileState.value  = _editCookProfileState.value.copy(
                     dob = editCookProfileUiEvent.inputValue,
                     errorState = _editCookProfileState.value.errorState.copy(
@@ -217,6 +208,7 @@ class EditCookProfileViewModel  @Inject constructor(
 
             //Address changed
             is EditCookProfileUiEvent.AddressChanged -> {
+                Log.d("TAG", "onUiEvent: ${editCookProfileUiEvent.inputValue}")
                 _editCookProfileState.value = _editCookProfileState.value.copy(
                     address = editCookProfileUiEvent.inputValue,
                     errorState = _editCookProfileState.value.errorState.copy(
@@ -228,21 +220,9 @@ class EditCookProfileViewModel  @Inject constructor(
                 )
             }
 
-            //Religion changed
-            is EditCookProfileUiEvent.ReligionChanged -> {
-                _editCookProfileState.value = _editCookProfileState.value.copy(
-                    religion = editCookProfileUiEvent.inputValue,
-                    errorState = _editCookProfileState.value.errorState.copy(
-                        religionErrorState = if (editCookProfileUiEvent.inputValue.trim().isNotEmpty())
-                            ErrorState()
-                        else
-                            cook_religionEmptyErrorState
-                    )
-                )
-            }
-
             //Experience changed
             is EditCookProfileUiEvent.ExperienceChanged -> {
+                Log.d("TAG", "onUiEvent: ${editCookProfileUiEvent.inputValue}")
                 _editCookProfileState.value = _editCookProfileState.value.copy(
                     experience = editCookProfileUiEvent.inputValue,
                     errorState = _editCookProfileState.value.errorState.copy(
@@ -256,6 +236,7 @@ class EditCookProfileViewModel  @Inject constructor(
 
             //Salary changed
             is EditCookProfileUiEvent.SalaryChanged -> {
+                Log.d("TAG", "onUiEvent: ${editCookProfileUiEvent.inputValue}")
                 _editCookProfileState.value = _editCookProfileState.value.copy(
                     salary = editCookProfileUiEvent.inputValue,
                     errorState = _editCookProfileState.value.errorState.copy(
@@ -267,8 +248,50 @@ class EditCookProfileViewModel  @Inject constructor(
                 )
             }
 
+
+            //Religion changed
+            is EditCookProfileUiEvent.ReligionChanged -> {
+                Log.d("TAG", "onUiEvent: ${editCookProfileUiEvent.inputValue}")
+                _editCookProfileState.value = _editCookProfileState.value.copy(
+                    religion = editCookProfileUiEvent.inputValue,
+                    errorState = _editCookProfileState.value.errorState.copy(
+                        religionErrorState = if (editCookProfileUiEvent.inputValue.trim().isNotEmpty())
+                            ErrorState()
+                        else
+                            cook_religionEmptyErrorState
+                    )
+                )
+            }
+
+            is EditCookProfileUiEvent.CuisineChange -> {
+                Log.d("TAG", "onUiEvent: ${editCookProfileUiEvent.inputValue}")
+                _editCookProfileState.value = _editCookProfileState.value.copy(
+                    cuisine = editCookProfileUiEvent.inputValue,
+                    errorState = _editCookProfileState.value.errorState.copy(
+                        cuisinesErrorState = if (editCookProfileUiEvent.inputValue.isNotEmpty())
+                            ErrorState()
+                        else
+                            cook_cuisineEmptyErrorState
+                    )
+                )
+            }
+
+            is EditCookProfileUiEvent.LanguageChange ->{
+                Log.d("TAG", "onUiEvent: ${editCookProfileUiEvent.inputValue}")
+                _editCookProfileState.value = _editCookProfileState.value.copy(
+                    languages = editCookProfileUiEvent.inputValue,
+                    errorState = _editCookProfileState.value.errorState.copy(
+                        languagesErrorState = if (editCookProfileUiEvent.inputValue.isNotEmpty())
+                            ErrorState()
+                        else
+                            cook_languageEmptyErrorState
+                    )
+                )
+            }
+
             //No of Visit changed
             is EditCookProfileUiEvent.NumberOfVisitChanged -> {
+                Log.d("TAG", "onUiEvent: ${editCookProfileUiEvent.inputValue}")
                 _editCookProfileState.value = _editCookProfileState.value.copy(
                     numberOfVisit = editCookProfileUiEvent.inputValue,
                     errorState = _editCookProfileState.value.errorState.copy(
@@ -282,6 +305,7 @@ class EditCookProfileViewModel  @Inject constructor(
 
             //Food Type changed
             is EditCookProfileUiEvent.FoodTypeChanged -> {
+                Log.d("TAG", "onUiEvent: ${editCookProfileUiEvent.inputValue}")
                 _editCookProfileState.value = _editCookProfileState.value.copy(
                     foodType = editCookProfileUiEvent.inputValue,
                     errorState = _editCookProfileState.value.errorState.copy(
@@ -294,26 +318,16 @@ class EditCookProfileViewModel  @Inject constructor(
             }
 
 
-            is EditCookProfileUiEvent.CuisineChange -> {
+            //GenderChange changed
+            is EditCookProfileUiEvent.GenderChange -> {
+                Log.d("TAG", "onUiEvent: ${editCookProfileUiEvent.inputValue}")
                 _editCookProfileState.value = _editCookProfileState.value.copy(
-                    cuisine = editCookProfileUiEvent.inputValue,
+                    gender = editCookProfileUiEvent.inputValue,
                     errorState = _editCookProfileState.value.errorState.copy(
-                        cuisinesErrorState = if (editCookProfileUiEvent.inputValue.isNotEmpty())
+                        genderErrorState = if (editCookProfileUiEvent.inputValue.trim().isNotEmpty())
                             ErrorState()
                         else
-                            cook_cuisineEmptyErrorState
-                    )
-                )
-            }
-
-            is EditCookProfileUiEvent.LanguageChange ->{
-                _editCookProfileState.value = _editCookProfileState.value.copy(
-                    languages = editCookProfileUiEvent.inputValue,
-                    errorState = _editCookProfileState.value.errorState.copy(
-                        languagesErrorState = if (editCookProfileUiEvent.inputValue.isNotEmpty())
-                            ErrorState()
-                        else
-                            cook_languageEmptyErrorState
+                            genderSelectionErrorState
                     )
                 )
             }

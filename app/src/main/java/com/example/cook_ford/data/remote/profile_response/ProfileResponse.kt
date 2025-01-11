@@ -20,7 +20,7 @@ data class ProfileResponse(
     val updatedAt: String? = AppConstants.EMPTY_STRING,
     val userType: String? = AppConstants.EMPTY_STRING,
     val username: String? = AppConstants.EMPTY_STRING,
-    var status: String? = AppConstants.EMPTY_STRING,
+    var status: String? = AppConstants.EMPTY_STRING
 ) : Parcelable
 
 @Parcelize

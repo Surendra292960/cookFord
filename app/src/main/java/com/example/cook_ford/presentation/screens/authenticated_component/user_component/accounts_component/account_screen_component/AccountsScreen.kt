@@ -89,7 +89,7 @@ import com.google.gson.Gson
 
 data class AccountModelData( @DrawableRes val leadingIcon: Int,  @DrawableRes val trailingIcon: Int, val isBorder:Boolean = false, val title: String, val subTitle: String)
 
-val accountData = mutableListOf(
+val accountModelData = mutableListOf(
     AccountModelData(
         leadingIcon = R.drawable.post_job_icon,
         trailingIcon = R.drawable.arrow_forward_ios,
@@ -157,10 +157,10 @@ fun AccountsScreen(
     val accountState by remember { accountViewModel.accountState }
     val reviewState by remember { accountViewModel.reviewState }
 
-    accountData.forEachIndexed{ index, value->
+    accountModelData.forEachIndexed{ index, value->
         if (accountViewModel.getUserType().equals(AppConstants.PROVIDER, ignoreCase = true)){
-            if (accountData[index].title == "Sign In as Cook"){
-                accountData.removeAt(index)
+            if (accountModelData[index].title == "Sign In as Cook"){
+                accountModelData.removeAt(index)
             }
         }
     }
@@ -245,10 +245,10 @@ fun AccountsScreen(
                                     Spacer(modifier = Modifier.width(10.dp))
                                 }
                             }
-                            items(accountData.size) { index ->
+                            items(accountModelData.size) { index ->
                                 AccountItem(
                                     accountViewModel = accountViewModel,
-                                    accountData = accountData,
+                                    accountData = accountModelData,
                                     index = index,
                                     onItemClick = {},
                                     onNavigateToAddCookScreen = {
@@ -445,7 +445,9 @@ fun AccountItem(
             .padding(all = 10.dp)
             .fillMaxWidth()
         ) {
-            Row(modifier = Modifier.wrapContentSize(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceBetween) {
+            Row(modifier = Modifier.wrapContentSize(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween) {
 
                 Box(modifier = Modifier
                     .size(40.dp)
