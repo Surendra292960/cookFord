@@ -800,7 +800,7 @@ fun ExperienceCard(profile: ProfileResponse, timeSlots: List<TimeSlots>) {
 				fontWeight = FontWeight.W700
 			)
 
-			CuisineSlotComponent(slots = it, textColor = Color.Gray, backgroundColor = Color.Transparent, borderColor = Color.Transparent, maxVisibleChips = 5)
+			CuisineSlotComponent(slots = it, textColor = Color.Gray, backgroundColor = Color.Transparent, borderColor = Color.LightGray, maxVisibleChips = 5)
 		}
 
 		//Languages
@@ -814,7 +814,7 @@ fun ExperienceCard(profile: ProfileResponse, timeSlots: List<TimeSlots>) {
 				fontWeight = FontWeight.W700
 			)
 
-			CuisineSlotComponent(slots = it, textColor = Color.Gray, backgroundColor = Color.Transparent, borderColor = Color.Transparent, maxVisibleChips = 5)
+			CuisineSlotComponent(slots = it, textColor = Color.Gray, backgroundColor = Color.Transparent, borderColor = Color.LightGray, maxVisibleChips = 5)
 		}
 
 		//Daily Visit
