@@ -1,5 +1,4 @@
 package com.example.cook_ford.presentation.screens.authenticated_component.cook_component.account_component.edit_cook_profile_component
-import com.example.cook_ford.presentation.screens.authenticated_component.cook_component.account_component.edit_cook_profile_component.state.EditCookProfileState
 import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -56,6 +55,7 @@ import com.example.cook_ford.presentation.component.widgets.ProfileImage
 import com.example.cook_ford.presentation.component.widgets.SegmentedControl
 import com.example.cook_ford.presentation.component.widgets.SmallTitleText
 import com.example.cook_ford.presentation.component.widgets.snack_bar.MainViewState
+import com.example.cook_ford.presentation.screens.authenticated_component.cook_component.account_component.edit_cook_profile_component.state.EditCookProfileState
 import com.example.cook_ford.presentation.theme.DeepGreen
 import com.example.cook_ford.presentation.theme.FontName
 import com.example.cook_ford.utils.AppConstants

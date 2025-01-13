@@ -69,6 +69,7 @@ import com.example.cook_ford.R
 import com.example.cook_ford.data.remote.profile_response.ProfileResponse
 import com.example.cook_ford.data.remote.profile_response.TimeSlots
 import com.example.cook_ford.data.remote.welcome.byCallCreditBottomSheetData
+import com.example.cook_ford.presentation.component.BottomSheet
 import com.example.cook_ford.presentation.component.CuisineSlotComponent
 import com.example.cook_ford.presentation.component.TimeSlotsComponent
 import com.example.cook_ford.presentation.component.widgets.Child
@@ -76,7 +77,6 @@ import com.example.cook_ford.presentation.component.widgets.MediumTitleText
 import com.example.cook_ford.presentation.component.widgets.Progressbar
 import com.example.cook_ford.presentation.component.widgets.RatingStar
 import com.example.cook_ford.presentation.screens.authenticated_component.cook_component.profile_component.details_screen_component.model.ProfileCardView
-import com.example.cook_ford.presentation.component.BottomSheet
 import com.example.cook_ford.presentation.screens.un_authenticated_component.main_screen_component.MainActivity
 import com.example.cook_ford.presentation.theme.AppTheme
 import com.example.cook_ford.presentation.theme.Cook_fordTheme
