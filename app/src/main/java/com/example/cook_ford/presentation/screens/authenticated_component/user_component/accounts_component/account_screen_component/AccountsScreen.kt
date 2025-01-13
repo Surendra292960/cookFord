@@ -28,8 +28,6 @@ import androidx.compose.material.icons.filled.ExposureZero
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -45,7 +43,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
@@ -60,7 +57,6 @@ import com.example.cook_ford.presentation.component.widgets.SmallTitleText
 import com.example.cook_ford.presentation.screens.authenticated_component.user_component.accounts_component.account_screen_component.state.ReviewState
 import com.example.cook_ford.presentation.theme.AppTheme
 import com.example.cook_ford.presentation.theme.DeepGreen
-import com.example.cook_ford.presentation.theme.FontName
 import com.example.cook_ford.presentation.theme.LightGray
 import com.example.cook_ford.presentation.theme.LightGray_2
 import com.example.cook_ford.presentation.theme.OrangeYellow1
