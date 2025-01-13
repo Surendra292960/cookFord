@@ -53,7 +53,7 @@ fun CuisineSlotComponent(
                 Row(
                     modifier = Modifier
                         .padding(1.dp)
-                        .border(1.dp, borderColor)
+                        .border(1.dp, borderColor, shape = RoundedCornerShape(5.dp))
                         .background(backgroundColor)
                 ) {
                     Text(
