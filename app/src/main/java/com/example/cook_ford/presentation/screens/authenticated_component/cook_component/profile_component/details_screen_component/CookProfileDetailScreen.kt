@@ -743,13 +743,13 @@ fun ExperienceCard(profile: ProfileResponse, timeSlots: List<TimeSlots>) {
 
 			MediumTitleText(
 				modifier = Modifier.padding(top = AppTheme.dimens.paddingSmall),
-				text = "Cuisines",
+				text = AppConstants.CUISINES,
 				textAlign = TextAlign.Start,
 				textColor = Color.DarkGray,
 				fontWeight = FontWeight.W700
 			)
 
-			CuisineSlotComponent(slots = it, textColor = Color.Gray, backgroundColor = Color.Transparent, borderColor = Color.Transparent)
+			CuisineSlotComponent(slots = it, textColor = Color.Gray, backgroundColor = Color.Transparent, borderColor = Color.Transparent, maxVisibleChips = 5)
 		}
 
 		//Languages
@@ -757,13 +757,13 @@ fun ExperienceCard(profile: ProfileResponse, timeSlots: List<TimeSlots>) {
 
 			MediumTitleText(
 				modifier = Modifier.padding(top = AppTheme.dimens.paddingSmall),
-				text = "Languages",
+				text = AppConstants.LANGUAGES,
 				textAlign = TextAlign.Start,
 				textColor = Color.DarkGray,
 				fontWeight = FontWeight.W700
 			)
 
-			CuisineSlotComponent(slots = it, textColor = Color.Gray, backgroundColor = Color.Transparent, borderColor = Color.Transparent)
+			CuisineSlotComponent(slots = it, textColor = Color.Gray, backgroundColor = Color.Transparent, borderColor = Color.Transparent, maxVisibleChips = 5)
 		}
 
 		//Daily Visit

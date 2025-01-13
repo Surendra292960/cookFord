@@ -223,7 +223,7 @@ fun UsersProfileList(index: Int, onItemClick: (String) -> Unit, profileState: Co
 
                         Spacer(modifier = Modifier.height(8.dp))
 
-                        profileState.profile?.get(index)?.profile?.cuisine?.let { CuisineSlotComponent(slots = it, borderColor = LightGray_2) }
+                        profileState.profile?.get(index)?.profile?.cuisine?.let { CuisineSlotComponent(slots = it, borderColor = LightGray_2, maxVisibleChips = 2) }
 
                         Spacer(modifier = Modifier.height(8.dp))
                     }

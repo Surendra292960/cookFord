@@ -250,7 +250,7 @@ fun UsersProfileList(index: Int, onItemClick: (String) -> Unit, profileState: Pr
 
                         Spacer(modifier = Modifier.height(8.dp))
 
-                        profileState.profile[index].profile?.cuisine?.let { CuisineSlotComponent(slots = it, borderColor = LightGray_2) }
+                        profileState.profile[index].profile?.cuisine?.let { CuisineSlotComponent(slots = it, borderColor = LightGray_2, maxVisibleChips = 2) }
 
                         Spacer(modifier = Modifier.height(8.dp))
                     }
@@ -298,14 +298,16 @@ fun BottomMenuText(profileRes: ProfileResponse) {
                         textAlign = TextAlign.Center,
                         textColor = Color.DarkGray
                     )
-                    it.forEach {
-                        MediumTitleText(
-                            modifier = Modifier,
-                            text = it,
-                            fontWeight = FontWeight.W500,
-                            textAlign = TextAlign.Center,
-                            textColor = Color.Gray
-                        )
+                    it.take(n=2).forEach {
+                      Row(horizontalArrangement = Arrangement.Center) {
+                          MediumTitleText(
+                              modifier = Modifier.fillMaxWidth(),
+                              text = it,
+                              fontWeight = FontWeight.W500,
+                              textAlign = TextAlign.Center,
+                              textColor = Color.Gray
+                          )
+                      }
                     }
                 }
             }
