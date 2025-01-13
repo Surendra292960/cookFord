@@ -96,7 +96,6 @@ object Utility {
     }
 
 
-
     fun Context.composeEmail(addresses: Array<String>, subject: String) {
         val intent = Intent(Intent.ACTION_SENDTO)
         intent.setData(Uri.parse("mailto:")) // only email apps should handle this

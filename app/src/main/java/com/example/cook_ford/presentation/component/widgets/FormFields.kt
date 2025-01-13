@@ -459,67 +459,6 @@ fun SegmentedControl(
     }
 }
 
-@Composable
-fun RadioButton() {
-    val selectedValue = remember { mutableStateOf(EMPTY_STRING) }
-    val label = "Item"
-    Row(verticalAlignment = Alignment.CenterVertically) {
-        RadioButton(
-            selected = selectedValue.value == label,
-            onClick = { selectedValue.value = label }
-        )
-        Text(
-            text = label,
-            modifier = Modifier.fillMaxWidth()
-        )
-    }
-}
-
-@Composable
-fun MultipleRadioButtons(onChange: (String) -> Unit) {
-
-    val selectedValue = remember { mutableStateOf(EMPTY_STRING) }
-
-    val isSelectedItem: (String) -> Boolean = { selectedValue.value == it }
-    val onChangeState: (String) -> Unit = { selectedValue.value = it }
-
-    val items = listOf("Male", "Female", "Other")
-
-    Column(
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-
-        Text(text = "Selected value: ${selectedValue.value.ifEmpty { "NONE" }}")
-
-        Row(
-            horizontalArrangement = Arrangement.Center,
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier
-                .padding(10.dp)
-                .fillMaxWidth()
-        ) {
-
-            items.forEach { item ->
-                Row(
-                    horizontalArrangement = Arrangement.Center,
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier
-                        .selectable(
-                            selected = isSelectedItem(item),
-                            onClick = { onChangeState(item) },
-                            role = Role.RadioButton
-                        )
-                        .padding(10.dp)
-                ) {
-                    Spacer(modifier = Modifier.width(10.dp))
-                    RadioButton(selected = isSelectedItem(item), onClick = null)
-                    Text(text = item)
-                }
-            }
-        }
-    }
-}
 
 @Composable
 fun SubmitButton(

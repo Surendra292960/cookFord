@@ -14,6 +14,8 @@ object AppConstants {
     )
     const val ZERO = 0
     const val EMPTY_STRING = ""
+    const val WELCOME = "Welcome to CookFord !"
+    const val CALL_BEFORE_CREDIT = "Call before you hire . . ."
     const val PROFILE_ID = "profileId"
     const val PLEASE_CHECK_INTERNET = "Please check your network connection"
    // const val AUTH_PREFERENCES = "AUTH_PREF"
@@ -99,6 +101,9 @@ object AppConstants {
     const val EXPERIENCED_BETWEEN = "Who is Experienced between"
     const val CALL_CREDIT = "Call Credit"
     const val BUY_CALL_CREDIT = "Buy Call Credit"
+    const val BUY_CALL_CREDIT_SHEET = "BUY_CALL_CREDIT_SHEET"
+    const val WELCOME_SHEET = "WELCOME_SHEET"
+    const val ADD_NOTE_SHEET = "ADD_NOTE_SHEET"
     const val REVIEW = "Review"
     const val LANGUAGE = "Language"
     const val EXPERIENCE = "Experience"

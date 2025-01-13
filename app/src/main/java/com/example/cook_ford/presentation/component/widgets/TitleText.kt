@@ -35,6 +35,25 @@ fun LargeText(
 }
 
 @Composable
+fun LargeSubText(
+    modifier: Modifier = Modifier,
+    text: String,
+    textColor: Color,
+    fontWeight:FontWeight,
+    textAlign: TextAlign = TextAlign.Start) {
+    Text(
+        modifier = modifier,
+        text = text,
+        letterSpacing = 0.5.sp,
+        style = MaterialTheme.typography.bodyLarge,
+        textAlign = textAlign,
+        fontWeight = fontWeight,
+        fontSize = 17.sp,
+        color = textColor
+    )
+}
+
+@Composable
 fun TitleText(
     modifier: Modifier = Modifier,
     text: String,

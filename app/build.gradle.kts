@@ -85,6 +85,7 @@ dependencies {
     implementation(libs.bundles.firebase)
     implementation(libs.firebase.storage.ktx)
     implementation(libs.firebase.database.ktx)
+    implementation(libs.androidx.storage)
     ksp(libs.androidx.hilt.compiler)
     implementation(libs.androidx.databinding.runtime)
     implementation(libs.androidx.accompanist.pager)

@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -31,18 +30,11 @@ import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.TextButton
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AddAlert
-import androidx.compose.material.icons.filled.Call
-import androidx.compose.material.icons.filled.CheckCircle
-import androidx.compose.material.icons.filled.ExposureZero
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Card
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.ModalBottomSheet
-import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
@@ -76,21 +68,18 @@ import coil.compose.rememberAsyncImagePainter
 import com.example.cook_ford.R
 import com.example.cook_ford.data.remote.profile_response.ProfileResponse
 import com.example.cook_ford.data.remote.profile_response.TimeSlots
+import com.example.cook_ford.data.remote.welcome.byCallCreditBottomSheetData
 import com.example.cook_ford.presentation.component.CuisineSlotComponent
 import com.example.cook_ford.presentation.component.TimeSlotsComponent
-import com.example.cook_ford.presentation.component.widgets.ButtonIcons
 import com.example.cook_ford.presentation.component.widgets.Child
 import com.example.cook_ford.presentation.component.widgets.MediumTitleText
-import com.example.cook_ford.presentation.component.widgets.OutlinedSmallSubmitButton
 import com.example.cook_ford.presentation.component.widgets.Progressbar
 import com.example.cook_ford.presentation.component.widgets.RatingStar
 import com.example.cook_ford.presentation.screens.authenticated_component.cook_component.profile_component.details_screen_component.model.ProfileCardView
-import com.example.cook_ford.presentation.screens.authenticated_component.cook_component.profile_component.details_screen_component.state.note_satate.CookNoteUiEvent
+import com.example.cook_ford.presentation.component.BottomSheet
 import com.example.cook_ford.presentation.screens.un_authenticated_component.main_screen_component.MainActivity
 import com.example.cook_ford.presentation.theme.AppTheme
 import com.example.cook_ford.presentation.theme.Cook_fordTheme
-import com.example.cook_ford.presentation.theme.DeepGreen
-import com.example.cook_ford.presentation.theme.FontName
 import com.example.cook_ford.presentation.theme.LightGray_2
 import com.example.cook_ford.presentation.theme.OrangeYellow1
 import com.example.cook_ford.utils.AppConstants
@@ -544,18 +533,33 @@ fun ProviderSocialMediaIconsCard(
 	var showNoteBottomSheet by remember { mutableStateOf(false) }
 	if (showCallBottomSheet) {
 		BottomSheet(
-			"Call",
-			onNavigateToCallCreditScreen = onNavigateToCallCreditScreen
-		) {
-			showCallBottomSheet = false
-		}
+			status = AppConstants.BUY_CALL_CREDIT_SHEET,
+			modelData = byCallCreditBottomSheetData,
+			onContinue = {
+				showCallBottomSheet = false
+			},
+			onDismiss = {
+				showCallBottomSheet = false
+			},
+			onNavigateToCallCreditScreen = {
+				onNavigateToCallCreditScreen.invoke()
+				showCallBottomSheet = false
+			}
+		)
 	}
 	if (showNoteBottomSheet) {
 		BottomSheet(
-			"Note",
-			onNavigateToCallCreditScreen = {}) {
-			showNoteBottomSheet = false
-		}
+			status = AppConstants.ADD_NOTE_SHEET,
+			onContinue = {
+				showNoteBottomSheet = false
+			},
+			onDismiss = {
+				showNoteBottomSheet = false
+			},
+			onNavigateToCallCreditScreen = {
+				showNoteBottomSheet = false
+			}
+		)
 	}
 	SocialMediaIcons(
 		onClickIcon1 = {
@@ -1022,191 +1026,6 @@ fun FooterStatus() {
 	}
 }
 
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun BottomSheet(sheetType:String, onNavigateToCallCreditScreen: () -> Unit,  onDismiss: () -> Unit) {
-	val modalBottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
-
-	ModalBottomSheet(
-		onDismissRequest = { onDismiss() },
-		sheetState = modalBottomSheetState,
-		dragHandle = null) {
-		if (sheetType == "Call"){
-			ByCallCreditBottomSheet(
-				onNavigateToCallCreditScreen = onNavigateToCallCreditScreen
-			)
-
-		}else{
-			AddNote()
-		}
-	}
-}
-
-@Composable
-fun ByCallCreditBottomSheet(onNavigateToCallCreditScreen: () -> Unit){
-	Column(modifier = Modifier
-		.fillMaxWidth()
-		.padding(top = 20.dp)
-		.navigationBarsPadding(),
-		horizontalAlignment = Alignment.CenterHorizontally,
-		verticalArrangement = Arrangement.spacedBy(14.dp, Alignment.CenterVertically)) {
-
-		Spacer(modifier = Modifier.height(10.dp))
-
-		Text(
-			text = "Call before you hire . . .",
-			style = MaterialTheme.typography.subtitle2,
-			color = Color.DarkGray,
-			fontSize = 20.sp,
-			fontWeight = FontWeight.Bold,
-			fontFamily = FontName
-		)
-
-		Row(modifier = Modifier
-			.padding(start = 20.dp, end = 20.dp)
-			.fillMaxWidth(),
-			horizontalArrangement = Arrangement.spacedBy(10.dp,
-			Alignment.Start),
-			verticalAlignment = Alignment.CenterVertically){
-			Icon(Icons.Filled.CheckCircle, contentDescription = null, tint = DeepGreen)
-			Text(
-				text = "For reference, tell the cook you their profile on Cook Ford.",
-				style = MaterialTheme.typography.subtitle2,
-				color = Color.DarkGray
-			)
-		}
-		Row(modifier = Modifier
-			.padding(start = 20.dp, end = 20.dp)
-			.fillMaxWidth(),
-			horizontalArrangement = Arrangement.spacedBy(10.dp,
-			Alignment.Start),
-			verticalAlignment = Alignment.CenterVertically){
-			Icon(Icons.Filled.CheckCircle, contentDescription = null, tint = DeepGreen)
-			Text(
-				text = "Discuss the requirements and charges clearly before hiring.",
-				style = MaterialTheme.typography.subtitle2,
-				color = Color.DarkGray
-			)
-		}
-		Row(modifier = Modifier
-			.padding(start = 20.dp, end = 20.dp)
-			.fillMaxWidth(),
-			horizontalArrangement = Arrangement.spacedBy(10.dp,
-			Alignment.Start),
-			verticalAlignment = Alignment.CenterVertically){
-			Icon(Icons.Filled.CheckCircle, contentDescription = null, tint = DeepGreen)
-			Text(
-				text = "Report issue directly from the cook`s profile",
-				style = MaterialTheme.typography.subtitle2,
-				color = Color.DarkGray
-			)
-		}
-
-		Card(modifier = Modifier.padding(start = 20.dp, end = 20.dp), shape = RoundedCornerShape(5.dp)){
-			Row(modifier = Modifier
-				.fillMaxWidth()
-				.background(Color.LightGray)
-				.padding(5.dp),
-				horizontalArrangement = Arrangement.spacedBy(7.dp,
-					Alignment.Start),
-				verticalAlignment = Alignment.CenterVertically) {
-				Icon(Icons.Filled.Call, contentDescription = null)
-				Text(text = "This might not be a good time to call the cook. \n We recommend calling between 8am-9pm",
-					style = MaterialTheme.typography.subtitle2,
-					color = Color.DarkGray
-				)
-			}
-		}
-
-		Card(modifier = Modifier.padding(start = 20.dp, end = 20.dp), shape = RoundedCornerShape(5.dp)){
-			Row(modifier = Modifier
-				.fillMaxWidth()
-				.background(Color.LightGray)
-				.padding(5.dp),
-				horizontalArrangement = Arrangement.spacedBy(7.dp,
-					Alignment.Start),
-				verticalAlignment = Alignment.CenterVertically) {
-				Icon(Icons.Filled.AddAlert, contentDescription = null, tint = Color.DarkGray)
-				Text(text = "1 call credit will be used for contacting the cook",
-					style = MaterialTheme.typography.subtitle2,
-					color = Color.DarkGray
-				)
-			}
-		}
-
-		Spacer(modifier = Modifier.height(30.dp))
-
-		Row(modifier = Modifier
-			.fillMaxWidth()
-			.padding(bottom = 20.dp, start = 10.dp, end = 10.dp), horizontalArrangement = Arrangement.SpaceEvenly) {
-			OutlinedSmallSubmitButton(
-				modifier = Modifier
-					.padding(top = AppTheme.dimens.paddingLarge)
-					.weight(1f),
-				text = "Call Credit",
-				textColor = Color.White,
-				isLoading = false,
-				backgroundColor = Color.LightGray,
-				icon = ButtonIcons(leadingIcon = Icons.Default.ExposureZero, tintColor = DeepGreen, leadingIconSize = 30.dp),
-				onClick = { /*onSubmit*/ }
-			)
-
-			Spacer(modifier = Modifier.width(20.dp))
-
-			OutlinedSmallSubmitButton(
-				modifier = Modifier
-					.padding(top = AppTheme.dimens.paddingLarge)
-					.weight(1f),
-				text = "Buy Call Credit",
-				textColor = Color.White,
-				isLoading = false,
-				backgroundColor = OrangeYellow1,
-				onClick = onNavigateToCallCreditScreen
-				/*navController.currentBackStackEntry?.savedStateHandle?.apply {
-                    set(
-                        "profileResponse",
-                        Gson().toJson(accountState.profileResponse)
-                    )
-                }
-                onNavigateToCallCreditScreen.invoke()*/
-
-			)
-		}
-	}
-}
-
-
-@Composable
-fun AddNote() {
-	val profileDetailsViewModel: ProfileDetailsViewModel = hiltViewModel()
-	//val viewState by remember { profileDetailsViewModel.viewState }
-	val noteState by remember { profileDetailsViewModel.noteState }
-
-	Column(modifier = Modifier
-		.fillMaxWidth()
-		.padding(all = 20.dp)) {
-
-		Spacer(modifier = Modifier.height(10.dp))
-
-		NoteForm(
-			noteState = noteState,
-			viewState = false,
-			modifier = Modifier
-				.fillMaxWidth()
-				.padding(start = 10.dp, end = 10.dp),
-			onNoteChange = { inputString ->
-				profileDetailsViewModel.onNoteUiEvent(
-					noteUiEvent = CookNoteUiEvent.NoteChanged(
-						inputString
-					)
-				)
-			},
-			onSubmit = {
-				profileDetailsViewModel.onNoteUiEvent(noteUiEvent = CookNoteUiEvent.Submit)
-			})
-	}
-}
 
 @ExperimentalFoundationApi
 @Preview

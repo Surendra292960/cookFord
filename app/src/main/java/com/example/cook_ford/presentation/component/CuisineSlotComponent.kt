@@ -1,4 +1,5 @@
 package com.example.cook_ford.presentation.component
+
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -16,14 +17,25 @@ import androidx.compose.ui.unit.dp
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-fun CuisineSlotComponent(slots: List<String>, textColor: Color = Color.Gray, backgroundColor: Color = Color.Transparent, borderColor: Color = Color.Transparent) {
+fun CuisineSlotComponent(
+    slots: List<String>,
+    textColor: Color = Color.Gray,
+    backgroundColor: Color = Color.Transparent,
+    borderColor: Color = Color.Transparent
+) {
 
     FlowRow(
         horizontalArrangement = Arrangement.spacedBy(0.dp),
         modifier = Modifier
-            .fillMaxWidth()) {
+            .fillMaxWidth()
+    ) {
         slots.forEachIndexed { index, slotsData ->
-            Row(modifier = Modifier.padding(1.dp).border(1.dp, borderColor).background(backgroundColor)) {
+            Row(
+                modifier = Modifier
+                    .padding(1.dp)
+                    .border(1.dp, borderColor)
+                    .background(backgroundColor)
+            ) {
                 Text(
                     text = slotsData,
                     style = MaterialTheme.typography.bodyMedium,
