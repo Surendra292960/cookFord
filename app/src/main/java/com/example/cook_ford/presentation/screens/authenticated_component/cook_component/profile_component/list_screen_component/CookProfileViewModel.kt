@@ -30,12 +30,21 @@ class CookProfileViewModel @Inject constructor(
     val profileState: State<CookProfileState> = _profileState
 
     init {
-        userSession.getString(SessionConstant.USER_ID)?.let { getProfileRequestById(it) }
+        userSession.apply {
+            getString(SessionConstant.ACCESS_TOKEN)?.let { token ->
+                getString(SessionConstant.USER_ID)?.let { id ->
+                    getProfileRequestById(
+                        token,
+                        id
+                    )
+                }
+            }
+        }
     }
 
-    private fun getProfileRequestById(profileId: String) = viewModelScope.launch(Dispatchers.IO) {
+    private fun getProfileRequestById(authToken:String, profileId: String) = viewModelScope.launch(Dispatchers.IO) {
         _profileState.value = _profileState.value.copy(isLoading = true)
-        profileUseCase.invoke(profileId).collect { result ->
+        profileUseCase.invoke(authToken, profileId).collect { result ->
             when(result){
                 is NetworkResult.Success->{
                     if (result.status == true){

@@ -22,9 +22,11 @@ abstract class BaseRepo {
 			val errorResponse = convertErrorBody(response)
 			return error(errorResponse, response.isSuccessful)
 		} catch (e: IOException) {
+			Log.d("TAG", "safeApiCall: ${e.message}")
 			return error(errorMessage = e.message ?: AppConstants.PLEASE_CHECK_INTERNET, status = false)
 		}
 		catch (e: Exception) {
+			Log.d("TAG", "safeApiCall: ${e.message}")
 			return error(errorMessage = e.message ?: e.toString(), status = false)
 		}
 	}

@@ -5,6 +5,7 @@ import com.example.cook_ford.data.remote.CuisineResponse
 import com.example.cook_ford.data.remote.LanguagesResponse
 import com.example.cook_ford.data.remote.NetworkResult
 import com.example.cook_ford.data.remote.TimeSlotsResponse
+import com.example.cook_ford.data.remote.profile_request.ProfileRequest
 import com.example.cook_ford.data.remote.profile_response.ProfileResponse
 import com.example.cook_ford.domain.repository.AuthRepository
 import kotlinx.coroutines.Dispatchers
@@ -23,9 +24,16 @@ class AuthRepositoryImpl(
         }.flowOn(Dispatchers.IO)
     }
 
-    override suspend fun getProfileById(profileId: String): Flow<NetworkResult<ProfileResponse>> {
+    override suspend fun getProfileById(authToken: String, profileId: String): Flow<NetworkResult<ProfileResponse>> {
         return flow {
-            emit(safeApiCall { apiService.getProfileById(profileId) })
+            emit(safeApiCall { apiService.getProfileById(authToken, profileId) })
+        }.flowOn(Dispatchers.IO)
+    }
+
+
+    override suspend fun getProviderProfileById(authToken: String, profileId: String): Flow<NetworkResult<ProfileResponse>> {
+        return flow {
+            emit(safeApiCall { apiService.getProviderProfileById(authToken, profileId) })
         }.flowOn(Dispatchers.IO)
     }
 

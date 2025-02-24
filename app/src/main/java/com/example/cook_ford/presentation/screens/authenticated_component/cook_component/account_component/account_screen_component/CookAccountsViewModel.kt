@@ -1,7 +1,9 @@
 package com.example.cook_ford.presentation.screens.authenticated_component.cook_component.account_component.account_screen_component
 import android.util.Log
 import androidx.compose.runtime.State
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -20,9 +22,16 @@ import com.example.cook_ford.presentation.screens.un_authenticated_component.sig
 import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.cancelAndJoin
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.yield
 import javax.inject.Inject
 
 @HiltViewModel
@@ -31,6 +40,23 @@ class CookAccountsViewModel @Inject constructor(
     private val userSession: UserSession,
     private val stateHandle: SavedStateHandle
 ) : ViewModel() {
+    val isTrue  =  mutableStateOf(false)
+    var job: Job?=null
+    fun main() {        // Launch a coroutine job
+        job = viewModelScope.launch {
+            var counter = 0
+            while (isActive) { // Check if the coroutine is still active
+                println("Working... Counter: $counter")
+                counter++
+                if (isTrue.value){
+                    cancel()
+                    yield()
+                    delay(500) // Simulate some work
+                }
+            }
+            println("Coroutine is canceled")
+        }
+    }
 
     private val _accountState = mutableStateOf(CookAccountState())
     val accountState: State<CookAccountState> = _accountState
@@ -41,7 +67,16 @@ class CookAccountsViewModel @Inject constructor(
     val viewState = _viewState.asStateFlow()
 
     init {
-        userSession.getString(SessionConstant.USER_ID)?.let { getProfileRequestById(it) }
+        userSession.apply {
+            getString(SessionConstant.ACCESS_TOKEN)?.let { token ->
+                getString(SessionConstant.USER_ID)?.let { id ->
+                    getProfileRequestById(
+                        token,
+                        id
+                    )
+                }
+            }
+        }
     }
 
     fun onReViewUiEvent(cookReviewUiEvent: CookReviewUiEvent) {
@@ -104,7 +139,7 @@ class CookAccountsViewModel @Inject constructor(
         }
     }
 
-    private fun makeProfileRequest(profileId: String) = viewModelScope.launch(Dispatchers.IO) {
+   /* private fun makeProfileRequest(profileId: String) = viewModelScope.launch(Dispatchers.IO) {
         Log.d("TAG", "makeProfileRequest profileId: $profileId")
         // _accountState.value = _accountState.value.copy(isLoading = true)
         profileUseCase.invoke(profileId).collect { result ->
@@ -127,12 +162,12 @@ class CookAccountsViewModel @Inject constructor(
                 }
             }
         }
-    }
+    }*/
 
-    private fun getProfileRequestById(profileId: String) = viewModelScope.launch(Dispatchers.IO) {
+    private fun getProfileRequestById(authToken:String, profileId: String) = viewModelScope.launch(Dispatchers.IO) {
         Log.d("TAG", "makeProfileRequest profileId: $profileId")
         // _accountState.value = _accountState.value.copy(isLoading = true)
-        profileUseCase.invoke(profileId).collect { result ->
+        profileUseCase.invoke(authToken, profileId,"").collect { result ->
             when(result){
                 is NetworkResult.Success->{
                     if (result.status == true){

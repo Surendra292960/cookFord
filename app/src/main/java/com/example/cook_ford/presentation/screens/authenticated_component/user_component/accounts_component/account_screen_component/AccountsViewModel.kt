@@ -42,7 +42,16 @@ class AccountsViewModel @Inject constructor(
     val viewState = _viewState.asStateFlow()
 
     init {
-        userSession.getString(SessionConstant.USER_ID)?.let { getProfileRequestById(it) }
+        userSession.apply {
+            getString(SessionConstant.ACCESS_TOKEN)?.let { token ->
+                getString(SessionConstant.USER_ID)?.let { id ->
+                    getProfileRequestById(
+                        token,
+                        id
+                    )
+                }
+            }
+        }
     }
 
     fun onReViewUiEvent(reviewUiEvent: ReviewUiEvent) {
@@ -105,10 +114,10 @@ class AccountsViewModel @Inject constructor(
         }
     }
 
-    private fun makeProfileRequest(profileId: String) = viewModelScope.launch(Dispatchers.IO) {
+    private fun makeProfileRequest(authToken:String, profileId: String) = viewModelScope.launch(Dispatchers.IO) {
         Log.d("TAG", "makeProfileRequest profileId: $profileId")
         // _accountState.value = _accountState.value.copy(isLoading = true)
-        profileUseCase.invoke(profileId).collect { result ->
+        profileUseCase.invoke(authToken, profileId).collect { result ->
             when(result){
                 is NetworkResult.Success->{
                     if (result.status == true){
@@ -130,10 +139,10 @@ class AccountsViewModel @Inject constructor(
         }
     }
 
-    private fun getProfileRequestById(profileId: String) = viewModelScope.launch(Dispatchers.IO) {
-        Log.d("TAG", "makeProfileRequest profileId: $profileId")
+    private fun getProfileRequestById(authToken:String, profileId: String) = viewModelScope.launch(Dispatchers.IO) {
+        Log.d("TAG", "makeProfileRequest authToken: $authToken \n profileId: $profileId")
         // _accountState.value = _accountState.value.copy(isLoading = true)
-        profileUseCase.invoke(profileId).collect { result ->
+        profileUseCase.invoke(authToken, profileId).collect { result ->
             when(result){
                 is NetworkResult.Success->{
                     if (result.status == true){

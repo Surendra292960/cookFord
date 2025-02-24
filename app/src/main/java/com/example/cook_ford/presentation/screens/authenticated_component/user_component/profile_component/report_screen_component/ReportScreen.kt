@@ -89,11 +89,7 @@ fun ReportScreen(
         Log.d("TAG", "Data isSuccessful : ${reportState.isSuccessful}")
         Column(modifier = Modifier.background(Color.White).fillMaxSize().verticalScroll(scrollState)) {
 
-            reportState.profileResponse?.let {
-                ImageWithUserName(
-                    it
-                )
-            }
+            reportState.profileResponse?.let { ImageWithUserName(it) }
 
             ReportForm(
                 reportState = reportState,

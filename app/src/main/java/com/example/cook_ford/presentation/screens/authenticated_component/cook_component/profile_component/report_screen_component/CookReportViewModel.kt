@@ -123,10 +123,10 @@ class CookReportViewModel  @Inject constructor(
         }
     }
 
-    private fun makeProfileRequestForReview(profileId: String) = viewModelScope.launch(Dispatchers.IO) {
+    private fun makeProfileRequestForReview(authToken:String, profileId: String) = viewModelScope.launch(Dispatchers.IO) {
         Log.d("TAG", "makeProfileRequestForReview-> profileId: $profileId")
         //_cookReportState.value = _cookReportState.value.copy(isLoading = true)
-        profileUseCase.invoke(profileId).collect { result ->
+        profileUseCase.invoke(authToken, profileId).collect { result ->
             when(result){
                 is NetworkResult.Success->{
                     if (result.status == true){

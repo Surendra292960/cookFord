@@ -3,6 +3,7 @@ import android.content.Context
 import com.example.cook_ford.data.ApiConstants.BASE_URL
 import com.example.cook_ford.data.ApiService
 import com.example.cook_ford.data.local.UserSession
+import com.example.cook_ford.data.remote.ConnectivityInterceptor
 import com.example.cook_ford.data.repository.AuthRepositoryImpl
 import com.example.cook_ford.data.repository.FirebaseAuthRepositoryImpl
 import com.example.cook_ford.data.repository.UnAuthRepositoryImpl
@@ -42,14 +43,16 @@ object AppModule {
     fun provideAuthPreferences(dataStore: DataStore<Preferences>) =
         AuthPreferences(dataStore)*/
 
+
     @Singleton
     @Provides
-    fun provideHttpClient(): OkHttpClient {
+    fun provideHttpClient(interceptor: ConnectivityInterceptor): OkHttpClient {
         return OkHttpClient
             .Builder()
             .readTimeout(15, TimeUnit.SECONDS)
             .writeTimeout(15, TimeUnit.SECONDS)
             .connectTimeout(15, TimeUnit.SECONDS)
+            .addInterceptor(interceptor)
             .build()
     }
     @Singleton
@@ -59,14 +62,16 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun providesApiService(): ApiService {
+    fun providesApiService(client: OkHttpClient): ApiService {
         return Retrofit.Builder()
             .baseUrl(BASE_URL)
+            .client(client)
             .addConverterFactory(GsonConverterFactory.create())
             .addConverterFactory(MoshiConverterFactory.create())
             .build()
             .create(ApiService::class.java)
     }
+
 
     /*
     @Singleton

@@ -114,10 +114,10 @@ open class CookProfileDetailsViewModel @Inject constructor(
         return timeSlotsList
     }
 
-    private fun makeProfileRequest(profileId: String) = viewModelScope.launch(Dispatchers.IO) {
+    private fun makeProfileRequest(authToken:String, profileId: String) = viewModelScope.launch(Dispatchers.IO) {
         Log.d("TAG", "makeProfileRequest profileId: $profileId")
         // _profileState.value = _profileState.value.copy(isLoading = true)
-        profileUseCase.invoke(profileId).collect { result ->
+        profileUseCase.invoke(authToken, profileId).collect { result ->
             when(result){
                 is NetworkResult.Success->{
                     if (result.status == true){

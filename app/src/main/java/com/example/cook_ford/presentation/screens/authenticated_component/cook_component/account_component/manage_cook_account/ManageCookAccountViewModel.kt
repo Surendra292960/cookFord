@@ -37,7 +37,16 @@ class ManageCookAccountViewModel @Inject constructor(
     val viewState = _viewState.asStateFlow()
 
     init {
-        userSession.getString(SessionConstant.USER_ID)?.let { getProfileRequestById(it) }
+        userSession.apply {
+            getString(SessionConstant.ACCESS_TOKEN)?.let { token ->
+                getString(SessionConstant.USER_ID)?.let { id ->
+                    getProfileRequestById(
+                        token,
+                        id
+                    )
+                }
+            }
+        }
     }
 
     fun setViewState(viewState: MainViewState) {
@@ -45,10 +54,10 @@ class ManageCookAccountViewModel @Inject constructor(
     }
 
 
-    private fun getProfileRequestById(profileId: String) = viewModelScope.launch(Dispatchers.IO) {
+    private fun getProfileRequestById(authToken:String, profileId: String) = viewModelScope.launch(Dispatchers.IO) {
         Log.d("TAG", "getProfileRequestById profileId: $profileId")
         // _manageAccountState.value = _manageAccountState.value.copy(isLoading = true)
-        profileUseCase.invoke(profileId).collect { result ->
+        profileUseCase.invoke(authToken, profileId).collect { result ->
             when(result){
                 is NetworkResult.Success->{
                     if (result.status == true){

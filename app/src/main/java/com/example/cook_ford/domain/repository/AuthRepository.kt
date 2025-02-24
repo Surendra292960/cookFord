@@ -9,7 +9,8 @@ import kotlinx.coroutines.flow.Flow
 
 interface AuthRepository {
     suspend fun getProfiles():Flow<NetworkResult<List<ProfileResponse>>>
-    suspend fun getProfileById(profileId: String):Flow<NetworkResult<ProfileResponse>>
+    suspend fun getProfileById(authToken:String, profileId: String):Flow<NetworkResult<ProfileResponse>>
+    suspend fun getProviderProfileById(authToken:String, profileId: String):Flow<NetworkResult<ProfileResponse>>
     suspend fun getTimeSlots():Flow<NetworkResult<TimeSlotsResponse>>
     suspend fun getLanguages():Flow<NetworkResult<LanguagesResponse>>
     suspend fun getCuisines():Flow<NetworkResult<CuisineResponse>>

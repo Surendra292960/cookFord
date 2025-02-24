@@ -9,6 +9,7 @@ object ApiConstants {
     const val PROFILE_END_POINT = "api/users/getAllprofile"
     const val PROFILE_DETAILS_END_POINT = "api/users/profile/{id}"
     const val USERS_NEARBY_END_POINT = "api/users/profileNearUser"
+    const val GET_PROVIDER_PROFILE_BY_ID_END_POINT = "api/users/get-provider-profile-byId"
 
     const val TIME_SLOTS_END_POINT = "api/utils/timeSlots"
     const val CUISINES_END_POINT = "api/utils/cuisines"

@@ -1,6 +1,7 @@
 package com.example.cook_ford.data
 
 import com.example.cook_ford.data.ApiConstants.CUISINES_END_POINT
+import com.example.cook_ford.data.ApiConstants.GET_PROVIDER_PROFILE_BY_ID_END_POINT
 import com.example.cook_ford.data.ApiConstants.LANGUAGES_END_POINT
 import com.example.cook_ford.data.ApiConstants.PROFILE_DETAILS_END_POINT
 import com.example.cook_ford.data.ApiConstants.PROFILE_END_POINT
@@ -18,29 +19,30 @@ import com.example.cook_ford.data.remote.profile_response.ProfileResponse
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.Header
 import retrofit2.http.POST
 import retrofit2.http.Path
+import retrofit2.http.Query
+
 
 interface ApiService {
 
     @POST(SIGN_IN_END_POINT)
-    suspend fun makeSignInRequest(
-        @Body signInRequest: SignInRequest
-    ) : Response<SignInResponse>
-
+    suspend fun makeSignInRequest(@Body signInRequest: SignInRequest) : Response<SignInResponse>
 
     @POST(SIGN_UP_END_POINT)
-    suspend fun makeSignUpRequest(
-        @Body signUpRequest: SignUpRequest
-    ) : Response<SignUpResponse>
+    suspend fun makeSignUpRequest(@Body signUpRequest: SignUpRequest) : Response<SignUpResponse>
 
     @GET(PROFILE_END_POINT)
     suspend fun getProfileRequest() : Response<List<ProfileResponse>>
 
-
     @GET(PROFILE_DETAILS_END_POINT)
-    suspend fun getProfileById(
-        @Path("id") profileId: String
+    suspend fun getProfileById(@Header("Authorization") accessToken:String, @Path("id") profileId: String) : Response<ProfileResponse>
+
+    @GET(GET_PROVIDER_PROFILE_BY_ID_END_POINT)
+    suspend fun getProviderProfileById(
+        @Header("Authorization") accessToken:String,
+        @Query("id") userId: String
     ) : Response<ProfileResponse>
 
     @GET(TIME_SLOTS_END_POINT)
